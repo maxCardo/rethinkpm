@@ -1,12 +1,20 @@
 const express = require('express');
 const path = require('path');
 
+const dbConnect = require('./db/db');
+
 const app = express();
 
+dbConnect();
 
+//Init middle ware. replaces bodyParser
+app.use(express.json({extended:false}));
 
-//routes
-//app.use('/api/users', require('./routes/users'));
+//api routes
+app.get('/', (req, res) => {
+  res.send('hello!!')
+});
+app.use('/api/users', require('./api/users'));
 
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {
@@ -16,7 +24,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
-
 
 
 const port = process.env.PORT || 5000;
