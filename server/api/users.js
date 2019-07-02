@@ -8,8 +8,19 @@ const router = express.Router();
 // @route: Post /api/user;
 // @desc: create new user
 // @ access: Public
-router.get('/', (req,res) => {
-  res.send('yo yo')
+router.post('/', async(req,res) => {
+  try {
+    //see if user exisits
+    //get user gravatar
+    //encrypt password
+    const user = new User(req.body);
+    user.save()
+    res.send('user saved')
+
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send('Server Error')
+  }
 });
 
 // @route: GET /api/user;

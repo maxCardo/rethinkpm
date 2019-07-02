@@ -11,9 +11,6 @@ dbConnect();
 app.use(express.json({extended:false}));
 
 //api routes
-app.get('/', (req, res) => {
-  res.send('hello!!')
-});
 app.use('/api/users', require('./api/users'));
 
 //serve static assets in production
