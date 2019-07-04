@@ -59,13 +59,9 @@ router.post('/login', async (req,res) => {
 // @ access: Private
 router.post('/logout', auth, async(req,res) => {
   try {
-    console.log('req', req.token);
     req.user.tokens = req.user.tokens.filter((token) => {
-      console.log('token: ',token);
-      console.log('user.token: ',req.user.token);
       return token.token != req.token;
-    })
-    console.log('all tokens: ', req.user.tokens);
+    });
     const user = await req.user.save()
     res.json('user loged out')
   } catch (e) {
