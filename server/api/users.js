@@ -1,6 +1,8 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 
 const User = require('../db/models/User');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -10,31 +12,79 @@ const router = express.Router();
 // @ access: Public
 router.post('/', async(req,res) => {
   try {
-    //see if user exisits
-    //get user gravatar
-    //encrypt password
-    const user = new User(req.body);
-    user.save()
-    res.send('user saved')
+    const user =  await new User(req.body);
+    await user.save();
+    const token = await user.getToken();
+    res.send({user, token});
 
+  } catch (e) {
+    console.error(e.message);
+    res.status(400).send(e);
+  }
+});
+
+// @route: GET /api/user;
+// @desc: get user by token
+// @ access: Private
+router.get('/', auth, (req,res) => {
+  try {
+    res.status(201).json(req.user);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route: Post /api/user/login;
+// @desc: log in user
+// @ access: Public
+router.post('/login', async (req,res) => {
+  const {email, password} = req.body;
+  try {
+    const user = await User.findOne({email});
+    if (!user) {return res.status(400).json({errors:[{msg:'Invalid Creds'}]})};
+    const passVarify = await bcrypt.compare(password, user.password);
+    if (!passVarify) {return res.status(400).json({errors:[{msg:'Invalid Creds'}]})};
+    const token = await user.getToken();
+    res.json({user, token});
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+// @route: Post /api/user;
+// @desc: log out user
+// @ access: Private
+router.post('/logout', auth, async(req,res) => {
+  try {
+    console.log('req', req.token);
+    req.user.tokens = req.user.tokens.filter((token) => {
+      console.log('token: ',token);
+      console.log('user.token: ',req.user.token);
+      return token.token != req.token;
+    })
+    console.log('all tokens: ', req.user.tokens);
+    const user = await req.user.save()
+    res.json('user loged out')
   } catch (e) {
     console.error(e.message);
     res.status(500).send('Server Error')
   }
 });
 
-// @route: GET /api/user;
-// @desc: sign in user
+// @route: Post /api/user/logout;
+// @desc: log out all devices
 // @ access: Private
-router.get('/', (req,res) => {
-  res.send('yo yo')
-});
-
-// @route: Post /api/user;
-// @desc: log out user
-// @ access: Private
-router.get('/', (req,res) => {
-  res.send('yo yo')
+router.get('/logout/all', auth, async(req,res) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+    res.send('all users signed out');
+  } catch (e) {
+    res.status(500).send('Server Error');
+  }
 });
 
 module.exports = router;

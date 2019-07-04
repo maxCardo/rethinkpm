@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const gravatar = require('gravatar');
 
 const userSchema = new mongoose.Schema({
   name:{
@@ -26,10 +28,16 @@ const userSchema = new mongoose.Schema({
   date:{
     type: Date,
     default: Date.now
-  }
+  },
+  tokens:[{
+    token:{
+      type:String,
+      required: true
+    }
+  }]
 });
 
-//Schema Middleware & Functions
+//-----------------  Schema Middleware & Functions  -------------------------//
 
 //salt and hash password
 userSchema.pre('save', async function(next) {
@@ -41,5 +49,26 @@ userSchema.pre('save', async function(next) {
   next()
 });
 
+//set gravatar when email is created or updated
+userSchema.pre('save', async function(next) {
+  const user = this;
+  if (user.isModified('email')) {
+    user.avatar = gravatar.url(user.email, {s:'200',r:'pg',d:'mm'});
+  }
+  next()
+});
 
-module.exports = User = mongoose.model('user', userSchema);
+//Get Auth Token
+userSchema.methods.getToken = async function () {
+  console.log('token request');
+  const user = this;
+  const token = jwt.sign({_id: user._id.toString()},process.env.JWT_SECRET);
+  user.tokens = user.tokens.concat({token});
+  await user.save()
+  console.log('token:', token);
+  return token;
+}
+
+
+
+module.exports = User = mongoose.model('User', userSchema);
