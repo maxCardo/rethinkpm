@@ -9,7 +9,7 @@ const Landing = props => {
                 <div className="landing-inner">
                     <h2 className="large">Rethink Property Managment</h2>
                     <p className="lead">
-                      Simple Tech Bassed Solutions for Single Family and Multifamily Renatal Owners and Residents.
+                      Simple Tech Bassed Solutions for Single Family and Multifamily Rental Owners and Residents.
                     </p>
                     <div className="buttons">
                         <Link to="/register" className="btn btn-primary">Sign Up</Link>
