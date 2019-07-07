@@ -35,17 +35,20 @@ router.get('/', auth, (req,res) => {
   }
 });
 
-// @route: Post /api/user/login;
+// @route: Post /api/users/login;
 // @desc: log in user
 // @ access: Public
 router.post('/login', async (req,res) => {
+  console.log('fire useer route');
   const {email, password} = req.body;
+  console.log(email, password)
   try {
-    const user = await User.findOne({email});
-    if (!user) {return res.status(400).json({errors:[{msg:'Invalid Creds'}]})};
+    let user = await User.findOne({email});
+    if (!user) {return res.status(400).json({errors:[{msg:'Invalid User Name'}]})};
     const passVarify = await bcrypt.compare(password, user.password);
     if (!passVarify) {return res.status(400).json({errors:[{msg:'Invalid Creds'}]})};
     const token = await user.getToken();
+    await res.cookie('sid', token);
     res.json({user, token});
   } catch (e) {
     console.error(e.message);

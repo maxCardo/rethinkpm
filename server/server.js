@@ -13,6 +13,10 @@ app.use(express.json({extended:false}));
 //api routes
 app.use('/api/users', require('./api/users'));
 
+app.get('/test', (req, res) => {
+  console.log('request');
+})
+
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
