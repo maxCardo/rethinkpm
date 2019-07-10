@@ -1,5 +1,6 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R} from '../actions/type';
-const initialState = [];
+import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT} from '../actions/type';
+
+const initialState = {};
 
 export default function (state = initialState, action) {
     const { type, payload } = action;
@@ -22,6 +23,7 @@ export default function (state = initialState, action) {
 
         case LOGIN_FAIL:
         case AUTH_ERR0R:
+        case LOGOUT:    
             return {
                 ...state,
                 isAuthenticated: false,

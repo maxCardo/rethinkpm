@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 
 const Landing = ({loadUser, isAuthenticated}) => {
     
+    console.log('run load')
     loadUser();
     //Redirect if logged in
     if (isAuthenticated) { return <Redirect to='/dashboard' /> }

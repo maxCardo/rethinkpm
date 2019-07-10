@@ -1,17 +1,23 @@
 import axios from 'axios';
-import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R } from './type';
+import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
 import { setAlert } from './alert';
 
 //Load User
 export const loadUser = () => async dispatch => {
     try {
-        console.log('fire load user');
         const res = await axios.get('/api/users');
+        if (!res.data) {
+            console.log('no user found')
+            return dispatch({
+                type: AUTH_ERR0R
+            })
+        }
         dispatch({
             type: USER_LOADED,
             payload: res.data
         })
     } catch (err) {
+        console.log('auth error')
         dispatch({
             type: AUTH_ERR0R
         });
@@ -45,5 +51,22 @@ export const login = (email, password) => async dispatch => {
             type: LOGIN_FAIL
         })
 
+    }
+}
+
+//Logout User
+export const logout = () => async dispatch => {
+    try {
+        await axios.post('/api/users/logout');
+        dispatch({type:LOGOUT});
+    } catch (err) {
+        console.log('fire eroor on logout')
+        console.error(err);
+        
+        // const errors = err.response.data.errors
+
+        // if (errors) {
+        //     errors.forEach(error => dispatch(setAlert(error.msg, 'danger')))
+        // }
     }
 }
