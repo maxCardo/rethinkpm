@@ -6,10 +6,13 @@ import store from './store';
 
 import './App.css';
 
-//Components:
+//Components
+import PrivateRoute from './components/core/routing/PrivateRoute';
 import Navbar from './components/core/Navbar';
 import Landing from './components/custom/Landing';
 import Login from './components/core/Login';
+import Dashboard from './components/custom/dashboard';
+import Alert from './components/core/Alert';
 
 const App = () => {
   return (
@@ -19,8 +22,10 @@ const App = () => {
           <Navbar/>
           <Route exact path ='/' component = {Landing}/>
           <section className = 'container'>
+            <Alert/>
             <Switch>
               <Route exact path = '/login' component = {Login}/>
+              <PrivateRoute exact path='/dashboard' component={Dashboard} />
             </Switch>
           </section>
         </Fragment>

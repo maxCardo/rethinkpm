@@ -23,10 +23,11 @@ router.post('/', async(req,res) => {
   }
 });
 
-// @route: GET /api/user;
+// @route: GET /api/users;
 // @desc: get user by token
 // @ access: Private
-router.get('/', auth, (req,res) => {
+router.get('/',auth, (req,res) => {
+  console.log('fired up get api');
   try {
     res.status(201).json(req.user);
   } catch (e) {
@@ -39,7 +40,7 @@ router.get('/', auth, (req,res) => {
 // @desc: log in user
 // @ access: Public
 router.post('/login', async (req,res) => {
-  console.log('fire useer route');
+  console.log('fire user route');
   const {email, password} = req.body;
   console.log(email, password)
   try {
@@ -49,7 +50,7 @@ router.post('/login', async (req,res) => {
     if (!passVarify) {return res.status(400).json({errors:[{msg:'Invalid Creds'}]})};
     const token = await user.getToken();
     await res.cookie('sid', token);
-    res.json({user, token});
+    res.json({user});
   } catch (e) {
     console.error(e.message);
     res.status(500).send('Server Error');
@@ -57,7 +58,7 @@ router.post('/login', async (req,res) => {
 });
 
 
-// @route: Post /api/user;
+// @route: Post /api/users/logout;
 // @desc: log out user
 // @ access: Private
 router.post('/logout', auth, async(req,res) => {
@@ -73,7 +74,7 @@ router.post('/logout', auth, async(req,res) => {
   }
 });
 
-// @route: Post /api/user/logout;
+// @route: Post /api/users/logout/all;
 // @desc: log out all devices
 // @ access: Private
 router.get('/logout/all', auth, async(req,res) => {

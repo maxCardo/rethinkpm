@@ -1,9 +1,11 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const dbConnect = require('./db/db');
 
 const app = express();
+app.use(cookieParser());
 
 dbConnect();
 
@@ -13,9 +15,6 @@ app.use(express.json({extended:false}));
 //api routes
 app.use('/api/users', require('./api/users'));
 
-app.get('/test', (req, res) => {
-  console.log('request');
-})
 
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {

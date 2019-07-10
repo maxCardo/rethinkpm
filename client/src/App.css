@@ -186,7 +186,7 @@ img {
 .bg-danger,
 .badge-danger,
 .alert-danger {
-  background: var(--danger-color);
+  background: #dc3545;  
   color: #fff;
 }
 
