@@ -27,7 +27,6 @@ router.post('/', async(req,res) => {
 // @desc: get user by token
 // @ access: Private
 router.get('/',auth, (req,res) => {
-  console.log('fired up get api');
   try {
     res.status(201).json(req.user);
   } catch (e) {
@@ -67,6 +66,7 @@ router.post('/logout', auth, async(req,res) => {
       return token.token != req.token;
     });
     const user = await req.user.save()
+    await res.clearCookie('sid');
     res.json('user loged out')
   } catch (e) {
     console.error(e.message);

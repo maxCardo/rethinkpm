@@ -1,12 +1,16 @@
+import React, {Fragment, useState, useEffect} from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import React, {Fragment, useState} from 'react';
 import { connect } from 'react-redux';
 import {login} from '../../actions/auth';
 import {loadUser} from '../../actions/auth';
 
 
 const Login = ({login,loadUser, isAuthenticated}) => {
+
+    useEffect(() => {
+        loadUser();    
+    }, [loadUser]);
 
     const [formData, setFormData] = useState({email:'', password:''});
     const {email, password}= formData;
@@ -17,7 +21,6 @@ const Login = ({login,loadUser, isAuthenticated}) => {
         login(email, password);
     }
     
-    loadUser();
     //Redirect if logged in
     if (isAuthenticated) { return <Redirect to='/dashboard' /> }
 

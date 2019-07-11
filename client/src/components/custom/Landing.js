@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'; 
 import {loadUser} from '../../actions/auth';
@@ -8,10 +8,9 @@ import PropTypes from 'prop-types';
 
 
 const Landing = ({loadUser, isAuthenticated}) => {
-    
-    console.log('run load')
-    loadUser();
-    //Redirect if logged in
+
+    //check token and redirect if logged in
+    useEffect(() => {loadUser();},[loadUser]);
     if (isAuthenticated) { return <Redirect to='/dashboard' /> }
     
     return (

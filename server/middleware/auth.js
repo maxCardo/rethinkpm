@@ -7,7 +7,6 @@ const User = require('../db/models/User')
 const auth = async (req,res,next) => {
   // x-auth token header was used for postman api, for production we will use the header in the cookie
   //const token = req.header('x-auth-token');
-  console.log('fired up auth');
   const token = req.cookies.sid;
   if (!token) {
     return res.status(401).send('No Token, Auth Failed');
