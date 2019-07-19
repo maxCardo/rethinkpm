@@ -15,11 +15,12 @@ router.post('/', async(req,res) => {
     const user =  await new User(req.body);
     await user.save();
     const token = await user.getToken();
-    res.send({user, token});
+    await res.cookie('sid', token);
+    res.send({user});
 
   } catch (e) {
     console.error(e.message);
-    res.status(400).send(e);
+    res.status(400).json({errors:[{msg:'somthing went wrong'}]});
   }
 });
 
@@ -34,6 +35,8 @@ router.get('/',auth, (req,res) => {
     res.status(500).send('Server Error');
   }
 });
+
+//Todo: create get route for checking tokens that does not send error if no token exists or token is not valid;
 
 // @route: Post /api/users/login;
 // @desc: log in user

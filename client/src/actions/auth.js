@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
+import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
 import { setAlert } from './alert';
 
 //Load User
@@ -66,5 +66,28 @@ export const logout = () => async dispatch => {
         // if (errors) {
         //     errors.forEach(error => dispatch(setAlert(error.msg, 'danger')))
         // }
+    }
+}
+
+export const register = ({name, email,phone, password}) => async dispatch =>{
+    const body = JSON.stringify({name, email,phone, password});
+    const config = {headers:{'Content-Type': 'application/json'}}
+
+    try {
+       const res = await axios.post('/api/users', body, config);
+
+       dispatch({
+           type: REGISTER_SUCCESS,
+           payload: res.data
+       })
+       
+    } catch (err) {
+        console.log(err)
+        const errors = err.response.data.errors;
+
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')))
+        }
+    
     }
 }

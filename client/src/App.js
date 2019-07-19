@@ -11,6 +11,7 @@ import PrivateRoute from './components/core/routing/PrivateRoute';
 import Navbar from './components/core/Navbar';
 import Landing from './components/custom/Landing';
 import Login from './components/core/Login';
+import Register from './components/core/Register';
 import Dashboard from './components/custom/dashboard';
 import Alert from './components/core/Alert';
 
@@ -25,6 +26,7 @@ const App = () => {
             <Alert/>
             <Switch>
               <Route exact path = '/login' component = {Login}/>
+              <Route exact path='/register' component={Register} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
             </Switch>
           </section>

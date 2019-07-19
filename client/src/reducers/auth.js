@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT} from '../actions/type';
+import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT, REGISTER_SUCCESS} from '../actions/type';
 
 const initialState = {};
 
@@ -14,6 +14,7 @@ export default function (state = initialState, action) {
                 loading: false
             }
         case LOGIN_SUCCESS:
+        case REGISTER_SUCCESS:
             return {
                 ...state,
                 ...payload,
