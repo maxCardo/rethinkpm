@@ -13,17 +13,28 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         email: '',
         phone: '',
         password: '',
-        password2: ''
+        password2: '',
+        owner: false,
+        investor: false,
+        vendor: false
+        
     });
 
-    const { name, email, phone, password, password2 } = formData;
+    const { name, email, phone, password, password2,owner, investor, vendor } = formData;
     
+    const onChange2 = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.checked });
+    }
+
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+
     const onSubmit = async (e) => {
         e.preventDefault();
         if (password !== password2) {
             setAlert('Passwords do not match', 'danger');
         } else {
+            console.log(formData);
             register({ name, email,phone, password });
         }
     }
@@ -92,6 +103,16 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                     //minLength="6"
                     />
                 </div>
+                
+                <div className="form-group">
+                    <small className="form-text">Choose the option(s) that best descibe you</small>
+                    <input type="checkbox" name="owner" value={owner} onChange={e => onChange2(e)}/> I am a Property Owner Looking for Property Managment Solutions<br/>
+                    <input type="checkbox" name="investor" value={investor} onChange={e => onChange2(e)}/> I am Real Estate Investor Looking To Purchase My Next Deal <br/>
+                    <input type="checkbox" name="vendor" value={vendor} onChange={e => onChange2(e)} /> I am Contractor Interested In Joining A network Of Service Pro's <br/>
+
+                </div>
+
+
                 <input type="submit" className="btn btn-primary" value="Register" />
             </form>
             <p className="my-1">

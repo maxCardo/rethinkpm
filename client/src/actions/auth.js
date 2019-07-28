@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
+import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
 import { setAlert } from './alert';
 
 //Load User
@@ -88,6 +88,10 @@ export const register = ({name, email,phone, password}) => async dispatch =>{
         if (errors) {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')))
         }
+
+        dispatch({
+            type: REGISTER_FAIL
+        })
     
     }
 }

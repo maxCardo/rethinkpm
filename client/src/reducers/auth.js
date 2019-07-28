@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT, REGISTER_SUCCESS} from '../actions/type';
+import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT, REGISTER_SUCCESS, REGISTER_FAIL} from '../actions/type';
 
 const initialState = {};
 
@@ -23,6 +23,7 @@ export default function (state = initialState, action) {
             };
 
         case LOGIN_FAIL:
+        case REGISTER_FAIL:    
         case AUTH_ERR0R:
         case LOGOUT:    
             return {
