@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import Widgit from './dashboard/Widget';
+import Widgit from './Widget';
 
-const dashboard = ({auth:{user}}) => {
+const Dashboard = ({auth:{user}}) => {
     return (
       <Fragment>
-        <h1>Hello {user && user.name}! </h1>
+        <h2>Hello {user && user.name}! </h2>
 
         <div className = "dashboard">
           <Widgit/>
@@ -17,7 +17,7 @@ const dashboard = ({auth:{user}}) => {
     )
 }
 
-dashboard.propTypes = {
+Dashboard.propTypes = {
   auth: PropTypes.object,
 }
 
@@ -25,4 +25,4 @@ const mapStateToProps = state => ({
   auth: state.auth 
 })
 
-export default connect(mapStateToProps)(dashboard)
+export default connect(mapStateToProps)(Dashboard)

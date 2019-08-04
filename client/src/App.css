@@ -1,11 +1,14 @@
-/* New Stuff */
+/*----------------------------- New Stuff -------------------------------------*/
 
 .dashboard {
+  margin: auto;
   display: grid;
   grid-template-columns: 2fr 2fr 2fr;
   align-items: center;
   grid-gap: 2rem;
-  height: 100%;
+  height: 650px;
+  overflow: hidden;
+
 }
 
 
@@ -22,7 +25,7 @@
 }
 
 .module-body{
-  height: 75%;
+  height: 80%;
   border: 2px solid grey;
   border-radius: 5px;
   align-items: center;
@@ -30,6 +33,61 @@
   
 }
 
+/* table edited line 329 */
+
+/* css for modal */
+.popup-modal{
+  /* display: none; */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content{
+  background-color: #f4f4f4;
+  margin: 10% auto;
+  padding: 20px;
+  width: 70%;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2),0 7px 20px 0 rgba(0, 0, 0, 0.17);
+  animation-name:modalopen;
+  animation-duration:1s;
+}
+
+.closeX{
+  color: #ccc;
+  font-size: 30px;
+  text-align: right;
+}
+
+.closeBtn:hover, .closeBtn:focus{
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@keyframes modalopen {
+  from{opacity: 0}
+  to{opacity: 1}
+
+}
+
+
+
+/* ------------------ end new stuff -------------------------------------------------- */
+.input-sm {
+  width: 30%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
 
 /* Global Styles */
 img
@@ -70,15 +128,16 @@ img {
 }
 
 /* Utilities */
-.container {
+.container-b {
   /* max-width: 1100px; */
+  /* background-color: #28a745; */
   margin: auto;
-  overflow: hidden;
+  overflow: auto;
   padding: 0 2rem;
   margin-top: 6rem;
   margin-bottom: 3rem;
   /* new */
-  height: 600px;
+  height: auto;
 }
 
 /* Text Styles*/
@@ -325,15 +384,33 @@ button {
   color: #0077b5;
 }
 
-.table th,
-.table td {
-  padding: 1rem;
-  text-align: left;
+
+/* Table */
+#searchBox{
+  float: right;
 }
 
-.table th {
-  background: var(--light-color);
-}
+/* .table{
+  overflow: auto;
+  margin:auto;
+} */
+
+/* .table th,
+.table td {
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+} */
+
+/* .table th {
+  background: #f4f4f4;
+} */
+/* .table tr:nth-child(even){background-color: #f2f2f2;} */
+
+
+.table tr:hover {background-color: #ddd;}
+
 
 /* Navbar */
 .navbar {

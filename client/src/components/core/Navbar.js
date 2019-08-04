@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
     const authLinks = (
         <ul>
-            <li><Link to='/service'>Service</Link></li>
+            <li><Link to='/serviceList'>Service</Link></li>
             <li><Link to="/rentroll">Current Rentals</Link></li>
             <li><Link to="/acquisition">New Acquisition</Link></li>
             <li><a onClick = {logout} href='#!'>Logout</a></li>
@@ -27,7 +27,7 @@ const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
         
     return (
         <nav className = 'navbar bg-dark'>
-            <h1><Link to='/'><i className="fas fa-code"></i> ReThink PM</Link></h1>
+            <h2><Link to='/'><i className="fas fa-code"></i> ReThink PM</Link></h2>
             {!loading && (<Fragment> {isAuthenticated ? authLinks : guestLinks}</Fragment>)}
         </nav>
     )
