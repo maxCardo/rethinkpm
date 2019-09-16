@@ -1,7 +1,5 @@
 const express = require('express');
-
 const RentLead = require('../db/models/prospects/RentLead');
-
 const router = express.Router();
 
 
@@ -22,8 +20,7 @@ router.post('/', async (req, res) => {
 });
 
 
-//-------------------------------------------------- UI Routes For Viewing and Updating Records -------------------------------------------------//
-
+//--------------------------------------------------------- UI Routes For Viewing Records -------------------------------------------------------//
 
 // @route: GET /api/rent_leads/open_leads;
 // @desc: get all open leads
@@ -40,10 +37,12 @@ router.get('/open_leads', async (req, res) => {
     }
 });
 
-// @route: Post /api/rent_lead/sch_form; 
+//----------------------------------------------------------- UI Routes Updating Records ---------------------------------------------------------//
+
+// @route: PATCH /api/rent_lead/sch_form; 
 // @desc: update record when tour is scheduled
 // @ access: Public * ToDo: update to make private
-router.post('/sch_form', async (req, res) => {
+router.patch('/sch_form', async (req, res) => {
    console.log('sch_form api fired');
    try {
        const record = await RentLead.findOneAndUpdate({'phoneNumber': req.body.phoneNumber }, { $set: {schDate: req.body.schDate}},{new:true});
@@ -53,10 +52,10 @@ router.post('/sch_form', async (req, res) => {
    }
 });  
 
-// @route: Post /api/rent_lead/tour_form;
+// @route: PATCH /api/rent_lead/tour_form;
 // @desc: update record when tour is completed
 // @ access: Public * ToDo: update to make privat
-router.post('/tour_form', async (req, res) => {
+router.patch('/tour_form', async (req, res) => {
     console.log('tour_form api fired');
     try {
         const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
@@ -72,10 +71,10 @@ router.post('/tour_form', async (req, res) => {
     }
 });
 
-// @route: Post /api/rent_lead/app_form;
+// @route: PATCH /api/rent_lead/app_form;
 // @desc: update form when application is recived
 // @ access: Public * ToDo: update to make private
-router.post('/app_form', async (req, res) => {
+router.patch('/app_form', async (req, res) => {
     console.log('app_form api fired');
     try {
         const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
@@ -112,11 +111,6 @@ router.patch('/arc_form', async (req, res) => {
         res.status(400).send('server error')
     }
 });
-
-
-
-
-
 
 
 
