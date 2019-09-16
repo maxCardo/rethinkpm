@@ -18,6 +18,9 @@ import Alert from './components/core/Alert';
 import ServiceList from './components/custom/service/ServiceList';
 import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
+import AddProfile from './components/custom/profile/AddProfile';
+import AddProperty from './components/custom/assets/AddProperty';
+import Profile from './components/custom/profile/investor/Profile'
 
 const App = () => {
   return (
@@ -35,6 +38,9 @@ const App = () => {
               <PrivateRoute exact path='/serviceList' component={ServiceList} />
               <Route exact path='/serviceReq' component={ServiceReq} />
               <Route exact path='/serviceTicket' component={ServiceTicket} />
+              <Route exact path='/addProfile' component={AddProfile} />
+              <Route exact path='/addProperty' component={AddProperty} />
+              <Route exact path='/profile' component={Profile}/>
             </Switch>
           </section>
         </Fragment>

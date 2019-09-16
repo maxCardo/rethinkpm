@@ -14,6 +14,7 @@ app.use(express.json({extended:false}));
 
 //api routes
 app.use('/api/users', require('./api/users'));
+app.use('/api/rent_lead', require('./api/rentLead'));
 
 
 //serve static assets in production
