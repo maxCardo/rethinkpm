@@ -2,12 +2,14 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
+const trigger = require('./triggers/rentLead');
 const dbConnect = require('./db/db');
 
 const app = express();
 app.use(cookieParser());
 
 dbConnect();
+
 
 //Init middle ware. replaces bodyParser
 app.use(express.json({extended:false}));

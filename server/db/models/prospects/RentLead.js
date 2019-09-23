@@ -14,6 +14,9 @@ const rentLeadSchema = new mongoose.Schema({
         type: Number,
         unique: true
     },
+    phoneType:{
+        type: String
+    },
     
     createDate: {
         type: Date,

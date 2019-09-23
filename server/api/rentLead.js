@@ -1,6 +1,9 @@
 const express = require('express');
 const RentLead = require('../db/models/prospects/RentLead');
+const {validateNum, sendFirstSMS} = require('../3ps/sms');
+const {sendFirstEmail} = require('../3ps/email');
 const router = express.Router();
+
 
 
 //---------------------------------------------------------- New Lead From Email Parse ----------------------------------------------------------//
@@ -9,10 +12,23 @@ const router = express.Router();
 // @ access: Public
 router.post('/', async (req, res) => {
     try {
-        const rentLead = await new RentLead(req.body);
-        await rentLead.save();
-        res.send({rentLead});
+        // check if user exist, if user exist get object ID
+        
+        //else if user does not exist create user and reture object id
+        
+        //check if lead for this asset exist within last 90 days update record or create new
+        
+        
+        //validate number and send first contact
+        //const rentLead = await new RentLead(req.body);
+        const rentLead = req.body; // delete after test
+        rentLead.phoneType = await validateNum(req.body.phoneNumber);
+        rentLead.phoneType === 'mobile' ? (console.log(sendFirstSMS(rentLead))):(sendFirstEmail(rentLead));
+        //save inq
+        //rentLead.save();
 
+        //send state data to front end (why?? goes no where)
+        res.send({rentLead});
     } catch (e) {
         console.error(e.message);
         res.status(400).json({ errors: [{ msg: 'somthing went wrong' }] });

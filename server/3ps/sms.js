@@ -1,8 +1,8 @@
 
-const config = require('./../config/keys')
+const config = require('./../config/creds');
 const client = require('twilio')(config.twlsid, config.twlAuthToken);
 
-const { availabilityLink } = require('./availability');
+const { availabilityLink } = require('./calandly');
 
 
 const sendSMS = (to, body) => {
@@ -18,6 +18,15 @@ const sendSMS = (to, body) => {
     console.log('sending sms');
 }
 
+const validateNum = async (phoneNumber) => {
+    let phoneType = 'n/a'
+    await client.lookups.phoneNumbers(phoneNumber)
+        .fetch({type:['carrier']})  
+        .then((res) => {phoneType = res.carrier.type});
+    return phoneType;
+};
+
+
 const sendFirstSMS = (data) => {
     const templet = `
     Thank you for your interest in ${data.property}. Would you like to schedual a time to see the place?
@@ -27,4 +36,6 @@ const sendFirstSMS = (data) => {
     sendSMS(data.phoneNumber, templet);
 }
 
-module.exports = { sendSMS, sendFirstSMS };
+
+
+module.exports = { sendSMS, sendFirstSMS, validateNum };
