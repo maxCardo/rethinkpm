@@ -1,11 +1,9 @@
 const request = require('request-promise');
-const config = require('./../config/keys');
-
-
+const config = require('./../config/creds');
 
 // leasing bot hook
 const hook = config.slackWebHook;
-
+ 
 // post to slack
 
 const postSlack = (record) => {

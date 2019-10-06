@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const rentLeadProsSchema = new mongoose.Schema({
     createDate: {
         type: Date,
@@ -55,7 +57,8 @@ const rentLeadProsSchema = new mongoose.Schema({
 
     inquiries: [{
         inquary: {
-            type: String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'RentLeadInq'
         }
     }],
 

@@ -1,15 +1,32 @@
 const express = require('express');
 const router = express.Router();
 
+const pros = require('../db/models/prospects/RentLeads/RentLeadPros');
+const inq = require('../db/models/prospects/RentLeads/RentLeadInq');
+
 
 //---------------------------------------------------------- Twilio ----------------------------------------------------------//
 // @route: Post /api/3ps/sms;
-// @desc: 
+// @desc: recive sms from twilio
 // @ access: Public
 router.post('/sms', async (req, res) => {
+    let {From} = req.body;
+    
     try {
-        
-        res.send('twilio api call');
+        const lead = await pros.findOne({'phone.phoneNumber':From}).populate('inquiries.inquary');
+
+        //TO DO: need to understand waht listing they are contacting we can d this by havinging dedicated numbers for each listing
+        const newLeads = await inq.find({prospect:lead._id, 'status.currentStatus':'new'});
+        //update open inq status to engaged
+        newLeads.map(lead => {
+            console.log('yo')
+            lead.status.currentStatus = 'engaged'
+            lead.save()
+        })
+        //check if bot is on and if so respond
+        //if bot is not on notify team via slack
+        //push chat to front end (socket.IO?)
+        res.send('test');
 
     } catch (e) {
         console.error(e.message);

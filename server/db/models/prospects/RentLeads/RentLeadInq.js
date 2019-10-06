@@ -1,11 +1,16 @@
+const mongoose = require('mongoose');
+
 const rentLeadInqSchema = new mongoose.Schema({
     
     prospect:{
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref:'RentLeadPros'
     },
 
     DateInq:{
-        type: Date
+        type: Date,
+        default: Date.now()
     },
 
     listing:{
@@ -13,30 +18,29 @@ const rentLeadInqSchema = new mongoose.Schema({
     },
 
     status: {
-        // current status new, engaged, scheduled, toured, application, dead
+        // current status new, engaged, scheduled, toured, application, cold, dead
         currentStatus: {
             type: String,
             required: true,
-            default: 'active'
+            default: 'new'
         },
 
+        lastActive: {
+            type: Date,
+            default: Date.now
+        },
         //status new
         new: {
-            contactMethod: {
-                type: String
-            },
+            
             numFlwUps: {
-                type: Number
+                type: Number,
+                default: 0 
             },
 
         },
 
-        //status engaged:
+        //status engaged: pros has replyed to a contact but has not yet schedualed an appointment
         engaged:{
-            lastActive: {
-                type: Date,
-                default: Date.now
-            },
             nextFlwUp:{
                 type: Date
             }
@@ -82,8 +86,17 @@ const rentLeadInqSchema = new mongoose.Schema({
         },
 
     },
-});
+    notes: [{
+        note: {
+            type: String,
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        }
+    }],
 
+});
 
 
 module.exports = RentLeadInq = mongoose.model('RentLeadInq', rentLeadInqSchema);

@@ -37,15 +37,23 @@ const sendEmail = (to, subject, body, html) => {
 // console.log('send email test start');
 // sendEmail('adampoznanski@outlook.com', 'test', 'test email');
 
-const sendFirstEmail = (data) => {
-    console.log('fired send first email');
-    const subject = `Thank you for your interest in ${data.property}.`
-    const templet = `
-    Thank you for your interest in ${data.property}. Would you like to schedual a time to see the place?
-    \nPlease use the link below to check our availbility and schedual.\n${availabilityLink[data.property]}
-  `
+const sendFirstEmail = (email, listing) => {
+    const subject = `Thank you for your interest in ${listing}.`
+    const templet = `Thank you for your interest in ${listing}. Would you like to schedual a time to see the place?
+    \nPlease use the link below to check our availbility and schedual.\n${availabilityLink[listing]}`
 
-    sendEmail(data.email,subject,templet);
+    const html = `<p>Thanks for your interest in ${listing}. <br>
+        If you have any questions about the place, please feel free to contact me directly via text at 412-444-7505 or at this email <br><br>
+
+        You can also use the link below to check our availability and schedule a tour of the property. <br><br>
+
+        <a href="${availabilityLink[listing]}">Click Here</a>
+    </p>`
+
+
+
+
+    sendEmail(email,subject,templet,html);
 }
 
 

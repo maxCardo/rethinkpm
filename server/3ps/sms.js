@@ -2,7 +2,7 @@
 const config = require('./../config/creds');
 const client = require('twilio')(config.twlsid, config.twlAuthToken);
 
-const { availabilityLink } = require('./calandly');
+const {availabilityLink} = require('./calandly');
 
 
 const sendSMS = (to, body) => {
@@ -27,13 +27,18 @@ const validateNum = async (phoneNumber) => {
 };
 
 
-const sendFirstSMS = (data) => {
-    const templet = `
-    Thank you for your interest in ${data.property}. Would you like to schedual a time to see the place?
-    \nPlease use the link below to check our availbility and schedual.\n${availabilityLink[data.property]}
-  `
+const sendFirstSMS = (number,listing) => {
+    console.log('fired first sms');
+    const temp1 = `Thanks for your interest in ${listing}. Do you have any quastions about the place?` 
+    const temp2 = `You can also use the link below to check our availbility and schedual a showing.\n\n ${availabilityLink[listing]}`
+    
+    setTimeout(() => {
+        sendSMS(number, temp1);
+    }, 30000);
 
-    sendSMS(data.phoneNumber, templet);
+    setTimeout(() => {
+        sendSMS(number, temp2);
+    }, 40000);
 }
 
 
