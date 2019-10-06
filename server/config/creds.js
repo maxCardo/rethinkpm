@@ -11,6 +11,6 @@ module.exports = {
   smtpAcct: process.env.SMTP_ACCT,
   smtpHost: process.env.SMTP_HOST,
   host: process.env.APP_HOST,
-  slackWebHook: process.env.SLACK_WEBHOOK
+  slackWebHook: process.env.SLACK_MEETMAX_WEBHOOK
   
 }

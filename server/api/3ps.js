@@ -3,6 +3,7 @@ const router = express.Router();
 
 const pros = require('../db/models/prospects/RentLeads/RentLeadPros');
 const inq = require('../db/models/prospects/RentLeads/RentLeadInq');
+const {postSlack} = require('../3ps/slack');
 
 
 //---------------------------------------------------------- Twilio ----------------------------------------------------------//
@@ -15,7 +16,7 @@ router.post('/sms', async (req, res) => {
     try {
         const lead = await pros.findOne({'phone.phoneNumber':From}).populate('inquiries.inquary');
 
-        //TO DO: need to understand waht listing they are contacting we can d this by havinging dedicated numbers for each listing
+        //TO DO: need to understand what listing they are contacting we can do this by having dedicated numbers for each listing
         const newLeads = await inq.find({prospect:lead._id, 'status.currentStatus':'new'});
         //update open inq status to engaged
         newLeads.map(lead => {
@@ -25,9 +26,9 @@ router.post('/sms', async (req, res) => {
         })
         //check if bot is on and if so respond
         //if bot is not on notify team via slack
+        postSlack({text:'this is a test'});
         //push chat to front end (socket.IO?)
         res.send('test');
-
     } catch (e) {
         console.error(e.message);
         res.status(400).json({ errors: [{ msg: 'somthing went wrong' }] });
