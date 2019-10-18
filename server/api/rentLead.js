@@ -21,8 +21,6 @@ router.post('/', async (req, res) => {
         // check if user exist and get user or create new if user does not exist
         let pros = await RentLeadPros.findOne({$or:[{'phone.phoneNumber':phoneNumber}, {email:email}]});
 
-        await console.log(pros);
-
         if (!pros) {
             console.log('if pros fired')
             pros = await new RentLeadPros({
@@ -46,9 +44,10 @@ router.post('/', async (req, res) => {
                 
             })
         };
+
         
         //send first contact, email or phone
-        pros.phone.phoneType === 'mobile' ? (sendFirstSMS(pros.phone.phoneNumber,inq.listing)):(sendFirstEmail(pros.email,inq.listing));
+        pros.phone.phoneType === 'mobile' ? (sendFirstSMS(pros,inq.listing)):(sendFirstEmail(pros.email,inq.listing));
         
         
         //update notes on inq
