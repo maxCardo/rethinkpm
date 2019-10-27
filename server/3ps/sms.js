@@ -27,8 +27,9 @@ const validateNum = async (phoneNumber) => {
 };
 
 
-const sendFirstSMS = (pros,listing) => {
-    const {phone:{phoneNumber}, _id} = pros;
+const sendFirstSMS = (pros,inq) => {
+    const {phone:{phoneNumber}} = pros;
+    const {listing, _id} = inq
     const temp1 = `Thanks for your interest in ${listing}. Do you have any quastions about the place?` 
     const temp2 = `You can also use the link below to check our availbility and schedual a showing.\n\n ${availabilityLink[listing]}?salesforce_uuid=${_id}`
     

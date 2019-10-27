@@ -45,9 +45,11 @@ router.post('/', async (req, res) => {
             })
         };
 
+        console.log(inq)
+
         
         //send first contact, email or phone
-        pros.phone.phoneType === 'mobile' ? (sendFirstSMS(pros,inq.listing)):(sendFirstEmail(pros.email,inq.listing));
+        pros.phone.phoneType === 'mobile' ? (sendFirstSMS(pros,inq)):(sendFirstEmail(pros.email,inq.listing));
         
         
         //update notes on inq
