@@ -9,7 +9,7 @@ export class Pagination extends Component {
   render() {
     const pageItems = this.generatePageItems(this.props.actualIndex, this.props.totalPages)
     return (
-      <ul className="pagination">
+      <ul className="pagination" style={{fontSize: this.props.fontSize, display: 'flex', justifyContent: 'center'}}>
         <li className="page-item"><button className="page-link" onClick={this.decreasePage}>Previous</button></li>
         {pageItems}
         <li className="page-item"><button className="page-link" onClick={this.increasePage}>Next</button></li>

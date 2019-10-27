@@ -10,13 +10,14 @@ export class sortButtons extends Component {
   }
   render() {
     const sortIcons = {
-      'notSorted': <SortIcon />,
-      'asc': <SortUpIcon />,
-      'desc': <SortDownIcon />
+      'notSorted': <SortIcon fontSize={this.props.fontSize}/>,
+      'asc': <SortUpIcon fontSize={this.props.fontSize}/>,
+      'desc': <SortDownIcon fontSize={this.props.fontSize}/>
     }
+    const sortDirection = this.props.sortDirection ? this.props.sortDirection : 'notSorted'
     return (
       <span style={{height: 20, marginLeft: 10}} onClick={this.props.handleSort}>
-        {sortIcons[this.props.sortDirection]}
+        {sortIcons[sortDirection]}
       </span>
     )
   }

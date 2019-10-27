@@ -5,7 +5,7 @@ import Pagination from './Pagination';
 export class Table extends Component {
   constructor(props) {
     super(props);
-    this.headers = this.props.headers.map((header) => {
+    const headers = props.headers.map((header) => {
       if(!header.label) {
         header.label = header.accessor
       }
@@ -17,27 +17,49 @@ export class Table extends Component {
     this.filter = this.props.filter ? this.props.filter : '' 
     this.sortDirectionsInitial = this.props.headers.map(() => 'notSorted')
     this.pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
-    const data = Table.filterData(this.props.data.slice(), this.filter, this.headers)
+    let sortedData = this.props.data.slice()
+    if(props.sortBy) {
+      const sortBy = props.sortBy
+      sortedData.sort((a, b) => {
+        if(props.sortDirection === 'desc') {
+          return b[sortBy] > a[sortBy] ? 1 : -1
+        } else {
+          return a[sortBy] > b[sortBy]  ? 1 : -1
+        }
+      });
+    }
+    const data = Table.filterData(sortedData, this.filter, headers)
     this.state = {
       sortDirections: this.sortDirectionsInitial.slice(),
       data: data,
       paginatedData: data.slice(0, this.pageSize),
       pageIndex: 0,
-      actualFilterString: this.props.filter
+      actualFilterString: this.props.filter,
+      headers
     }
     this.increasePage = this.increasePage.bind(this);
     this.decreasePage = this.decreasePage.bind(this)
   }
   static getDerivedStateFromProps(props, state) {
-    if(props.filter === state.actualFilterString) return;
+    const headers = props.headers.map((header) => {
+      if(!header.label) {
+        header.label = header.accessor
+      }
+      if(props.sorting){
+        header.sortable = true;
+      }
+      return header;
+    })
+    if(props.filter === state.actualFilterString) return {headers};
     const pageSize = props.pageSize ? props.pageSize : Infinity;
     const newFilterString = props.filter ? props.filter : ''
-    const newData = Table.filterData(props.data.slice(), newFilterString, props.headers)
+    const newData = Table.filterData(props.data.slice(), newFilterString, headers)
     return {
       data: newData,
       paginatedData: newData.slice(0, pageSize),
       pageIndex: 0,
-      actualFilterString: newFilterString
+      actualFilterString: newFilterString,
+      headers: headers,
     }
   }
   static filterData(data, filterString, headers) {
@@ -45,29 +67,33 @@ export class Table extends Component {
       let includeItem = false;
       headers.forEach((header) => {
         const columnString = '' + elem[header.accessor]
-        console.log(columnString)
         if(columnString.includes(filterString)) {
           includeItem = true;
         }
       })
       return includeItem
     })
-    console.log(newData)
     return newData
   }
   render() {
     return (
       <div>
-        <table className='table table-striped'>
+        <table className='table table-striped' style={{tableLayout: 'fixed', fontSize: this.props.fontSize}}>
           <thead>
-            {this.headers.map((header, index) => (
-              <Header {...header} handleSort={this.handleSort.bind(this,index)} sortDirection={this.state.sortDirections[index]}/>
+            {this.state.headers.map((header, index) => (
+              console.log(header) ||
+              <Header 
+                {...header} 
+                handleSort={this.handleSort.bind(this,index)} 
+                sortDirection={this.state.sortDirections[index]}
+                fontSize={this.props.fontSize}
+              />
             ))}
           </thead>
           <tbody>
             {this.state.paginatedData.map((dataItem) => (
               <tr>
-                {this.headers.map((header) => (
+                {this.state.headers.map((header) => (
                   <td>
                     {header.mapper ? 
                       header.mapper(dataItem[header.accessor]) + '' :
@@ -80,7 +106,12 @@ export class Table extends Component {
           </tbody>
         </table>
         {this.props.data.length > this.pageSize && 
-          <Pagination actualIndex={this.state.pageIndex} totalPages={Math.ceil(this.state.data.length/this.pageSize)} changePage={this.changePage.bind(this)}/>
+          <Pagination 
+            actualIndex={this.state.pageIndex} 
+            totalPages={Math.ceil(this.state.data.length/this.pageSize)} 
+            changePage={this.changePage.bind(this)}
+            fontSize={this.props.fontSize}
+          />
         }
       </div>
     )
@@ -97,12 +128,11 @@ export class Table extends Component {
 
     const data = this.state.data.sort((a, b) => {
       if(newSortDirections[index] === 'asc') {
-        return a[this.headers[index].accessor] > b[this.headers[index].accessor] ? 1 : -1
+        return a[this.state.headers[index].accessor] > b[this.state.headers[index].accessor] ? 1 : -1
       } else {
-        return b[this.headers[index].accessor] > a[this.headers[index].accessor]  ? 1 : -1
+        return b[this.state.headers[index].accessor] > a[this.state.headers[index].accessor]  ? 1 : -1
       }
     });
-    console.log(data)
     this.setState({sortDirections: newSortDirections, data, paginatedData: data.slice(0, this.pageSize), pageIndex: 0 })
   }
   changePage(index) {

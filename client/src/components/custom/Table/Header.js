@@ -7,6 +7,7 @@ export class Header extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
   render() {
+    console.log(this.props.sortable)
     return (
       <th onClick={this.handleClick}>
         <div 
@@ -15,7 +16,7 @@ export class Header extends Component {
           {this.props.label}
 
           {this.props.sortable && 
-            <SortButtons sortDirection={this.props.sortDirection}/>
+            <SortButtons sortDirection={this.props.sortDirection} fontSize={this.props.fontSize}/>
           }
         </div>
       </th>
