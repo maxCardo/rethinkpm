@@ -1,5 +1,4 @@
 const express = require('express');
-const RentLead = require('../db/models/prospects/RentLead');
 const RentLeadPros = require('../db/models/prospects/RentLeads/RentLeadPros');
 const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const templet = require('../templets/newLead');
@@ -32,33 +31,33 @@ router.post('/', async (req, res) => {
 
         // validate phone number
         if (phoneNumber) pros.phone.phoneType = await validateNum(phoneNumber);
-        
+
         //check if lead for this asset exist or create new
-        let inq = await RentLeadInq.findOne({prospect:pros._id, listing:property});    
-        
+        let inq = await RentLeadInq.findOne({prospect:pros._id, listing:property});
+
         if (!inq) {
             console.log('if inq fired')
             inq = await new RentLeadInq({
                 prospect: pros._id,
                 listing: property,
-                
+
             })
         };
 
         console.log(inq)
 
-        
+
         //send first contact, email or phone
         pros.phone.phoneType === 'mobile' ? (sendFirstSMS(pros,inq)):(sendFirstEmail(pros.email,inq.listing));
-        
-        
+
+
         //update notes on inq
         pros.notes.unshift({note: `inquired about ${inq.listing} sent firstContact.`});
-        
-        
+
+
         await pros.save();
         await inq.save();
-        
+
         res.send({inq});
     } catch (e) {
         console.error(e);
@@ -75,29 +74,28 @@ router.post('/', async (req, res) => {
 router.get('/open_leads', async (req, res) => {
     console.log('open leads api fired');
     try {
-        const lead = await RentLead.find({'status.currentStatus':{$ne: 'dead'}}).sort({'status.lastActive':-1});
-        res.status(200).send(lead);
+        const leads = await RentLeadInq.find({'status.currentStatus':{$ne: 'dead'}}).populate('prospect');
+        res.status(200).send(leads);
     } catch (error) {
         console.error(error);
-        
         res.status(400).send('server error')
     }
 });
 
 //----------------------------------------------------------- UI Routes Updating Records ---------------------------------------------------------//
 
-// @route: PATCH /api/rent_lead/sch_form; 
+// @route: PATCH /api/rent_lead/sch_form;
 // @desc: update record when tour is scheduled
 // @ access: Public * ToDo: update to make private
 router.patch('/sch_form', async (req, res) => {
    console.log('sch_form api fired');
    try {
        const record = await RentLead.findOneAndUpdate({'phoneNumber': req.body.phoneNumber }, { $set: {schDate: req.body.schDate}},{new:true});
-       res.status(200).send(record);    
+       res.status(200).send(record);
    } catch (error) {
        res.status(400).send('server error')
    }
-});  
+});
 
 // @route: PATCH /api/rent_lead/tour_form;
 // @desc: update record when tour is completed
@@ -148,7 +146,7 @@ router.patch('/arc_form', async (req, res) => {
         const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
             $set: {
                 status: {
-                    currentStatus: req.body.status, 
+                    currentStatus: req.body.status,
                     deadWhy: req.body.reasonForArc
                 }
             },
