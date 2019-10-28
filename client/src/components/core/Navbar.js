@@ -16,6 +16,7 @@ const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
     );
     const guestLinks = (
         <ul>
+            <li><Link to='/crm'>Dashboard</Link></li>
             <li><Link to='/profiles'>Renters</Link></li>
             <li><Link to="/register">Owners</Link></li>
             <li><Link to="/login">Vendors</Link></li>

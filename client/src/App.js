@@ -21,6 +21,7 @@ import ServiceTicket from './components/custom/service/ServiceTicket';
 import AddProfile from './components/custom/profile/AddProfile';
 import AddProperty from './components/custom/assets/AddProperty';
 import Profile from './components/custom/profile/investor/Profile'
+import CrmDashboard from './components/custom/CrmDashboard'
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
               <Route exact path='/register' component={Register} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute exact path='/serviceList' component={ServiceList} />
+              <Route exact path='/crm' component={CrmDashboard} />
               <Route exact path='/serviceReq' component={ServiceReq} />
               <Route exact path='/serviceTicket' component={ServiceTicket} />
               <Route exact path='/addProfile' component={AddProfile} />
