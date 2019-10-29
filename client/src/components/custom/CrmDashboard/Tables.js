@@ -6,6 +6,7 @@ import './CrmDashboard.css'
 export class Tables extends Component {
   constructor(props) {
     super(props)
+    console.log(data)
     this.state = {
       filterString: '',
       headers: [
@@ -25,8 +26,27 @@ export class Tables extends Component {
           accessor: 'last_contact',
           label: 'Last Contact'
         },
-      ]
+      ],
+      filteredData: data
     }
+  }
+  static getDerivedStateFromProps(props, state) {
+    console.log('Enters')
+    const filteredData = {}
+    console.log(data)
+    for(let status in data) {
+      console.log(status)
+      const filteredStatus = data[status].filter((elem) => {
+        return props.propertiesFilter.includes(elem.property)
+      })
+      console.log(filteredStatus)
+      filteredData[status] = filteredStatus
+    }
+    console.log(filteredData)
+    return {
+      filteredData,
+      propertiesFilter: props.propertiesFilter
+    } 
   }
   render() {
     return (
@@ -38,7 +58,19 @@ export class Tables extends Component {
           <h2 className='sectionTitle'>Status 1: Upcoming Appointments</h2>
           <Table 
             headers={this.state.headers} 
-            data={data['upcoming']} 
+            data={this.state.filteredData['upcoming']} 
+            pageSize={5} 
+            sorting={true} 
+            filter={this.state.filterString} 
+            fontSize={14}
+            
+          />
+        </div>
+        <div>
+          <h2 className='sectionTitle'>Status 2: Sourced</h2>
+          <Table 
+            headers={this.state.headers} 
+            data={this.state.filteredData['sourced']} 
             pageSize={5} 
             sorting={true} 
             filter={this.state.filterString} 
@@ -46,24 +78,13 @@ export class Tables extends Component {
           />
         </div>
         <div>
-          <h2 className='sectionTitle'>Status 2: Sourced</h2>
-          <Table 
-            headers={this.state.headers} 
-            data={data['sourced']} 
-            pageSize={5} 
-            sorting={true} 
-            filter={this.state.filterString}  
-            fontSize={14}
-          />
-        </div>
-        <div>
           <h2 className='sectionTitle'>Status 3: Engaged = Hot</h2>
           <Table 
             headers={this.state.headers} 
-            data={data['engaged']} 
+            data={this.state.filteredData['engaged']} 
             pageSize={5} 
             sorting={true} 
-            filter={this.state.filterString}  
+            filter={this.state.filterString}   
             fontSize={14}
           />
         </div>
@@ -71,10 +92,10 @@ export class Tables extends Component {
           <h2 className='sectionTitle'>Status 4: Cold</h2>
           <Table 
             headers={this.state.headers} 
-            data={data['cold']} 
+            data={this.state.filteredData['cold']} 
             pageSize={5} 
             sorting={true} 
-            filter={this.state.filterString}
+            filter={this.state.filterString} 
             fontSize={14}
           />
         </div>

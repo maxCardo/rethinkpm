@@ -41,6 +41,8 @@ export class Table extends Component {
     this.decreasePage = this.decreasePage.bind(this)
   }
   static getDerivedStateFromProps(props, state) {
+    let data = props.data
+    const pageSize = props.pageSize ? props.pageSize : Infinity;
     const headers = props.headers.map((header) => {
       if(!header.label) {
         header.label = header.accessor
@@ -50,8 +52,14 @@ export class Table extends Component {
       }
       return header;
     })
-    if(props.filter === state.actualFilterString) return {headers};
-    const pageSize = props.pageSize ? props.pageSize : Infinity;
+    if(props.filter === state.actualFilterString) {
+      return {
+        headers, 
+        data,
+        paginatedData: data.slice(0, pageSize),
+        pageIndex: 0,
+      };
+    } 
     const newFilterString = props.filter ? props.filter : ''
     const newData = Table.filterData(props.data.slice(), newFilterString, headers)
     return {
@@ -62,7 +70,7 @@ export class Table extends Component {
       headers: headers,
     }
   }
-  static filterData(data, filterString, headers) {
+  static filterData(data, filterString, headers, level=0) {
     const newData = data.filter((elem) => {
       let includeItem = false;
       headers.forEach((header) => {
@@ -96,8 +104,8 @@ export class Table extends Component {
                 {this.state.headers.map((header) => (
                   <td>
                     {header.mapper ? 
-                      header.mapper(dataItem[header.accessor]) + '' :
-                      dataItem[header.accessor] + ''
+                      header.mapper(this.getData(dataItem, header.accessor)) :
+                      this.getData(dataItem, header.accessor)
                     }
                   </td>
                 ))}
@@ -151,7 +159,18 @@ export class Table extends Component {
     }
     this.changePage(this.state.pageIndex - 1)
   }
-  
+  getData(dataItem, accessor) {
+    if(accessor.includes('.')) {
+      const accessorsArray = accessor.split('.')
+      let item = dataItem;
+      accessorsArray.forEach((accessor) => {
+        item = item[accessor]
+      })
+      return item + ''
+    } else {
+      return dataItem[accessor] + ''
+    }
+  }
 }
 
 
