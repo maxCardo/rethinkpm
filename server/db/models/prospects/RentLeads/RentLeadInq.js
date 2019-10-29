@@ -50,7 +50,7 @@ const rentLeadInqSchema = new mongoose.Schema({
         //status appointment set
         scheduled: {
             schDate: {
-                type: String
+                type: Date
             },
         },
 

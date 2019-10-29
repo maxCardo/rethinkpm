@@ -59,20 +59,19 @@ router.post('/slack/post_slack', async (req, res) => {
 router.post('/calandly/hook', async (req, res) => {
     try {
         // grab needed info (uuid, event_type, start time, invitee {name, email} )
-        
         //destructure and rename req body
         const { event,payload: { event_type:{ name: property},event: { uuid:eventID ,start_time_pretty: startTime,cancel_reason:cancelReason },tracking:{salesforce_uuid:user},invitee:{name, email}}} = req.body;
 
 
-        // object = 
-        //     event, This is the event type
-        //     user, User ID passed into calandly link when sending to pros
-        //     name, User name entered into calandly, this should be more reliable then the user name from the ILS
-        //     email,  User email, this is needed bec we only get the generic forward email from the ILS
-        //     eventID, event ID to save for use if event is canceled or updated
-        //     property, property name, this must match property name in DB so we can link properly ToDo: redesign data integrity 
-        //     startTime, time the appointment is set
-        //     cancelReason, reason for cancel for our notes
+        //     object:
+        //     event: This is the event type
+        //     user: User ID passed into calandly link when sending to pros
+        //     name: User name entered into calandly, this should be more reliable then the user name from the ILS
+        //     email:  User email, this is needed bec we only get the generic forward email from the ILS
+        //     eventID: event ID to save for use if event is canceled or updated
+        //     property: property name, this must match property name in DB so we can link properly ToDo: redesign data integrity 
+        //     startTime: time the appointment is set
+        //     cancelReason: reason for cancel for our notes
         
 
         var obj = {
@@ -85,10 +84,14 @@ router.post('/calandly/hook', async (req, res) => {
             startTime,
             cancelReason
         };
-        console.log(obj);
-
+        
         //event created
-            //find user on DB and create event
+        //find inq on DB and create event
+        const record = await inq.find({_id:user}); // change to find one and update
+        //update, status, sch date, note
+        //get pros and update name, email, add note
+
+        console.log(record);
 
         //event canceled
             // find event and update
@@ -99,7 +102,7 @@ router.post('/calandly/hook', async (req, res) => {
 
 
 
-        res.send(req.body);
+        res.send(obj);
 
 
     } catch (e) {
