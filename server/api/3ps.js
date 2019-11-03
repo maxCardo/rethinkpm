@@ -12,7 +12,7 @@ const {postSlack} = require('../3ps/slack');
 // @ access: Public
 router.post('/sms', async (req, res) => {
     let {From} = req.body;
-    
+
     try {
         const lead = await pros.findOne({'phone.phoneNumber':From}).populate('inquiries.inquary');
 
@@ -54,7 +54,7 @@ router.post('/slack/post_slack', async (req, res) => {
 
 //---------------------------------------------------------- Calandly ----------------------------------------------------------//
 // @route: Post /api/3ps/calandly/hook;
-// @desc: picks up on 
+// @desc: picks up on
 // @ access: Public
 router.post('/calandly/hook', async (req, res) => {
     try {
@@ -69,10 +69,10 @@ router.post('/calandly/hook', async (req, res) => {
         //     name: User name entered into calandly, this should be more reliable then the user name from the ILS
         //     email:  User email, this is needed bec we only get the generic forward email from the ILS
         //     eventID: event ID to save for use if event is canceled or updated
-        //     property: property name, this must match property name in DB so we can link properly ToDo: redesign data integrity 
+        //     property: property name, this must match property name in DB so we can link properly ToDo: redesign data integrity
         //     startTime: time the appointment is set
         //     cancelReason: reason for cancel for our notes
-        
+
 
         var obj = {
             event,
@@ -84,25 +84,34 @@ router.post('/calandly/hook', async (req, res) => {
             startTime,
             cancelReason
         };
-        
+
         //event created
         //find inq on DB and create event
-        const record = await inq.find({_id:user}); // change to find one and update
         //update, status, sch date, note
+        const record = await inq.findOneAndUpdate({_id:user},{$set: {
+          'status.currentStatus': 'scheduled',
+          'status.scheduled': startTime
+        }},{new:true}).populate('prospect');
         //get pros and update name, email, add note
+        const userID = record.prospect._id;
+        const lead = await pros.findOneAndUpdate({_id:userID},{$set:{
+          name:name,
+          email:email,
+        }},{new:true});
 
-        console.log(record);
+        console.log(lead);
+
 
         //event canceled
             // find event and update
             //notify shower and slack of event cancel
             // ToDo: when a event is updated it is canceled then resent, insure that this runs clean and does not error
-    
 
 
 
 
-        res.send(obj);
+
+        res.send(lead);
 
 
     } catch (e) {
