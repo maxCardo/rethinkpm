@@ -68,7 +68,7 @@ router.post('/', async (req, res) => {
 
 //--------------------------------------------------------- UI Routes For Viewing Records -------------------------------------------------------//
 
-// @route: GET /api/rent_leads/open_leads;
+// @route: GET /api/rent_lead/open_leads;
 // @desc: get all open leads
 // @ access: Public *ToDo: update to make private
 router.get('/open_leads', async (req, res) => {

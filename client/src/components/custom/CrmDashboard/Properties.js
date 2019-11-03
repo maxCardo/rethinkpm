@@ -3,25 +3,17 @@ import React, { Component } from 'react'
 export class Properties extends Component {
   constructor(props) {
     super(props)
-    this.properties = [
-      'Mayert-Ernser',
-      'Schuppe Group',
-      'McDermott-Moen',
-      'Terry-Pfannerstill',
-      'Cruickshank and Sons',
-      'Gerhold, Yost and Harvey'
-    ]
 
     this.state = {
-      propertiesChecked: this.properties.slice()
+      propertiesChecked: this.props.properties.slice()
     }
-    this.props.onChangePropertiesFilter(this.properties.slice())
+    this.props.onChangePropertiesFilter(this.props.properties.slice())
 
   }
   render() {
     return (
       <ul className='list-group propertyList'>
-        {this.properties.map((property, index) => (
+        {this.props.properties.map((property, index) => (
           <li className='list-group-item'>
             <div className="form-check">
               <input 
@@ -53,7 +45,6 @@ export class Properties extends Component {
     }
     this.setState({propertiesChecked})
     this.props.onChangePropertiesFilter(propertiesChecked)
-    console.log(propertiesChecked)
   }
 }
 

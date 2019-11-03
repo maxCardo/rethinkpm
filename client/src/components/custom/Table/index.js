@@ -89,7 +89,6 @@ export class Table extends Component {
         <table className='table table-striped' style={{tableLayout: 'fixed', fontSize: this.props.fontSize}}>
           <thead>
             {this.state.headers.map((header, index) => (
-              console.log(header) ||
               <Header 
                 {...header} 
                 handleSort={this.handleSort.bind(this,index)} 
@@ -104,8 +103,8 @@ export class Table extends Component {
                 {this.state.headers.map((header) => (
                   <td>
                     {header.mapper ? 
-                      header.mapper(this.getData(dataItem, header.accessor)) :
-                      this.getData(dataItem, header.accessor)
+                      header.mapper(this.getData(dataItem, header)) :
+                      this.getData(dataItem, header)
                     }
                   </td>
                 ))}
@@ -159,16 +158,23 @@ export class Table extends Component {
     }
     this.changePage(this.state.pageIndex - 1)
   }
-  getData(dataItem, accessor) {
-    if(accessor.includes('.')) {
-      const accessorsArray = accessor.split('.')
-      let item = dataItem;
-      accessorsArray.forEach((accessor) => {
-        item = item[accessor]
-      })
-      return item + ''
+  getData(dataItem, header) {
+    if(header.reactComponent) {
+      return header.render(dataItem)
     } else {
-      return dataItem[accessor] + ''
+      const {accessor} = header
+      if(accessor.includes('.')) {
+        const accessorsArray = accessor.split('.')
+        let item = dataItem;
+        accessorsArray.forEach((accessor) => {
+          if(item) {
+            item = item[accessor]
+          }
+        })
+        return item + ''
+      } else {
+        return dataItem[accessor] + ''
+      }
     }
   }
 }

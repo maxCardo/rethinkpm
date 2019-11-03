@@ -22,6 +22,8 @@ import AddProfile from './components/custom/profile/AddProfile';
 import AddProperty from './components/custom/assets/AddProperty';
 import Profile from './components/custom/profile/investor/Profile'
 import CrmDashboard from './components/custom/CrmDashboard'
+import ChatScreen from './components/custom/Chat/ChatScreen'
+import ChatManager from './components/custom/Chat/ChatManager'
 
 const App = () => {
   return (
@@ -30,7 +32,7 @@ const App = () => {
         <Fragment>
           <Navbar/>
           <Route exact path ='/' component = {Landing}/>
-          <section className = 'container-b'>
+          <section className = 'container-b' style={{position: 'relative'}}>
             <Alert/>
             <Switch>
               <Route exact path = '/login' component = {Login}/>
@@ -38,12 +40,14 @@ const App = () => {
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute exact path='/serviceList' component={ServiceList} />
               <Route exact path='/crm' component={CrmDashboard} />
+              <Route exact path='/chat' component={ChatScreen} />
               <Route exact path='/serviceReq' component={ServiceReq} />
               <Route exact path='/serviceTicket' component={ServiceTicket} />
               <Route exact path='/addProfile' component={AddProfile} />
               <Route exact path='/addProperty' component={AddProperty} />
               <Route exact path='/profile' component={Profile}/>
             </Switch>
+            <ChatManager />
           </section>
         </Fragment>
       </Router>

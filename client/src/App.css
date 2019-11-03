@@ -134,10 +134,10 @@ img {
   margin: auto;
   overflow: auto;
   padding: 0 2rem;
-  margin-top: 6rem;
-  margin-bottom: 3rem;
+  padding-top: 6rem;
+  padding-bottom: 3rem;
   /* new */
-  height: auto;
+  height: 100vh;
 }
 
 /* Text Styles*/

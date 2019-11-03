@@ -19,6 +19,10 @@ app.use('/api/users', require('./api/users'));
 app.use('/api/rent_lead', require('./api/rentLead'));
 app.use('/api/3ps', require('./api/3ps'));
 
+app.get('/', (req, res) => {
+  res.send('Hello World')
+})
+
 
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {

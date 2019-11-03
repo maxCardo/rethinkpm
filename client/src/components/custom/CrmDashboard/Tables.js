@@ -1,48 +1,57 @@
 import React, { Component } from 'react'
-import {data} from './mockData'
 import Table from '../Table'
 import './CrmDashboard.css'
 
 export class Tables extends Component {
   constructor(props) {
     super(props)
-    console.log(data)
     this.state = {
       filterString: '',
       headers: [
         {
-          accessor: 'lead_name',
-          label: 'Lead Name'
+          accessor: 'prospect.name',
+          label: 'Name'
         },
         {
-          accessor: 'property',
+          accessor: 'listing',
           label: 'Property'
         },
         {
-          accessor: 'phone',
+          accessor: 'prospect.phone.phoneNumber',
           label: 'Phone'
         },
         {
-          accessor: 'last_contact',
-          label: 'Last Contact'
+          accessor: 'status.lastActive',
+          label: 'Last Contact',
+          mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
+        },
+        {
+          accessor: 'status.scheduled',
+          label: 'Appointment',
+        },
+        {
+          accessor: 'status.toured.tourRes',
+          label: 'Tour Results',
+          mapper: (data) => data === 'undefined' ? 'Not yet toured' : undefined 
+        },
+        {
+          reactComponent: true,
+          label: 'Actions',
+          render: (row) => <div><div>Chat</div><div>Update</div></div>
         },
       ],
-      filteredData: data
+      filteredData: this.props.data
     }
+    console.log(this.props.data)
   }
   static getDerivedStateFromProps(props, state) {
-    console.log('Enters')
     const filteredData = {}
-    console.log(data)
-    for(let status in data) {
-      console.log(status)
-      const filteredStatus = data[status].filter((elem) => {
-        return props.propertiesFilter.includes(elem.property)
+    for(let status in props.data) {
+      const filteredStatus = props.data[status].filter((elem) => {
+        return props.propertiesFilter.includes(elem.listing)
       })
-      console.log(filteredStatus)
       filteredData[status] = filteredStatus
     }
-    console.log(filteredData)
     return {
       filteredData,
       propertiesFilter: props.propertiesFilter
@@ -62,7 +71,7 @@ export class Tables extends Component {
             pageSize={5} 
             sorting={true} 
             filter={this.state.filterString} 
-            fontSize={14}
+            fontSize={12}
             
           />
         </div>
@@ -74,7 +83,7 @@ export class Tables extends Component {
             pageSize={5} 
             sorting={true} 
             filter={this.state.filterString} 
-            fontSize={14}
+            fontSize={12}
           />
         </div>
         <div>
@@ -85,7 +94,7 @@ export class Tables extends Component {
             pageSize={5} 
             sorting={true} 
             filter={this.state.filterString}   
-            fontSize={14}
+            fontSize={12}
           />
         </div>
         <div>
@@ -96,7 +105,7 @@ export class Tables extends Component {
             pageSize={5} 
             sorting={true} 
             filter={this.state.filterString} 
-            fontSize={14}
+            fontSize={12}
           />
         </div>
       </div>

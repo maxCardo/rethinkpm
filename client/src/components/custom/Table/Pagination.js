@@ -17,7 +17,6 @@ export class Pagination extends Component {
     )
   }
   generatePageItems(actualIndex, totalPages) {
-    console.log(actualIndex, totalPages)
     if(totalPages<=14) {
       return (
         [...new Array(totalPages).keys()].map((_, index) => (
