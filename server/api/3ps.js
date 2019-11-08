@@ -58,11 +58,8 @@ router.post('/slack/post_slack', async (req, res) => {
 // @ access: Public
 router.post('/calandly/hook', async (req, res) => {
     try {
-        // grab needed info (uuid, event_type, start time, invitee {name, email} )
-        //destructure and rename req body
+        //destructure req body
         const { event,payload: { event_type:{ name: property},event: { uuid:eventID ,start_time_pretty: startTime,cancel_reason:cancelReason },tracking:{salesforce_uuid:user},invitee:{name, email}}} = req.body;
-
-
         //     object:
         //     event: This is the event type
         //     user: User ID passed into calandly link when sending to pros
@@ -73,44 +70,49 @@ router.post('/calandly/hook', async (req, res) => {
         //     startTime: time the appointment is set
         //     cancelReason: reason for cancel for our notes
 
+        if (event === 'invitee.created') {
+          //event created
+          const record = await inq.findOneAndUpdate({_id:user},{$set: {
+            'status.currentStatus': 'scheduled',
+            'status.scheduled': startTime
+          }},{new:true}).populate('prospect');
 
-        var obj = {
-            event,
-            user,
-            name,
-            email,
-            eventID,
-            property,
-            startTime,
-            cancelReason
-        };
+          const userID = record.prospect._id;
+          const lead = await pros.findOneAndUpdate({_id:userID},{
+            $set:{
+              name:name,
+              email:email,
+            },
+            $push:{
+              notes:{note:`sch appointment via link at ${startTime}`}
+            }
+          },{new:true});
 
-        //event created
-        //find inq on DB and create event
-        //update, status, sch date, note
-        const record = await inq.findOneAndUpdate({_id:user},{$set: {
-          'status.currentStatus': 'scheduled',
-          'status.scheduled': startTime
-        }},{new:true}).populate('prospect');
-        //get pros and update name, email, add note
-        const userID = record.prospect._id;
-        const lead = await pros.findOneAndUpdate({_id:userID},{
-          $set:{
-            name:name,
-            email:email,
-          },
-          $push:{
-            notes:{note:'test note'}
-          }
-        },{new:true});
+        }else if (event === 'invitee.canceled') {
+          //event canceled
+          // find event and update
+          const record = await inq.findOneAndUpdate({_id:user},{$set: {
+            'status.currentStatus': 'cold',
+            'status.scheduled': ''
+          }},{new:true}).populate('prospect');
 
-        console.log(lead);
+          const userID = record.prospect._id;
+          const lead = await pros.findOneAndUpdate({_id:userID},{
+            $push:{
+              notes:{note:`canceled appointment via link, reason: "${cancelReason}"`}
+            }
+          },{new:true});
+
+          //notify shower and slack of event cancel
+          // ToDo: when a event is updated it is canceled then resent, insure that this runs clean and does not error
+
+        }
 
 
-        //event canceled
-            // find event and update
-            //notify shower and slack of event cancel
-            // ToDo: when a event is updated it is canceled then resent, insure that this runs clean and does not error
+
+
+
+
 
 
 
