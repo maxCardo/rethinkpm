@@ -94,10 +94,15 @@ router.post('/calandly/hook', async (req, res) => {
         }},{new:true}).populate('prospect');
         //get pros and update name, email, add note
         const userID = record.prospect._id;
-        const lead = await pros.findOneAndUpdate({_id:userID},{$set:{
-          name:name,
-          email:email,
-        }},{new:true});
+        const lead = await pros.findOneAndUpdate({_id:userID},{
+          $set:{
+            name:name,
+            email:email,
+          },
+          $push:{
+            notes:{note:'test note'}
+          }
+        },{new:true});
 
         console.log(lead);
 
