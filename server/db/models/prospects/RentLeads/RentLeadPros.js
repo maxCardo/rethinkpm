@@ -11,12 +11,14 @@ const rentLeadProsSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true
+        unique: true,
+        sparse:true
     },
     phone: {
         phoneNumber: {
             type: Number,
-            unique: true
+            unique: true,
+            sparse:true
         },
         phoneType: {
             type: String

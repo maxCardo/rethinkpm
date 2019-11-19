@@ -16,17 +16,15 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     try {
         const {name, phoneNumber, email, property} = req.body
+        console.log(phoneNumber);
 
         // check if user exist and get user or create new if user does not exist
-        let pros = await RentLeadPros.findOne({$or:[{'phone.phoneNumber':phoneNumber}, {email:email}]});
-
+        let pros;
+        phoneNumber ? pros = await RentLeadPros.findOne({ 'phone.phoneNumber': phoneNumber }) : pros = await RentLeadPros.findOne({email:email})    
+    
         if (!pros) {
             console.log('if pros fired')
-            pros = await new RentLeadPros({
-                name,
-                phone:{phoneNumber},
-                email,
-            })
+            pros = await new RentLeadPros(req.body);
         };
 
         // validate phone number
@@ -43,9 +41,6 @@ router.post('/', async (req, res) => {
 
             })
         };
-
-        console.log(inq)
-
 
         //send first contact, email or phone
         pros.phone.phoneType === 'mobile' ? (sendFirstSMS(pros,inq)):(sendFirstEmail(pros.email,inq.listing));

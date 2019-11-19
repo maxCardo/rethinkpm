@@ -1,10 +1,27 @@
 const mongoose = require('mongoose');
 
 const assessSchema = new mongoose.Schema({
-  property:{
+  mlsNum:{
     type: String,
     required: true
   },
+  inspectDate:,
+  agent:,
+  areaCondition:,
+  exterior:{
+    type:,
+    condition:
+  },
+  roof:{
+    condition:,
+    type:,
+  },
+  hvac:,
+
+  notes:[{
+    note:{},
+    date:{}
+  }]
 
 
 });
