@@ -5,18 +5,71 @@ const assessSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  inspectDate:,
-  agent:,
-  areaCondition:,
-  exterior:{
-    type:,
-    condition:
+  inspectDate:{
+    type: Date,
+    default: Date.now()
   },
-  roof:{
-    condition:,
-    type:,
+  agent:{},
+  locationRate:{
+    neighborhood:{
+      walkScore:{},
+      multiFamRate:{}
+    },
+    Block:{
+      locConditions:{
+
+      },
+      geoConsitions:{
+
+      }
+    },
+    parking:{}
+
   },
-  hvac:,
+  property:{
+    isVacant:{
+      type:Boolean,
+    },
+    currentRent:{
+      type:Number
+    },
+    exterior:{
+      exteriorCondition: {
+        type:String,
+      },
+      roof:{
+        mtType:{
+          type:String
+        },
+        condition:{
+          type:String
+        },
+        age:{
+          type:Number
+        },
+        isLeaking:{
+          type:Boolean
+        },
+        gutters:{}
+      },
+      HardScape:{
+        sideWalks:{},
+        walkUp:{},
+        railings:{},
+        kneeWall:{},
+        deck:{}, //can be multible
+        retainingWall:{}
+      },
+      siding:{},
+      windows:{},
+      exteriorDoors:{}, //can  be multible
+      landscape:{}
+
+    },
+  },
+  //------------------------------------------------------------
+    
+  hvac:{},
 
   notes:[{
     note:{},
