@@ -6,8 +6,7 @@ const rentLeadProsSchema = new mongoose.Schema({
         default: Date.now
     },
     name: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
         type: String,
@@ -41,6 +40,10 @@ const rentLeadProsSchema = new mongoose.Schema({
             ref: 'RentLeadInq'
         }
     }],
+    Chat: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ChatInq'
+    },
 
 
 });

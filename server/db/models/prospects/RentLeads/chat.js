@@ -7,28 +7,23 @@ const chatSchema = new mongoose.Schema({
       required: true,
       ref:'RentLeadPros'
   },
-  chat: {
-      botOn: {
-          type: Boolean,
-          default: true
-      },
-      messages: [{
-          from: {
-              type: String
-          },
-          message: {
-              type: String,
-          },
-          date: {
-              type: Date,
-              default: Date.now
-          },
-          unread: {
-              type: Boolean,
-              default: true
-          }
-      }],
-  },
+    botOn: {
+        type: Boolean,
+        default: true
+    },
+    messages: [{
+        message: {
+            type: String,
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        },
+        unread: {
+            type: Boolean,
+            default: true
+        }
+    }],
 
 });
 
