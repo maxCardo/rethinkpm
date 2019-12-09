@@ -7,6 +7,16 @@ const {postSlack} = require('../3ps/slack');
 
 
 //---------------------------------------------------------- Twilio ----------------------------------------------------------//
+// @route: GET /api/3ps/sms;
+// @desc: test for socket.io call
+// @ access: Public
+router.get('/test', (req, res) => {
+  const io = req.io
+  //io.emit('test', { msg: 'test message from api from second page' });
+  res.send('test on second page good')
+})
+
+
 // @route: Post /api/3ps/sms;
 // @desc: recive sms from twilio
 // @ access: Public
@@ -107,16 +117,6 @@ router.post('/calandly/hook', async (req, res) => {
           // ToDo: when a event is updated it is canceled then resent, insure that this runs clean and does not error
 
         }
-
-
-
-
-
-
-
-
-
-
 
         res.send(lead);
 

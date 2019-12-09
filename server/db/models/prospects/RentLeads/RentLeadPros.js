@@ -34,18 +34,14 @@ const rentLeadProsSchema = new mongoose.Schema({
         }
     }],
 
-    inquiries: [{
-        inquary: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'RentLeadInq'
-        }
-    }],
-    Chat: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'ChatInq'
-    },
-
-
 });
+
+
+//not working ????
+rentLeadProsSchema.virtual('Chats',{
+    ref: 'ChatInq',
+    localField: '_id',
+    foreignField: 'prospect'
+})
 
 module.exports = RentLeadPros = mongoose.model('RentLeadPros', rentLeadProsSchema);

@@ -1,5 +1,5 @@
 import React , {Fragment} from 'react'
-import PropTypes from 'prop-types'
+
 
 import './service.css';
 
@@ -46,8 +46,6 @@ const ServiceTicket = props => {
     )
 }
 
-ServiceTicket.propTypes = {
 
-}
 
 export default ServiceTicket

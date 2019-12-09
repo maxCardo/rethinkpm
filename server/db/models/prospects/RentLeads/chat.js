@@ -2,12 +2,16 @@ const mongoose = require('mongoose');
 
 const chatSchema = new mongoose.Schema({
 
-  prospect:{
+  inq:{
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref:'RentLeadPros'
+      ref:'RentLeadInq'
   },
     botOn: {
+        type: Boolean,
+        default: true
+    },
+    unread: {
         type: Boolean,
         default: true
     },
@@ -19,10 +23,10 @@ const chatSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         },
-        unread: {
-            type: Boolean,
-            default: true
+        from:{
+            type: String,
         }
+        
     }],
 
 });

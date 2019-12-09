@@ -95,8 +95,14 @@ const rentLeadInqSchema = new mongoose.Schema({
             default: Date.now
         }
     }],
+    Chat: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ChatInq'
+    },
+
 
 });
 
 
 module.exports = RentLeadInq = mongoose.model('RentLeadInq', rentLeadInqSchema);
+    

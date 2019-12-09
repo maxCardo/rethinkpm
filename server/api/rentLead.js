@@ -8,11 +8,12 @@ const {validateNum, sendFirstSMS} = require('../3ps/sms');
 const {sendFirstEmail} = require('../3ps/email');
 const router = express.Router();
 
-
+//ToDo: change to call to DB once property table is created
+const {propertyNum} = require('../3ps/calandly');
 
 //---------------------------------------------------------- New Lead From Email Parse ----------------------------------------------------------//
 // @route: Post /api/rent_lead;
-// @desc: create new prospect
+// @desc: create new prospect from email parse api call
 // @ access: Public
 router.post('/', async (req, res) => {
     try {
@@ -72,7 +73,7 @@ router.post('/', async (req, res) => {
 //--------------------------------------------------------- UI Routes For Viewing Records -------------------------------------------------------//
 
 // @route: GET /api/rent_lead/open_leads;
-// @desc: get all open leads
+// @desc: get all open leads on client
 // @ access: Public *ToDo: update to make private
 router.get('/open_leads', async (req, res) => {
     console.log('open leads api fired');
@@ -161,15 +162,45 @@ router.patch('/arc_form', async (req, res) => {
 });
 
 //----------------------------------------------------------- Chats ---------------------------------------------------------//
-
-// @route: GET /api/rent_lead/open_leads/chats;
-// @desc: get all open leads includings chats
+// @route: GET /api/rent_lead/chats;
+// @desc: get all chats (read and unread): use when loading chat page.
 // @ access: Public *ToDo: update to make private
-router.get('/open_leads/chats', async (req, res) => {
-    console.log('open leads chat api fired');
+router.get('/chats', async (req, res) => {
+    console.log(' All chats api fired');
     try {
-        const leads = await RentLeadInq.find({ 'status.currentStatus': { $ne: 'dead' } }).populate('prospect').populate('chat');
-        res.status(200).send(leads);
+        const chats = await ChatInq.find();
+        res.status(200).send(chats);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send('server error')
+    }
+});
+
+//get all unread chats to populate mini chat env
+// @route: GET /api/rent_lead/chats/unread;
+// @desc: get all unread chats: use when loading mini chat component.
+// @ access: Public *ToDo: update to make private
+router.get('/chats/unread', async (req, res) => {
+    console.log('unread chats api fired');
+    try {
+        const chats = await ChatInq.find({unread:true});
+        res.status(200).send(chats);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send('server error')
+    }
+});
+
+//get single chat for dashboard record icon if no chat create chat
+// @route: GET /api/rent_lead/chat/:chat_id;
+// @desc: get single chat by inq id: use on leasing dashboard, triggerd by inq chat icon. 
+// @ access: Public *ToDo: update to make private
+router.get('/chat/:inq_id', async (req, res) => {
+    console.log('get single inq chat');
+    try {
+        const chat = await ChatInq.find({ inq: req.params.inq_id });
+        if (!chat) { chat = await new ChatInq({ inq: req.params.inq_id }) };
+        res.status(200).send(chat);
     } catch (error) {
         console.error(error);
         res.status(400).send('server error')
@@ -177,31 +208,27 @@ router.get('/open_leads/chats', async (req, res) => {
 });
 
 // @route: Post /api/rent_lead/chat;
-// @desc: Receive message via SMS
+// @desc: Receive chat msg via api (use for testing )
 // @ access: Public *ToDo: update to make private
+//Note: migrated call to server page in order to include socket call
 router.post('/chat', async (req, res) => {
     try {     
-        const {From, Body} = req.body;
+        const {To, From, Body} = req.body;
+        const property = propertyNum[To];
     
-        //find prospect
-        let pros = await RentLeadPros.findOne({ 'phone.phoneNumber': From });
-        if (!pros) {
-            console.log('did not find prospect')
-            pros = await new RentLeadPros({phone: {phoneNumber:From}});
-        };
+        //find pros/inq
+        let pros = await RentLeadPros.findOne({'phone.phoneNumber': From}) 
+        if (!pros) {pros = await new RentLeadPros({phone:{phoneNumber: From}})};
+        let inq = await RentLeadInq.findOne({ 'listing': property, 'prospect'  : pros._id});
+        if (!inq) {inq = await new RentLeadInq({ prospect:pros._id, listing:property})};
+        let chat = await ChatInq.findOne({inq:inq._id});
+        if (!chat) {chat = await new ChatInq({inq:inq._id})};
         
-        console.log(pros)
-        //find chat
-        let chat = await ChatInq.findOne({prospect:pros._id});
-        if (!chat) {
-            console.log('did not find chat') 
-            chat = await new ChatInq({prospect:pros._id})
-        };
-        console.log(chat)
         //update message
         chat.messages.unshift({message:Body});
-        await chat.save();
         await pros.save();
+        await inq.save();
+        await chat.save();
     
         res.send(chat);
        
@@ -211,28 +238,5 @@ router.post('/chat', async (req, res) => {
         res.send('server Error')
     }
 });
-
-//BELOW NOT TESTED!!!
-
-// @route: GET /api/rent_lead/open_leads/chat/:chat_id;
-// @desc: get single chat for prospect
-// @ access: Public *ToDo: update to make private
-router.get('/open_leads/chat/:chat_id', async (req, res) => {
-    console.log('open leads chat api fired');
-    try {
-        const chat = await ChatInq.find({prospect: req.params.chat_id });
-        if (!chat) { chat = await new ChatInq({ prospect: req.params.chat_id})};
-        res.status(200).send(chat);
-    } catch (error) {
-        console.error(error);
-        res.status(400).send('server error')
-    }
-});
-
-
-//read message on UI - Socket
-//post message on/from UI -Socket
-
-
 
 module.exports = router;

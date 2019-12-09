@@ -13,6 +13,7 @@ import Navbar from './components/core/Navbar';
 import Landing from './components/custom/Landing';
 import Login from './components/core/Login';
 import Register from './components/core/Register';
+import Playground from './components/core/Playground';
 import Dashboard from './components/custom/dashboard/Dashboard';
 import Alert from './components/core/Alert';
 import ServiceList from './components/custom/service/ServiceList';
@@ -24,6 +25,7 @@ import Profile from './components/custom/profile/investor/Profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 import ChatManager from './components/custom/Chat/ChatManager'
+
 
 const App = () => {
   return (
@@ -46,6 +48,7 @@ const App = () => {
               <Route exact path='/addProfile' component={AddProfile} />
               <Route exact path='/addProperty' component={AddProperty} />
               <Route exact path='/profile' component={Profile}/>
+              <Route exact path='/playground' component={Playground} />
             </Switch>
             <ChatManager />
           </section>
