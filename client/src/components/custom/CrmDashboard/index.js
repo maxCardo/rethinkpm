@@ -32,7 +32,7 @@ export class CrmDashboard extends Component {
   }
   render() {
     return (
-      <div className='container'>
+      <div className='container-fluid'>
         <div className='row'>
           <div className='col-md-9 col-sm-12'>
             {this.state.data &&
