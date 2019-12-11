@@ -11,26 +11,26 @@ export class index extends Component {
     this.state = {
       contacts: [
         {
-          name: 'Oscar Rodriguez',
+          name: 'Oscar Rodriguez - Property 1',
           status: 'connected'
         },
         {
-          name: 'Tom Smith',
+          name: 'Tom Smith - Property 2',
           status: 'disconnected'
         },
         {
-          name: 'Beatriz Espin',
+          name: 'Beatriz Espin - Property 3',
           status: 'connected'
         },
       ],
       chats: [
         {
-          name: 'Oscar Rodriguez',
+          name: 'Oscar Rodriguez - Property 1',
           status: 'connected',
           open: false,
           messages: [
             {
-              sender: 'Oscar Rodriguez',
+              sender: 'Oscar Rodriguez - Property 1',
               content: "Good morning, I'm interest in the appartment in Baker Street"
             },
             {
@@ -38,18 +38,18 @@ export class index extends Component {
               content: "Good morning, would you be interested in visiting the appartment?"
             },
             {
-              sender: 'Oscar Rodriguez',
+              sender: 'Oscar Rodriguez - Property 1',
               content: "Yes, of course, tomorrow at 9am?"
             },
           ]
         },
         {
-          name: 'Tom Smith',
+          name: 'Tom Smith - Property 2',
           status: 'disconnected',
           open: false,
           messages: [
             {
-              sender: 'Tom Smith',
+              sender: 'Tom Smith - Property 2',
               content: "Good morning, how much is the rent of the appartment on Lake Hill?"
             },
             {
@@ -57,7 +57,7 @@ export class index extends Component {
               content: "Good morning, it's 1300$ per month"
             },
             {
-              sender: 'Tom Smith',
+              sender: 'Tom Smith - Property 2',
               content: "Great, could we arrange a visit this week?"
             },
           ]
