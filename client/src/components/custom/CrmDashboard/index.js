@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import Tables from './Tables'
 import Properties from './Properties'
+import ChatManager from '../Chat/ChatManager'
 
 
 export class CrmDashboard extends Component {
@@ -47,6 +48,7 @@ export class CrmDashboard extends Component {
             }
           </div>
         </div>
+        <ChatManager />
       </div>
     )
   }

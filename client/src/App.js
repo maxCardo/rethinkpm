@@ -24,7 +24,7 @@ import AddProperty from './components/custom/assets/AddProperty';
 import Profile from './components/custom/profile/investor/Profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
-import ChatManager from './components/custom/Chat/ChatManager'
+
 
 
 const App = () => {
@@ -50,7 +50,7 @@ const App = () => {
               <Route exact path='/profile' component={Profile}/>
               <Route exact path='/playground' component={Playground} />
             </Switch>
-            <ChatManager />
+            
           </section>
         </Fragment>
       </Router>
