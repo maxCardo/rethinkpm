@@ -88,20 +88,23 @@ export class Table extends Component {
       <div>
         <table className='table table-striped' style={{tableLayout: 'fixed', fontSize: this.props.fontSize}}>
           <thead>
-            {this.state.headers.map((header, index) => (
-              <Header 
-                {...header} 
-                handleSort={this.handleSort.bind(this,index)} 
-                sortDirection={this.state.sortDirections[index]}
-                fontSize={this.props.fontSize}
-              />
-            ))}
+            <tr>
+              {this.state.headers.map((header, index) => (
+                <Header 
+                  {...header} 
+                  handleSort={this.handleSort.bind(this,index)} 
+                  sortDirection={this.state.sortDirections[index]}
+                  fontSize={this.props.fontSize}
+                  key={`header-${index}`}
+                />
+              ))}
+            </tr>
           </thead>
           <tbody>
-            {this.state.paginatedData.map((dataItem) => (
-              <tr>
-                {this.state.headers.map((header) => (
-                  <td>
+            {this.state.paginatedData.map((dataItem, index) => (
+              <tr key={`row-${index}`}>
+                {this.state.headers.map((header, index) => (
+                  <td key={`dataItem-${index}`}>
                     {header.mapper ? 
                       header.mapper(this.getData(dataItem, header)) :
                       this.getData(dataItem, header)

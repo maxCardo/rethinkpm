@@ -75,7 +75,7 @@ export class index extends Component {
         <ChatInitiator contacts={this.state.contacts} onAddChat={this.handleAddChat}/>
         {this.state.chats.map((chat, index) => (
           !chat.closed &&
-          <Chat ref={this.refsArray[index]} open={chat.open} name={chat.name} messages={chat.messages} status={chat.status} onClose={this.closeChat.bind(this,index)} />
+          <Chat key={`chat-${index}`} ref={this.refsArray[index]} open={chat.open} name={chat.name} messages={chat.messages} status={chat.status} onClose={this.closeChat.bind(this,index)} />
         ))}
       </div>
     )
