@@ -6,6 +6,9 @@ const templet = require('../templets/newLead');
 const {postSlack} = require('../3ps/slack');
 const {validateNum, sendFirstSMS} = require('../3ps/sms');
 const {sendFirstEmail} = require('../3ps/email');
+const {loadTestDB} = require('../dev/testDB')
+
+
 const router = express.Router();
 
 //ToDo: change to call to DB once property table is created
@@ -238,5 +241,22 @@ router.post('/chat', async (req, res) => {
         res.send('server Error')
     }
 });
+
+//----------------------------------------------------------- Testing ---------------------------------------------------------//
+
+// @route: GET /api/rent_lead/loadtestdb
+// @desc: get single chat by inq id: use on leasing dashboard, triggerd by inq chat icon. 
+// @ access: Public *ToDo: update to make private
+router.get('/loadtestdb', async (req, res) => {
+    try {
+        loadTestDB();
+        res.status(200).send('oh ya!');
+    } catch (error) {
+        console.error(error);
+        res.status(400).send('server error')
+    }
+});
+
+
 
 module.exports = router;
