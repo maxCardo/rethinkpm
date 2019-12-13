@@ -12,7 +12,7 @@ export class index extends Component {
       activeChat: 0,
       chats: [
         { 
-          name: 'Oscar Rodriguez',
+          name: 'Oscar Rodriguez - Property 1',
           notes: [
             {
               date: new Date(),
@@ -25,7 +25,7 @@ export class index extends Component {
           ],
           messages: [
             {
-              sender: 'Oscar Rodriguez',
+              sender: 'Oscar Rodriguez - Property 1',
               content: "Good morning, I'm interest in the appartment in Baker Street",
               date: new Date()
             },
@@ -35,14 +35,14 @@ export class index extends Component {
               date: new Date()
             },
             {
-              sender: 'Oscar Rodriguez',
+              sender: 'Oscar Rodriguez - Property 1',
               content: "Yes, of course, tomorrow at 9am?",
               date: new Date()
             },
           ],
         },
         { 
-          name: 'Tom Smith',
+          name: 'Tom Smith - Property 2',
           notes: [
             {
               date: new Date(),
@@ -55,7 +55,7 @@ export class index extends Component {
           ],
           messages: [
             {
-              sender: 'Tom Smith',
+              sender: 'Tom Smith - Property 2',
               content: "Good morning, how much is the rent of the appartment on Lake Hill?",
               date: new Date()
             },
@@ -65,7 +65,7 @@ export class index extends Component {
               date: new Date()
             },
             {
-              sender: 'Tom Smith',
+              sender: 'Tom Smith - Property 2',
               content: "Great, could we arrange a visit this week?",
               date: new Date()
             },
@@ -75,15 +75,15 @@ export class index extends Component {
       ],
       contacts: [
         {
-          name: 'Oscar Rodriguez',
+          name: 'Oscar Rodriguez - Property 1',
           status: 'connected'
         },
         {
-          name: 'Tom Smith',
+          name: 'Tom Smith - Property 2',
           status: 'disconnected'
         },
         {
-          name: 'Beatriz Espin',
+          name: 'Beatriz Espin - Property 3',
           status: 'connected'
         },
       ],

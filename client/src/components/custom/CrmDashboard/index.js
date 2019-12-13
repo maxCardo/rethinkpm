@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import Tables from './Tables'
 import Properties from './Properties'
+import ChatManager from '../Chat/ChatManager'
 
 
 export class CrmDashboard extends Component {
@@ -31,7 +32,7 @@ export class CrmDashboard extends Component {
   }
   render() {
     return (
-      <div className='container'>
+      <div className='container-fluid'>
         <div className='row'>
           <div className='col-md-9 col-sm-12'>
             {this.state.data &&
@@ -47,6 +48,7 @@ export class CrmDashboard extends Component {
             }
           </div>
         </div>
+        <ChatManager />
       </div>
     )
   }

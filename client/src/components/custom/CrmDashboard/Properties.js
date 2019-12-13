@@ -14,7 +14,7 @@ export class Properties extends Component {
     return (
       <ul className='list-group propertyList'>
         {this.props.properties.map((property, index) => (
-          <li className='list-group-item'>
+          <li className='list-group-item' key={`property-${index}`}>
             <div className="form-check">
               <input 
                 className="form-check-input" 
@@ -24,7 +24,7 @@ export class Properties extends Component {
                 checked={this.state.propertiesChecked.includes(property)} 
                 onChange={this.onChange.bind(this)}
               />
-              <label className="form-check-label" for="defaultCheck1">
+              <label className="form-check-label" htmlFor="defaultCheck1">
                 {property}
               </label>
             </div>
