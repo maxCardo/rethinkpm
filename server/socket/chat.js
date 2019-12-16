@@ -10,12 +10,6 @@ const chat = (io) => {
             console.log(data);
         })
 
-        const testEmit = () => {
-            console.log('running test emit');
-            socket.emit('test', { msg: 'test message' });
-        }
-
-
         socket.on('ui_msg', async (data, callback) => {
             const {chatID, phoneNumber, msg} = data
             let chat = await ChatInq.findById(chatID)
@@ -28,13 +22,12 @@ const chat = (io) => {
         })
 
         //To DO: add email from UI function
-
+        
         socket.on('read_msg', async (data) => {
             let chat = await ChatInq.findById(data._id)
             chat.unread = false
             await chat.save()
         })
-
     })
 }
 
