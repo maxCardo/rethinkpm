@@ -1,16 +1,32 @@
 
-const config = require('./../config/creds');
-const client = require('twilio')(config.twlsid, config.twlAuthToken);
+const {twlAuthToken, twlsid, testNum} = require('./../config/creds');
+const client = require('twilio')(twlsid, twlAuthToken);
 
 const {availabilityLink} = require('./calandly');
 
+const testSMS = (to) => {
+    let sendTo;
+    process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testNum)
+    console.log(sendTo);
+    // client.messages
+    //     .create({
+    //         body: 'This is a test sms',
+    //         from: '+14124447505',
+    //         to: 
+    //     })
+    //     .then(message => console.log(message.sid))
+    //     .done(); 
+}
+
 
 const sendSMS = (to, body) => {
+    let sendTo;
+    process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testNum)
     client.messages
         .create({
             body: body,
             from: '+14124447505',
-            to: to
+            to: sendTo
         })
         .then(message => console.log(message.sid))
         .done();
@@ -44,4 +60,4 @@ const sendFirstSMS = (pros,inq) => {
 
 
 
-module.exports = { sendSMS, sendFirstSMS, validateNum };
+module.exports = { sendSMS, sendFirstSMS, validateNum, testSMS };

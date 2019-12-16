@@ -4,7 +4,7 @@ const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const ChatInq = require('../db/models/prospects/RentLeads/chat');
 const templet = require('../templets/newLead');
 const {postSlack} = require('../3ps/slack');
-const {validateNum, sendFirstSMS} = require('../3ps/sms');
+const {validateNum, sendFirstSMS, testSMS} = require('../3ps/sms');
 const {sendFirstEmail} = require('../3ps/email');
 const {loadTestDB} = require('../dev/testDB')
 
@@ -179,7 +179,6 @@ router.get('/chats', async (req, res) => {
     }
 });
 
-//get all unread chats to populate mini chat env
 // @route: GET /api/rent_lead/chats/unread;
 // @desc: get all unread chats: use when loading mini chat component.
 // @ access: Public *ToDo: update to make private
@@ -254,6 +253,22 @@ router.get('/loadtestdb', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(400).send('server error')
+    }
+});
+
+// @route: Post /api/rent_lead/testSMSEnv;
+// @desc: Receive chat msg via api (use for testing )
+// @ access: Public *ToDo: update to make private
+//Note: migrated call to server page in order to include socket call
+router.post('/testsmsenv', async (req, res) => {
+    try {
+        testSMS('+14124445181')
+        res.send('ohhh ya');
+
+    } catch (error) {
+        console.error(error);
+
+        res.send('server Error')
     }
 });
 

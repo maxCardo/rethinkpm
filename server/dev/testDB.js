@@ -17,7 +17,9 @@ const loadTestDB = async () => {
         const statusType = ['new', 'engaged','scheduled','toured', 'application', 'cold' ]
         let statusCount = 0;
         data.map( async (record) => {
-            const {name, email, phoneNumber, last_active, property, chats} = record
+            const {name, email, phoneNumber, last_active, property = "test1", chats} = record
+            const propArr = ['1500 Fallowfield Avenue', '1415 Rutherford Avenue #2', '3349 Bookman Avenue' ]
+            propArr.includes(property)?(null):(property = 'test2');
             let pros = await new RentLeadPros({
                 name, 
                 email,  
