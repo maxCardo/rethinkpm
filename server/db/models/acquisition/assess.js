@@ -19,7 +19,7 @@ const assessSchema = new mongoose.Schema({
       locConditions:{
 
       },
-      geoConsitions:{
+      geoConditions:{
 
       }
     },

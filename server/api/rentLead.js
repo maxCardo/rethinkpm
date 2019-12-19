@@ -171,7 +171,7 @@ router.patch('/arc_form', async (req, res) => {
 router.get('/chats', async (req, res) => {
     console.log(' All chats api fired');
     try {
-        const chats = await ChatInq.find();
+        const chats = await ChatInq.find().populate({path:'inq',select:'prospect', populate: {path:'prospect', select: 'name'}});
         res.status(200).send(chats);
     } catch (error) {
         console.error(error);
