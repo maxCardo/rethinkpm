@@ -21,7 +21,6 @@ export class CrmDashboard extends Component {
       const properties = new Set()
       const data = {
         upcoming: [],
-        sourced: [],
         engaged: [],
         cold: [],
         scheduled: [],

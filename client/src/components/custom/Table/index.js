@@ -39,6 +39,7 @@ export class Table extends Component {
     }
     this.increasePage = this.increasePage.bind(this);
     this.decreasePage = this.decreasePage.bind(this)
+    this.changePage = this.changePage.bind(this)
   }
   static getDerivedStateFromProps(props, state) {
     let data = props.data
@@ -53,11 +54,15 @@ export class Table extends Component {
       return header;
     })
     if(props.filter === state.actualFilterString) {
+      const pageSize = props.pageSize ? props.pageSize : Infinity;
+      const index = state.pageIndex ? state.pageIndex : 0;
+      const newPaginatedData = props.data.slice(pageSize * index, pageSize * (index+1))
+      console.log(newPaginatedData)
+      console.log(state)
       return {
         headers, 
-        data,
-        paginatedData: data.slice(0, pageSize),
-        pageIndex: 0,
+        data: props.data,
+        paginatedData: newPaginatedData
       };
     } 
     const newFilterString = props.filter ? props.filter : ''

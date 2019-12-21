@@ -63,31 +63,8 @@ export class Tables extends Component {
         <div className='searchContainer'>
           <input className='form-control searchInput' onChange={(e) => this.setState({filterString: e.target.value})} placeholder='Search'></input>
         </div>
-        <div className='section'>
-          <h2 className='sectionTitle'>Status 1: Upcoming Appointments</h2>
-          <Table 
-            headers={this.state.headers} 
-            data={this.state.filteredData['upcoming']} 
-            pageSize={5} 
-            sorting={true} 
-            filter={this.state.filterString} 
-            fontSize={12}
-            
-          />
-        </div>
         <div>
-          <h2 className='sectionTitle'>Status 2: Sourced</h2>
-          <Table 
-            headers={this.state.headers} 
-            data={this.state.filteredData['sourced']} 
-            pageSize={5} 
-            sorting={true} 
-            filter={this.state.filterString} 
-            fontSize={12}
-          />
-        </div>
-        <div>
-          <h2 className='sectionTitle'>Status 3: Engaged = Hot</h2>
+          <h2 className='sectionTitle'>Status 1: Hot</h2>
           <Table 
             headers={this.state.headers} 
             data={this.state.filteredData['engaged']} 
@@ -98,7 +75,7 @@ export class Tables extends Component {
           />
         </div>
         <div>
-          <h2 className='sectionTitle'>Status 4: Cold</h2>
+          <h2 className='sectionTitle'>Status 2: Cold</h2>
           <Table 
             headers={this.state.headers} 
             data={this.state.filteredData['cold']} 
@@ -106,6 +83,53 @@ export class Tables extends Component {
             sorting={true} 
             filter={this.state.filterString} 
             fontSize={12}
+          />
+        </div>
+        <div>
+          <h2 className='sectionTitle'>Status 3: Sourced</h2>
+          <Table 
+            headers={this.state.headers} 
+            data={this.state.filteredData['new']} 
+            pageSize={5} 
+            sorting={true} 
+            filter={this.state.filterString} 
+            fontSize={12}
+          />
+        </div>
+        <div className='section'>
+          <h2 className='sectionTitle'>Status 4: Upcoming Appointments</h2>
+          <Table 
+            headers={this.state.headers} 
+            data={this.state.filteredData['upcoming']} 
+            pageSize={5} 
+            sorting={true} 
+            filter={this.state.filterString} 
+            fontSize={12}
+            
+          />
+        </div>
+        <div className='section'>
+          <h2 className='sectionTitle'>Status 5: Application</h2>
+          <Table 
+            headers={this.state.headers} 
+            data={this.state.filteredData['application']} 
+            pageSize={5} 
+            sorting={true} 
+            filter={this.state.filterString} 
+            fontSize={12}
+            
+          />
+        </div>
+        <div className='section'>
+          <h2 className='sectionTitle'>Status 6: Toured</h2>
+          <Table 
+            headers={this.state.headers} 
+            data={this.state.filteredData['toured']} 
+            pageSize={5} 
+            sorting={true} 
+            filter={this.state.filterString} 
+            fontSize={12}
+            
           />
         </div>
       </div>
