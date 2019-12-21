@@ -4,14 +4,16 @@ import './common.css'
 
 export class ProfileIcon extends Component {
   render() {
-    const colors = ['#03a9f4', '#f44336', '#e91e63', '#9c27b0', '#3f51b5',
-      '#00bcd4', '#009688', '#4caf50', '#cddc39', '#ffeb3b', '#ff9800', '#795548' ]
+    const colors = ['#03a9f4','#00bcd4' , '#e91e63','#cddc39' , '#3f51b5',
+    '#9c27b0' , '#009688', '#4caf50','#f44336' , '#ffeb3b', '#ff9800', '#795548' ]
       
     if(this.props.image) {
       return (
         <image src={this.props.image} className='profileIcon'></image>
       )
     } else {
+      console.log(this.props.name)
+      console.log(this.props)
       const name = this.props.name
       const nameParts = name.split(' ')
       let nameDisplay

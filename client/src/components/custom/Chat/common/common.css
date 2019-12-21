@@ -16,6 +16,7 @@
 .contacts__container {
   overflow: auto;
   height: 100%;
+  max-height: 80vh;
 }
 
 .contact__container {
@@ -27,9 +28,13 @@
   cursor: pointer;
 }
 
-.contact__name {
+.contact__info {
   margin-left: 10px;
   margin-right: 30px;
+}
+
+.contact__listing {
+  font-size: 10px;
 }
 
 .contact__connected-icon {
@@ -96,7 +101,12 @@
 }
 
 .message__user-message-container {
-  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message__user-message-container .message__content {
+  margin-right: 10px;
+  margin-left: 0;
 }
 
 .message__content {

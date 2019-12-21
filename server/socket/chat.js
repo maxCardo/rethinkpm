@@ -13,12 +13,12 @@ const chat = (io) => {
         socket.on('ui_msg', async (data, callback) => {
             const {chatID, phoneNumber, msg} = data
             let chat = await ChatInq.findById(chatID)
-            chat.messages.unshift({ message: msg });
+            chat.messages.push(msg);
             await chat.save()
             //send chat to pros (if no phone num must indicate on UI)
-            sendSMS(phoneNumber, msg)
+            sendSMS(phoneNumber, msg.message)
             //TO DO: change to only send msg back
-            callback(chat)
+            socket.emit('chat_updated', chat)
         })
 
         //To DO: add email from UI function

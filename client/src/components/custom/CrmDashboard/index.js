@@ -17,16 +17,25 @@ export class CrmDashboard extends Component {
   }
   componentDidMount() {
     axios.get('/api/rent_lead/open_leads').then((res) => {
+      console.log(res)
       const properties = new Set()
-      res.data.forEach((lead) => {
-        properties.add(lead.listing)
-      })
       const data = {
-        upcoming: res.data,
+        upcoming: [],
         sourced: [],
         engaged: [],
-        cold: []
+        cold: [],
+        scheduled: [],
+        toured: [],
+        application: [],
+        new: [],
       }
+      res.data.forEach((lead) => {
+        properties.add(lead.listing)
+        console.log(lead.status.currentStatus)
+        data[lead.status.currentStatus].push(lead)
+      })
+
+      
       this.setState({data, properties: [...properties]})
     })
   }
