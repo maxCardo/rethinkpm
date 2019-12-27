@@ -1,4 +1,4 @@
-import { UPDATE_CHATS, OPEN_CHAT, CLOSE_CHAT, OPEN_INQUIRY_CHAT, TOGGLE_OPEN_CHAT } from '../actions/type';
+import { UPDATE_CHATS, OPEN_CHAT, CLOSE_CHAT, OPEN_INQUIRY_CHAT, TOGGLE_OPEN_CHAT, ADD_AND_OPEN_CHAT } from '../actions/type';
 
 const initialState = {chats: [], openChats: []};
 
@@ -27,7 +27,7 @@ export default function (state = initialState, action) {
               openChats: chatsOpen
             }
         case OPEN_INQUIRY_CHAT:
-            const inquiryId = payload
+            const {inquiryId, dispatch} = payload
             const openedChatsRightNow = state.openChats.slice()
             let chat;
             const chats = state.chats.slice().map((chatElement) => {
@@ -57,7 +57,36 @@ export default function (state = initialState, action) {
                 }
               }
             }else {
-
+              fetch(`/api/rent_lead/chat/${inquiryId}`, {
+                METHOD: 'GET',
+              }).then((response) => response.json())
+                .then((json) => dispatch({type: ADD_AND_OPEN_CHAT, payload: json }))
+              return state
+            }
+        case ADD_AND_OPEN_CHAT: 
+            let oldchats = state.chats.slice()
+            const newChat = {
+              id: payload._id,
+              inquiryId: payload.inq ? payload.inq._id : '',
+              name: payload.inq ? payload.inq.prospect.name : '' ,
+              listing: payload.inq ? payload.inq.listing : '',
+              unread: payload.unread,
+              messages: payload.messages.map((message) => ({
+                date: new Date(message.date),
+                sender: message.from == 'User-SMS' ? payload.inq.prospect.name : message.from,
+                content: message.message,
+                userMessage: message.from !== 'User-SMS'
+              })),
+              notes: [],
+              open: true
+            }
+            oldchats.push(newChat)
+            const chatsOpened = state.openChats.slice()
+            chatsOpened.push(newChat.id)
+            return {
+              ...state,
+              chats: oldchats,
+              openChats: chatsOpened
             }
         case TOGGLE_OPEN_CHAT:
             const chatId = payload

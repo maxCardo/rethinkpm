@@ -12,7 +12,7 @@ export class ProfileIcon extends Component {
         <image src={this.props.image} className='profileIcon'></image>
       )
     } else {
-      const name = this.props.name
+      const name = this.props.name ? this.props.name : ''
       const nameParts = name.split(' ')
       let nameDisplay
       let colorNumber = 0;

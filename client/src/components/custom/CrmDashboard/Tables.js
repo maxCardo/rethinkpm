@@ -148,7 +148,7 @@ export class Tables extends Component {
 const mapStateToProps = state => ({})
 const mapDispatchToProps = dispatch => {
   return {
-    openInquiryChat:(inquiryId) => dispatch({type: OPEN_INQUIRY_CHAT, payload: inquiryId})
+    openInquiryChat:(inquiryId) => dispatch({type: OPEN_INQUIRY_CHAT, payload: {inquiryId, dispatch}})
   }
 }
 

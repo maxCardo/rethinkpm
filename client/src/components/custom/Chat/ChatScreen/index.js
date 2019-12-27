@@ -96,9 +96,9 @@ export class index extends Component {
           console.log(chat)
           return {
             id: chat._id,
-            inquiryId: chat.inq._id,
-            name: chat.inq.prospect.name ,
-            listing: chat.inq.listing,
+            inquiryId: chat.inq ? chat.inq._id : '',
+            name: chat.inq ? chat.inq.prospect.name : '' ,
+            listing: chat.inq ? chat.inq.listing : '',
             unread: chat.unread,
             messages: chat.messages.map((message) => ({
               date: new Date(message.date),

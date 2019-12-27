@@ -17,16 +17,18 @@ export class ChatContainer extends Component {
     this.toggleOpen = this.toggleOpen.bind(this)
   }
   render() {
+    const open = this.props.id ? this.props.open : this.state.open
     return (
       <div className='chat__container'>
         <TopBar status={this.props.status} name={this.props.name} onClick={this.toggleOpen} onClose={this.props.onClose}/>
-        <div className='chat__content' style={{display: this.props.open ? 'block' : 'none'}}>
+        <div className='chat__content' style={{display: open ? 'block' : 'none'}}>
           {this.props.children}
         </div>
       </div>
     )
   }
   toggleOpen() {
+    this.setState((prevState) => ({open: !prevState.open}))
     this.props.toggleOpen(this.props.id)
   }
 }

@@ -35,7 +35,6 @@ const sendSMS = (to, body) => {
 
         console.log('sms sending function ran in dev. no sms sent')
         console.log('sms body: ', body)
-    }
 }
 
 const validateNum = async (phoneNumber) => {

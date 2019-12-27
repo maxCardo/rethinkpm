@@ -32,7 +32,7 @@ export class CrmDashboard extends Component {
         data[lead.status.currentStatus].push(lead)
       })
 
-      
+      console.log(data)
       this.setState({data, properties: [...properties]})
     })
   }

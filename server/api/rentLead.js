@@ -200,9 +200,18 @@ router.get('/chats/unread', async (req, res) => {
 router.get('/chat/:inq_id', async (req, res) => {
     console.log('get single inq chat');
     try {
-        const chat = await ChatInq.find({ inq: req.params.inq_id });
-        if (!chat) { chat = await new ChatInq({ inq: req.params.inq_id }) };
-        res.status(200).send(chat);
+        let chat = await ChatInq.findOne({ inq: req.params.inq_id }).populate({path:'inq',select:'prospect',select:'listing', populate: {path:'prospect', select: 'name'}})
+        if (!chat) { 
+          chat = await new ChatInq({ inq: req.params.inq_id })
+          chat.save(async (err, item) => {
+            chat = await ChatInq.findOne(item).populate({path:'inq',select:'prospect',select:'listing', populate: {path:'prospect', select: 'name'}})
+            console.log(chat)
+            res.status(200).send(chat);
+          })
+        } else {
+          res.status(200).send(chat);
+        }
+        
     } catch (error) {
         console.error(error);
         res.status(400).send('server error')
