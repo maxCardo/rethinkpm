@@ -14,10 +14,11 @@ export class index extends Component {
     const contact = this.props.contacts[index]
 
     const chat = {
+      id: contact.id,
       name: contact.name,
       status: contact.status,
       open: true,
-      messages: []
+      messages: contact.messages
     }
     this.props.onAddChat(chat)
   }

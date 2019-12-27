@@ -12,8 +12,6 @@ export class ProfileIcon extends Component {
         <image src={this.props.image} className='profileIcon'></image>
       )
     } else {
-      console.log(this.props.name)
-      console.log(this.props)
       const name = this.props.name
       const nameParts = name.split(' ')
       let nameDisplay

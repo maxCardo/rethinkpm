@@ -17,7 +17,6 @@ export class CrmDashboard extends Component {
   }
   componentDidMount() {
     axios.get('/api/rent_lead/open_leads').then((res) => {
-      console.log(res)
       const properties = new Set()
       const data = {
         upcoming: [],
@@ -30,7 +29,6 @@ export class CrmDashboard extends Component {
       }
       res.data.forEach((lead) => {
         properties.add(lead.listing)
-        console.log(lead.status.currentStatus)
         data[lead.status.currentStatus].push(lead)
       })
 

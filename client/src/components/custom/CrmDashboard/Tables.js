@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Table from '../Table'
+import {OPEN_INQUIRY_CHAT} from '../../../actions/type'
 import './CrmDashboard.css'
+import { connect } from 'react-redux';
 
 export class Tables extends Component {
   constructor(props) {
@@ -37,12 +39,18 @@ export class Tables extends Component {
         {
           reactComponent: true,
           label: 'Actions',
-          render: (row) => <div><div>Chat</div><div>Update</div></div>
+          render: (row) =>
+          <div>
+            <div>
+              <button className='dashboard__action-button' onClick={() =>  this.props.openInquiryChat(row._id)}>
+                <i className="fas fa-comments"></i>
+              </button>
+            </div>
+          </div>
         },
       ],
       filteredData: this.props.data
     }
-    console.log(this.props.data)
   }
   static getDerivedStateFromProps(props, state) {
     const filteredData = {}
@@ -137,5 +145,12 @@ export class Tables extends Component {
   }
 }
 
-export default Tables
+const mapStateToProps = state => ({})
+const mapDispatchToProps = dispatch => {
+  return {
+    openInquiryChat:(inquiryId) => dispatch({type: OPEN_INQUIRY_CHAT, payload: inquiryId})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tables)
 

@@ -57,8 +57,6 @@ export class Table extends Component {
       const pageSize = props.pageSize ? props.pageSize : Infinity;
       const index = state.pageIndex ? state.pageIndex : 0;
       const newPaginatedData = props.data.slice(pageSize * index, pageSize * (index+1))
-      console.log(newPaginatedData)
-      console.log(state)
       return {
         headers, 
         data: props.data,

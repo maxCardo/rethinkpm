@@ -3,6 +3,8 @@ import ChatUI from '../common/ChatUI'
 import Contacts from '../common/Contacts'
 import Profile from './Profile'
 import io from 'socket.io-client';
+import { connect } from 'react-redux';
+import {UPDATE_CHATS} from '../../../../actions/type'
 
 import './chat-screen.css'
 
@@ -79,15 +81,22 @@ export class index extends Component {
     this.sendMessage = this.sendMessage.bind(this)
     this.getChats = this.getChats.bind(this)
     this.socket = io.connect('localhost:5000')
+    if(!this.props.chats || !this.props.chats.length) {
+      this.getChats()
+    }
+    this.forceUpdate(() => {
+      this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+    })
     
-    this.getChats()
   }
   async getChats() {
     fetch('http://localhost:5000/api/rent_lead/chats').then((response) => response.json())
       .then((json) => {
         const chatsParsed = json.map((chat) => {
+          console.log(chat)
           return {
             id: chat._id,
+            inquiryId: chat.inq._id,
             name: chat.inq.prospect.name ,
             listing: chat.inq.listing,
             unread: chat.unread,
@@ -101,29 +110,30 @@ export class index extends Component {
           }
         })
 
-        this.setState({chats: chatsParsed})
+        this.props.updateChats(chatsParsed)
         this.forceUpdate(() => {
           this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
         })
       })
   }
   render() {
-    if(!this.state.chats.length) return "";
+
+    if(!this.props.chats || !this.props.chats.length) return "";
     return (
       <div className='container h-100'>
         <div className='row h-100'>
           <div className='col-sm-3 chat-screen__contacts-container'>
-            <Contacts contacts={this.state.chats} handleAddChat={this.addChat} />
+            <Contacts contacts={this.props.chats} handleAddChat={this.addChat} />
           </div>
           <div className='col-sm-6 h-100 chat-screen__chat-container'>
             <ChatUI 
-              messages={this.state.chats[this.state.activeChat].messages}
+              messages={this.props.chats[this.state.activeChat].messages}
               onSendMessage={this.sendMessage}
               chatRef={this.chatRef}
             />
           </div>
           <div className='col-sm-3'>
-            <Profile name={this.state.chats[this.state.activeChat].name} notes={this.state.chats[this.state.activeChat].notes} /> 
+            <Profile name={this.props.chats[this.state.activeChat].name} notes={this.props.chats[this.state.activeChat].notes} /> 
           </div>
         </div>
       </div>
@@ -136,7 +146,7 @@ export class index extends Component {
     })
   }
   sendMessage(messageContent) {
-    const chats = this.state.chats.slice()
+    const chats = this.props.chats.slice()
     chats[this.state.activeChat].messages.push({
       userMessage: true,
       sender: 'Admin',
@@ -151,11 +161,23 @@ export class index extends Component {
     const chat = chats[this.state.activeChat]
 
     this.socket.emit('ui_msg', {chatID: chat.id, phoneNumber: '0034644494894', msg: message})
-    this.setState({chats})
+    this.props.updateChats(chats)
     this.forceUpdate(() => {
       this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
     })
   }
 }
 
-export default index
+const mapDispatchToProps = dispatch => {
+  return {
+    updateChats:(chats) => dispatch({type: UPDATE_CHATS, payload: chats})
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    chats: state.chat.chats
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(index)

@@ -11,11 +11,12 @@ export class index extends Component {
     this.onSendMessage = this.onSendMessage.bind(this)
     this.chatContainer = React.createRef()
     this.chatRef = React.createRef()
+    
   }
   
   render() {
     return (
-      <ChatContainer ref={this.chatContainer} open={this.props.open} name={this.props.name} status={this.props.status} onClose={this.props.onClose}>
+      <ChatContainer id={this.props.id} ref={this.chatContainer} open={this.props.open} name={this.props.name} status={this.props.status} onClose={this.props.onClose}>
         <ChatUI 
           messages={this.state.messages}
           chatRef={this.chatRef}
