@@ -7,7 +7,7 @@ export class UpdateModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      workflow: 'setAppointment'
+      workflow: 'changeStatus'
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -33,6 +33,7 @@ export class UpdateModal extends Component {
             <Form.Group controlId="updateForm.worflow">
               <Form.Label>Perform action: </Form.Label>
               <Form.Control as="select" value={this.state.workflow} onChange={this.handleChange.bind(this, 'workflow')}>
+                <option value='changeStatus'>Change Status</option>
                 <option value='setAppointment'>Set Appointment</option>
                 <option value='trackTour'>Track Tour</option>
                 <option value='recordApplication'>Record Application</option>
@@ -60,7 +61,24 @@ export class UpdateModal extends Component {
         return this.renderTourResultForm()
       case 'recordApplication':
         return this.renderApplicationForm()
+      case 'changeStatus':
+        return this.renderChangeStatusForm()
     }
+  }
+  renderChangeStatusForm() {
+    return (
+      <Form.Group controlId="updateForm.status">
+        <Form.Label>Status: </Form.Label>
+        <Form.Control as="select" value={this.state.status ? this.state.status : (this.props.data ? this.props.data.status.currentStatus : '')} onChange={this.handleChange.bind(this, 'status')}>
+          <option value='engaged'>Hot</option>
+          <option value='cold'>Cold</option>
+          <option value='new'>Sourced</option>
+          <option value='upcoming'>Upcoming Appointments</option>
+          <option value='application'>Application</option>
+          <option value='toured'>Toured</option>
+        </Form.Control>
+      </Form.Group>
+    )
   }
   renderAppointmentForm() {
     return (
@@ -96,7 +114,6 @@ export class UpdateModal extends Component {
             <option value='someInterest'>Showed Some Interest</option>
             <option value='hard'>Hard to say</option>
             <option value='notInterested'>Not Interested</option>
-            
           </Form.Control>
         </Form.Group>
       </React.Fragment>
@@ -146,7 +163,7 @@ export class UpdateModal extends Component {
       for(let property in prevState) {
         newState[property] = undefined
       }
-      newState.workflow = 'setAppointment'
+      newState.workflow = 'changeStatus'
       return newState
     })
     this.props.handleClose()
