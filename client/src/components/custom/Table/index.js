@@ -77,13 +77,14 @@ export class Table extends Component {
     const newData = data.filter((elem) => {
       let includeItem = false;
       headers.forEach((header) => {
-        const columnString = '' + elem[header.accessor]
+        const columnString = '' + Table.getData(elem, header)
         if(columnString.includes(filterString)) {
           includeItem = true;
         }
       })
       return includeItem
     })
+    console.log(filterString, newData)
     return newData
   }
   render() {
@@ -109,8 +110,8 @@ export class Table extends Component {
                 {this.state.headers.map((header, index) => (
                   <td key={`dataItem-${index}`}>
                     {header.mapper ? 
-                      header.mapper(this.getData(dataItem, header)) :
-                      this.getData(dataItem, header)
+                      header.mapper(Table.getData(dataItem, header)) :
+                      Table.getData(dataItem, header)
                     }
                   </td>
                 ))}
@@ -164,7 +165,7 @@ export class Table extends Component {
     }
     this.changePage(this.state.pageIndex - 1)
   }
-  getData(dataItem, header) {
+  static getData(dataItem, header) {
     if(header.reactComponent) {
       return header.render(dataItem)
     } else {

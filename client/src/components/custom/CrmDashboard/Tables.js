@@ -3,12 +3,14 @@ import Table from '../Table'
 import {OPEN_INQUIRY_CHAT} from '../../../actions/type'
 import './CrmDashboard.css'
 import { connect } from 'react-redux';
+import UpdateModal from './UpdateModal';
 
 export class Tables extends Component {
   constructor(props) {
     super(props)
     this.state = {
       filterString: '',
+      showModal: false,
       headers: [
         {
           accessor: 'prospect.name',
@@ -39,11 +41,15 @@ export class Tables extends Component {
         {
           reactComponent: true,
           label: 'Actions',
+          sortable: false,
           render: (row) =>
           <div>
             <div>
               <button className='dashboard__action-button' onClick={() =>  this.props.openInquiryChat(row._id)}>
                 <i className="fas fa-comments"></i>
+              </button>
+              <button className='dashboard__action-button' onClick={() =>  this.openModal(row)}>
+                <i className="fas fa-edit"></i>
               </button>
             </div>
           </div>
@@ -51,6 +57,7 @@ export class Tables extends Component {
       ],
       filteredData: this.props.data
     }
+    this.handleModalClose = this.handleModalClose.bind(this)
   }
   static getDerivedStateFromProps(props, state) {
     const filteredData = {}
@@ -140,8 +147,16 @@ export class Tables extends Component {
             
           />
         </div>
+        <UpdateModal show={this.state.showModal} data={this.state.prospectUpdating} handleClose={this.handleModalClose}/>
       </div>
+      
     )
+  }
+  handleModalClose() {
+    this.setState((prevState) => ({showModal: false}))
+  }
+  openModal(row) {
+    this.setState({showModal: true, prospectUpdating: row})
   }
 }
 

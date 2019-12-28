@@ -29,7 +29,6 @@ export class index extends Component {
     fetch('http://localhost:5000/api/rent_lead/chats').then((response) => response.json())
       .then((json) => {
         const chatsParsed = json.map((chat) => {
-          console.log(chat)
           return {
             id: chat._id,
             inquiryId: chat.inq ? chat.inq._id : '',
@@ -45,7 +44,6 @@ export class index extends Component {
             notes: []
           }
         })
-        console.log(chatsParsed)
 
         this.props.updateChats(chatsParsed)
         // this.forceUpdate(() => {
@@ -54,7 +52,6 @@ export class index extends Component {
       })
   }
   render() {
-    console.log(this.props.chats)
     return (
       <div className='chat-manager__container'>
         <ChatInitiator contacts={this.props.chats} onAddChat={this.handleAddChat}/>

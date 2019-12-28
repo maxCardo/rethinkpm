@@ -38,8 +38,6 @@ export default function (state = initialState, action) {
               }
               return chatElement
             })
-            console.log(inquiryId)
-            console.log(chat)
             if(chat) {
               const isAlreadyOpen = openedChatsRightNow.find((openChatId) => openChatId === chat.id)
               if(isAlreadyOpen) {
@@ -96,7 +94,6 @@ export default function (state = initialState, action) {
               }
               return chat
             })
-            console.log(newChats)
             return {
               ...state,
               chats: newChats

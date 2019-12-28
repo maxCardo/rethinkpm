@@ -31,7 +31,6 @@ export class index extends Component {
       userMessage: true,
       content: messageContent
     })
-    console.log(messages)
     this.setState({messages})
     this.forceUpdate(() => {
       this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight

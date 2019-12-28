@@ -93,7 +93,6 @@ export class index extends Component {
     fetch('http://localhost:5000/api/rent_lead/chats').then((response) => response.json())
       .then((json) => {
         const chatsParsed = json.map((chat) => {
-          console.log(chat)
           return {
             id: chat._id,
             inquiryId: chat.inq ? chat.inq._id : '',

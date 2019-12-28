@@ -20,21 +20,21 @@ const testSMS = (to) => {
 
 
 const sendSMS = (to, body) => {
-  console.log(testNum)
-    let sendTo;
-    process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testNum)
-    console.log(sendTo)
+  if (process.env.NODE_ENV === 'production') {
     client.messages
         .create({
             body: body,
             from: '+14124447505',
-            to: sendTo
+            to: to
         })
         .then(message => console.log(message.sid))
         .done();
+        console.log('PRODS: sms sent');
+  } else {
 
-        console.log('sms sending function ran in dev. no sms sent')
-        console.log('sms body: ', body)
+    console.log('sms sending function ran in dev. no sms sent')
+    console.log('sms body: ', body)
+  }
 }
 
 const validateNum = async (phoneNumber) => {
