@@ -1,10 +1,14 @@
-import React , {Fragment} from 'react';
+import React , {Fragment, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth'
 import PropTypes from 'prop-types'
+import {loadUser} from '../../actions/auth';
 
 const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
+    useEffect(() => {
+        loadUser();    
+    }, [loadUser]);
     const authLinks = (
         <ul>
             <li><Link to='/crm'>Dashboard</Link></li>
@@ -44,5 +48,5 @@ const mapStateToProps = state => ({
     auth:state.auth
 })
 
-export default connect(mapStateToProps, {logout} )(Navbar)
+export default connect(mapStateToProps, {logout, loadUser} )(Navbar)
 
