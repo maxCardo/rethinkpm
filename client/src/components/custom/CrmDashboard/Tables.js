@@ -22,7 +22,8 @@ export class Tables extends Component {
         },
         {
           accessor: 'prospect.phone.phoneNumber',
-          label: 'Phone'
+          label: 'Phone',
+          mapper: (data) => `(${data.substring(1,4)}) ${data.substring(4,7)}-${data.substring(7)}`
         },
         {
           accessor: 'status.lastActive',
