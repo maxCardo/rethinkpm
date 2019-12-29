@@ -7,6 +7,7 @@ export class Header extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
   render() {
+    console.log(this.props)
     return (
       <th onClick={this.handleClick}>
         <div 

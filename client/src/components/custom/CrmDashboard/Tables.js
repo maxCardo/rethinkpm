@@ -32,11 +32,12 @@ export class Tables extends Component {
         {
           accessor: 'status.scheduled',
           label: 'Appointment',
+          mapper: (data) => data === 'undefined' ? 'No Appointment' : data
         },
         {
           accessor: 'status.toured.tourRes',
           label: 'Tour Results',
-          mapper: (data) => data === 'undefined' ? 'Not yet toured' : undefined 
+          mapper: (data) => data === 'undefined' ? 'Not yet toured' : data 
         },
         {
           reactComponent: true,

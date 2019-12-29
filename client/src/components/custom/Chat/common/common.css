@@ -125,6 +125,11 @@
   color: white;
 }
 
+.message__tara-message-content {
+  background-color: #FF600E;
+  color: white;
+}
+
 .message__date {
   font-size: 10px;
   text-align: right;
