@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import ChatContainer from '../common/ChatContainer'
 import ChatUI from '../../common/ChatUI'
+import io from 'socket.io-client';
+import { connect } from 'react-redux';
+import {UPDATE_CHATS} from '../../../../../actions/type'
 
 export class index extends Component {
   constructor(props) {
@@ -11,6 +14,7 @@ export class index extends Component {
     this.onSendMessage = this.onSendMessage.bind(this)
     this.chatContainer = React.createRef()
     this.chatRef = React.createRef()
+    this.socket = io.connect('localhost:5000')
     
   }
   
@@ -26,12 +30,29 @@ export class index extends Component {
     )
   }
   onSendMessage(messageContent) {
-    const messages = this.state.messages.slice()
-    messages.push({
-      userMessage: true,
-      content: messageContent
+    const chats = this.props.chats.slice()
+    let newMessages
+    const chatsMessageAdded = chats.map((chat) => {
+      if(chat.id === this.props.id) {
+        chat.messages.push({
+          userMessage: true,
+          sender: 'Admin',
+          content: messageContent,
+          date: new Date()
+        })
+        newMessages = chat.messages
+        console.log(chat)
+      }
+      return chat
     })
-    this.setState({messages})
+    const message = {
+      from: 'Admin',
+      message: messageContent,
+      date: new Date()
+    }
+    this.socket.emit('ui_msg', {chatID: this.props.id, phoneNumber: '0034644494894', msg: message})
+    this.props.updateChats(chatsMessageAdded)
+    this.setState({messages: newMessages})
     this.forceUpdate(() => {
       this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
     })
@@ -41,4 +62,16 @@ export class index extends Component {
   }
 }
 
-export default index
+const mapDispatchToProps = dispatch => {
+  return {
+    updateChats:(chats) => dispatch({type: UPDATE_CHATS, payload: chats})
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    chats: state.chat.chats
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(index)

@@ -145,7 +145,6 @@ export class UpdateModal extends Component {
             <option value='approved'>Approved</option>
             <option value='rejected'>Rejected</option>
             <option value='lost'>Lost</option>
-            
           </Form.Control>
         </Form.Group>
       </React.Fragment>

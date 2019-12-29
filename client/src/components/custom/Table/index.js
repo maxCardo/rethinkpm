@@ -10,7 +10,9 @@ export class Table extends Component {
         header.label = header.accessor
       }
       if(this.props.sorting){
-        header.sortable = true;
+        if(!header.reactComponent) {
+          header.sortable = true;
+        }
       }
       return header;
     })
@@ -49,7 +51,9 @@ export class Table extends Component {
         header.label = header.accessor
       }
       if(props.sorting){
-        header.sortable = true;
+        if(!header.reactComponent) {
+          header.sortable = true;
+        }
       }
       return header;
     })

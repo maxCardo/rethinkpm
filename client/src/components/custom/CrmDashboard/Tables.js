@@ -22,7 +22,8 @@ export class Tables extends Component {
         },
         {
           accessor: 'prospect.phone.phoneNumber',
-          label: 'Phone'
+          label: 'Phone',
+          mapper: (data) => `(${data.substring(1,4)}) ${data.substring(4,7)}-${data.substring(7)}`
         },
         {
           accessor: 'status.lastActive',
@@ -32,11 +33,12 @@ export class Tables extends Component {
         {
           accessor: 'status.scheduled',
           label: 'Appointment',
+          mapper: (data) => data === 'undefined' ? 'No Appointment' : data
         },
         {
           accessor: 'status.toured.tourRes',
           label: 'Tour Results',
-          mapper: (data) => data === 'undefined' ? 'Not yet toured' : undefined 
+          mapper: (data) => data === 'undefined' ? 'Not yet toured' : data 
         },
         {
           reactComponent: true,
