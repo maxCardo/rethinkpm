@@ -91,6 +91,49 @@ router.get('/open_leads', async (req, res) => {
 
 //----------------------------------------------------------- UI Routes Updating Records ---------------------------------------------------------//
 
+// @route: PATCH /api/rent_lead/update_inquiry/:inq_id;
+// @desc: update record when update form on UI is submitted
+// @ access: Public * ToDo: update to make private
+router.patch('/update_inquiry/:inq_id', async (req, res) => {
+    try {
+        const inq = await RentLeadInq.findById(req.params.inq_id);
+        const {status} = req.body;
+        switch(req.body.workflow){
+            case 'setAppointment':
+                const {appointmentDate} = req.body
+                inq.status.currentStatus = status;
+                inq.status.scheduled.schDate = appointmentDate;
+                break;
+            case 'trackTour':
+                const {tourResults,tourDate,interestLevel} = req.body
+                inq.status.currentStatus = status;
+                inq.status.toured.tourDate = tourDate;
+                inq.status.toured.tourRes = tourResults;
+                inq.status.toured.intrLvl = interestLevel;
+                break;
+            case 'recordApplication':
+                const {appDate, appStatus, holdFee} = req.body
+                inq.status.currentStatus = status;
+                inq.status.application.appDate = appDate;
+                inq.status.application.appStatus = appStatus;
+                inq.status.application.holdFee = holdFee;
+                break;
+            default:
+                res.status(400).send('error with form submission');
+        }
+        await inq.save()
+        res.status(200).send(inq);
+    } catch (error) {
+        console.error(error);
+        
+        res.status(400).send('server error')
+    }
+});
+
+
+//old api ep for UI updates  below
+
+
 // @route: PATCH /api/rent_lead/sch_form;
 // @desc: update record when tour is scheduled
 // @ access: Public * ToDo: update to make private
