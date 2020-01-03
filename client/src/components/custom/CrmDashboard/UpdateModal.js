@@ -85,13 +85,11 @@ export class UpdateModal extends Component {
     )
   }
   renderTourResultForm() {
-    const scheduledTime = this.props.data ? new Date(this.props.data.status.lastActive) : ''
-    const formattedScheduledTime = scheduledTime ? scheduledTime.toLocaleString() : ''
     return (
       <React.Fragment>
         <Form.Group controlId="updateForm.phoneNumber">
           <Form.Label>Scheduled Tour Date/Time:</Form.Label>
-          <Form.Control type="text" disabled={true} value={formattedScheduledTime} />
+          <DateTimeField onChange={this.handleDateChange.bind(this, 'tourDate')}/> 
         </Form.Group>
         <Form.Group controlId="updateForm.tourResults">
           <Form.Label>Tour Results: </Form.Label>
@@ -99,7 +97,6 @@ export class UpdateModal extends Component {
             <option value=''></option>
             <option value='completed'>Completed Tour</option>
             <option value='noShow'>No Show</option>
-            <option value='other'>Other</option>
           </Form.Control>
         </Form.Group>
         <Form.Group controlId="updateForm.interestLevel">
@@ -116,24 +113,21 @@ export class UpdateModal extends Component {
     )
   }
   renderApplicationForm() {
-    const scheduledTime = this.props.data ? new Date(this.props.data.status.lastActive) : ''
-    const formattedScheduledTime = scheduledTime ? scheduledTime.toLocaleString() : ''
     return (
       <React.Fragment>
         <Form.Group controlId="updateForm.phoneNumber">
-          <Form.Label>Scheduled Tour Date/Time:</Form.Label>
-          <Form.Control type="text" disabled={true} value={formattedScheduledTime} />
+          <Form.Label>Application Date/Time:</Form.Label>
+          <DateTimeField onChange={this.handleDateChange.bind(this, 'appDate')}/> 
         </Form.Group>
-        <Form.Group controlId="updateForm.tourResults">
-          <Form.Label>Applied: </Form.Label>
-          <Form.Control as="select" onChange={this.handleChange.bind(this, 'applied')}>
+        <Form.Group controlId="updateForm.holdFee">
+          <Form.Label>Hold Fee: </Form.Label>
+          <Form.Control as="select" onChange={this.handleChange.bind(this, 'holdFee')}>
             <option value=''></option>
-            <option value='noFee'>Applied no Hold Fee</option>
-            <option value='paidDeposit'>Applied Paid Deposit</option>
-            <option value='other'>Other</option>
+            <option value='false'>Applied no Hold Fee</option>
+            <option value='true'>Applied Paid Deposit</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group controlId="updateForm.interestLevel">
+        <Form.Group controlId="updateForm.appStatus">
           <Form.Label>App Status: </Form.Label>
           <Form.Control as="select" onChange={this.handleChange.bind(this, 'appStatus')}>
             <option value=''></option>
