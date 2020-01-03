@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import {Modal, Button, Form} from 'react-bootstrap'
 import DateTimeField from 'react-datetime'
 import 'react-datetime/css/react-datetime.css'
+import axios from 'axios'
+import {connect} from 'react-redux'
+import { UPDATE_INQUIRY } from '../../../actions/type'
 
 export class UpdateModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      workflow: 'changeStatus'
+      workflow: 'setAppointment'
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -33,10 +36,20 @@ export class UpdateModal extends Component {
             <Form.Group controlId="updateForm.worflow">
               <Form.Label>Perform action: </Form.Label>
               <Form.Control as="select" value={this.state.workflow} onChange={this.handleChange.bind(this, 'workflow')}>
-                <option value='changeStatus'>Change Status</option>
                 <option value='setAppointment'>Set Appointment</option>
                 <option value='trackTour'>Track Tour</option>
                 <option value='recordApplication'>Record Application</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="updateForm.status">
+              <Form.Label>Status: </Form.Label>
+              <Form.Control as="select" value={this.state.status ? this.state.status : (this.props.data ? this.props.data.status.currentStatus : '')} onChange={this.handleChange.bind(this, 'status')}>
+                <option value='engaged'>Hot</option>
+                <option value='cold'>Cold</option>
+                <option value='new'>Sourced</option>
+                <option value='upcoming'>Upcoming Appointments</option>
+                <option value='application'>Application</option>
+                <option value='toured'>Toured</option>
               </Form.Control>
             </Form.Group>
             {this.renderSpecificForm()}
@@ -61,24 +74,7 @@ export class UpdateModal extends Component {
         return this.renderTourResultForm()
       case 'recordApplication':
         return this.renderApplicationForm()
-      case 'changeStatus':
-        return this.renderChangeStatusForm()
     }
-  }
-  renderChangeStatusForm() {
-    return (
-      <Form.Group controlId="updateForm.status">
-        <Form.Label>Status: </Form.Label>
-        <Form.Control as="select" value={this.state.status ? this.state.status : (this.props.data ? this.props.data.status.currentStatus : '')} onChange={this.handleChange.bind(this, 'status')}>
-          <option value='engaged'>Hot</option>
-          <option value='cold'>Cold</option>
-          <option value='new'>Sourced</option>
-          <option value='upcoming'>Upcoming Appointments</option>
-          <option value='application'>Application</option>
-          <option value='toured'>Toured</option>
-        </Form.Control>
-      </Form.Group>
-    )
   }
   renderAppointmentForm() {
     return (
@@ -162,15 +158,29 @@ export class UpdateModal extends Component {
       for(let property in prevState) {
         newState[property] = undefined
       }
-      newState.workflow = 'changeStatus'
+      newState.workflow = 'setAppointment'
       return newState
     })
     this.props.handleClose()
   }
-  handleSubmit() {
+  async handleSubmit() {
     console.log(this.state)
+    const body = JSON.stringify(this.state)
+    const config = {headers: {'Content-Type': 'application/json'}};
+    const response = await axios.patch(`/api/rent_lead/update_inquiry/${this.props.data._id}`, body, config)
+    this.props.updateInquiry(response.data)
     this.handleClose()
   }
 }
 
-export default UpdateModal
+const mapStateToProps = state => ({
+
+})
+const mapDispatchToProps = dispatch => {
+  return {
+    updateInquiry:(inquiry) => dispatch({type: UPDATE_INQUIRY, payload: inquiry})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateModal)
+

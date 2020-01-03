@@ -98,22 +98,22 @@ router.patch('/update_inquiry/:inq_id', async (req, res) => {
     try {
         const inq = await RentLeadInq.findById(req.params.inq_id);
         const {status} = req.body;
+        if(status) {
+          inq.status.currentStatus = status;
+        }
         switch(req.body.workflow){
             case 'setAppointment':
                 const {appointmentDate} = req.body
-                inq.status.currentStatus = status;
                 inq.status.scheduled.schDate = appointmentDate;
                 break;
             case 'trackTour':
                 const {tourResults,tourDate,interestLevel} = req.body
-                inq.status.currentStatus = status;
                 inq.status.toured.tourDate = tourDate;
                 inq.status.toured.tourRes = tourResults;
                 inq.status.toured.intrLvl = interestLevel;
                 break;
             case 'recordApplication':
                 const {appDate, appStatus, holdFee} = req.body
-                inq.status.currentStatus = status;
                 inq.status.application.appDate = appDate;
                 inq.status.application.appStatus = appStatus;
                 inq.status.application.holdFee = holdFee;
