@@ -25,6 +25,7 @@ export class index extends Component {
           messages={this.state.messages}
           chatRef={this.chatRef}
           onSendMessage={this.onSendMessage}
+          botOn={this.props.botOn}
         />
       </ChatContainer>
     )

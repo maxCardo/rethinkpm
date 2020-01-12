@@ -99,6 +99,7 @@ export class index extends Component {
             name: chat.inq ? chat.inq.prospect.name : '' ,
             listing: chat.inq ? chat.inq.listing : '',
             unread: chat.unread,
+            botOn: chat.botOn,
             messages: chat.messages.map((message) => ({
               date: new Date(message.date),
               sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
@@ -116,6 +117,7 @@ export class index extends Component {
       })
   }
   render() {
+    console.log(this.props.chats[this.state.activeChat])
     if(!this.props.chats || !this.props.chats.length) return "";
     return (
       <div className='container-fluid h-100'>
@@ -128,6 +130,7 @@ export class index extends Component {
               messages={this.props.chats[this.state.activeChat].messages}
               onSendMessage={this.sendMessage}
               chatRef={this.chatRef}
+              botOn={this.props.chats[this.state.activeChat].botOn}
             />
           </div>
           <div className='col-sm-3'>

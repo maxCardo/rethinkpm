@@ -89,7 +89,7 @@
 .chat__input-container .form-control {
   min-height: 20%;
   max-height: 100%;
-  width: 80%;
+  width: 70%;
   border-radius: 20px;
   resize: none;
 }
@@ -142,15 +142,40 @@
   border: none;
   padding: 0;
   height: 25px;
-  margin-left: 10px;
+  margin-left: 5px;
   cursor: pointer;
+}
+
+.chat__bot-button {
+  display: inline-block;
+  margin: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  height: 35px;
+  width: 35px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 20px;
+  
 }
 
 .chat__send-button:focus {
   outline: none;
 }
 
+.chat__bot-button:focus {
+  outline: none;
+}
+
 .chat__send-icon {
   color: #4285F4;
   height: 100%;
+}
+
+.chat__bot-icon {
+  color: white;
+  height: 60%;
+  width: 60%;
+  margin: 0
 }

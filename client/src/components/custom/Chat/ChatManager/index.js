@@ -57,7 +57,7 @@ export class index extends Component {
         <ChatInitiator contacts={this.props.chats} onAddChat={this.handleAddChat}/>
         {this.props.openChats.map((chatId, index) => {
           const chat = this.props.chats.find((chat) => chat.id === chatId)
-          return <Chat key={`chat-${index}`} id={chat.id} ref={this.refsArray[index]} open={chat.open} name={chat.name} messages={chat.messages} status={chat.status} onClose={this.closeChat.bind(this,chatId)} />
+          return <Chat key={`chat-${index}`} id={chat.id} ref={this.refsArray[index]} open={chat.open} name={chat.name} messages={chat.messages} status={chat.status} onClose={this.closeChat.bind(this,chatId)} botOn={chat.botOn}/>
         })}
       </div>
     )

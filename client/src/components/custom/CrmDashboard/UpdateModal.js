@@ -17,7 +17,6 @@ export class UpdateModal extends Component {
     this.handleClose = this.handleClose.bind(this)
   }
   render() {
-    console.log(this.props.data)
     return (
       <Modal size='lg' show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
@@ -158,7 +157,6 @@ export class UpdateModal extends Component {
     this.props.handleClose()
   }
   async handleSubmit() {
-    console.log(this.state)
     const body = JSON.stringify(this.state)
     const config = {headers: {'Content-Type': 'application/json'}};
     const response = await axios.patch(`/api/rent_lead/update_inquiry/${this.props.data._id}`, body, config)

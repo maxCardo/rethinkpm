@@ -17,8 +17,6 @@ export class Contacts extends Component {
       }
       return -1
     }
-    console.log(a)
-    console.log(b)
     const aLastMessageDate = new Date(a.messages[a.messages.length - 1].date)
     const bLastMessageDate = new Date(b.messages[b.messages.length - 1].date)
     if ( aLastMessageDate < bLastMessageDate ){

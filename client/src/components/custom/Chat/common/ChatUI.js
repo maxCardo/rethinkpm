@@ -9,7 +9,7 @@ export class ChatUI extends Component {
     return (
       <div className='chat-ui__container'>
         <Conversation messages={this.props.messages} chatRef={this.props.chatRef}/>
-        <ChatInput onSendMessage={this.props.onSendMessage} />
+        <ChatInput onSendMessage={this.props.onSendMessage} botOn={this.props.botOn}/>
       </div>
     )
   }
