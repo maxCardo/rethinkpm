@@ -116,10 +116,9 @@ export class index extends Component {
       })
   }
   render() {
-
     if(!this.props.chats || !this.props.chats.length) return "";
     return (
-      <div className='container h-100'>
+      <div className='container-fluid h-100'>
         <div className='row h-100'>
           <div className='col-sm-3 chat-screen__contacts-container'>
             <Contacts contacts={this.props.chats} handleAddChat={this.addChat} />

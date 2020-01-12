@@ -6,7 +6,7 @@ import './common.css'
 export class Message extends Component {
   render() {
     const options = {
-      hour: 'numeric', minute: 'numeric'
+      dateStyle: 'short', timeStyle: 'short'
     };
     const username = this.props.username ? this.props.username : '?'
     let messageContentClass = 'message__content '

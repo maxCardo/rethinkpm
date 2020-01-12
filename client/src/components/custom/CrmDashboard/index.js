@@ -43,7 +43,7 @@ export class CrmDashboard extends Component {
     return (
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-md-9 col-sm-12'>
+          <div className='col-md-9 col-sm-12' >
             {this.props.data &&
               <Tables propertiesFilter={this.state.propertiesFilter} data={this.props.data}/>
             }
