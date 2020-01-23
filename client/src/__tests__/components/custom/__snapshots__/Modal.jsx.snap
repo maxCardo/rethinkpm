@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render and snapshot 1`] = `
+<div>
+  <div
+    class="popup-modal"
+  >
+    <div
+      class="modal-content"
+    >
+      <span
+        class="closeX closeBtn "
+        id="closeBtn"
+      >
+        ×
+      </span>
+      <form
+        class="modal-form"
+      >
+        <div
+          class="form-group col-md-6"
+        >
+          <h4>
+            Set Appointment Date & Time
+          </h4>
+        </div>
+        <div
+          class="form-row"
+        >
+          <div
+            class="form-group col-md-6"
+          >
+            <label
+              for="prospectName"
+            >
+              Prospect Name
+            </label>
+            <input
+              class="form-control"
+              type="text"
+            />
+          </div>
+          <div
+            class="form-group col-md-6"
+          >
+            <label
+              for="item2"
+            >
+               Item 2
+            </label>
+            <input
+              class="form-control"
+              type="text"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

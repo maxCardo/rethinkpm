@@ -8,64 +8,66 @@ const {validateNum, sendFirstSMS} = require('../3ps/sms');
 const {sendFirstEmail} = require('../3ps/email');
 const router = express.Router();
 
-
-
 //---------------------------------------------------------- New Lead From Email Parse ----------------------------------------------------------//
 // @route: Post /api/rent_lead;
 // @desc: create new prospect
 // @ access: Public
 router.post('/', async (req, res) => {
     try {
-        const {name, phoneNumber, email, property} = req.body
+        const {name, phoneNumber, email, property} = req.body;
 
         // check if user exist and get user or create new if user does not exist
-        let pros = await RentLeadPros.findOne({$or:[{'phone.phoneNumber':phoneNumber}, {email:email}]});
+        let pros = await RentLeadPros.findOne({
+            $or: [{'phone.phoneNumber': phoneNumber}, {email: email}],
+        });
 
         if (!pros) {
-            console.log('if pros fired')
+            console.log('if pros fired');
             pros = await new RentLeadPros({
                 name,
-                phone:{phoneNumber},
+                phone: {phoneNumber},
                 email,
-            })
-        };
+            });
+        }
 
         // validate phone number
         if (phoneNumber) pros.phone.phoneType = await validateNum(phoneNumber);
-        
+
         //check if lead for this asset exist or create new
-        let inq = await RentLeadInq.findOne({prospect:pros._id, listing:property});    
-        
+        let inq = await RentLeadInq.findOne({
+            prospect: pros._id,
+            listing: property,
+        });
+
         if (!inq) {
-            console.log('if inq fired')
+            console.log('if inq fired');
             inq = await new RentLeadInq({
                 prospect: pros._id,
                 listing: property,
-                
-            })
-        };
+            });
+        }
 
-        console.log(inq)
+        console.log(inq);
 
-        
         //send first contact, email or phone
-        pros.phone.phoneType === 'mobile' ? (sendFirstSMS(pros,inq)):(sendFirstEmail(pros.email,inq.listing));
-        
-        
+        pros.phone.phoneType === 'mobile'
+            ? sendFirstSMS(pros, inq)
+            : sendFirstEmail(pros.email, inq.listing);
+
         //update notes on inq
-        pros.notes.unshift({note: `inquired about ${inq.listing} sent firstContact.`});
-        
-        
+        pros.notes.unshift({
+            note: `inquired about ${inq.listing} sent firstContact.`,
+        });
+
         await pros.save();
         await inq.save();
-        
+
         res.send({inq});
     } catch (e) {
         console.error(e);
-        res.status(400).json({ errors: [{ msg: 'somthing went wrong' }] });
+        res.status(400).json({errors: [{msg: 'somthing went wrong'}]});
     }
 });
-
 
 //--------------------------------------------------------- UI Routes For Viewing Records -------------------------------------------------------//
 
@@ -75,29 +77,35 @@ router.post('/', async (req, res) => {
 router.get('/open_leads', async (req, res) => {
     console.log('open leads api fired');
     try {
-        const lead = await RentLead.find({'status.currentStatus':{$ne: 'dead'}}).sort({'status.lastActive':-1});
+        const lead = await RentLead.find({
+            'status.currentStatus': {$ne: 'dead'},
+        }).sort({'status.lastActive': -1});
         res.status(200).send(lead);
     } catch (error) {
         console.error(error);
-        
-        res.status(400).send('server error')
+
+        res.status(400).send('server error');
     }
 });
 
 //----------------------------------------------------------- UI Routes Updating Records ---------------------------------------------------------//
 
-// @route: PATCH /api/rent_lead/sch_form; 
+// @route: PATCH /api/rent_lead/sch_form;
 // @desc: update record when tour is scheduled
 // @ access: Public * ToDo: update to make private
 router.patch('/sch_form', async (req, res) => {
-   console.log('sch_form api fired');
-   try {
-       const record = await RentLead.findOneAndUpdate({'phoneNumber': req.body.phoneNumber }, { $set: {schDate: req.body.schDate}},{new:true});
-       res.status(200).send(record);    
-   } catch (error) {
-       res.status(400).send('server error')
-   }
-});  
+    console.log('sch_form api fired');
+    try {
+        const record = await RentLead.findOneAndUpdate(
+            {phoneNumber: req.body.phoneNumber},
+            {$set: {schDate: req.body.schDate}},
+            {new: true}
+        );
+        res.status(200).send(record);
+    } catch (error) {
+        res.status(400).send('server error');
+    }
+});
 
 // @route: PATCH /api/rent_lead/tour_form;
 // @desc: update record when tour is completed
@@ -105,16 +113,20 @@ router.patch('/sch_form', async (req, res) => {
 router.patch('/tour_form', async (req, res) => {
     console.log('tour_form api fired');
     try {
-        const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
-            $set: {
-                tourRes: req.body.tourRes,
-                intrLvl: req.body.intrLvl
-            }
-        },{new:true});
+        const record = await RentLead.findOneAndUpdate(
+            {phoneNumber: req.body.phoneNumber},
+            {
+                $set: {
+                    tourRes: req.body.tourRes,
+                    intrLvl: req.body.intrLvl,
+                },
+            },
+            {new: true}
+        );
         res.status(200).send(record);
     } catch (error) {
         console.log(error);
-        res.status(400).send('server error')
+        res.status(400).send('server error');
     }
 });
 
@@ -124,20 +136,23 @@ router.patch('/tour_form', async (req, res) => {
 router.patch('/app_form', async (req, res) => {
     console.log('app_form api fired');
     try {
-        const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
-            $set: {
-                application:{
-                    appStatus: req.body.appStatus,
-                    holdFee: req.body.holdFee
-                }
-            }
-        },{new:true});
+        const record = await RentLead.findOneAndUpdate(
+            {phoneNumber: req.body.phoneNumber},
+            {
+                $set: {
+                    application: {
+                        appStatus: req.body.appStatus,
+                        holdFee: req.body.holdFee,
+                    },
+                },
+            },
+            {new: true}
+        );
         res.status(200).send(record);
     } catch (error) {
-        res.status(400).send('server error')
+        res.status(400).send('server error');
     }
 });
-
 
 // @route: PATCH /api/rent_lead/arc_form;
 // @desc: archive record when not interested
@@ -145,20 +160,22 @@ router.patch('/app_form', async (req, res) => {
 router.patch('/arc_form', async (req, res) => {
     console.log('app_form api fired');
     try {
-        const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
-            $set: {
-                status: {
-                    currentStatus: req.body.status, 
-                    deadWhy: req.body.reasonForArc
-                }
+        const record = await RentLead.findOneAndUpdate(
+            {phoneNumber: req.body.phoneNumber},
+            {
+                $set: {
+                    status: {
+                        currentStatus: req.body.status,
+                        deadWhy: req.body.reasonForArc,
+                    },
+                },
             },
-        },{new:true});
+            {new: true}
+        );
         res.status(200).send(record);
     } catch (error) {
-        res.status(400).send('server error')
+        res.status(400).send('server error');
     }
 });
-
-
 
 module.exports = router;

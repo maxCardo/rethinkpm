@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render and snapshot 1`] = `
+<div>
+  <div>
+    <h3
+      class="text-primary"
+    >
+      Investor Profile
+    </h3>
+    <p
+      class="lead"
+    >
+      <i
+        class="fas fa-user"
+      />
+       Welcome
+    </p>
+    <div
+      class="dash-buttons"
+    >
+      <a
+        class="btn btn-light"
+        href="/edit-profile"
+      >
+        <i
+          class="fas fa-user-circle text-primary"
+        />
+         Edit Profile
+      </a>
+      <a
+        class="btn btn-light"
+        href="/add-experience"
+      >
+        <i
+          class="fab fa-black-tie text-primary"
+        />
+         Add Experience
+      </a>
+      <a
+        class="btn btn-light"
+        href="/add-education"
+      >
+        <i
+          class="fas fa-graduation-cap text-primary"
+        />
+         Add Education
+      </a>
+    </div>
+    <div>
+      <h2
+        class="my-2"
+      >
+        My Properties
+      </h2>
+      <table
+        class="table"
+      >
+        <thead>
+          <tr>
+            <th>
+              Company
+            </th>
+            <th
+              class="hide-sm"
+            >
+              Title
+            </th>
+            <th
+              class="hide-sm"
+            >
+              Years
+            </th>
+            <th />
+          </tr>
+        </thead>
+        <tbody />
+      </table>
+      <p>
+        ooh ya
+      </p>
+    </div>
+  </div>
+</div>
+`;

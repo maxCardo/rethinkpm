@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render and snapshot 1`] = `
+<div>
+  <div
+    class="table-div"
+  >
+    <div
+      class="table-filter"
+    >
+      <select
+        class="input-sm"
+      >
+        <option
+          value=""
+        >
+          ---select property---
+        </option>
+        <option
+          value=""
+        >
+          propertyone
+        </option>
+        <option
+          value=""
+        >
+          propertyTwo
+        </option>
+      </select>
+      <input
+        class="input-sm"
+        id="searchBox"
+        name="searchBox"
+        placeholder="Search Name or Phone Number ..."
+        type="text"
+      />
+    </div>
+    <table
+      class="table table-striped"
+    >
+      <thead>
+        <tr>
+          <th
+            scope="col"
+          >
+            #
+          </th>
+          <th
+            scope="col"
+          >
+            Date Created
+          </th>
+          <th
+            scope="col"
+          >
+            Unit/Prop
+          </th>
+          <th
+            scope="col"
+          >
+            Req Name
+          </th>
+          <th
+            scope="col"
+          >
+            Service Type
+          </th>
+          <th
+            scope="col"
+          >
+            Status
+          </th>
+          <th
+            scope="col"
+          >
+            Status Date
+          </th>
+          <th
+            scope="col"
+          >
+            Closed
+          </th>
+          <th
+            scope="col"
+          >
+            Chat
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <i
+              class="fas fa-file-alt"
+            />
+          </td>
+          <td>
+            01/1/2019
+          </td>
+          <td>
+            1214 Wynne Ave - 2
+          </td>
+          <td>
+            Bob
+          </td>
+          <td>
+            General_Maintenance
+          </td>
+          <td>
+            Requested
+          </td>
+          <td>
+            status date
+          </td>
+          <td>
+            Closed Date
+          </td>
+          <td>
+            <i
+              class="far fa-comments"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a
+              href="/serviceTicket"
+            >
+              <i
+                class="far fa-file-alt"
+              />
+            </a>
+          </td>
+          <td>
+            01/1/2019
+          </td>
+          <td>
+            1214 Wynne Ave - 2
+          </td>
+          <td>
+            Bob
+          </td>
+          <td>
+            General_Maintenance
+          </td>
+          <td>
+            Requested
+          </td>
+          <td>
+            status date
+          </td>
+          <td>
+            Closed Date
+          </td>
+          <td>
+            <a
+              href="/serviceReq"
+            >
+              <i
+                class="far fa-comments"
+              />
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

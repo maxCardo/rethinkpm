@@ -1,4 +1,3 @@
-
 const dialogFlow = require('dialogflow');
 const config = require('./../config/keys');
 
@@ -6,14 +5,17 @@ const projectID = config.googleProjectID;
 
 const credentials = {
     private_key: config.googlePrivateKey,
-    client_email: config.googleClientEmail
+    client_email: config.googleClientEmail,
 };
 
-const sessionsClient = new dialogFlow.SessionsClient({ projectID, credentials });
-const sessionPath = sessionsClient.sessionPath(config.googleProjectID, config.dialogFlowSessionID);
+const sessionsClient = new dialogFlow.SessionsClient({projectID, credentials});
+const sessionPath = sessionsClient.sessionPath(
+    config.googleProjectID,
+    config.dialogFlowSessionID
+);
 
 module.exports = {
-    textQuery: async function (text, params = {}) {
+    textQuery: async function(text, params = {}) {
         let self = module.exports;
         const request = {
             session: sessionPath,
@@ -25,9 +27,9 @@ module.exports = {
             },
             queryParams: {
                 payload: {
-                    data: params
-                }
-            }
+                    data: params,
+                },
+            },
         };
         // Send request and log result
         let responses = await sessionsClient.detectIntent(request);
@@ -35,9 +37,7 @@ module.exports = {
         return responses;
     },
 
-
-    handleAction: function (responses) {
-        return responses
-    }
-
-}
+    handleAction: function(responses) {
+        return responses;
+    },
+};
