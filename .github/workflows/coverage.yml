@@ -5,6 +5,6 @@ jobs:
     coverage:
         runs-on: ubuntu-latest
         steps:
-            - uses: ziishaned/jest-reporter-action@0.1.1
+            - uses: ziishaned/jest-reporter-action@0.0.1
               with:
-                  github-token: ${{ secrets.GITHUB_SECRET }}
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
