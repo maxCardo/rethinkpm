@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render and snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="my-2"
+    >
+      My Properties
+    </h2>
+    <table
+      class="table"
+    >
+      <thead>
+        <tr>
+          <th>
+            Company
+          </th>
+          <th
+            class="hide-sm"
+          >
+            Title
+          </th>
+          <th
+            class="hide-sm"
+          >
+            Years
+          </th>
+          <th />
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+    <p>
+      ooh ya
+    </p>
+  </div>
+</div>
+`;

@@ -5,7 +5,6 @@ const pros = require('../db/models/prospects/RentLeads/RentLeadPros');
 const inq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const {postSlack} = require('../3ps/slack');
 
-
 //---------------------------------------------------------- Twilio ----------------------------------------------------------//
 // @route: GET /api/3ps/sms;
 // @desc: test for socket.io call
@@ -24,27 +23,31 @@ router.post('/sms', async (req, res) => {
     let {From} = req.body;
 
     try {
-        const lead = await pros.findOne({'phone.phoneNumber':From}).populate('inquiries.inquary');
+        const lead = await pros
+            .findOne({'phone.phoneNumber': From})
+            .populate('inquiries.inquary');
 
         //TO DO: need to understand what listing they are contacting we can do this by having dedicated numbers for each listing
-        const newLeads = await inq.find({prospect:lead._id, 'status.currentStatus':'new'});
+        const newLeads = await inq.find({
+            prospect: lead._id,
+            'status.currentStatus': 'new',
+        });
         //update open inq status to engaged
-        newLeads.map(lead => {
-            console.log('yo')
-            lead.status.currentStatus = 'engaged'
-            lead.save()
-        })
+        newLeads.map((lead) => {
+            console.log('yo');
+            lead.status.currentStatus = 'engaged';
+            lead.save();
+        });
         //check if bot is on and if so respond
         //if bot is not on notify team via slack
-        postSlack({text:'this is a test'});
+        postSlack({text: 'this is a test'});
         //push chat to front end (socket.IO?)
         res.send('test');
     } catch (e) {
         console.error(e.message);
-        res.status(400).json({ errors: [{ msg: 'somthing went wrong' }] });
+        res.status(400).json({errors: [{msg: 'somthing went wrong'}]});
     }
 });
-
 
 //---------------------------------------------------------- Slack ----------------------------------------------------------//
 // @route: Post /api/3ps/slack/post_slack;
@@ -52,15 +55,12 @@ router.post('/sms', async (req, res) => {
 // @ access: Public
 router.post('/slack/post_slack', async (req, res) => {
     try {
-
         res.send('post slack api call');
-
     } catch (e) {
         console.error(e.message);
-        res.status(400).json({ errors: [{ msg: 'somthing went wrong' }] });
+        res.status(400).json({errors: [{msg: 'somthing went wrong'}]});
     }
 });
-
 
 //---------------------------------------------------------- Calandly ----------------------------------------------------------//
 // @route: Post /api/3ps/calandly/hook;
@@ -68,8 +68,27 @@ router.post('/slack/post_slack', async (req, res) => {
 // @ access: Public
 router.post('/calandly/hook', async (req, res) => {
     try {
+<<<<<<< HEAD
         //destructure req body
         const { event,payload: { event_type:{ name: property},event: { uuid:eventID ,start_time_pretty: startTime,cancel_reason:cancelReason },tracking:{salesforce_uuid:user},invitee:{name, email}}} = req.body;
+=======
+        // grab needed info (uuid, event_type, start time, invitee {name, email} )
+        //destructure and rename req body
+        const {
+            event,
+            payload: {
+                event_type: {name: property},
+                event: {
+                    uuid: eventID,
+                    start_time_pretty: startTime,
+                    cancel_reason: cancelReason,
+                },
+                tracking: {salesforce_uuid: user},
+                invitee: {name, email},
+            },
+        } = req.body;
+
+>>>>>>> master
         //     object:
         //     event: This is the event type
         //     user: User ID passed into calandly link when sending to pros
@@ -79,6 +98,7 @@ router.post('/calandly/hook', async (req, res) => {
         //     property: property name, this must match property name in DB so we can link properly ToDo: redesign data integrity
         //     startTime: time the appointment is set
         //     cancelReason: reason for cancel for our notes
+<<<<<<< HEAD
 
         if (event === 'invitee.created') {
           //event created
@@ -121,13 +141,44 @@ router.post('/calandly/hook', async (req, res) => {
         res.send(lead);
 
 
+=======
+
+        var obj = {
+            event,
+            user,
+            name,
+            email,
+            eventID,
+            property,
+            startTime,
+            cancelReason,
+        };
+
+        //event created
+        //find inq on DB and create event
+        const record = await inq.find({_id: user}); // change to find one and update
+        //update, status, sch date, note
+        //get pros and update name, email, add note
+
+        console.log(record);
+
+        //event canceled
+        // find event and update
+        //notify shower and slack of event cancel
+        // ToDo: when a event is updated it is canceled then resent, insure that this runs clean and does not error
+
+        res.send(obj);
+>>>>>>> master
     } catch (e) {
         console.error(e.message);
-        res.status(400).json({ errors: [{ msg: 'somthing went wrong' }] });
+        res.status(400).json({errors: [{msg: 'somthing went wrong'}]});
     }
 });
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> master
 module.exports = router;

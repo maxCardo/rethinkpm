@@ -3,18 +3,18 @@ const config = require('./../config/creds');
 
 // leasing bot hook
 const hook = config.slackWebHook;
- 
+
 // post to slack
 
 const postSlack = (record) => {
-    const slackBody = { text: record.text }
+    const slackBody = {text: record.text};
 
     request({
         url: `https://hooks.slack.com/services/${hook}`,
         method: 'POST',
         body: slackBody,
-        json: true
-    })
-}
+        json: true,
+    });
+};
 
-module.exports = { postSlack };
+module.exports = {postSlack};

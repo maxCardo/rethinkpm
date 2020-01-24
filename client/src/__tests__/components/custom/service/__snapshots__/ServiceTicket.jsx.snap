@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render and snapshot 1`] = `
+<div>
+  <div
+    class="row"
+    id="ticket-body"
+  >
+    <div
+      class="col-md-2"
+      id="ticket-sidebar"
+    >
+      <h3>
+        yo
+      </h3>
+    </div>
+    <div
+      class="col-md-10"
+      id="ticket-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-md-3 form-group"
+        >
+          ticket num
+        </div>
+        <div
+          class="col-md-3 form-group"
+        >
+          date opened
+        </div>
+        <div
+          class="col-md-3 form-group"
+        >
+          open/closed
+        </div>
+        <div
+          class="col-md-3 form-group"
+        >
+          next status
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="form-group col-md-12"
+        >
+          <label
+            for=""
+          >
+            Issue
+          </label>
+          <input
+            class="form-control"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="form-group col-md-12"
+        >
+          <label
+            for=""
+          >
+            Description
+          </label>
+          <textarea
+            class="form-control"
+            cols="30"
+            id=""
+            name=""
+            rows="10"
+          />
+           
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="form-group col-md-12"
+        >
+          <label
+            for=""
+          >
+            History
+          </label>
+          <textarea
+            class="form-control"
+            cols="30"
+            id=""
+            name=""
+            rows="10"
+          />
+        </div>
+      </div>
+      <div
+        class="btn-div"
+      >
+        <button
+          class="btn"
+        >
+          Button 
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
