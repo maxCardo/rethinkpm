@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 const {twlAuthToken, twlsid, testNum} = require('./../config/creds');
 const client = require('twilio')(twlsid, twlAuthToken);
 
@@ -7,48 +5,34 @@ const {availabilityLink} = require('./calandly');
 
 const testSMS = (to) => {
     let sendTo;
-    process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testNum)
+    process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testNum);
     console.log(sendTo);
     // client.messages
     //     .create({
     //         body: 'This is a test sms',
     //         from: '+14124447505',
-    //         to: 
+    //         to:
     //     })
     //     .then(message => console.log(message.sid))
-    //     .done(); 
-}
-
-
-=======
-const config = require('./../config/creds');
-const client = require('twilio')(config.twlsid, config.twlAuthToken);
-
-const {availabilityLink} = require('./calandly');
-
->>>>>>> master
-const sendSMS = (to, body) => {
-  if (process.env.NODE_ENV === 'production') {
-    client.messages
-        .create({
-            body: body,
-            from: '+14124447505',
-            to: to,
-        })
-        .then((message) => console.log(message.sid))
-        .done();
-        console.log('PRODS: sms sent');
-  } else {
-
-<<<<<<< HEAD
-    console.log('sms sending function ran in dev. no sms sent')
-    console.log('sms body: ', body)
-  }
-}
-=======
-    console.log('sending sms');
+    //     .done();
 };
->>>>>>> master
+
+const sendSMS = (to, body) => {
+    if (process.env.NODE_ENV === 'production') {
+        client.messages
+            .create({
+                body: body,
+                from: '+14124447505',
+                to: to,
+            })
+            .then((message) => console.log(message.sid))
+            .done();
+        console.log('PRODS: sms sent');
+    } else {
+        console.log('sms sending function ran in dev. no sms sent');
+        console.log('sms body: ', body);
+    }
+};
 
 const validateNum = async (phoneNumber) => {
     let phoneType = 'n/a';
@@ -78,8 +62,4 @@ const sendFirstSMS = (pros, inq) => {
     }, 40000);
 };
 
-<<<<<<< HEAD
-module.exports = { sendSMS, sendFirstSMS, validateNum, testSMS };
-=======
-module.exports = {sendSMS, sendFirstSMS, validateNum};
->>>>>>> master
+module.exports = {sendSMS, sendFirstSMS, validateNum, testSMS};

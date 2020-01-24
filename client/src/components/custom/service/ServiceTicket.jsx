@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-import React , {Fragment} from 'react'
-
-=======
 import React, {Fragment} from 'react';
-import PropTypes from 'prop-types';
->>>>>>> master
 
 import './service.css';
 
@@ -58,19 +52,9 @@ const ServiceTicket = (props) => {
             <button className="btn">Button </button>
           </div>
         </div>
-<<<<<<< HEAD
-      </Fragment>
-    )
-}
-
-
-=======
       </div>
     </Fragment>
   );
 };
-
-ServiceTicket.propTypes = {};
->>>>>>> master
 
 export default ServiceTicket;

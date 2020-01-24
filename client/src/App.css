@@ -126,7 +126,6 @@ img {
 
 /* Utilities */
 .container-b {
-<<<<<<< HEAD
   /* max-width: 1100px; */
   /* background-color: #28a745; */
   margin: auto;
@@ -136,17 +135,6 @@ img {
   padding-bottom: 3rem;
   /* new */
   height: 100vh;
-=======
-    /* max-width: 1100px; */
-    /* background-color: #28a745; */
-    margin: auto;
-    overflow: auto;
-    padding: 0 2rem;
-    margin-top: 6rem;
-    margin-bottom: 3rem;
-    /* new */
-    height: auto;
->>>>>>> master
 }
 
 /* Text Styles*/

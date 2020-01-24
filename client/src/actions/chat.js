@@ -1,3 +1,1 @@
-export function loadChats(dispatch) {
-  
-}
+export function loadChats(dispatch) {}
