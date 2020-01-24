@@ -20,7 +20,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
+        "test": "SKIP_PREFLIGHT_CHECK=true react-scripts test --coverage --watchAll=false",
         "eject": "react-scripts eject",
         "check-format": "prettier --config ./.prettierrc -c ./src/**/*.{js,jsx} ./src/*.{js,jsx}",
         "format": "prettier --config ./.prettierrc --write ./src/**/*.{js,jsx} ./src/*.{js,jsx}"

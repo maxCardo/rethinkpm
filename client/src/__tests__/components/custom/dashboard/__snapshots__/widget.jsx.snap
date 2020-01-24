@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reander and snapshot 1`] = `
+<div>
+  <div
+    class="widget bg-light"
+  >
+    <div>
+      <h2>
+        Name Of Module
+      </h2>
+      <p>
+        KPI Name : KPI Result
+      </p>
+      <div
+        class="my-1 module-body"
+      >
+        <p>
+          module body
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

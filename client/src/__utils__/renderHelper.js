@@ -12,6 +12,9 @@ const renderWithReduxAndRouter = (Component, path) => {
                     <Route path={path || '/'}>
                         <Component />
                     </Route>
+                    <Route path={'/dashboard'}>
+                        <code id={'test-pass'}>test</code>
+                    </Route>
                 </MemoryRouter>
             </Provider>
         ),

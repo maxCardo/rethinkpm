@@ -11,7 +11,7 @@
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "check-format": "prettier --config ./.prettierrc -c ./server/**/*.js ./server/*.js",
     "format": "prettier --config ./.prettierrc --write ./server/**/*.js ./server/*.js",
-    "test": "jest --coverage --watch"
+    "test": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
