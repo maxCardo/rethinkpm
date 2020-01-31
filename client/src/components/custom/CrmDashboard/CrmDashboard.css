@@ -1,0 +1,31 @@
+.searchContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+}
+
+.searchInput {
+  width: 200px;
+}
+
+.sectionTitle {
+  margin-bottom: 20px;
+  font-size: 30px;
+  font-weight: normal;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.propertyList {
+  margin-top: 50px;
+}
+
+.dashboard__action-button {
+  outline: none;
+  border: none;
+  background-color: #00000000;
+  font-size: 14px;
+  margin-right: 10px;
+}

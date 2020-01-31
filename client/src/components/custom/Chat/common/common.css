@@ -1,0 +1,181 @@
+.profile-icon__container {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-icon__title {
+  font-size: 18px;
+  margin: 0
+}
+
+.contacts__container {
+  overflow: auto;
+  height: 100%;
+  max-height: 80vh;
+}
+
+.contact__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #CCC;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.contact__info {
+  margin-left: 10px;
+  margin-right: 30px;
+}
+
+.contact__listing {
+  font-size: 10px;
+}
+
+.contact__connected-icon {
+  height: 10px;
+  margin-right: 10px;
+  color: #00C851;
+}
+
+.contact__connected-icon-container {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.chat__content {
+  height: 400px;
+  background-color: white;
+  position: relative;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.chat__conversation {
+  overflow: auto;
+  max-height: 85%;
+  height: 100%;
+  flex: 1;
+  padding: 5px;
+  padding-top: 10px;
+}
+
+.chat-ui__container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat__input-container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  min-height: 15%;
+  max-height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-top: 1px solid #EEE
+}
+.chat__input-container .form-control {
+  min-height: 20%;
+  max-height: 100%;
+  width: 70%;
+  border-radius: 20px;
+  resize: none;
+}
+
+.message__container {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.message__user-message-container {
+  flex-direction: row-reverse;
+}
+
+.message__user-message-container .message__content {
+  margin-right: 10px;
+  margin-left: 0;
+}
+
+.message__content {
+  border-radius: 10px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  height: fit-content;
+  background-color: #CCC;
+  font-size: 14px;
+  max-width: 70%;
+  white-space: pre-wrap;
+}
+
+.message__user-message-content {
+  background-color: #4285F4;
+  color: white;
+}
+
+.message__tara-message-content {
+  background-color: #FF600E;
+  color: white;
+}
+
+.message__date {
+  font-size: 10px;
+  text-align: right;
+}
+
+.chat__send-button {
+  display: inline-block;
+  margin: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  height: 25px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.chat__bot-button {
+  display: inline-block;
+  margin: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  height: 35px;
+  width: 35px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 20px;
+  
+}
+
+.chat__send-button:focus {
+  outline: none;
+}
+
+.chat__bot-button:focus {
+  outline: none;
+}
+
+.chat__send-icon {
+  color: #4285F4;
+  height: 100%;
+}
+
+.chat__bot-icon {
+  color: white;
+  height: 60%;
+  width: 60%;
+  margin: 0
+}

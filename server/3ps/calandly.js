@@ -4,5 +4,10 @@ const availabilityLink = {
     '123 Main Street': 'https://calendly.com/1214wynne/15min'
 }
 
+const propertyNum = {
+    "+14124447505": "test3",
+    "+14124447505":"test2",
+    "+14124447505":"test1"    
+}
 
-module.exports = { availabilityLink }
+module.exports = { availabilityLink, propertyNum }

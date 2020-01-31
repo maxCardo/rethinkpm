@@ -6,45 +6,23 @@ const rentLeadProsSchema = new mongoose.Schema({
         default: Date.now
     },
     name: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
         type: String,
-        unique: true
+        sparse:true
     },
     phone: {
         phoneNumber: {
             type: Number,
-            unique: true
+            unique: true,
+            sparse:true
         },
         phoneType: {
             type: String
         },
     },
 
-    chat: {
-        botOn: {
-            type: Boolean,
-            default: true
-        },
-        messages: [{
-            from: {
-                type: String
-            },
-            message: {
-                type: String,
-            },
-            date: {
-                type: Date,
-                default: Date.now
-            },
-            unread: {
-                type: Boolean,
-                default: true
-            }
-        }],
-    },
     notes: [{
         note: {
             type: String,
@@ -55,14 +33,14 @@ const rentLeadProsSchema = new mongoose.Schema({
         }
     }],
 
-    inquiries: [{
-        inquary: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'RentLeadInq'
-        }
-    }],
-
-
 });
+
+
+//not working ????
+rentLeadProsSchema.virtual('Chats',{
+    ref: 'ChatInq',
+    localField: '_id',
+    foreignField: 'prospect'
+})
 
 module.exports = RentLeadPros = mongoose.model('RentLeadPros', rentLeadProsSchema);

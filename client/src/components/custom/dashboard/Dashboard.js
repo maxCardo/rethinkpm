@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Widgit from './Widget';
 
+
 const Dashboard = ({auth:{user}}) => {
     return (
       <Fragment>

@@ -1,0 +1,10 @@
+.chat-manager__container {
+  position: fixed;
+  bottom: 0;
+  right: 50px;
+  width: fit-content;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  z-index: 9999;
+}

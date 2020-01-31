@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const rentLeadInqSchema = new mongoose.Schema({
-    
+
     prospect:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -18,7 +18,7 @@ const rentLeadInqSchema = new mongoose.Schema({
     },
 
     status: {
-        // current status new, engaged, scheduled, toured, application, cold, dead
+        // current status new = sourced, engaged = hot, scheduled = upcoming appointments, toured, application, cold, dead
         currentStatus: {
             type: String,
             required: true,
@@ -31,10 +31,10 @@ const rentLeadInqSchema = new mongoose.Schema({
         },
         //status new
         new: {
-            
+
             numFlwUps: {
                 type: Number,
-                default: 0 
+                default: 0
             },
 
         },
@@ -95,8 +95,14 @@ const rentLeadInqSchema = new mongoose.Schema({
             default: Date.now
         }
     }],
+    Chat: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ChatInq'
+    },
+
 
 });
 
 
 module.exports = RentLeadInq = mongoose.model('RentLeadInq', rentLeadInqSchema);
+    

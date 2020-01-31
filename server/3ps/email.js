@@ -1,7 +1,7 @@
 //comes from maintenance request app
 
 const nodemailer = require('nodemailer');
-const config = require('./../config/creds')
+const {smtpAcct, smtpPass, testEmail} = require('./../config/creds')
 const { availabilityLink } = require('./calandly');
 
 // make email less secure
@@ -12,15 +12,17 @@ let transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: config.smtpAcct,
-        pass: config.smtpPass
+        user: smtpAcct,
+        pass: smtpPass
     }
 });
 
 const sendEmail = (to, subject, body, html) => {
+    let sendTo;
+    process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testEmail)
     let mailOptions = {
         from: 'info@levanongrp.com',
-        to: to,
+        to: sendTo,
         subject: subject,
         text: body,
         html: html
@@ -34,8 +36,7 @@ const sendEmail = (to, subject, body, html) => {
         }
     })
 };
-// console.log('send email test start');
-// sendEmail('adampoznanski@outlook.com', 'test', 'test email');
+
 
 const sendFirstEmail = (email, listing) => {
     const subject = `Thank you for your interest in ${listing}.`
