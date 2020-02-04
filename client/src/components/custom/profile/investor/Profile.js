@@ -1,15 +1,16 @@
 import React , {Fragment} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Property from '../../assets/AssetItem'
 
 const Profile = props => {
+    const {id} = useParams()
     return (
         <Fragment>
             <h3 className='text-primary' >Investor Profile</h3>
             <p className='lead'>
-                <i className='fas fa-user' /> Welcome 
+                <i className='fas fa-user' /> Welcome user {id}
             </p>
 
             <div className="dash-buttons">
