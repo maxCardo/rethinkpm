@@ -12,8 +12,6 @@ export class index extends Component {
       messages: props.messages.slice(),
     }
     this.onSendMessage = this.onSendMessage.bind(this)
-    this.chatContainer = React.createRef()
-    this.chatRef = React.createRef()
     this.socket = io.connect('localhost:5000')
     
   }
@@ -23,7 +21,6 @@ export class index extends Component {
       <ChatContainer id={this.props.id} ref={this.chatContainer} open={this.props.open} name={this.props.name} status={this.props.status} onClose={this.props.onClose}>
         <ChatUI 
           messages={this.state.messages}
-          chatRef={this.chatRef}
           onSendMessage={this.onSendMessage}
           botOn={this.props.botOn}
         />
@@ -42,7 +39,6 @@ export class index extends Component {
           date: new Date()
         })
         newMessages = chat.messages
-        console.log(chat)
       }
       return chat
     })

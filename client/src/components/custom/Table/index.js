@@ -82,7 +82,7 @@ export class Table extends Component {
       let includeItem = false;
       headers.forEach((header) => {
         const columnString = '' + Table.getData(elem, header)
-        if(columnString.includes(filterString)) {
+        if(columnString.toLowerCase().includes(filterString.toLowerCase())) {
           includeItem = true;
         }
       })

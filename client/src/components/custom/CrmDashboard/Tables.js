@@ -78,7 +78,7 @@ export class Tables extends Component {
     return (
       <div>
         <div className='searchContainer'>
-          <input className='form-control searchInput' onChange={(e) => this.setState({filterString: e.target.value})} placeholder='Search'></input>
+          <input className='form-control searchInput' tabIndex={0} onChange={(e) => this.setState({filterString: e.target.value})} placeholder='Search'></input>
         </div>
         <div style={{overflow: 'auto', maxHeight: '80vh'}}>
           <div>

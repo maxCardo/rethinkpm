@@ -13,10 +13,17 @@ export default function (state = initialState, action) {
             }
         case OPEN_CHAT: 
             const openChats = state.openChats.slice()
+            const chatsWithOpen = state.chats.slice().map((chatElement) => {
+              if(chatElement.id == payload) {
+                chatElement.open = true
+              }
+              return chatElement
+            })
             openChats.push(payload)
             return {
               ...state,
-              openChats
+              openChats,
+              chats: chatsWithOpen
             }
         case CLOSE_CHAT:
             const chatsOpen = state.openChats.slice()
