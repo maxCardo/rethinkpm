@@ -12,7 +12,7 @@ export class index extends Component {
       messages: props.messages.slice(),
     }
     this.onSendMessage = this.onSendMessage.bind(this)
-    this.socket = io.connect('localhost:5000')
+    this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
     
   }
   

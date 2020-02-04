@@ -14,74 +14,13 @@ export class index extends Component {
     super(props)
     this.state = {
       activeChat: 0,
-      chats: [
-        // { 
-        //   name: 'Oscar Rodriguez - Property 1',
-        //   notes: [
-        //     {
-        //       date: new Date(),
-        //       text: 'Inquired about 123 Main Street, send first contact'
-        //     },
-        //     {
-        //       date: new Date(),
-        //       text: 'Asked about rent price, has tight budget'
-        //     }
-        //   ],
-        //   messages: [
-        //     {
-        //       sender: 'Oscar Rodriguez - Property 1',
-        //       content: "Good morning, I'm interest in the appartment in Baker Street",
-        //       date: new Date()
-        //     },
-        //     {
-        //       userMessage: true,
-        //       content: "Good morning, would you be interested in visiting the appartment?",
-        //       date: new Date()
-        //     },
-        //     {
-        //       sender: 'Oscar Rodriguez - Property 1',
-        //       content: "Yes, of course, tomorrow at 9am?",
-        //       date: new Date()
-        //     },
-        //   ],
-        // },
-        // { 
-        //   name: 'Tom Smith - Property 2',
-        //   notes: [
-        //     {
-        //       date: new Date(),
-        //       text: 'Already visited 3 apartments with our company, hard customer'
-        //     },
-        //     {
-        //       date: new Date(),
-        //       text: 'Last time said the rent was to high at 2000$ per month'
-        //     }
-        //   ],
-        //   messages: [
-        //     {
-        //       sender: 'Tom Smith - Property 2',
-        //       content: "Good morning, how much is the rent of the appartment on Lake Hill?",
-        //       date: new Date()
-        //     },
-        //     {
-        //       userMessage: true,
-        //       content: "Good morning, it's 1300$ per month",
-        //       date: new Date()
-        //     },
-        //     {
-        //       sender: 'Tom Smith - Property 2',
-        //       content: "Great, could we arrange a visit this week?",
-        //       date: new Date()
-        //     },
-        //   ]
-        // },
-      ],
+      chats: [],
     }
     this.addChat = this.addChat.bind(this)
     this.chatRef = React.createRef()
     this.sendMessage = this.sendMessage.bind(this)
     this.getChats = this.getChats.bind(this)
-    this.socket = io.connect('localhost:5000')
+    this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
     if(!this.props.chats || !this.props.chats.length) {
       this.getChats()
     }
