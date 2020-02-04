@@ -5,6 +5,7 @@ import Profile from './Profile'
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import {UPDATE_CHATS} from '../../../../actions/type'
+import axios from 'axios';
 
 import './chat-screen.css'
 
@@ -90,25 +91,23 @@ export class index extends Component {
     
   }
   async getChats() {
-    fetch('http://localhost:5000/api/rent_lead/chats').then((response) => response.json())
-      .then((json) => {
-        const chatsParsed = json.map((chat) => {
-          return {
-            id: chat._id,
-            inquiryId: chat.inq ? chat.inq._id : '',
-            name: chat.inq ? chat.inq.prospect.name : '' ,
-            listing: chat.inq ? chat.inq.listing : '',
-            unread: chat.unread,
-            botOn: chat.botOn,
-            messages: chat.messages.map((message) => ({
-              date: new Date(message.date),
-              sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
-              content: message.message,
-              userMessage: message.from !== 'User-SMS'
-            })),
-            notes: []
-          }
-        })
+    axios.get('/api/rent_lead/chats').then((res) => {
+      const chatsParsed = res.data.map((chat) => {
+        return {
+          id: chat._id,
+          inquiryId: chat.inq ? chat.inq._id : '',
+          name: chat.inq ? chat.inq.prospect.name : '' ,
+          listing: chat.inq ? chat.inq.listing : '',
+          unread: chat.unread,
+          messages: chat.messages.map((message) => ({
+            date: new Date(message.date),
+            sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
+            content: message.message,
+            userMessage: message.from !== 'User-SMS'
+          })),
+          notes: []
+        }
+      })
 
         this.props.updateChats(chatsParsed)
         this.forceUpdate(() => {
