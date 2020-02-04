@@ -28,10 +28,6 @@ app.use('/api/rent_lead', require('./api/rentLead'));
 app.use('/api/3ps',(req,res,next) => {req.io = {io:io}, next()}, require('./api/3ps'));
 
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
-
 //Socket.io socket and API calls
 require('./socket/chat')(io);
 
