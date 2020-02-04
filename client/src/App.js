@@ -47,7 +47,7 @@ const App = () => {
               <Route exact path='/serviceTicket' component={ServiceTicket} />
               <Route exact path='/addProfile' component={AddProfile} />
               <Route exact path='/addProperty' component={AddProperty} />
-              <Route exact path='/profile' component={Profile}/>
+              <Route exact path='/profile/:id' component={Profile}/>
               <Route exact path='/playground' component={Playground} />
             </Switch>
           </section>

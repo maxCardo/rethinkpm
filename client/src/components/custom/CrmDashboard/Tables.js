@@ -4,6 +4,7 @@ import {OPEN_INQUIRY_CHAT} from '../../../actions/type'
 import './CrmDashboard.css'
 import { connect } from 'react-redux';
 import UpdateModal from './UpdateModal';
+import {Link} from 'react-router-dom';
 
 export class Tables extends Component {
   constructor(props) {
@@ -53,6 +54,9 @@ export class Tables extends Component {
               <button className='dashboard__action-button' onClick={() =>  this.openModal(row)}>
                 <i className="fas fa-edit"></i>
               </button>
+              <Link className='dashboard_action-button' to={`/profile/${row._id}`}>
+                <i className='fas fa-user'></i>
+              </Link>
             </div>
           </div>
         },
