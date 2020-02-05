@@ -21,7 +21,7 @@ import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
 import AddProfile from './components/custom/profile/AddProfile';
 import AddProperty from './components/custom/assets/AddProperty';
-import Profile from './components/custom/profile/investor/Profile'
+import Profile from './components/custom/profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 

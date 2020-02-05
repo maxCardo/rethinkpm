@@ -14,6 +14,7 @@ export class ChatInput extends Component {
     }
     this.onSubmit = this.onSubmit.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   render() {
     return (

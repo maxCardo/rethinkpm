@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ProfileIcon from '../common/ProfileIcon'
+import ProfileIcon from '../../common/ProfileIcon'
 import Note from './Note'
 
 export class Profile extends Component {

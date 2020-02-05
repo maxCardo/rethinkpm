@@ -1,0 +1,42 @@
+.profile__main-container {
+  height: 100%;
+  display: flex;
+}
+
+.profile__left-container {
+  height: 100%;
+  width: 70%;
+  border-right: 1px solid #EEE
+}
+
+.profile__info-container {
+  height: 60%;
+  border-bottom: 1px solid #EEE
+}
+
+.profile__logs-container {
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile__chat-container {
+  height: 100%;
+  width: 30%;
+}
+
+.profile-info__main-container {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+
+.profile-info__data-container {
+  margin-left: 40px;
+}
+
+.profile-tables__container {
+  padding: 20px;
+}
+
