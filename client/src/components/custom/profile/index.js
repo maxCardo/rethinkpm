@@ -2,6 +2,7 @@ import React , {Fragment} from 'react';
 import {Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ProfileInfo from './ProfileInfo'
+import {Resizable} from 're-resizable'
 
 import './style.css'
 import ProfileChat from './ProfileChat';
@@ -18,9 +19,29 @@ const Profile = props => {
         <Fragment>
           <div className='profile__main-container'>
             <div className='profile__left-container'>
-              <div className='profile__info-container'>
-                <ProfileInfo data={data}/>
-              </div>
+              <Resizable 
+                defaultSize={{
+                  height: '400'
+                }}
+                style={{height: '400', display: 'flex'}}
+                minWidth='100%'
+                maxHeight={window.innerHeight*(4/6)}
+                minHeight='100'
+                enable={{
+                  top: false,
+                  topRight: false,
+                  right: false,
+                  bottomRight: false, 
+                  bottom: true,
+                  bottomLeft: false,
+                  left: false,
+                  topLeft: false
+                }}
+              >
+                <div className='profile__info-container' >
+                  <ProfileInfo data={data}/>
+                </div>
+              </Resizable>
               <div className='profile__logs-container'>
                 <ProfileTables />
               </div>

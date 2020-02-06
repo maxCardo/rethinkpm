@@ -6,19 +6,25 @@
 .profile__left-container {
   height: 100%;
   width: 70%;
-  border-right: 1px solid #EEE
+  border-right: 1px solid #EEE;
+  display: flex;
+  flex-direction: column;
+
 }
 
 .profile__info-container {
-  height: 60%;
-  border-bottom: 1px solid #EEE
+  border-bottom: 1px solid #EEE;
+  height: 100%;
+  overflow: auto;
+  display: flex;
 }
 
 .profile__logs-container {
-  height: 40%;
-  display: flex;
+  height: 100%;
+  min-height: 1px;
   align-items: center;
   justify-content: center;
+  overflow: auto;
 }
 
 .profile__chat-container {

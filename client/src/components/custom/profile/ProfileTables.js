@@ -20,6 +20,66 @@ export class ProfileTables extends Component {
         date: '27/01/19',
         user: 'Admin'
       },
+      {
+        record: 'This is a note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is another note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is the last note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is a note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is another note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is the last note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is a note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is another note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is the last note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is a note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is another note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
+      {
+        record: 'This is the last note',
+        date: '27/01/19',
+        user: 'Admin'
+      },
     ]
     this.headers = [
       {
