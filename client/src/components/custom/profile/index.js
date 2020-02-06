@@ -21,7 +21,7 @@ const Profile = props => {
             <div className='profile__left-container'>
               <Resizable 
                 defaultSize={{
-                  height: '400'
+                  height: '300'
                 }}
                 style={{height: '400', display: 'flex'}}
                 minWidth='100%'

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Table from '../Table'
+import {Tabs, Tab} from 'react-bootstrap'
+import TableWithSearch from './TableWithSearch'
 
 export class ProfileTables extends Component {
   constructor(props) {
@@ -83,20 +85,34 @@ export class ProfileTables extends Component {
     ]
     this.headers = [
       {
-        accessor: 'record'
+        accessor: 'record',
+        label: 'Record'
       },
       {
-        accessor: 'date'
+        accessor: 'date',
+        label: 'Date'
       },
       {
-        accessor: 'user'
+        accessor: 'user',
+        label: 'User'
       }
     ]
   }
   render() {
     return (
       <div className='profile-tables__container'>
-        <Table data={this.data} headers={this.headers}/>
+        <Tabs defaultActiveKey="logs">
+          <Tab eventKey="logs" title="Logs">
+            <TableWithSearch data={this.data} headers={this.headers}/>
+          </Tab>
+          <Tab eventKey="notes" title="Notes">
+            <TableWithSearch data={this.data} headers={this.headers}/>
+          </Tab>
+          <Tab eventKey="requests" title="Requests">
+            <TableWithSearch data={this.data} headers={this.headers}/>
+          </Tab>
+        </Tabs>
+        
       </div>
     )
   }
