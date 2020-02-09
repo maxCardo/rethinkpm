@@ -79,7 +79,7 @@ if (process.env.NODE_ENV === 'production') {
 
   app.get('*', (req, res) => {
     console.log('it enters')
-    const file = path.join(__dirname+'/client/build/index.html')
+    const file = path.join(__dirname+'/../client/build/index.html')
     console.log(file)
     res.sendFile(file);
 
