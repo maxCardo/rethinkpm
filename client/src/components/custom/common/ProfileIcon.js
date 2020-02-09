@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import './common.css'
+import './style.css'
 
 export class ProfileIcon extends Component {
   render() {

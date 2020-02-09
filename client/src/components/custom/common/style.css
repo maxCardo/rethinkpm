@@ -1,0 +1,14 @@
+.profile-icon__container {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-icon__title {
+  font-size: 18px;
+  margin: 0
+}

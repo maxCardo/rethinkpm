@@ -21,7 +21,7 @@ import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
 import AddProfile from './components/custom/profile/AddProfile';
 import AddProperty from './components/custom/assets/AddProperty';
-import Profile from './components/custom/profile/investor/Profile'
+import Profile from './components/custom/profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 
@@ -47,7 +47,7 @@ const App = () => {
               <Route exact path='/serviceTicket' component={ServiceTicket} />
               <Route exact path='/addProfile' component={AddProfile} />
               <Route exact path='/addProperty' component={AddProperty} />
-              <Route exact path='/profile' component={Profile}/>
+              <Route exact path='/profile/:id' component={Profile}/>
               <Route exact path='/playground' component={Playground} />
             </Switch>
           </section>

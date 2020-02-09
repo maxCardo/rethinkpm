@@ -1,0 +1,17 @@
+.table-with-search__container {
+  padding-top: 20px
+}
+
+.table-with-search__controls-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.table-with-search__search-input {
+  width: 200px;
+}
+
+.table-with-search__add-button {
+  background-color: palegreen;
+}
