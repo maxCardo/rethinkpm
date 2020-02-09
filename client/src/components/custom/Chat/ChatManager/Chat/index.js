@@ -13,7 +13,6 @@ export class index extends Component {
     }
     this.onSendMessage = this.onSendMessage.bind(this)
     this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
-    
   }
   
   render() {
@@ -51,7 +50,7 @@ export class index extends Component {
     this.props.updateChats(chatsMessageAdded)
     this.setState({messages: newMessages})
     this.forceUpdate(() => {
-      this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+      // this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
     })
   }
   toggleOpen() {
