@@ -98,8 +98,8 @@ export class index extends Component {
       date: new Date()
     }
     const chat = chats[this.state.activeChat]
-
-    this.socket.emit('ui_msg', {chatID: chat.id, phoneNumber: '0034644494894', msg: message})
+    console.log(chat)
+    this.socket.emit('ui_msg', {chatID: chat.id, msg: message})
     this.props.updateChats(chats)
     this.forceUpdate(() => {
       this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight

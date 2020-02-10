@@ -1,8 +1,6 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-//Redux
-import { Provider } from 'react-redux';
-import store from './store';
+
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
@@ -24,38 +22,45 @@ import AddProperty from './components/custom/assets/AddProperty';
 import Profile from './components/custom/profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
+import {loadUser} from './actions/auth';
+import { connect } from 'react-redux'; 
 
 
 
-const App = () => {
+const App = ({loadUser}) => {
+  useEffect(() => {loadUser();}, [loadUser]);
   return (
-    <Provider store = {store}>
-      <Router>
-        <Fragment>
-          <Navbar/>
-          <Route exact path ='/' component = {Landing}/>
-          <section className ='container-b' style={{position: 'relative'}}>
-            <Alert/>
-            <Switch>
-              <Route exact path = '/login' component = {Login}/>
-              <Route exact path='/register' component={Register} />
-              <PrivateRoute exact path='/dashboard' component={Dashboard} />
-              <PrivateRoute exact path='/serviceList' component={ServiceList} />
-              <Route exact path='/crm' component={CrmDashboard} />
-              <Route exact path='/chat' component={ChatScreen} />
-              <Route exact path='/serviceReq' component={ServiceReq} />
-              <Route exact path='/serviceTicket' component={ServiceTicket} />
-              <Route exact path='/addProfile' component={AddProfile} />
-              <Route exact path='/addProperty' component={AddProperty} />
-              <Route exact path='/profile/:id' component={Profile}/>
-              <Route exact path='/playground' component={Playground} />
-            </Switch>
-          </section>
-        </Fragment>
-      </Router>
-    </Provider>
+    <Router>
+      <Fragment>
+        <Navbar/>
+        <Route exact path ='/' component = {Landing}/>
+        <section className ='container-b' style={{position: 'relative'}}>
+          <Alert/>
+          <Switch>
+            <Route exact path = '/login' component = {Login}/>
+            <Route exact path='/register' component={Register} />
+            <PrivateRoute exact path='/dashboard' component={Dashboard} />
+            <PrivateRoute exact path='/serviceList' component={ServiceList} />
+            <PrivateRoute exact path='/crm' component={CrmDashboard} />
+            <PrivateRoute exact path='/chat' component={ChatScreen} />
+            <Route exact path='/serviceReq' component={ServiceReq} />
+            <Route exact path='/serviceTicket' component={ServiceTicket} />
+            <Route exact path='/addProfile' component={AddProfile} />
+            <Route exact path='/addProperty' component={AddProperty} />
+            <PrivateRoute exact path='/profile/:id' component={Profile}/>
+            <Route exact path='/playground' component={Playground} />
+          </Switch>
+        </section>
+      </Fragment>
+    </Router>
   );
 }
 
 
-export default App;
+
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, {loadUser})(App)

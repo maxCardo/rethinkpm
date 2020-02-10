@@ -13,7 +13,6 @@ export class index extends Component {
     }
     this.onSendMessage = this.onSendMessage.bind(this)
     this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
-    
   }
   
   render() {
@@ -47,11 +46,11 @@ export class index extends Component {
       message: messageContent,
       date: new Date()
     }
-    this.socket.emit('ui_msg', {chatID: this.props.id, phoneNumber: '0034644494894', msg: message})
+    this.socket.emit('ui_msg', {chatID: this.props.id, msg: message})
     this.props.updateChats(chatsMessageAdded)
     this.setState({messages: newMessages})
     this.forceUpdate(() => {
-      this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+      // this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
     })
   }
   toggleOpen() {

@@ -11,8 +11,9 @@ const chat = (io) => {
         })
 
         socket.on('ui_msg', async (data, callback) => {
-            const {chatID, phoneNumber, msg} = data
-            let chat = await ChatInq.findById(chatID)
+            const {chatID, msg} = data
+            let chat = await ChatInq.findById(chatID).populate({path:'inq',select:'prospect', populate: {path:'prospect', select: 'phone'}})
+            const phoneNumber = chat.inq.prospect.phone.phoneNumber
             chat.messages.push(msg);
             await chat.save()
             //send chat to pros (if no phone num must indicate on UI)

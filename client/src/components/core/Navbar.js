@@ -1,5 +1,5 @@
 import React , {Fragment, useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth'
 import PropTypes from 'prop-types'
@@ -9,22 +9,26 @@ const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
     useEffect(() => {
         loadUser();    
     }, [loadUser]);
+    let history = useHistory()
+    const handleLogout = () => {
+      logout()
+    }
     const authLinks = (
         <ul>
             <li><Link to='/crm'>Dashboard</Link></li>
             <li><Link to='/chat'>Chat</Link></li>
             <li><Link to='/serviceList'>Service</Link></li>
-            <li><Link to="/rentroll">Current Rentals</Link></li>
-            <li><Link to="/acquisition">New Acquisition</Link></li>
-            <li><a onClick = {logout} href='#!'>Logout</a></li>
+            {/* <li><Link to="/rentroll">Current Rentals</Link></li>
+            <li><Link to="/acquisition">New Acquisition</Link></li> */}
+            <li><a onClick = {handleLogout} href='/' >Logout</a></li>
         </ul>
 
     );
     const guestLinks = (
         <ul>
-            <li><Link to='/profiles'>Renters</Link></li>
+            {/* <li><Link to='/profiles'>Renters</Link></li>
             <li><Link to="/register">Owners</Link></li>
-            <li><Link to="/login">Vendors</Link></li>
+            <li><Link to="/login">Vendors</Link></li> */}
             <li><Link to="/login">Login</Link></li>
         </ul>
 

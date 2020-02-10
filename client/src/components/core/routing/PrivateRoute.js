@@ -1,10 +1,25 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const PrivateRoute = ({ component: Component, auth: { isAuthenticated, loading }, ...rest }) => (
-    <Route {...rest} render={props => !isAuthenticated && !loading ? (<Redirect to='/login' />) : (<Component {...props} />)} />
+const PrivateRoute = ({ component: Component, auth: { isAuthenticated, loading, loginInProgress }, ...rest }) => (
+    <Route {...rest} render={(props) => renderFunction(Component, props, loginInProgress, isAuthenticated, loading)} />
+)
+
+const renderFunction = (Component, props, loginInProgress, isAuthenticated, loading) => {
+  if(loginInProgress) {
+    return ''
+  }
+  if(!isAuthenticated && !loading) {
+    return <NotAuthenticatedInfo />
+  } else {
+    return <Component {...props} />
+  }
+}
+
+const NotAuthenticatedInfo = () => (
+  <p>You are not logged in, maybe you wanted to go to <Link to='/login'>Login</Link></p>
 )
 
 PrivateRoute.propTypes = {

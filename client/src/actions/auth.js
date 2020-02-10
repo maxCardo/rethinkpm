@@ -1,10 +1,13 @@
 import axios from 'axios';
-import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
+import { LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_IN_PROGRESS, REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
 import { setAlert } from './alert';
 
 //Load User
 export const loadUser = () => async dispatch => {
     try {
+        dispatch({
+          type: LOGIN_IN_PROGRESS
+        })
         const res = await axios.get('/api/users');
         if (!res.data) {
             console.log('no user found')
@@ -29,6 +32,9 @@ export const loadUser = () => async dispatch => {
 export const login = (email, password) => async dispatch => {
     const config = {headers: {'Content-Type': 'application/json'}};
     const body = JSON.stringify({ email, password });
+    dispatch({
+      type: LOGIN_IN_PROGRESS
+    })
 
     try {
         const res = await axios.post('/api/users/login', body, config);
