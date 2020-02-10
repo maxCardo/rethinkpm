@@ -1,5 +1,5 @@
 import React , {Fragment, useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth'
 import PropTypes from 'prop-types'
@@ -9,6 +9,10 @@ const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
     useEffect(() => {
         loadUser();    
     }, [loadUser]);
+    let history = useHistory()
+    const handleLogout = () => {
+      logout()
+    }
     const authLinks = (
         <ul>
             <li><Link to='/crm'>Dashboard</Link></li>
@@ -16,7 +20,7 @@ const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
             <li><Link to='/serviceList'>Service</Link></li>
             {/* <li><Link to="/rentroll">Current Rentals</Link></li>
             <li><Link to="/acquisition">New Acquisition</Link></li> */}
-            <li><a onClick = {logout} href='#!'>Logout</a></li>
+            <li><a onClick = {handleLogout} href='/' >Logout</a></li>
         </ul>
 
     );
