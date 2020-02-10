@@ -41,13 +41,13 @@ const App = ({loadUser}) => {
             <Route exact path='/register' component={Register} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <PrivateRoute exact path='/serviceList' component={ServiceList} />
-            <Route exact path='/crm' component={CrmDashboard} />
-            <Route exact path='/chat' component={ChatScreen} />
+            <PrivateRoute exact path='/crm' component={CrmDashboard} />
+            <PrivateRoute exact path='/chat' component={ChatScreen} />
             <Route exact path='/serviceReq' component={ServiceReq} />
             <Route exact path='/serviceTicket' component={ServiceTicket} />
             <Route exact path='/addProfile' component={AddProfile} />
             <Route exact path='/addProperty' component={AddProperty} />
-            <Route exact path='/profile/:id' component={Profile}/>
+            <PrivateRoute exact path='/profile/:id' component={Profile}/>
             <Route exact path='/playground' component={Playground} />
           </Switch>
         </section>

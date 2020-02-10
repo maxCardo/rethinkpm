@@ -14,17 +14,17 @@ const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
             <li><Link to='/crm'>Dashboard</Link></li>
             <li><Link to='/chat'>Chat</Link></li>
             <li><Link to='/serviceList'>Service</Link></li>
-            <li><Link to="/rentroll">Current Rentals</Link></li>
-            <li><Link to="/acquisition">New Acquisition</Link></li>
+            {/* <li><Link to="/rentroll">Current Rentals</Link></li>
+            <li><Link to="/acquisition">New Acquisition</Link></li> */}
             <li><a onClick = {logout} href='#!'>Logout</a></li>
         </ul>
 
     );
     const guestLinks = (
         <ul>
-            <li><Link to='/profiles'>Renters</Link></li>
+            {/* <li><Link to='/profiles'>Renters</Link></li>
             <li><Link to="/register">Owners</Link></li>
-            <li><Link to="/login">Vendors</Link></li>
+            <li><Link to="/login">Vendors</Link></li> */}
             <li><Link to="/login">Login</Link></li>
         </ul>
 
