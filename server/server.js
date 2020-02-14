@@ -47,7 +47,7 @@ app.post('/sms',async (req,res) => {
     if (!pros) { pros = await new RentLeadPros({ phone: { phoneNumber: From } }) };
     let inq = await RentLeadInq.findOne({ 'listing': property, 'prospect': pros._id });
     if (!inq) { inq = await new RentLeadInq({ prospect: pros._id, listing: property }) };
-    let chat = await ChatInq.findOne({ inq: inq._id });
+    let chat = await ChatInq.findOne({ inq: inq._id }).populate({ path: 'inq', select: 'prospect', select: 'listing', populate: { path: 'prospect', select: 'name' } });;
     if (!chat) { chat = await new ChatInq({ inq: inq._id }) };
 
     //update open inq status to engaged
@@ -60,12 +60,9 @@ app.post('/sms',async (req,res) => {
     await inq.save();
     await chat.save();
 
-    //get updated chats
-    const chats = await ChatInq.find().populate({ path: 'inq', select: 'prospect', select: 'listing', populate: { path: 'prospect', select: 'name' } });
-
     //postSlack({ text: 'this is a test' });
     console.log('emiting to client');
-    io.emit('sms', chats );
+    io.emit('sms', chat );
     res.status(200).send('got it!')
   } catch (e) {
     console.error(e.message);
