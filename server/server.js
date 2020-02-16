@@ -47,7 +47,7 @@ app.post('/sms',async (req,res) => {
     if (!pros) { pros = await new RentLeadPros({ phone: { phoneNumber: From } }) };
     let inq = await RentLeadInq.findOne({ 'listing': property, 'prospect': pros._id });
     if (!inq) { inq = await new RentLeadInq({ prospect: pros._id, listing: property }) };
-    let chat = await ChatInq.findOne({ inq: inq._id }).populate({ path: 'inq', select: 'prospect', select: 'listing', populate: { path: 'prospect', select: 'name' } });;
+    let chat = await ChatInq.findOne({ inq: inq._id });
     if (!chat) { chat = await new ChatInq({ inq: inq._id }) };
 
     //update open inq status to engaged
@@ -61,11 +61,10 @@ app.post('/sms',async (req,res) => {
     await chat.save();
 
     //postSlack({ text: 'this is a test' });
-    console.log('emiting to client');
-    io.emit('sms', chat );
+    io.emit('sms', {chat_id: chat._id,message: Body} );
     res.status(200).send('got it!')
   } catch (e) {
-    console.error(e.message);
+    //postSlack({ text: 'this is a test' });
     res.status(400).json({ errors: [{ msg: e }] });
   }
 });
