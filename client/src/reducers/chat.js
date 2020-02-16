@@ -1,4 +1,4 @@
-import { UPDATE_CHATS, OPEN_CHAT, CLOSE_CHAT, OPEN_INQUIRY_CHAT, TOGGLE_OPEN_CHAT, ADD_AND_OPEN_CHAT } from '../actions/type';
+import { UPDATE_CHATS, OPEN_CHAT, CLOSE_CHAT, OPEN_INQUIRY_CHAT, TOGGLE_OPEN_CHAT, ADD_AND_OPEN_CHAT, RECEIVE_MESSAGE } from '../actions/type';
 
 const initialState = {chats: [], openChats: []};
 
@@ -105,6 +105,25 @@ export default function (state = initialState, action) {
               ...state,
               chats: newChats
             }
+        case RECEIVE_MESSAGE:
+          const {chat_id, message} = payload
+          const chatsWithNewMessage = state.chats.map(chat => {
+            if(chat.id == chat_id) {
+              chat.messages.push({
+                userMessage: false,
+                sender: chat.name,
+                content: message,
+                date: new Date()
+              })
+              console.log(chat)
+            }
+            return chat
+          })
+          console.log(chatsWithNewMessage)
+          return {
+            ...state,
+            chats: chatsWithNewMessage
+          }
         default:
             return state;
     }

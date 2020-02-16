@@ -23,12 +23,19 @@ import Profile from './components/custom/profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 import {loadUser} from './actions/auth';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
+import {RECEIVE_MESSAGE} from './actions/type'
+import io from 'socket.io-client';
 
 
 
-const App = ({loadUser}) => {
+const App = ({loadUser, receiveMessage}) => {
   useEffect(() => {loadUser();}, [loadUser]);
+  const socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
+  socket.on('sms', ({chat_id, message}) => {
+    console.log({chat_id, message})
+    receiveMessage({chat_id, message})
+  } )
   return (
     <Router>
       <Fragment>
@@ -63,4 +70,11 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 })
 
-export default connect(mapStateToProps, {loadUser})(App)
+const mapDispatchToProps = dispatch => {
+  return {
+    loadUser,
+    receiveMessage:({chat_id, message}) => dispatch({type: RECEIVE_MESSAGE, payload: {chat_id, message}})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

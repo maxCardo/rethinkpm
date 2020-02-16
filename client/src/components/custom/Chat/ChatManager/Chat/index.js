@@ -8,9 +8,6 @@ import {UPDATE_CHATS} from '../../../../../actions/type'
 export class index extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      messages: props.messages.slice(),
-    }
     this.onSendMessage = this.onSendMessage.bind(this)
     this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
   }
@@ -19,7 +16,7 @@ export class index extends Component {
     return (
       <ChatContainer id={this.props.id} ref={this.chatContainer} open={this.props.open} name={this.props.name} status={this.props.status} onClose={this.props.onClose}>
         <ChatUI 
-          messages={this.state.messages}
+          messages={this.props.messages}
           onSendMessage={this.onSendMessage}
           botOn={this.props.botOn}
         />
