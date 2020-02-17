@@ -28,6 +28,7 @@ export default function (state = initialState, action) {
             toured: [],
             application: [],
             new: [],
+            dead: []
           }
           allInquiries.forEach((lead) => {
             newInquiries[lead.status.currentStatus].push(lead)

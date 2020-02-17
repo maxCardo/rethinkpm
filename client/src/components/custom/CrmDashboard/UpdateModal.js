@@ -49,6 +49,7 @@ export class UpdateModal extends Component {
                 <option value='upcoming'>Upcoming Appointments</option>
                 <option value='application'>Application</option>
                 <option value='toured'>Toured</option>
+                <option value='dead'>Dead</option>
               </Form.Control>
             </Form.Group>
             {this.renderSpecificForm()}
@@ -157,6 +158,9 @@ export class UpdateModal extends Component {
     this.props.handleClose()
   }
   async handleSubmit() {
+    if(this.state.status === 'dead' && !window.confirm('Are you sure you want to set the state of this lead as dead?')) {
+      return
+    }
     const body = JSON.stringify(this.state)
     const config = {headers: {'Content-Type': 'application/json'}};
     const response = await axios.patch(`/api/rent_lead/update_inquiry/${this.props.data._id}`, body, config)
