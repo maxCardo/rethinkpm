@@ -32,9 +32,9 @@ import io from 'socket.io-client';
 const App = ({loadUser, receiveMessage}) => {
   useEffect(() => {loadUser();}, [loadUser]);
   const socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
-  socket.on('sms', ({chat_id, message}) => {
+  socket.on('sms', ({chat_id, message, uuid}) => {
     console.log({chat_id, message})
-    receiveMessage({chat_id, message})
+    receiveMessage({chat_id, message, uuid})
   } )
   return (
     <Router>
@@ -73,7 +73,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     loadUser,
-    receiveMessage:({chat_id, message}) => dispatch({type: RECEIVE_MESSAGE, payload: {chat_id, message}})
+    receiveMessage:({chat_id, message, uuid}) => dispatch({type: RECEIVE_MESSAGE, payload: {chat_id, message, uuid}})
   }
 }
 

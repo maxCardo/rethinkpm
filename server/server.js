@@ -15,6 +15,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const cors = require('cors');
+const uuid = require('uuid/v1');
 
 app.use(cors())
 app.use(cookieParser());
@@ -38,6 +39,7 @@ require('./socket/chat')(io);
 // @desc: recive sms from twilio send to client via websocket
 // @ access: Public
 app.post('/sms',async (req,res) => {
+  console.log('Request received')
 
   let {From, To, Body} = req.body;
   const property = propertyNum[To];
@@ -53,7 +55,7 @@ app.post('/sms',async (req,res) => {
     //update open inq status to engaged
     inq.status.currentStatus = 'engaged'
     //update message
-    chat.messages.push({ message: Body });
+    chat.messages.push({ message: Body, date: new Date(), from:  'User-SMS'});
     //check if bot is on and if so respond
     //if bot is not on notify team via slack
     await pros.save();
@@ -61,7 +63,8 @@ app.post('/sms',async (req,res) => {
     await chat.save();
 
     //postSlack({ text: 'this is a test' });
-    io.emit('sms', {chat_id: chat._id,message: Body} );
+    const messageUuid = uuid()
+    io.emit('sms', {chat_id: chat._id,message: Body, uuid: messageUuid } );
     res.status(200).send('got it!')
   } catch (e) {
     //postSlack({ text: 'this is a test' });

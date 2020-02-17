@@ -106,20 +106,21 @@ export default function (state = initialState, action) {
               chats: newChats
             }
         case RECEIVE_MESSAGE:
-          const {chat_id, message} = payload
+          const {chat_id, message, uuid} = payload
           const chatsWithNewMessage = state.chats.map(chat => {
-            if(chat.id == chat_id) {
+            if(chat.id == chat_id && chat.lastMessageProccessed !== uuid) {
               chat.messages.push({
                 userMessage: false,
                 sender: chat.name,
                 content: message,
                 date: new Date()
               })
-              console.log(chat)
+              chat.lastMessageProccessed = uuid
+              chat.unread = true
             }
             return chat
           })
-          console.log(chatsWithNewMessage)
+          
           return {
             ...state,
             chats: chatsWithNewMessage
