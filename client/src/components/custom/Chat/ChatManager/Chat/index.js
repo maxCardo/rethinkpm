@@ -13,6 +13,10 @@ export class index extends Component {
     }
     this.onSendMessage = this.onSendMessage.bind(this)
     this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
+    this.chatRef = React.createRef()
+  }
+  componentDidMount() {
+    this.scrollToBottom()
   }
   
   render() {
@@ -22,6 +26,7 @@ export class index extends Component {
           messages={this.state.messages}
           onSendMessage={this.onSendMessage}
           botOn={this.props.botOn}
+          chatRef={this.chatRef}
         />
       </ChatContainer>
     )
@@ -49,8 +54,11 @@ export class index extends Component {
     this.socket.emit('ui_msg', {chatID: this.props.id, msg: message})
     this.props.updateChats(chatsMessageAdded)
     this.setState({messages: newMessages})
+    this.scrollToBottom()
+  }
+  scrollToBottom() {
     this.forceUpdate(() => {
-      // this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+      this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
     })
   }
   toggleOpen() {
