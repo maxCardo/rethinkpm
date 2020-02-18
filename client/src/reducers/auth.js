@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT, REGISTER_SUCCESS, REGISTER_FAIL} from '../actions/type';
+import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT, REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_IN_PROGRESS} from '../actions/type';
 
 const initialState = {};
 
@@ -11,7 +11,8 @@ export default function (state = initialState, action) {
                 ...state,
                 user: payload,
                 isAuthenticated: true,
-                loading: false
+                loading: false,
+                loginInProgress: false
             }
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
@@ -19,8 +20,15 @@ export default function (state = initialState, action) {
                 ...state,
                 ...payload,
                 isAuthenticated: true,
-                loading: false
+                loading: false,
+                loginInProgress: false
             };
+        case LOGIN_IN_PROGRESS:
+            console.log('login')
+            return {
+              ...state,
+              loginInProgress: true
+            }
 
         case LOGIN_FAIL:
         case REGISTER_FAIL:    
@@ -29,7 +37,8 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 isAuthenticated: false,
-                loading:false
+                loading:false,
+                loginInProgress: false
             };
 
         default:

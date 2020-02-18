@@ -5,7 +5,7 @@ export class AddRecordModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      logType: 'log'
+      type: 'note'
     }
     this.handleClose = this.handleClose.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -20,8 +20,7 @@ export class AddRecordModal extends Component {
           <Form>
             <Form.Group controlId="updateForm.worflow">
               <Form.Label>Type of Log: </Form.Label>
-              <Form.Control as="select" value={this.state.logType} onChange={this.handleChange.bind(this, 'logType')}>
-                <option value='log'>Log</option>
+              <Form.Control as="select" value={this.state.type} onChange={this.handleChange.bind(this, 'type')}>
                 <option value='note'>Note</option>
                 <option value='request'>Request</option>
               </Form.Control>
@@ -48,6 +47,11 @@ export class AddRecordModal extends Component {
   }
   handleSubmit() {
     console.log(this.state)
+    const data = Object.assign({
+      date: new Date(),
+      user: 'Admin'
+    }, this.state)
+    this.props.handleSubmit(data)
     this.handleClose()
   }
   handleClose() {
@@ -56,7 +60,7 @@ export class AddRecordModal extends Component {
       for(let property in prevState) {
         newState[property] = undefined
       }
-      newState.logType = 'log'
+      newState.type = 'note'
       return newState
     })
     this.props.handleClose()

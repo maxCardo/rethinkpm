@@ -24,10 +24,10 @@ export class index extends Component {
     if(!this.props.chats || !this.props.chats.length) {
       this.getChats()
     }
-    this.forceUpdate(() => {
-      this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
-    })
-    
+    this.scrollToBottom = this.scrollToBottom.bind(this)
+  }
+  componentDidMount() {
+    this.scrollToBottom()
   }
   async getChats() {
     axios.get('/api/rent_lead/chats').then((res) => {
@@ -80,8 +80,13 @@ export class index extends Component {
   }
   addChat(indexOfContact) {
     this.setState({activeChat: indexOfContact})
+    this.scrollToBottom()
+  }
+  scrollToBottom() {
     this.forceUpdate(() => {
-      this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+      if(this.chatRef.current) {
+        this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+      }
     })
   }
   sendMessage(messageContent) {
@@ -98,12 +103,10 @@ export class index extends Component {
       date: new Date()
     }
     const chat = chats[this.state.activeChat]
-
-    this.socket.emit('ui_msg', {chatID: chat.id, phoneNumber: '0034644494894', msg: message})
+    console.log(chat)
+    this.socket.emit('ui_msg', {chatID: chat.id, msg: message})
     this.props.updateChats(chats)
-    this.forceUpdate(() => {
-      this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
-    })
+    this.scrollToBottom()
   }
 }
 

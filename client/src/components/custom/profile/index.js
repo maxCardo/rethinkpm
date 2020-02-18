@@ -43,7 +43,7 @@ const Profile = props => {
                 </div>
               </Resizable>
               <div className='profile__logs-container'>
-                <ProfileTables />
+                <ProfileTables inquiryId={id}/>
               </div>
             </div>
             <div className='profile__chat-container'>

@@ -15,6 +15,7 @@ export class TableWithSearch extends Component {
     this.handleSearch = this.handleSearch.bind(this)
     this.handleAdd = this.handleAdd.bind(this)
     this.handleClose = this.handleClose.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   render() {
     return (
@@ -25,8 +26,10 @@ export class TableWithSearch extends Component {
           </Button>
           <Form.Control className='table-with-search__search-input' onChange={this.handleSearch}/>
         </div>
-        <Table {...this.props}  filter={this.state.searchString}   />
-        <AddRecordModal show={this.state.showModal} handleClose={this.handleClose}/>
+        <div className='table-with-search__table'>
+          <Table {...this.props}  filter={this.state.searchString}   />
+        </div>
+        <AddRecordModal show={this.state.showModal} handleClose={this.handleClose} handleSubmit={this.handleSubmit}/>
       </div>
     )
   }
@@ -39,6 +42,9 @@ export class TableWithSearch extends Component {
   }
   handleClose() {
     this.setState({showModal: false})
+  }
+  handleSubmit(data) {
+    this.props.handleSubmit(data)
   }
 }
 
