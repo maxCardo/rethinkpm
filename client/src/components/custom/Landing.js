@@ -11,7 +11,7 @@ const Landing = ({loadUser, isAuthenticated}) => {
 
     //check token and redirect if logged in
     useEffect(() => {loadUser();},[loadUser]);
-    if (isAuthenticated) { return <Redirect to='/dashboard' /> }
+    if (isAuthenticated) { return <Redirect to='/crm' /> }
     
     return (
         <section className="landing">
