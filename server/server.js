@@ -4,14 +4,18 @@ const path = require('path');
 
 const trigger = require('./triggers/rentLead');
 const dbConnect = require('./db/db');
-const pros = require('./db/models/prospects/RentLeads/RentLeadPros');
-const inq = require('./db/models/prospects/RentLeads/RentLeadInq');
+const RentLeadPros = require('./db/models/prospects/RentLeads/RentLeadPros');
+const RentLeadInq = require('./db/models/prospects/RentLeads/RentLeadInq');
+const ChatInq  = require('./db/models/prospects/RentLeads/chat');
 const { postSlack } = require('./3ps/slack');
+//ToDo: change to call to DB once property table is created
+const { propertyNum } = require('./3ps/calandly');
 
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const cors = require('cors');
+const uuid = require('uuid/v1');
 
 app.use(cors())
 app.use(cookieParser());
@@ -35,40 +39,35 @@ require('./socket/chat')(io);
 // @desc: recive sms from twilio send to client via websocket
 // @ access: Public
 app.post('/sms',async (req,res) => {
-  let { From } = req.body;
+  console.log('Request received')
+
+  let {From, To, Body} = req.body;
+  const property = propertyNum[To];
 
   try {
-    //get user based on from #
-    //get property inquiring about via "from" number
-    //check for active inq for that property/user update status to engageed,
+    let pros = await RentLeadPros.findOne({ 'phone.phoneNumber': From })
+    if (!pros) { pros = await new RentLeadPros({ phone: { phoneNumber: From } }) };
+    let inq = await RentLeadInq.findOne({ 'listing': property, 'prospect': pros._id });
+    if (!inq) { inq = await new RentLeadInq({ prospect: pros._id, listing: property }) };
+    let chat = await ChatInq.findOne({ inq: inq._id });
+    if (!chat) { chat = await new ChatInq({ inq: inq._id }) };
 
-    //if one no user or inq found? why would this be??
-    
-    //emit incoming sms to UI
-
-    //send to dialogflow await response,
-      //send DF res via sms, 
-      //emit res to ui, 
-      //send incoming sms to slack if fail, etc
-    
-
-
-    const lead = await pros.findOne({ 'phone.phoneNumber': From })
-    const allInqs = await inq.find({ prospect: lead._id});
-    //TO DO: need to understand what listing they are contacting we can do this by having dedicated numbers for each listing
-    console.log(allInqs);
     //update open inq status to engaged
-    allInqs.map(lead => {
-      lead.status.currentStatus = 'engaged'
-      lead.save()
-    })
+    inq.status.currentStatus = 'engaged'
+    //update message
+    chat.messages.push({ message: Body, date: new Date(), from:  'User-SMS'});
     //check if bot is on and if so respond
     //if bot is not on notify team via slack
+    await pros.save();
+    await inq.save();
+    await chat.save();
+
     //postSlack({ text: 'this is a test' });
-    io.emit('test', { msg: 'test message from api from main page' });
-    res.send(From);
+    const messageUuid = uuid()
+    io.emit('sms', {chat_id: chat._id,message: Body, uuid: messageUuid } );
+    res.status(200).send('got it!')
   } catch (e) {
-    console.error(e.message);
+    //postSlack({ text: 'this is a test' });
     res.status(400).json({ errors: [{ msg: e }] });
   }
 });
