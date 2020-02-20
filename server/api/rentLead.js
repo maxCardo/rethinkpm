@@ -96,7 +96,7 @@ router.get('/open_leads', async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.patch('/update_inquiry/:inq_id', async (req, res) => {
     try {
-        const inq = await RentLeadInq.findById(req.params.inq_id);
+        const inq = await RentLeadInq.findById(req.params.inq_id).populate({path:'prospect'})
         const {status} = req.body;
         if(status) {
           inq.status.currentStatus = status;
