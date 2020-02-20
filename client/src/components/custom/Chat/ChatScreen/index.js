@@ -69,6 +69,7 @@ export class index extends Component {
               onSendMessage={this.sendMessage}
               chatRef={this.chatRef}
               botOn={this.props.chats[this.state.activeChat].botOn}
+              scrollToBottom={this.scrollToBottom}
             />
           </div>
           <div className='col-sm-3'>
