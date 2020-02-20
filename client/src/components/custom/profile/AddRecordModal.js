@@ -46,7 +46,6 @@ export class AddRecordModal extends Component {
     this.setState({[property]: e.target.value})
   }
   handleSubmit() {
-    console.log(this.state)
     const data = Object.assign({
       date: new Date(),
       user: 'Admin'

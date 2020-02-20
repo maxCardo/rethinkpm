@@ -10,19 +10,14 @@ export class ProfileInfo extends Component {
   componentDidMount() {
     const inquiryId = this.props.inquiryId
     let profileInfo
-    console.log(inquiryId)
     for(let type in this.props.inquiries) {
-      console.log(type)
       profileInfo = this.props.inquiries[type].find((inquiry) => inquiry._id === inquiryId)
-      console.log(profileInfo)
       if(profileInfo) {
         break
       } 
     }
     this.setState({profileInfo})
     this.profileInfo = profileInfo
-    console.log('Profile info ')
-    console.log(profileInfo)
 
   }
   render() {
