@@ -32,7 +32,7 @@ export class ProfileTables extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   render() {
-    const logs = this.props.data[this.props.inquiryId]
+    let logs = this.props.data[this.props.inquiryId] || []
     const notes = logs.filter((log) => log.type === 'note')
     const requests = logs.filter((log) => log.type === 'request')
     return (
