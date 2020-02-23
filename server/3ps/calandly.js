@@ -5,10 +5,7 @@ const availabilityLink = {
 }
 
 const propertyNum = {
-    "+14124447505": "test3",
-    "+14124447505":"test2",
-    "+14124447505":"test1",
-    "1234": "1500 Fallowfield Avenue" 
+    "+14124447505":"1500 Fallowfield Avenue"
 }
 
 module.exports = { availabilityLink, propertyNum }
