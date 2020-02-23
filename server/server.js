@@ -44,6 +44,11 @@ app.post('/sms',async (req,res) => {
   let {From, To, Body} = req.body;
   const property = propertyNum[To];
 
+  console.log('proerty:' ,property);
+  console.log('From:', From);
+
+
+
   try {
     let pros = await RentLeadPros.findOne({ 'phone.phoneNumber': From })
     if (!pros) { pros = await new RentLeadPros({ phone: { phoneNumber: From } }) };
