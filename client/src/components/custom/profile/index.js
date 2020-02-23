@@ -39,7 +39,7 @@ const Profile = props => {
                 }}
               >
                 <div className='profile__info-container' >
-                  <ProfileInfo data={data}/>
+                  <ProfileInfo inquiryId={id}/>
                 </div>
               </Resizable>
               <div className='profile__logs-container'>
@@ -54,8 +54,7 @@ const Profile = props => {
     )
 }
 
-Profile.propTypes = {
 
-}
+
 
 export default Profile

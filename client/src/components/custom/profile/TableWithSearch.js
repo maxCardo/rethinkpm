@@ -37,7 +37,6 @@ export class TableWithSearch extends Component {
     this.setState({showModal: true})
   }
   handleSearch(e) {
-    console.log(e.target.value)
     this.setState({searchString: e.target.value})
   }
   handleClose() {

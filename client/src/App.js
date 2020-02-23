@@ -33,7 +33,6 @@ const App = ({loadUser, receiveMessage}) => {
   useEffect(() => {loadUser();}, [loadUser]);
   const socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
   socket.on('sms', ({chat_id, message, uuid}) => {
-    console.log({chat_id, message})
     receiveMessage({chat_id, message, uuid})
   } )
   return (

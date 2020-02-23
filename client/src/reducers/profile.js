@@ -31,7 +31,11 @@ export default function (state = initialState, action) {
     switch (type) {
       case SUBMIT_LOG:
         const logs = Object.assign({}, state.logs)
+        if(!logs[payload.inquiryId]) {
+          logs[payload.inquiryId] = []
+        }
         logs[payload.inquiryId].push(payload.data)
+
         return {
           ...state,
           logs

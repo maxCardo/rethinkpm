@@ -11,11 +11,11 @@ export class index extends Component {
     this.onSendMessage = this.onSendMessage.bind(this)
     this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
     this.chatRef = React.createRef()
+    this.scrollToBottom = this.scrollToBottom.bind(this)
   }
   componentDidMount() {
     this.scrollToBottom()
   }
-  
   render() {
     return (
       <ChatContainer id={this.props.id} ref={this.chatContainer} open={this.props.open} name={this.props.name} status={this.props.status} onClose={this.props.onClose}>
@@ -24,6 +24,7 @@ export class index extends Component {
           onSendMessage={this.onSendMessage}
           botOn={this.props.botOn}
           chatRef={this.chatRef}
+          scrollToBottom={this.scrollToBottom}
         />
       </ChatContainer>
     )

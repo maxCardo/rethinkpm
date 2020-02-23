@@ -5,6 +5,12 @@ import ChatInput from './ChatInput'
 import './common.css'
 
 export class ChatUI extends Component {
+  componentDidUpdate() {
+    if(this.lastLengthUpdated !== this.props.messages.length) {
+      this.props.scrollToBottom()
+    }
+    this.lastLengthUpdated = this.props.messages.length
+  }
   render() {
     return (
       <div className='chat-ui__container'>

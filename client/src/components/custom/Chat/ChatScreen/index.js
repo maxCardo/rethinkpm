@@ -55,7 +55,6 @@ export class index extends Component {
       })
   }
   render() {
-    console.log(this.props.chats[this.state.activeChat])
     if(!this.props.chats || !this.props.chats.length) return "";
     return (
       <div className='container-fluid h-100'>
@@ -69,6 +68,7 @@ export class index extends Component {
               onSendMessage={this.sendMessage}
               chatRef={this.chatRef}
               botOn={this.props.chats[this.state.activeChat].botOn}
+              scrollToBottom={this.scrollToBottom}
             />
           </div>
           <div className='col-sm-3'>
@@ -103,7 +103,6 @@ export class index extends Component {
       date: new Date()
     }
     const chat = chats[this.state.activeChat]
-    console.log(chat)
     this.socket.emit('ui_msg', {chatID: chat.id, msg: message})
     this.props.updateChats(chats)
     this.scrollToBottom()
