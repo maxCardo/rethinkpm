@@ -35,56 +35,70 @@ app.use('/api/3ps',(req,res,next) => {req.io = {io:io}, next()}, require('./api/
 //Socket.io socket and API calls
 require('./socket/chat')(io);
 
+
 // @route: Post /sms;
 // @desc: recive sms from twilio send to client via websocket
 // @ access: Public
 app.post('/sms',async (req,res) => {
-  console.log('Request received')
-
-  let {From, To, Body} = req.body;
-  const property = propertyNum[To];
-
-  console.log('proerty:' ,property);
-  console.log('From:', From);
-
-
-
+  if (Object.keys(req.body).length === 0 ) {
+    return res.status(400).send()
+  }
   try {
-    let pros = await RentLeadPros.findOne({ 'phone.phoneNumber': From })
-    if (!pros) { pros = await new RentLeadPros({ phone: { phoneNumber: From } }) };
-    let inq = await RentLeadInq.findOne({ 'listing': property, 'prospect': pros._id });
-    if (!inq) { inq = await new RentLeadInq({ prospect: pros._id, listing: property }) };
-    let chat = await ChatInq.findOne({ inq: inq._id });
-    if (!chat) { chat = await new ChatInq({ inq: inq._id }) };
-
-    //update open inq status to engaged
-    inq.status.currentStatus = 'engaged'
-    //update message
-    chat.messages.push({ message: Body, date: new Date(), from:  'User-SMS'});
-    //check if bot is on and if so respond
-    //if bot is not on notify team via slack
-    await pros.save();
-    await inq.save();
-    await chat.save();
-
-    //postSlack({ text: 'this is a test' });
-    const messageUuid = uuid()
-    io.emit('sms', {chat_id: chat._id,message: Body, uuid: messageUuid } );
-    res.status(200).send('got it!')
+    await receiveSMS(req.body)
+    res.status(200).send()
   } catch (e) {
     //postSlack({ text: 'this is a test' });
     res.status(400).json({ errors: [{ msg: e }] });
   }
 });
 
+// @route: GET /sms;
+// @desc: recive sms from twilio send to client via websocket
+// @ access: Public
+app.get('/sms_secondary', async (req,res) => {
+  try {
+    await receiveSMS(req.query)
+    res.status(200).send()
+  } catch (e) {
+    //postSlack({ text: 'this is a test' });
+    res.status(400).json({ errors: [{ msg: e }] });
+  }
+})
+
+//repeted function of sms api call. post called is preferd but do to missing data get call is backup
+const receiveSMS = async (data) => {
+
+  let { From, To, Body } = data;
+  const property = propertyNum[To];
+
+  let pros = await RentLeadPros.findOne({ 'phone.phoneNumber': From })
+  if (!pros) { pros = await new RentLeadPros({ phone: { phoneNumber: From } }) };
+  let inq = await RentLeadInq.findOne({ 'listing': property, 'prospect': pros._id });
+  if (!inq) { inq = await new RentLeadInq({ prospect: pros._id, listing: property }) };
+  let chat = await ChatInq.findOne({ inq: inq._id });
+  if (!chat) { chat = await new ChatInq({ inq: inq._id }) };
+
+  //update open inq status to engaged
+  inq.status.currentStatus = 'engaged'
+  //update message
+  chat.messages.push({ message: Body, date: new Date(), from: 'User-SMS' });
+  //check if bot is on and if so respond
+  //if bot is not on notify team via slack
+  await pros.save();
+  await inq.save();
+  await chat.save();
+
+  //postSlack({ text: 'this is a test' });
+  const messageUuid = uuid()
+  io.emit('sms', { chat_id: chat._id, message: Body, uuid: messageUuid });  
+}
+
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 
   app.get('*', (req, res) => {
-    console.log('it enters')
     const file = path.join(__dirname+'/../client/build/index.html')
-    console.log(file)
     res.sendFile(file);
 
   });

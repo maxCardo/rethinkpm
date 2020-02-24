@@ -42,9 +42,7 @@ router.get('/',auth, (req,res) => {
 // @desc: log in user
 // @ access: Public
 router.post('/login', async (req,res) => {
-  console.log('fire user route');
   const {email, password} = req.body;
-  console.log(email, password)
   try {
     let user = await User.findOne({email});
     if (!user) {return res.status(400).json({errors:[{msg:'Invalid User Name'}]})};
