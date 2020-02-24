@@ -4,7 +4,6 @@ const {sendEmail} = require('../3ps/email')
 
 const chat = (io) => {
     io.sockets.on('connection', (socket) => {
-        console.log('user connnected');
 
         socket.on('testOn', (data) => {
             console.log(data);
