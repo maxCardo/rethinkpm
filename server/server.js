@@ -40,7 +40,7 @@ require('./socket/chat')(io);
 // @desc: recive sms from twilio send to client via websocket
 // @ access: Public
 app.post('/sms',async (req,res) => {
-  if (Object.keys(req.body).length === 0 ) {
+  if (Object.keys(req.body.Body).length === 0 ) {
     return res.status(400).send()
   }
   try {
