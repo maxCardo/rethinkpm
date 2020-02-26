@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
@@ -17,6 +18,8 @@ const io = require('socket.io').listen(server);
 const cors = require('cors');
 const uuid = require('uuid/v1');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors())
 app.use(cookieParser());
 
@@ -40,10 +43,12 @@ require('./socket/chat')(io);
 // @desc: recive sms from twilio send to client via websocket
 // @ access: Public
 app.post('/sms',async (req,res) => {
-  if (Object.keys(req.body.Body).length === 0 ) {
+  console.log(req.body);
+  if (Object.keys(req.body).length === 0 ) {
     return res.status(400).send()
   }
   try {
+    console.log('post call works!');
     await receiveSMS(req.body)
     res.status(200).send()
   } catch (e) {
