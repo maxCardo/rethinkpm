@@ -34,8 +34,7 @@ export class Tables extends Component {
         {
           accessor: 'status.scheduled.schDate',
           label: 'Appointment',
-          mapper: (data) => data === 'undefined' ? 'No Appointment' : 'date error'
-          //new Intl.DateTimeFormat().format(new Date(data))
+          mapper: (data) => (data === 'undefined' || data === 'null' || !data) ? 'No Appointment' : new Intl.DateTimeFormat().format(new Date(data))
         },
         {
           accessor: 'status.toured.tourRes',
@@ -80,6 +79,7 @@ export class Tables extends Component {
     } 
   }
   render() {
+    console.log(this.state.filteredData)
     return (
       <div>
         <div className='searchContainer'>
