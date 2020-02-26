@@ -24,7 +24,7 @@ export class Tables extends Component {
         {
           accessor: 'prospect.phone.phoneNumber',
           label: 'Phone',
-          mapper: (data) => `(${data.substring(1,4)}) ${data.substring(4,7)}-${data.substring(7)}`
+          mapper: this.formatPhoneNumber
         },
         {
           accessor: 'status.lastActive',
@@ -64,6 +64,13 @@ export class Tables extends Component {
       filteredData: this.props.data
     }
     this.handleModalClose = this.handleModalClose.bind(this)
+  }
+  formatPhoneNumber(data) {
+    if(data.length > 10) {
+      `(${data.substring(1,4)}) ${data.substring(4,7)}-${data.substring(7)}`
+    } else {
+      `(${data.substring(0,3)}) ${data.substring(3,6)}-${data.substring(6)}`
+    }
   }
   static getDerivedStateFromProps(props, state) {
     const filteredData = {}
