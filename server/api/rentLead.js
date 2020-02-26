@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
         phoneNumber ? pros = await RentLeadPros.findOne({ 'phone.phoneNumber': phoneNumber }) : pros = await RentLeadPros.findOne({email:email})    
         
         if (!pros) {
-            console.log('if pros fired')
             pros = await new RentLeadPros({
                 name,
                 email,
@@ -37,8 +36,6 @@ router.post('/', async (req, res) => {
             });
         };
 
-        console.log(pros);
-
         // validate phone number
         if (phoneNumber) pros.phone.phoneType = await validateNum(phoneNumber);
 
@@ -46,7 +43,6 @@ router.post('/', async (req, res) => {
         let inq = await RentLeadInq.findOne({prospect:pros._id, listing:property});
 
         if (!inq) {
-            console.log('if inq fired')
             inq = await new RentLeadInq({
                 prospect: pros._id,
                 listing: property,
@@ -138,7 +134,6 @@ router.patch('/update_inquiry/:inq_id', async (req, res) => {
 // @desc: update record when tour is scheduled
 // @ access: Public * ToDo: update to make private
 router.patch('/sch_form', async (req, res) => {
-   console.log('sch_form api fired');
    try {
        const record = await RentLead.findOneAndUpdate({'phoneNumber': req.body.phoneNumber }, { $set: {schDate: req.body.schDate}},{new:true});
        res.status(200).send(record);
