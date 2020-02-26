@@ -80,6 +80,7 @@ export class Tables extends Component {
     } 
   }
   render() {
+    console.log(this.state.filteredData)
     return (
       <div>
         <div className='searchContainer'>
