@@ -34,7 +34,7 @@ export class Tables extends Component {
         {
           accessor: 'status.scheduled.schDate',
           label: 'Appointment',
-          mapper: (data) => console.log(data) || data ? new Intl.DateTimeFormat().format(new Date(data)) : 'No Appointment'
+          mapper: (data) => (data === 'undefined' && data === 'null') ? 'No Appointment' : new Intl.DateTimeFormat().format(new Date(data))
         },
         {
           accessor: 'status.toured.tourRes',
