@@ -67,9 +67,9 @@ export class Tables extends Component {
   }
   formatPhoneNumber(data) {
     if(data.length > 10) {
-      `(${data.substring(1,4)}) ${data.substring(4,7)}-${data.substring(7)}`
+      return `(${data.substring(1,4)}) ${data.substring(4,7)}-${data.substring(7)}`
     } else {
-      `(${data.substring(0,3)}) ${data.substring(3,6)}-${data.substring(6)}`
+      return `(${data.substring(0,3)}) ${data.substring(3,6)}-${data.substring(6)}`
     }
   }
   static getDerivedStateFromProps(props, state) {
