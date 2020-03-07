@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import {UPDATE_CHATS} from '../../../../../actions/type'
 
-export class index extends Component {
+export class Chat extends Component {
   constructor(props) {
     super(props);
     this.onSendMessage = this.onSendMessage.bind(this)
@@ -76,4 +76,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(index)
+export default connect(mapStateToProps, mapDispatchToProps)(Chat)

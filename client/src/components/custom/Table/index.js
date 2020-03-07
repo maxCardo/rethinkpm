@@ -19,7 +19,7 @@ export class Table extends Component {
     this.filter = this.props.filter ? this.props.filter : '' 
     this.sortDirectionsInitial = this.props.headers.map(() => 'notSorted')
     this.pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
-    let sortedData = this.props.data.slice()
+    let sortedData = this.props.data.slice();
     if(props.sortBy) {
       const sortBy = props.sortBy
       sortedData.sort((a, b) => {
@@ -44,6 +44,7 @@ export class Table extends Component {
     this.changePage = this.changePage.bind(this)
   }
   static getDerivedStateFromProps(props, state) {
+    const x = this.a.b
     let data = props.data
     const pageSize = props.pageSize ? props.pageSize : Infinity;
     const headers = props.headers.map((header) => {
