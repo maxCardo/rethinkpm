@@ -44,7 +44,6 @@ export class Table extends Component {
     this.changePage = this.changePage.bind(this)
   }
   static getDerivedStateFromProps(props, state) {
-    const x = this.a.b
     let data = props.data
     const pageSize = props.pageSize ? props.pageSize : Infinity;
     const headers = props.headers.map((header) => {
