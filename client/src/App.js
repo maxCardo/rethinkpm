@@ -40,7 +40,7 @@ const App = ({loadUser, receiveMessage}) => {
       <Fragment>
         <Navbar/>
         <Route exact path ='/' component = {Landing}/>
-        <section className ='container-b' style={{position: 'relative'}}>
+        <section className ='container-b' style={{position: 'relative', overflow: 'hidden'}}>
           <Alert/>
           <Switch>
             <Route exact path = '/login' component = {Login}/>
