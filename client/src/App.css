@@ -98,6 +98,7 @@ img
   --light: #f4f4f4;
   --danger: #dc3545;
   --success: #28a745;
+  --warning: #ffc107;
 }
 
 * {
@@ -291,6 +292,30 @@ img {
   background: var(--success);
   color: #fff;
 }
+
+.btn-warning,
+.bg-warning,
+.badge-warning,
+.alert-warning {
+  background: var(--warning);
+  color: #fff;
+}
+
+.btn-warning:active {
+  color: #fff;
+}
+
+.btn-warning:focus {
+  color: #fff;
+}
+.btn-warning:not(:disabled):not(.disabled):active{
+  color: #fff;
+} 
+
+.btn-warning:hover {
+  color: #fff;
+}
+
 
 .btn-white,
 .bg-white,

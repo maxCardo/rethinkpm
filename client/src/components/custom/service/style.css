@@ -1,0 +1,24 @@
+.service-list__button-group .btn {
+  margin-right: 0;
+}
+
+.btn-success.inactive {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+  opacity: 0.65;
+}
+
+.btn-warning.inactive {
+  color: #fff;
+  background-color: #ffc107;
+  border-color: #ffc107;
+  opacity: 0.65;
+}
+
+.btn-danger.inactive {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  opacity: 0.65;
+}

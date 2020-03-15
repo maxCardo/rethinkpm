@@ -1,97 +1,145 @@
-import React from 'react'
+import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types'
+import Table from '../Table'
+import {ButtonGroup, Button} from 'react-bootstrap'
+import './style.css'
 
-let tempData = {
-    tenant:{
-        "_id": "1234",
-        "name": "Bob",
-        "email": "bob@jkhjh.com",
-        "phone": "4126389232",
-        "property": "1214 Wynne Ave",
-        "address": "1214 Wynne Ave",
-        "zip": "",
-        "unitNum":"2"
-    },
-
-    request:{
-        "createDate": "01/1/2019",
-        "reqMadeBy": "1234", // req user ID
-        "svcType": "General_Maintenance",
-        "serviceType": "General_Maintenance",
-        "serviceDiscription": "Clogged gutters",
-        "serviceDate": "1563207966753",
-        "avail": [ "13","21",],
-        "status": "Requested",
-        "nextStatusDate": "1/1/2019",
-        "activity": [
-        
-            {
-                "Date": "1/1/2019",
-                "activity": "Terrence Denne selected as vendor and email sent to dennehandyman@gmail.com"
-            }
-        ]
-    }
-} 
-
-const ServiceList = props => {
-
-    return (
-        <div className='table-div'>
-            <div className='table-filter'>
-                <select className = 'input-sm'>
-                    <option value="">---select property---</option>
-                    <option value="">propertyone</option>
-                    <option value="">propertyTwo</option>
-                </select>
-                <input type="text"  id="searchBox" name="searchBox" className = 'input-sm' placeholder="Search Name or Phone Number ..."/>
-            </div>
-            <table className = 'table table-striped'>
-                <thead>
-                    <tr>
-                        <th scope="col" >#</th>
-                        <th scope="col" >Date Created</th>
-                        <th scope="col">Unit/Prop</th>
-                        <th scope="col">Req Name</th>
-                        <th scope="col">Service Type</th>
-                        <th scope="col" >Status</th>
-                        <th scope="col" >Status Date</th>
-                        <th scope="col">Closed</th>
-                        <th scope="col" >Chat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><i className="fas fa-file-alt"></i></td>
-                        <td>{tempData.request.createDate}</td>
-                        <td>{tempData.tenant.unitNum ? tempData.tenant.property +' - '+ tempData.tenant.unitNum : tempData.tenant.property }</td>
-                        <td>{tempData.tenant.name}</td>
-                        <td>{tempData.request.serviceType}</td>
-                        <td>{tempData.request.status}</td>
-                        <td>status date</td>
-                        <td>Closed Date</td>
-                        <td><i className="far fa-comments"></i></td>
-                    </tr>
-                    <tr>
-                        <td><Link to='/serviceTicket'><i className="far fa-file-alt"></i></Link></td>
-                        <td>{tempData.request.createDate}</td>
-                        <td>{tempData.tenant.unitNum ? tempData.tenant.property + ' - ' + tempData.tenant.unitNum : tempData.tenant.property}</td>
-                        <td>{tempData.tenant.name}</td>
-                        <td>{tempData.request.serviceType}</td>
-                        <td>{tempData.request.status}</td>
-                        <td>status date</td>
-                        <td>Closed Date</td>
-                        <td><Link to='/serviceReq'><i className="far fa-comments"></i></Link></td>
-                    </tr>
-                </tbody>
-            </table>
-            
+export default class ServiceList extends Component {
+  constructor(props) {
+    super(props)
+    this.headers = [
+      {
+        accessor: 'type',
+        label: 'Type',
+      },
+      {
+        accessor: 'created',
+        label: 'Created Date',
+        mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
+      },
+      {
+        accessor: 'madeBy',
+        label: 'Request Made By',
+      },
+      {
+        accessor: 'serviceType',
+        label: 'Service Type'
+      },
+      {
+        accessor: 'status',
+        label: 'Status'
+      },
+      {
+        accessor: 'statusDate',
+        label: 'Status Date',
+        mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
+      },
+      {
+        accessor: 'closed',
+        label: 'Closed',
+        mapper: (data) => data ? 'Not Closed yet' : new Intl.DateTimeFormat().format(new Date(data)) 
+      },
+      {
+        reactComponent: true,
+        label: 'Actions',
+        sortable: false,
+        render: (row) =>
+        <div>
+          <div>
+            <Link className='service__action-button' to={`/service/${row._id}`}>
+              <i class="fas fa-ellipsis-h"></i>
+            </Link>
+          </div>
         </div>
+      },
+    ]
+    this.services = [
+      {
+        created: new Date(),
+        unit: '1214 Wynne Ave',
+        madeBy: 'Bob',
+        serviceType: 'General Maintenance',
+        status: 'requested',
+        statusDate: new Date(),
+        closed: undefined,
+        type: 'service'
+      },
+    ]
+    this.tasks = [
+      {
+        created: new Date(),
+        unit: '1214 Wynne Ave',
+        madeBy: 'Bob',
+        serviceType: 'General Maintenance',
+        status: 'requested',
+        statusDate: new Date(),
+        closed: undefined,
+        type:'task'
+      },
+      {
+        created: new Date(),
+        unit: '1214 Wynne Ave',
+        madeBy: 'Bob',
+        serviceType: 'General Maintenance',
+        status: 'requested',
+        statusDate: new Date(),
+        closed: undefined,
+        type:'task'
+      },
+      {
+        created: new Date(),
+        unit: '1214 Wynne Ave',
+        madeBy: 'Bob',
+        serviceType: 'General Maintenance',
+        status: 'requested',
+        statusDate: new Date(),
+        closed: undefined,
+        type:'task'
+      },
+    ]
+    this.servicesAndTasks = this.services.concat(this.tasks)
+    this.data = {
+      all: this.servicesAndTasks,
+      services: this.services,
+      tasks: this.tasks
+    }
+    this.state = {
+      filterString: '',
+      data: this.servicesAndTasks,
+      activeData: 'all'
+    }
+    this.changeActiveData = this.changeActiveData.bind(this)
+  }
+  render() {
+    return (
+      <div>
+        <div className='service-list__button-group'>
+          <ButtonGroup>
+            <button className={`btn btn-success ${this.state.activeData !== 'all' ? 'inactive' : ''}`} onClick={() => this.changeActiveData('all')}>All</button>
+            <button className={`btn btn-warning ${this.state.activeData !== 'services' ? 'inactive' : ''}`} onClick={() => this.changeActiveData('services')}>Services</button>
+            <button className={`btn btn-danger ${this.state.activeData !== 'tasks' ? 'inactive' : ''}`} onClick={() => this.changeActiveData('tasks')}>Tasks</button>
+          </ButtonGroup>
+        </div>
+        <div className='searchContainer'>
+          <input className='form-control searchInput' tabIndex={0} onChange={(e) => this.setState({filterString: e.target.value})} placeholder='Search'></input>
+        </div>
+        <Table 
+          data={this.state.data} 
+          headers={this.headers} 
+          sorting={true}
+          fontSize={12}
+          pageSize={20}
+          filter={this.state.filterString}
+        />
+      </div>
     )
+  }
+  changeActiveData(activeData) {
+    console.log(activeData)
+    this.setState({
+      activeData,
+      data: this.data[activeData]
+    })
+  }
 }
-
-ServiceList.propTypes = {
-
-}
-
-export default ServiceList
