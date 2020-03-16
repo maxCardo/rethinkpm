@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './CrmDashboard.css'
 
 export class Properties extends Component {
   constructor(props) {
@@ -12,25 +13,32 @@ export class Properties extends Component {
   }
   render() {
     return (
-      <ul className='list-group propertyList'>
-        {this.props.properties.map((property, index) => (
-          <li className='list-group-item' key={`property-${index}`}>
-            <div className="form-check">
-              <input 
-                className="form-check-input" 
-                type="checkbox" 
-                value={property} 
-                id="defaultCheck1"
-                checked={this.state.propertiesChecked.includes(property)} 
-                onChange={this.onChange.bind(this)}
-              />
-              <label className="form-check-label" htmlFor="defaultCheck1">
-                {property}
-              </label>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className='properties__container'>
+        <div onClick={this.props.toggleOpen} className='properties__toggle'>
+          Properties
+        </div>
+        <div className='properties__list'>
+          <ul className='list-group propertyList' style={{display: this.props.open ? 'block' : 'none'}}>
+            {this.props.properties.map((property, index) => (
+              <li className='list-group-item' key={`property-${index}`}>
+                <div className="form-check">
+                  <input 
+                    className="form-check-input" 
+                    type="checkbox" 
+                    value={property} 
+                    id="defaultCheck1"
+                    checked={this.state.propertiesChecked.includes(property)} 
+                    onChange={this.onChange.bind(this)}
+                  />
+                  <label className="form-check-label" htmlFor="defaultCheck1">
+                    {property}
+                  </label>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     )
   }
   onChange(e) {
