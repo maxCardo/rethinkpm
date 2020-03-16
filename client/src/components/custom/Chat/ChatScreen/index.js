@@ -9,7 +9,7 @@ import axios from 'axios';
 
 import './chat-screen.css'
 
-export class index extends Component {
+export class ChatScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -121,4 +121,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(index)
+export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen)

@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
@@ -17,6 +18,8 @@ const io = require('socket.io').listen(server);
 const cors = require('cors');
 const uuid = require('uuid/v1');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors())
 app.use(cookieParser());
 
@@ -29,6 +32,7 @@ app.use(express.json({extended:false}));
 //api routes
 app.use('/api/users', require('./api/users'));
 app.use('/api/rent_lead', require('./api/rentLead'));
+app.use('/api/tasks', require('./api/tasks'));
 app.use('/api/3ps',(req,res,next) => {req.io = {io:io}, next()}, require('./api/3ps'));
 
 
@@ -44,6 +48,7 @@ app.post('/sms',async (req,res) => {
     return res.status(400).send()
   }
   try {
+    console.log('post call works!');
     await receiveSMS(req.body)
     res.status(200).send()
   } catch (e) {

@@ -13,9 +13,11 @@ export class CrmDashboard extends Component {
     super(props)
     this.state = {
       propertiesFilter: [],
-      data: undefined
+      data: undefined,
+      propertiesOpen: false
     }
     this.onChangePropertiesFilter = this.onChangePropertiesFilter.bind(this)
+    this.toggleProperties = this.toggleProperties.bind(this)
   }
   componentDidMount() {
     axios.get('/api/rent_lead/open_leads').then((res) => {
@@ -35,23 +37,26 @@ export class CrmDashboard extends Component {
       })
 
       this.props.setInquiries(data)
-      this.setState({data, properties: [...properties]})
+      this.setState({data, properties: [...properties], })
     })
+    
   }
   render() {
     return (
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-md-9 col-sm-12' >
+          <div className={`${this.state.propertiesOpen ? 'col-md-9' : 'col-md-11'} col-sm-12`} >
             {this.props.data &&
               <Tables propertiesFilter={this.state.propertiesFilter} data={this.props.data}/>
             }
           </div>
-          <div className='col-md-3 col-sm-12'>
+          <div className={`${this.state.propertiesOpen ? 'col-md-3' : 'col-md-1'} col-sm-12`}>
             {this.state.properties &&
               <Properties 
                 onChangePropertiesFilter={this.onChangePropertiesFilter}
                 properties={this.state.properties}
+                toggleOpen={this.toggleProperties}
+                open={this.state.propertiesOpen}
               />
             }
           </div>
@@ -59,6 +64,9 @@ export class CrmDashboard extends Component {
         <ChatManager />
       </div>
     )
+  }
+  toggleProperties() {
+    this.setState((prevState) => ({propertiesOpen: !prevState.propertiesOpen}))
   }
   onChangePropertiesFilter(propertiesFilter) {
     this.setState({propertiesFilter: propertiesFilter.slice()})
