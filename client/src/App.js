@@ -15,6 +15,7 @@ import Playground from './components/core/Playground';
 import Dashboard from './components/custom/dashboard/Dashboard';
 import Alert from './components/core/Alert';
 import ServiceList from './components/custom/service/ServiceList';
+import ServiceDetail from './components/custom/service/ServiceDetail';
 import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
 import AddProfile from './components/custom/profile/AddProfile';
@@ -46,7 +47,8 @@ const App = ({loadUser, receiveMessage}) => {
             <Route exact path = '/login' component = {Login}/>
             <Route exact path='/register' component={Register} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
-            <PrivateRoute exact path='/serviceList' component={ServiceList} />
+            <PrivateRoute exact path='/services' component={ServiceList} />
+            <PrivateRoute exact path='/services/:id' component={ServiceDetail} />
             <PrivateRoute exact path='/crm' component={CrmDashboard} />
             <PrivateRoute exact path='/chat' component={ChatScreen} />
             <Route exact path='/serviceReq' component={ServiceReq} />

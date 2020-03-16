@@ -47,7 +47,7 @@ export default class ServiceList extends Component {
         render: (row) =>
         <div>
           <div>
-            <Link className='service__action-button' to={`/service/${row._id}`}>
+            <Link className='service__action-button' to={`/services/${row._id}`}>
               <i class="fas fa-ellipsis-h"></i>
             </Link>
           </div>
@@ -56,6 +56,7 @@ export default class ServiceList extends Component {
     ]
     this.services = [
       {
+        _id: 1,
         created: new Date(),
         unit: '1214 Wynne Ave',
         madeBy: 'Bob',
@@ -68,6 +69,7 @@ export default class ServiceList extends Component {
     ]
     this.tasks = [
       {
+        _id: 2,
         created: new Date(),
         unit: '1214 Wynne Ave',
         madeBy: 'Bob',
@@ -78,6 +80,7 @@ export default class ServiceList extends Component {
         type:'task'
       },
       {
+        _id: 3,
         created: new Date(),
         unit: '1214 Wynne Ave',
         madeBy: 'Bob',
@@ -88,6 +91,7 @@ export default class ServiceList extends Component {
         type:'task'
       },
       {
+        _id: 4,
         created: new Date(),
         unit: '1214 Wynne Ave',
         madeBy: 'Bob',
