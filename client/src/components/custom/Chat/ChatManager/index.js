@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import './chatManager.css'
 
-export class index extends Component {
+export class ChatManager extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -97,4 +97,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(index)
+export default connect(mapStateToProps, mapDispatchToProps)(ChatManager)
