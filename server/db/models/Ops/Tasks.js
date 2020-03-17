@@ -25,6 +25,24 @@ const taskSchema = new mongoose.Schema({
         availability: [Number],
     },
     task:{
+        isParent: {
+            type: Boolean,
+            default: false
+        },
+        level: {
+            type: Number,
+            default: 1
+        },
+        parrent_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            require: false
+        },
+        preCondition: [{
+            task_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                //ref: 'Task'
+            }
+        }],
         type: {
             type: String,
             required: true

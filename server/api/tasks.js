@@ -22,6 +22,20 @@ router.get('/', async (req, res) => {
     res.status(200).send(tasks)
 })
 
+// @route: Get /api/tasks/branch/:task_id;
+// @desc: create new branch associated with task
+// @ access: Public  *ToDo make private.
+
+//
+//increment level
+//is parrent set to true
+
+
+// @route: Get /api/tasks/;
+// @desc: get all open tasks
+// @ access: Public  *ToDo make private.
+
+
 
 
 module.exports = router;
