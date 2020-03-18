@@ -134,9 +134,7 @@ img {
   /* background: #28a745; */
   margin: auto;
   overflow: auto;
-  padding: 0 2rem;
-  padding-top: 6rem;
-  padding-bottom: 3rem;
+  padding-top: 8vh;
   /* new */
   height: 100vh;
 }

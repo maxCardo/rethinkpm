@@ -26,7 +26,7 @@ const Login = ({login,loadUser, isAuthenticated}) => {
 
 
     return (
-        <Fragment>
+        <div style={{padding: '1rem 2rem'}}>
             <h1 className="large text-primary">Sign In</h1>
             <p className="lead"><i className="fas fa-user"></i> Sign Into Your Account</p>
              
@@ -57,7 +57,7 @@ const Login = ({login,loadUser, isAuthenticated}) => {
             <p className="my-1">
                 Dont have an account? <Link className = 'btn' to="/register">Sign Up</Link>
             </p>
-        </Fragment>
+        </div>
     )
 }
 
