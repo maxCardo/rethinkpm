@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ActionBar from './ActionBar'
 import DetailsBar from './DetailsBar'
+import ChildTasks from './ChildTasks'
 
 export class ServiceDetail extends Component {
   render() {
@@ -14,7 +15,20 @@ export class ServiceDetail extends Component {
       taskId: 456,
       status: 'In progress',
       nextDate: new Date(),
-      vendor: 'WallsSmith'
+      vendor: 'WallsSmith',
+      child: [
+        {
+          id: 345,
+          status: 'completed',
+          issue: 'Construct wall'
+        },
+        {
+          id: 897,
+          status: 'ready to start',
+          issue: 'Paint wall'
+        }
+
+      ]
     }
     return (
       <div className='service-detail__service-container'>
@@ -26,7 +40,7 @@ export class ServiceDetail extends Component {
         </div>
         <div className='service-detail__main-container'>
           <div className='service-detail__child-tasks-container'>
-
+            <ChildTasks tasks={task.child} />
           </div>
           <div className='service-detail__data-container'>
 
