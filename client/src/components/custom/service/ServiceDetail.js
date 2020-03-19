@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import ActionBar from './ActionBar'
 import DetailsBar from './DetailsBar'
 import ChildTasks from './ChildTasks'
+import BottomNavigation from './BottomNavigation'
+import TicketScreen from './detailsScreens/TicketScreen'
+import HistoryScreen from './detailsScreens/HistoryScreen'
+import CommunicationScreen from './detailsScreens/CommunicationScreen'
 
 export class ServiceDetail extends Component {
   render() {
@@ -30,6 +34,23 @@ export class ServiceDetail extends Component {
 
       ]
     }
+    const screens = [
+      {
+        route: 'ticket',
+        display: 'Ticket',
+        component: <TicketScreen />,
+      },
+      {
+        route: 'history',
+        display: 'History',
+        component: <HistoryScreen />
+      },
+      {
+        route: 'communication',
+        display: 'Communication',
+        component: <CommunicationScreen />
+      }
+    ]
     return (
       <div className='service-detail__service-container'>
         <div className='service-detail__action-bar'>
@@ -43,7 +64,7 @@ export class ServiceDetail extends Component {
             <ChildTasks tasks={task.child} />
           </div>
           <div className='service-detail__data-container'>
-
+            <BottomNavigation screens={screens} />
           </div>
         </div>
       </div>
