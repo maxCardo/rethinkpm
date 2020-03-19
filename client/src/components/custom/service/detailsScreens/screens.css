@@ -1,0 +1,7 @@
+.ticket-screen__container {
+  padding: 20px 50px;
+}
+
+.ticket-screen__container textarea {
+  resize: none;
+}
