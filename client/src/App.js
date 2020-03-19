@@ -49,6 +49,7 @@ const App = ({loadUser, receiveMessage}) => {
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <PrivateRoute exact path='/services' component={ServiceList} />
             <PrivateRoute exact path='/services/:id' component={ServiceDetail} />
+            <PrivateRoute exact path='/services/:id/:screen' component={ServiceDetail} />
             <PrivateRoute exact path='/crm' component={CrmDashboard} />
             <PrivateRoute exact path='/chat' component={ChatScreen} />
             <Route exact path='/serviceReq' component={ServiceReq} />

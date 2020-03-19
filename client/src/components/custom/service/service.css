@@ -157,5 +157,35 @@
   right: 10px;
 }
 
-.child-task__content {
+.bottom-navigation__container {
+  height: 100%;
+}
+
+.bottom-navigation__screen {
+  height: 93%;
+  border-bottom: 1px solid #CCC;
+  z-index: 1;
+}
+
+.bottom-navigation__tabs {
+  height: 7%;
+  display: flex;
+}
+
+.bottom-navigation__tab {
+  padding: 5px 10px;
+  border: none;
+  border-right: 1px solid #CCC;
+  height: 101%;
+  margin-top: -1px;
+  z-index: 2;
+  background-color: #FFF0;
+}
+
+.bottom-navigation__tab[active="true"] {
+  background-color: #FFF;
+}
+
+.bottom-navigation__tab:focus {
+  outline: none
 }
