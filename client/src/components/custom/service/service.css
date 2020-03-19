@@ -30,24 +30,24 @@
 
 .service-detail__detail-bar {
   height: 15%;
-  background-color: blue;
 }
 
 .service-detail__main-container {
   height: 75%;
-  background-color: green;
   display: flex;
 }
 
 .service-detail__child-tasks-container {
   height: 100%;
   width: 25%;
-  background-color: yellow;
+  border-top: 1px solid #CCC;
+  border-right: 1px solid #CCC;
 }
 
 .service-detail__data-container {
   height: 100%;
   width: 75%;
+  border-top: 1px solid #CCC;
 }
 
 .action-bar__container {
@@ -115,4 +115,47 @@
 
 .action-buttons__button:hover {
   color: black;
+}
+
+.details-bar__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 20px
+}
+
+.details-bar__top {
+  display: grid;
+  grid-template-columns: 25% 25%;
+}
+.details-bar__container p {
+  margin-bottom: 0;
+  height: 30px;
+} 
+
+.details-bar__bottom {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+
+}
+.child-tasks__container {
+  overflow: auto;
+}
+.child-task__container {
+  height: 150px;
+  border-bottom: 1px solid #CCC;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.child-task__status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.child-task__content {
 }
