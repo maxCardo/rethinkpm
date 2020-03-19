@@ -117,7 +117,7 @@ export default class ServiceList extends Component {
   }
   render() {
     return (
-      <div>
+      <div style={{padding: '2rem 1rem'}}>
         <div className='service-list__button-group'>
           <ButtonGroup>
             <button className={`btn btn-success ${this.state.activeData !== 'all' ? 'inactive' : ''}`} onClick={() => this.changeActiveData('all')}>All</button>
