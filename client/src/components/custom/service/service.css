@@ -30,7 +30,6 @@
 
 .service-detail__detail-bar {
   height: 15%;
-  background-color: blue;
 }
 
 .service-detail__main-container {
@@ -116,3 +115,27 @@
 .action-buttons__button:hover {
   color: black;
 }
+
+.details-bar__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 20px
+}
+
+.details-bar__top {
+  display: grid;
+  grid-template-columns: 25% 25%;
+}
+.details-bar__container p {
+  margin-bottom: 0;
+  height: 30px;
+} 
+
+.details-bar__bottom {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+
+}
+
