@@ -11,3 +11,41 @@
     float: right
 }
 
+.service__action-button {
+  outline: none;
+  border: none;
+  background-color: #00000000;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.service-detail__service-container {
+  height: 100%;
+}
+
+.service-detail__action-bar {
+  height: 10%;
+  background-color: red;
+}
+
+.service-detail__detail-bar {
+  height: 15%;
+  background-color: blue;
+}
+
+.service-detail__main-container {
+  height: 75%;
+  background-color: green;
+  display: flex;
+}
+
+.service-detail__child-tasks-container {
+  height: 100%;
+  width: 25%;
+  background-color: yellow;
+}
+
+.service-detail__data-container {
+  height: 100%;
+  width: 75%;
+}
