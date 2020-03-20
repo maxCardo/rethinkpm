@@ -6,6 +6,8 @@ import BottomNavigation from './BottomNavigation'
 import TicketScreen from './detailsScreens/TicketScreen'
 import HistoryScreen from './detailsScreens/HistoryScreen'
 import CommunicationScreen from './detailsScreens/CommunicationScreen'
+import BillingScreen from './detailsScreens/BillingScreen'
+import VendorScreen from './detailsScreens/VendorScreen'
 
 export class ServiceDetail extends Component {
   render() {
@@ -51,7 +53,17 @@ export class ServiceDetail extends Component {
         route: 'communication',
         display: 'Communication',
         component: <CommunicationScreen />
-      }
+      },
+      {
+        route: 'billing',
+        display: 'Billing',
+        component: <BillingScreen />
+      },
+      {
+        route: 'vendor',
+        display: 'Vendor',
+        component: <VendorScreen />
+      },
     ]
     return (
       <div className='service-detail__service-container'>
