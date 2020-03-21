@@ -3,9 +3,11 @@ const bcrypt = require('bcryptjs');
 
 const User = require('../db/models/users/User');
 const auth = require('../middleware/auth');
+const useUnless = require('../middleware/useUnless')
 
 const router = express.Router();
 
+router.use(useUnless(auth, ['/', '/login']))
 
 // @route: Post /api/user;
 // @desc: create new user
@@ -27,7 +29,7 @@ router.post('/', async(req,res) => {
 // @route: GET /api/users;
 // @desc: get user by token
 // @ access: Private
-router.get('/',auth, (req,res) => {
+router.get('/', (req,res) => {
   try {
     res.status(201).json(req.user);
   } catch (e) {
@@ -61,7 +63,7 @@ router.post('/login', async (req,res) => {
 // @route: Post /api/users/logout;
 // @desc: log out user
 // @ access: Private
-router.post('/logout', auth, async(req,res) => {
+router.post('/logout', async(req,res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token != req.token;
@@ -78,7 +80,7 @@ router.post('/logout', auth, async(req,res) => {
 // @route: Post /api/users/logout/all;
 // @desc: log out all devices
 // @ access: Private
-router.get('/logout/all', auth, async(req,res) => {
+router.get('/logout/all', async(req,res) => {
   try {
     req.user.tokens = [];
     await req.user.save();

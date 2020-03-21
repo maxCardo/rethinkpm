@@ -7,12 +7,16 @@ const {postSlack} = require('../3ps/slack');
 const {validateNum, sendFirstSMS, testSMS} = require('../3ps/sms');
 const {sendFirstEmail} = require('../3ps/email');
 const {loadTestDB} = require('../dev/testDB')
+const auth = require('../middleware/auth')
+const useUnless = require('../middleware/useUnless')
 
 
 const router = express.Router();
 
 //ToDo: change to call to DB once property table is created
 const {propertyNum} = require('../3ps/calandly');
+
+router.use(useUnless(auth, ['/']))
 
 //---------------------------------------------------------- New Lead From Email Parse ----------------------------------------------------------//
 // @route: Post /api/rent_lead;
