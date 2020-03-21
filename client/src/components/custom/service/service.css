@@ -21,11 +21,12 @@
 
 .service-detail__service-container {
   height: 100%;
+  background-color: #EEE;
 }
 
 .service-detail__action-bar {
   height: 10%;
-  background-color: #EEE;
+  background-color: #CCC;
 }
 
 .service-detail__detail-bar {
@@ -35,19 +36,18 @@
 .service-detail__main-container {
   height: 75%;
   display: flex;
+  
 }
 
 .service-detail__child-tasks-container {
   height: 100%;
   width: 25%;
-  border-top: 1px solid #CCC;
-  border-right: 1px solid #CCC;
 }
 
 .service-detail__data-container {
   height: 100%;
   width: 75%;
-  border-top: 1px solid #CCC;
+  padding: 10px 10px;
 }
 
 .action-bar__container {
@@ -122,7 +122,14 @@
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  padding: 0 20px
+  padding: 0 10px
+}
+
+.details-bar__card {
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background-color: #FFF;
 }
 
 .details-bar__top {
@@ -132,6 +139,8 @@
 .details-bar__container p {
   margin-bottom: 0;
   height: 30px;
+  display: flex;
+  align-items: center;
 } 
 
 .details-bar__bottom {
@@ -141,14 +150,19 @@
 }
 .child-tasks__container {
   overflow: auto;
+  height: 100%;
+  padding: 10px 10px;
 }
 .child-task__container {
   height: 150px;
-  border-bottom: 1px solid #CCC;
   position: relative;
   display: flex;
   align-items: center;
   padding-left: 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  margin-bottom: 10px;
+  background-color: #FFF;
 }
 
 .child-task__status {
@@ -159,6 +173,9 @@
 
 .bottom-navigation__container {
   height: 100%;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background-color: #FFF;
 }
 
 .bottom-navigation__screen {
@@ -182,8 +199,14 @@
   background-color: #FFF0;
 }
 
+.bottom-navigation__tab:first-child {
+  border-bottom-left-radius: 10px;
+}
+
 .bottom-navigation__tab[active="true"] {
   background-color: #FFF;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.24);
+  border-right: 0;
 }
 
 .bottom-navigation__tab:focus {
