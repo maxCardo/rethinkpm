@@ -27,11 +27,12 @@ import {loadUser} from './actions/auth';
 import { connect } from 'react-redux';
 import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
-import * as serviceWorker from './serviceWorker'
+import { showNotification } from './notifications'
 
 
 
 const App = ({loadUser, receiveMessage}) => {
+  console.log(Notification.permission)
   if(Notification.permission == 'default') {
     Notification.requestPermission();
   }
@@ -40,6 +41,7 @@ const App = ({loadUser, receiveMessage}) => {
   const socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
   socket.on('sms', ({chat_id, message, uuid}) => {
     receiveMessage({chat_id, message, uuid})
+    showNotification(`New message from ${chat_id}`, message)
   } )
   return (
     <Router>
@@ -70,30 +72,13 @@ const App = ({loadUser, receiveMessage}) => {
   );
 }
 
-function registerServiceWorker() {
-  return serviceWorker.register()
+const registerServiceWorker = async () => {
+  console.log('serviceWorker' in navigator)
+  const swRegistration = await navigator.serviceWorker.register('/service-worker.js');
+  window.serviceWorker = swRegistration
+  console.log(window.serviceWorker)
+  return swRegistration;
 }
-
-function sendNotification() {
-  const img = "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg";
-  const text = "Take a look at this brand new t-shirt!";
-  const title = "New Product Available";
-  const options = {
-    body: text,
-    icon: "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg",
-    vibrate: [200, 100, 200],
-    tag: "new-product",
-    image: img,
-    badge: "https://spyna.it/icons/android-icon-192x192.png",
-    actions: [{ action: "Detail", title: "View", icon: "https://via.placeholder.com/128/ff0000" }]
-  };
-  navigator.serviceWorker.ready.then(function(serviceWorker) {
-    serviceWorker.showNotification(title, options);
-  });
-}
-
-
-
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
