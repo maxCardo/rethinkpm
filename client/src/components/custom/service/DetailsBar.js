@@ -7,15 +7,15 @@ export class DetailsBar extends Component {
       <div className='details-bar__container'>
         <div className='details-bar__top'>
           {task.parentId &&
-            <p>Parent ID: {task.parentId}</p>
+            <p><b>Parent ID:</b> {task.parentId}</p>
           }
-          <p>Opened: {this.formatDate(task.opened)}</p>
+          <p><b>Opened:</b> {this.formatDate(task.opened)}</p>
         </div>
         <div className='details-bar__bottom'>
-          <p>Task ID: {task.taskId}</p>
-          <p>Status: {task.status}</p>
-          <p>Next Date: {this.formatDate(task.nextDate)}</p>
-          <p>Vendor: {task.vendor}</p>
+          <p><b>Task ID:</b> {task.taskId}</p>
+          <p><b>Status:</b> {task.status}</p>
+          <p><b>Next Date:</b> {this.formatDate(task.nextDate)}</p>
+          <p><b>Vendor:</b> {task.vendor}</p>
         </div>
       </div>
     )
