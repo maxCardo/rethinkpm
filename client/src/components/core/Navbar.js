@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { logout } from '../../actions/auth'
 import PropTypes from 'prop-types'
 import {loadUser} from '../../actions/auth';
+import {getCookie} from '../../util/cookies'
 
-const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
+const Navbar = ({auth:{isAuthenticated, loading, loginInProgress}, logout}) => {
     useEffect(() => {
         loadUser();    
     }, [loadUser]);
@@ -34,11 +35,17 @@ const Navbar = ({auth:{isAuthenticated, loading}, logout}) => {
 
     );
 
+    let links = guestLinks
+
+    if(isAuthenticated || (loginInProgress && getCookie('sid'))) {
+      links = authLinks
+    }
+
         
     return (
         <nav className = 'navbar bg-dark'>
             <h2><Link to='/'><i className="fas fa-code"></i> ReThink PM</Link></h2>
-            {!loading && (<Fragment> {isAuthenticated ? authLinks : guestLinks}</Fragment>)}
+            {links}
         </nav>
     )
 }
