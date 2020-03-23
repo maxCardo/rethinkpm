@@ -29,7 +29,7 @@ router.post('/', async(req,res) => {
 // @route: GET /api/users;
 // @desc: get user by token
 // @ access: Private
-router.get('/', (req,res) => {
+router.get('/', auth, (req,res) => {
   try {
     res.status(201).json(req.user);
   } catch (e) {
