@@ -110,7 +110,11 @@ export class Table extends Component {
           </thead>
           <tbody>
             {this.state.paginatedData.map((dataItem, index) => (
-              <tr key={`row-${index}`}>
+              <tr 
+                key={`row-${index}`} 
+                style={{cursor: this.props.onClickRow ? 'pointer' : ''}} 
+                onClick={this.props.onClickRow ? () => this.props.onClickRow(dataItem) : () => {}}
+              >
                 {this.state.headers.map((header, index) => (
                   <td key={`dataItem-${index}`} className={header.className}>
                     {header.mapper ? 

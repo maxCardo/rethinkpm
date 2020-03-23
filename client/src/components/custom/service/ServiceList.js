@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types'
 import Table from '../Table'
 import {ButtonGroup, Button} from 'react-bootstrap'
 import './style.css'
 
-export default class ServiceList extends Component {
+export class ServiceList extends Component {
   constructor(props) {
     super(props)
     this.headers = [
@@ -135,6 +135,7 @@ export default class ServiceList extends Component {
           fontSize={12}
           pageSize={20}
           filter={this.state.filterString}
+          onClickRow={(row) => this.props.history.push(`/services/${row._id}`)}
         />
       </div>
     )
@@ -147,3 +148,5 @@ export default class ServiceList extends Component {
     })
   }
 }
+
+export default withRouter(ServiceList)
