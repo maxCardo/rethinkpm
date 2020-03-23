@@ -12,7 +12,7 @@ router.post('/web_lead', (req,res) => {
     const { name, email, phone, subject, message } = req.body
 
     //set to adampoznanski@outlook.com for prod
-    const emailTo = 'testEmail@test.com'
+    const emailTo = 'adampoznanski@outlook.com'
 
     const emailBody = `
       You received a new contact message with the following information:</br>
