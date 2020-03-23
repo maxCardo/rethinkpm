@@ -87,13 +87,8 @@ const rentLeadInqSchema = new mongoose.Schema({
 
     },
     notes: [{
-        note: {
-            type: String,
-        },
-        date: {
-            type: Date,
-            default: Date.now
-        }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Note'
     }],
     Chat: {
         type: mongoose.Schema.Types.ObjectId,

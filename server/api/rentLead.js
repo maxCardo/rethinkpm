@@ -2,6 +2,8 @@ const express = require('express');
 const RentLeadPros = require('../db/models/prospects/RentLeads/RentLeadPros');
 const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const ChatInq = require('../db/models/prospects/RentLeads/chat');
+const Note = require('../db/models/common/Note')
+const User = require('../db/models/users/User')
 const templet = require('../templets/newLead');
 const {postSlack} = require('../3ps/slack');
 const {validateNum, sendFirstSMS, testSMS} = require('../3ps/sms');
@@ -129,6 +131,17 @@ router.patch('/update_inquiry/:inq_id', async (req, res) => {
         res.status(400).send('server error')
     }
 });
+
+router.post('/update_inquiry/add_note/:inq_id', async (req,res) => {
+  const inq = await RentLeadInq.findById(req.params.inq_id);
+  const {type, content} = req.body;
+  const userId = req.user;
+  const user = await User.findById(userId)
+  const note = new Note({type, content, user: user._id})
+  await note.save()
+  const updatedInq = await RentLeadInq.findByIdAndUpdate(inq,  { $push: { notes: note } }, {new: true}).populate({path:'notes'})
+  res.json(updatedInq)
+})
 
 
 //old api ep for UI updates  below
