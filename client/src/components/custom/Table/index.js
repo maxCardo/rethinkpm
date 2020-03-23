@@ -112,7 +112,7 @@ export class Table extends Component {
             {this.state.paginatedData.map((dataItem, index) => (
               <tr key={`row-${index}`}>
                 {this.state.headers.map((header, index) => (
-                  <td key={`dataItem-${index}`}>
+                  <td key={`dataItem-${index}`} className={header.className}>
                     {header.mapper ? 
                       header.mapper(Table.getData(dataItem, header)) :
                       Table.getData(dataItem, header)

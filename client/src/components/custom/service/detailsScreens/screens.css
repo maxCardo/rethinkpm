@@ -21,6 +21,10 @@
   width: 200px;
 } 
 
+.history-screen__note-column {
+  width: 80%;
+}
+
 .communication-screen__container {
   position: relative;
   height: 100%;

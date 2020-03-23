@@ -15,6 +15,7 @@ export class HistoryScreen extends Component {
       {
         accessor: 'note',
         label: 'Note',
+        className: 'history-screen__note-column'
       },
       {
         accessor: 'user',
