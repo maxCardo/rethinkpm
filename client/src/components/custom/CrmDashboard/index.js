@@ -36,7 +36,7 @@ export class CrmDashboard extends Component {
         data[lead.status.currentStatus].push(lead)
       })
 
-      this.props.setInquiries(data)
+      this.props.setInquiries({inquiries: data, inquiriesRaw: res.data})
       this.setState({data, properties: [...properties], })
     })
     

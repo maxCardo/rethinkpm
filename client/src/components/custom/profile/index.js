@@ -1,20 +1,41 @@
-import React , {Fragment} from 'react';
-import {Link, useParams } from 'react-router-dom';
+import React , {Fragment, Component} from 'react';
+import {Link, useParams, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ProfileInfo from './ProfileInfo'
 import {Resizable} from 're-resizable'
+import axios from 'axios';
+import {connect} from 'react-redux'
+import { SET_INQUIRIES } from '../../../actions/type'
 
 import './style.css'
 import ProfileChat from './ProfileChat';
 import ProfileTables from './ProfileTables';
 
-const Profile = props => {
-    const {id} = useParams()
-    const data = {
-      name: 'Oscar Rodriguez',
-      phone: '(412) 880-3806',
-      email: 'lagartoverde97@gmail.com'
-    }
+export class Profile extends Component {
+  componentDidMount() {
+    if(this.props.inquiries) return;
+    axios.get('/api/rent_lead/open_leads').then((res) => {
+      const properties = new Set()
+      const data = {
+        upcoming: [],
+        engaged: [],
+        cold: [],
+        scheduled: [],
+        toured: [],
+        application: [],
+        new: [],
+      }
+      res.data.forEach((lead) => {
+        properties.add(lead.listing)
+        data[lead.status.currentStatus].push(lead)
+      })
+      this.props.setInquiries({inquiries: data, inquiriesRaw: res.data})
+    })
+  }
+  render() {
+    if(!this.props.inquiries) return ''
+    const {id} = this.props.match.params
+    const inquiry = this.props.inquiries.find((inquiry) => inquiry._id === id)
     return (
         <Fragment>
           <div className='profile__main-container'>
@@ -39,11 +60,11 @@ const Profile = props => {
                 }}
               >
                 <div className='profile__info-container' >
-                  <ProfileInfo inquiryId={id}/>
+                  <ProfileInfo inquiry={inquiry}/>
                 </div>
               </Resizable>
               <div className='profile__logs-container'>
-                <ProfileTables inquiryId={id}/>
+                <ProfileTables inquiry={inquiry}/>
               </div>
             </div>
             <div className='profile__chat-container'>
@@ -52,9 +73,17 @@ const Profile = props => {
           </div>
         </Fragment>
     )
+  }
+}
+const mapStateToProps = state => ({
+  inquiries: state.dashboard.inquiriesRaw
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setInquiries:(inquiries) => dispatch({type: SET_INQUIRIES, payload: inquiries})
+  }
 }
 
 
-
-
-export default Profile
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Profile))

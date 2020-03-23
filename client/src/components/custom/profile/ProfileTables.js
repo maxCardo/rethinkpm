@@ -3,14 +3,15 @@ import Table from '../Table'
 import {Tabs, Tab} from 'react-bootstrap'
 import TableWithSearch from './TableWithSearch'
 import {connect} from 'react-redux'
-import { SUBMIT_LOG } from '../../../actions/type'
+import { UPDATE_INQUIRY, SET_INQUIRIES } from '../../../actions/type'
+import axios from 'axios';
 
 export class ProfileTables extends Component {
   constructor(props) {
     super(props)
     this.headers = [
       {
-        accessor: 'record',
+        accessor: 'content',
         label: 'Record'
       },
       {
@@ -19,7 +20,7 @@ export class ProfileTables extends Component {
         mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
       },
       {
-        accessor: 'user',
+        accessor: 'user.name',
         label: 'User'
       }
     ]
@@ -32,9 +33,9 @@ export class ProfileTables extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   render() {
-    let logs = this.props.data[this.props.inquiryId] || []
-    const notes = logs.filter((log) => log.type === 'note')
-    const requests = logs.filter((log) => log.type === 'request')
+    let logs = this.props.inquiry.notes
+    const notes = logs ? logs.filter((log) => log.type === 'note') : []
+    const requests = logs ? logs.filter((log) => log.type === 'request') : []
     return (
       <div className='profile-tables__container'>
         <Tabs defaultActiveKey="logs">
@@ -52,18 +53,23 @@ export class ProfileTables extends Component {
       </div>
     )
   }
-  handleSubmit(data) {
-    this.props.addLog(data, this.props.inquiryId)
+  async handleSubmit(data) {
+    const config = {headers: {'Content-Type': 'application/json'}};
+    const body = JSON.stringify(data)
+    const response = await axios.post(`/api/rent_lead/update_inquiry/add_note/${this.props.inquiry._id}`, body, config);
+    console.log(response)
+    this.props.updateInquiry(response.data)
   }
 }
 
 const mapStateToProps = state => ({
-  data: state.profile.logs
+  data: state.dashboard.inquiriesRaw
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    addLog: (data, inquiryId) => dispatch({type: SUBMIT_LOG, payload: {data, inquiryId}})
+    updateInquiry: (payload) => dispatch({type: UPDATE_INQUIRY, payload}),
+    setInquiries:(inquiries) => dispatch({type: SET_INQUIRIES, payload: inquiries})
   }
 }
 

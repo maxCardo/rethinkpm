@@ -83,8 +83,12 @@ router.post('/', async (req, res) => {
 router.get('/open_leads', async (req, res) => {
     console.log('open leads api fired');
     try {
-        const leads = await RentLeadInq.find({'status.currentStatus':{$ne: 'dead'}}).populate('prospect');
-        res.status(200).send(leads);
+        const leads = await RentLeadInq.find({'status.currentStatus':{$ne: 'dead'}}).populate('prospect notes');
+        res.status(200).send(await Promise.all(leads.map(async (lead) => {
+          const notesPopulated = await  Note.populate(lead.notes, {path: 'user'})
+          lead.notes = notesPopulated
+          return lead
+        })));
     } catch (error) {
         console.error(error);
         res.status(400).send('server error')
@@ -139,8 +143,11 @@ router.post('/update_inquiry/add_note/:inq_id', async (req,res) => {
   const user = await User.findById(userId)
   const note = new Note({type, content, user: user._id})
   await note.save()
-  const updatedInq = await RentLeadInq.findByIdAndUpdate(inq,  { $push: { notes: note } }, {new: true}).populate({path:'notes'})
+  const updatedInq = await RentLeadInq.findByIdAndUpdate(inq,  { $push: { notes: note } }, {new: true}).populate({path:'notes prospect'})
+  const notesPopulated = await  Note.populate(updatedInq.notes, {path: 'user'})
+  updatedInq.notes = notesPopulated
   res.json(updatedInq)
+  
 })
 
 

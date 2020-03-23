@@ -3,34 +3,16 @@ import ProfileIcon from '../common/ProfileIcon';
 import {connect} from 'react-redux'
 
 export class ProfileInfo extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-  componentDidMount() {
-    const inquiryId = this.props.inquiryId
-    let profileInfo
-    for(let type in this.props.inquiries) {
-      profileInfo = this.props.inquiries[type].find((inquiry) => inquiry._id === inquiryId)
-      if(profileInfo) {
-        break
-      } 
-    }
-    this.setState({profileInfo})
-    this.profileInfo = profileInfo
-
-  }
   render() {
-    if(!this.state.profileInfo) return ''
     return (
       <div className='profile-info__main-container'>
         <div className='profile-info__icon-container'>
           <ProfileIcon name={'Tests'} size={80} />
         </div>
         <div className='profile-info__data-container'>
-          <p>Name: {this.state.profileInfo.prospect.name}</p>
-          <p>Phone: {this.state.profileInfo.prospect.phone.phoneNumber}</p>
-          <p>Email: {this.state.profileInfo.prospect.email}</p>
+          <p>Name: {this.props.inquiry.prospect.name}</p>
+          <p>Phone: {this.props.inquiry.prospect.phone.phoneNumber}</p>
+          <p>Email: {this.props.inquiry.prospect.email}</p>
         </div>
       </div>
     )
@@ -38,7 +20,7 @@ export class ProfileInfo extends Component {
 }
 
 const mapStateToProps = state => ({
-  inquiries: state.dashboard.inquiries
+  inquiries: state.dashboard.inquiriesRaw
 })
 
 
