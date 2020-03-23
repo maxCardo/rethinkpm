@@ -4,7 +4,7 @@ import {OPEN_INQUIRY_CHAT} from '../../../actions/type'
 import './CrmDashboard.css'
 import { connect } from 'react-redux';
 import UpdateModal from './UpdateModal';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 export class Tables extends Component {
   constructor(props) {
@@ -64,6 +64,7 @@ export class Tables extends Component {
       filteredData: this.props.data
     }
     this.handleModalClose = this.handleModalClose.bind(this)
+    this.handleClickRow = this.handleClickRow.bind(this)
   }
   formatPhoneNumber(data) {
     if(data.length > 10) {
@@ -102,6 +103,7 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString}   
               fontSize={12}
+              onClickRow={this.handleClickRow}
             />
           </div>
           <div>
@@ -113,6 +115,7 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
+              onClickRow={this.handleClickRow}
             />
           </div>
           <div>
@@ -124,6 +127,7 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
+              onClickRow={this.handleClickRow}
             />
           </div>
           <div className='section'>
@@ -135,7 +139,7 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
-              
+              onClickRow={this.handleClickRow}
             />
           </div>
           <div className='section'>
@@ -147,7 +151,7 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
-              
+              onClickRow={this.handleClickRow}
             />
           </div>
           <div className='section'>
@@ -159,7 +163,7 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
-              
+              onClickRow={this.handleClickRow}
             />
           </div>
         </div>
@@ -167,6 +171,9 @@ export class Tables extends Component {
       </div>
       
     )
+  }
+  handleClickRow(row) {
+    this.props.history.push(`/profile/${row._id}`)
   }
   handleModalClose() {
     this.setState((prevState) => ({showModal: false}))
@@ -183,5 +190,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tables)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Tables))
 
