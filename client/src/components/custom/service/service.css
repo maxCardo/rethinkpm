@@ -143,6 +143,10 @@
   align-items: center;
 } 
 
+.details-bar__container p b {
+  margin-right: 10px;
+}
+
 .details-bar__bottom {
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
