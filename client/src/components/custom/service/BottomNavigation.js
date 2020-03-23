@@ -19,7 +19,7 @@ export class BottomNavigation extends Component {
     }
     this.setState({active: 0})
     const newLocation = this.props.location.pathname + '/' + this.props.screens[0].route
-    this.props.history.push(newLocation)
+    this.props.history.replace(newLocation)
   }
   render() {
     return (
