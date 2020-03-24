@@ -40,7 +40,14 @@ export class ProfileTables extends Component {
       <div className='profile-tables__container'>
         <Tabs defaultActiveKey="logs">
           <Tab eventKey="logs" title="Logs">
-            <TableWithSearch data={logs} headers={this.logHeaders} handleSubmit={this.handleSubmit} />
+            <TableWithSearch 
+              data={logs} 
+              headers={this.logHeaders} 
+              handleSubmit={this.handleSubmit} 
+              sortBy='date'
+              sortDirection='desc'
+              sorting={true}
+            />
           </Tab>
           <Tab eventKey="notes" title="Notes">
             <TableWithSearch data={notes} headers={this.headers} handleSubmit={this.handleSubmit} />
