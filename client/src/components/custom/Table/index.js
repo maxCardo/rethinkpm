@@ -22,7 +22,7 @@ export class Table extends Component {
     let sortedData = this.props.data.slice();
     if(props.sortBy) {
       const sortBy = props.sortBy
-      sortedData.sort((a, b) => {
+      sortedData = sortedData.sort((a, b) => {
         if(props.sortDirection === 'desc') {
           return b[sortBy] > a[sortBy] ? 1 : -1
         } else {
@@ -57,18 +57,30 @@ export class Table extends Component {
       }
       return header;
     })
+    let sortedData = props.data.slice();
+    console.log(props.sortBy)
+    if(props.sortBy) {
+      const sortBy = props.sortBy
+      sortedData = sortedData.sort((a, b) => {
+        if(props.sortDirection === 'desc') {
+          return b[sortBy] > a[sortBy] ? 1 : -1
+        } else {
+          return a[sortBy] > b[sortBy]  ? 1 : -1
+        }
+      });
+    }
     if(props.filter === state.actualFilterString) {
       const pageSize = props.pageSize ? props.pageSize : Infinity;
       const index = state.pageIndex ? state.pageIndex : 0;
-      const newPaginatedData = props.data.slice(pageSize * index, pageSize * (index+1))
+      const newPaginatedData = sortedData.slice(pageSize * index, pageSize * (index+1))
       return {
         headers, 
-        data: props.data,
+        data: sortedData,
         paginatedData: newPaginatedData
       };
     } 
     const newFilterString = props.filter ? props.filter : ''
-    const newData = Table.filterData(props.data.slice(), newFilterString, headers)
+    const newData = Table.filterData(sortedData, newFilterString, headers)
     return {
       data: newData,
       paginatedData: newData.slice(0, pageSize),
