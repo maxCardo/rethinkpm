@@ -54,12 +54,14 @@
 .table-with-search__container {
   padding-top: 20px;
   height: 100%;
+  padding-bottom: 20px
 }
 
 .table-with-search__controls-container {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  height: 13%;
 }
 
 .table-with-search__search-input {
@@ -72,7 +74,7 @@
 
 .table-with-search__table {
   overflow: auto;
-  height: 100%;
+  height: 87%;
 }
 .tab-content {
   height: 100%;
