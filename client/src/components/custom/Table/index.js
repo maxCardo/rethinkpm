@@ -58,7 +58,6 @@ export class Table extends Component {
       return header;
     })
     let sortedData = props.data.slice();
-    console.log(props.sortBy)
     if(props.sortBy) {
       const sortBy = props.sortBy
       sortedData = sortedData.sort((a, b) => {
@@ -100,7 +99,6 @@ export class Table extends Component {
       })
       return includeItem
     })
-    console.log(filterString, newData)
     return newData
   }
   render() {

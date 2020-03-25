@@ -64,7 +64,6 @@ export class ProfileTables extends Component {
     const config = {headers: {'Content-Type': 'application/json'}};
     const body = JSON.stringify(data)
     const response = await axios.post(`/api/rent_lead/update_inquiry/add_note/${this.props.inquiry._id}`, body, config);
-    console.log(response)
     this.props.updateInquiry(response.data)
   }
 }

@@ -141,7 +141,6 @@ export class ServiceList extends Component {
     )
   }
   changeActiveData(activeData) {
-    console.log(activeData)
     this.setState({
       activeData,
       data: this.data[activeData]
