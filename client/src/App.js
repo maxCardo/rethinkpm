@@ -27,14 +27,21 @@ import {loadUser} from './actions/auth';
 import { connect } from 'react-redux';
 import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
+import { showNotification } from './notifications'
 
 
 
 const App = ({loadUser, receiveMessage}) => {
+  console.log(Notification.permission)
+  if(Notification.permission == 'default') {
+    Notification.requestPermission();
+  }
+  registerServiceWorker()
   useEffect(() => {loadUser();}, [loadUser]);
   const socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
   socket.on('sms', ({chat_id, message, uuid}) => {
     receiveMessage({chat_id, message, uuid})
+    showNotification(`New message from ${chat_id}`, message)
   } )
   return (
     <Router>
@@ -65,8 +72,13 @@ const App = ({loadUser, receiveMessage}) => {
   );
 }
 
-
-
+const registerServiceWorker = async () => {
+  console.log('serviceWorker' in navigator)
+  const swRegistration = await navigator.serviceWorker.register('/service-worker.js');
+  window.serviceWorker = swRegistration
+  console.log(window.serviceWorker)
+  return swRegistration;
+}
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
