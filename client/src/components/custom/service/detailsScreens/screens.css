@@ -43,3 +43,9 @@
   border-right: 1px solid #CCC;
 }
 
+
+
+.billing-screen__container {
+  position: relative;
+  height: 100%;
+}
