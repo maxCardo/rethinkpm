@@ -6,6 +6,7 @@ import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import {UPDATE_CHATS} from '../../../../actions/type'
 import axios from 'axios';
+import ChatBar from './ChatBar'
 
 import './chat-screen.css'
 
@@ -63,13 +64,16 @@ export class ChatScreen extends Component {
             <Contacts contacts={this.props.chats} handleAddChat={this.addChat} />
           </div>
           <div className='col-sm-6 h-100 chat-screen__chat-container'>
-            <ChatUI 
-              messages={this.props.chats[this.state.activeChat].messages}
-              onSendMessage={this.sendMessage}
-              chatRef={this.chatRef}
-              botOn={this.props.chats[this.state.activeChat].botOn}
-              scrollToBottom={this.scrollToBottom}
-            />
+            <ChatBar info={this.props.chats[this.state.activeChat]}/>
+            <div className='chat-screen__chat-ui'>
+              <ChatUI 
+                messages={this.props.chats[this.state.activeChat].messages}
+                onSendMessage={this.sendMessage}
+                chatRef={this.chatRef}
+                botOn={this.props.chats[this.state.activeChat].botOn}
+                scrollToBottom={this.scrollToBottom}
+              />
+            </div>
           </div>
           <div className='col-sm-3'>
             <Profile name={this.props.chats[this.state.activeChat].name} notes={this.props.chats[this.state.activeChat].notes} /> 
