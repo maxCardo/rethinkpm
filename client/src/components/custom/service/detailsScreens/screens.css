@@ -22,7 +22,7 @@
 } 
 
 .history-screen__note-column {
-  width: 80%;
+  width: 70%;
 }
 
 .communication-screen__container {
@@ -48,4 +48,5 @@
 .billing-screen__container {
   position: relative;
   height: 100%;
+  padding: 20px 50px;
 }
