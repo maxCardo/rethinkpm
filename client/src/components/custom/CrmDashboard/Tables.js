@@ -48,10 +48,10 @@ export class Tables extends Component {
           render: (row) =>
           <div>
             <div>
-              <button className='dashboard__action-button' onClick={() =>  this.props.openInquiryChat(row._id)}>
+              <button className='dashboard__action-button' onClick={(e) => this.cancelBubbling(e) && this.props.openInquiryChat(row._id)}>
                 <i className="fas fa-comments"></i>
               </button>
-              <button className='dashboard__action-button' onClick={() =>  this.openModal(row)}>
+              <button className='dashboard__action-button' onClick={(e) => this.cancelBubbling(e) && this.openModal(row)}>
                 <i className="fas fa-edit"></i>
               </button>
               <Link className='dashboard_action-button' to={`/profile/${row._id}`}>
@@ -65,6 +65,10 @@ export class Tables extends Component {
     }
     this.handleModalClose = this.handleModalClose.bind(this)
     this.handleClickRow = this.handleClickRow.bind(this)
+  }
+  cancelBubbling(e){
+    e.stopPropagation()
+    return true
   }
   formatPhoneNumber(data) {
     if(data.length > 10) {
@@ -87,7 +91,6 @@ export class Tables extends Component {
     } 
   }
   render() {
-    console.log(this.state.filteredData)
     return (
       <div>
         <div className='searchContainer'>
