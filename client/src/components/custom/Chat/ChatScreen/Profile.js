@@ -12,7 +12,7 @@ export class Profile extends Component {
         </div>
         <ul className='profile__notes-container list-group'>
           {this.props.notes.map((note) => (
-            <Note date={note.date} text={note.text} />
+            <Note {...note} />
           ))}
           <a className='profile__add-note' href='#'>Add note</a>
         </ul>

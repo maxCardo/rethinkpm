@@ -4,7 +4,7 @@ import Contacts from '../common/Contacts'
 import Profile from './Profile'
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import {UPDATE_CHATS} from '../../../../actions/type'
+import {UPDATE_CHATS, SET_INQUIRIES} from '../../../../actions/type'
 import axios from 'axios';
 import ChatBar from './ChatBar'
 
@@ -22,6 +22,9 @@ export class ChatScreen extends Component {
     this.sendMessage = this.sendMessage.bind(this)
     this.getChats = this.getChats.bind(this)
     this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
+    if(!this.props.inquiries || !this.props.inquiries.length) {
+      this.getInquiries()
+    }
     if(!this.props.chats || !this.props.chats.length) {
       this.getChats()
     }
@@ -29,6 +32,27 @@ export class ChatScreen extends Component {
   }
   componentDidMount() {
     this.scrollToBottom()
+  }
+  async getInquiries() {
+    axios.get('/api/rent_lead/open_leads').then((res) => {
+      const properties = new Set()
+      const data = {
+        upcoming: [],
+        engaged: [],
+        cold: [],
+        scheduled: [],
+        toured: [],
+        application: [],
+        new: [],
+      }
+      res.data.forEach((lead) => {
+        properties.add(lead.listing)
+        data[lead.status.currentStatus].push(lead)
+      })
+
+      this.props.setInquiries({inquiries: data, inquiriesRaw: res.data})
+    })
+    
   }
   async getChats() {
     axios.get('/api/rent_lead/chats').then((res) => {
@@ -56,7 +80,15 @@ export class ChatScreen extends Component {
       })
   }
   render() {
-    if(!this.props.chats || !this.props.chats.length) return "";
+    if(!this.props.chats || !this.props.chats.length ) return "";
+    let notes = []
+    if(this.props.inquiries && this.props.inquiries.length) {
+      const activeChat = this.props.chats[this.state.activeChat]
+      const inquiry = this.props.inquiries.find((inquiry) => inquiry._id == activeChat.inquiryId)
+      notes = inquiry.notes
+    }
+    console.log(notes)
+    
     return (
       <div className='container-fluid h-100'>
         <div className='row h-100'>
@@ -76,7 +108,7 @@ export class ChatScreen extends Component {
             </div>
           </div>
           <div className='col-sm-3'>
-            <Profile name={this.props.chats[this.state.activeChat].name} notes={this.props.chats[this.state.activeChat].notes} /> 
+            <Profile name={this.props.chats[this.state.activeChat].name} notes={notes} /> 
           </div>
         </div>
       </div>
@@ -115,13 +147,15 @@ export class ChatScreen extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateChats:(chats) => dispatch({type: UPDATE_CHATS, payload: chats})
+    updateChats:(chats) => dispatch({type: UPDATE_CHATS, payload: chats}),
+    setInquiries:(inquiries) => dispatch({type: SET_INQUIRIES, payload: inquiries})
   }
 }
 
 const mapStateToProps = state => {
   return {
-    chats: state.chat.chats
+    chats: state.chat.chats,
+    inquiries: state.dashboard.inquiriesRaw
   }
 }
 
