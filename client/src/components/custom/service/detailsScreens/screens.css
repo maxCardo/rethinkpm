@@ -25,6 +25,10 @@
   width: 70%;
 }
 
+.billing-screen__memo-column {
+  width: 50%;
+}
+
 .communication-screen__container {
   position: relative;
   height: 100%;

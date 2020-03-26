@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom';
 import Table from '../../Table'
 import './screens.css'
 
@@ -46,16 +47,9 @@ export class BillingScreen extends Component {
         label: 'Type'
       },
       {
-        accessor: 'account',
-        label: 'Account'
-      },
-      {
-        accessor: 'no',
-        label: 'NO.'
-      },
-      {
         accessor: 'memo',
         label: 'Memo',
+        className: 'billing-screen__memo-column',
       },
       {
         accessor: 'increase',
@@ -70,7 +64,20 @@ export class BillingScreen extends Component {
       {
         accessor: 'balance',
         label: 'Balance',
-      }
+      },
+      {
+        reactComponent: true,
+        label: 'Actions',
+        sortable: false,
+        render: (row) =>
+        <div>
+          <div>
+            <Link className='service__action-button'>
+              <i class="fas fa-ellipsis-h"></i>
+            </Link>
+          </div>
+        </div>
+      },
     ];
   }
   render() {
@@ -81,6 +88,7 @@ export class BillingScreen extends Component {
           headers={this.headers}
           fontSize={12}
           pageSize={5}
+          sorting={true}
         />
       </div>
     )
