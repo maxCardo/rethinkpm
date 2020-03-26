@@ -147,7 +147,6 @@ router.post('/update_inquiry/add_note/:inq_id', async (req,res) => {
   const notesPopulated = await  Note.populate(updatedInq.notes, {path: 'user'})
   updatedInq.notes = notesPopulated
   res.json(updatedInq)
-  
 })
 
 
