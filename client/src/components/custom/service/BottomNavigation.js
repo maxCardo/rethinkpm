@@ -5,23 +5,27 @@ export class BottomNavigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 0
+      active: 0,
+      lastLocation: ''
     }
   }
-  componentDidMount() {
-    const last = this.props.location.pathname.split('/').pop()
+  changeActive() {
+    const location = this.props.location.pathname
+    if(this.state.lastLocation ==location) return
+    const last = location.split('/').pop()
     for(let i=0; i< this.props.screens.length; i++) {
       const screenRoute = this.props.screens[i].route
       if(last === screenRoute) {
-        this.setState({active: i})
+        this.setState({active: i, lastLocation: location})
         return
       }
     }
-    this.setState({active: 0})
-    const newLocation = this.props.location.pathname + '/' + this.props.screens[0].route
+    this.setState({active: 0, lastLocation: location})
+    const newLocation = location + '/' + this.props.screens[0].route
     this.props.history.replace(newLocation)
   }
   render() {
+    this.changeActive()
     return (
       <div className='bottom-navigation__container'>
         <div className='bottom-navigation__screen'>
