@@ -156,6 +156,7 @@
   overflow: auto;
   height: 100%;
   padding: 10px 10px;
+  cursor: pointer;
 }
 .child-task__container {
   height: 150px;
@@ -169,10 +170,36 @@
   background-color: #FFF;
 }
 
+.go-to-parent-card__container {
+  height: 150px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  margin-bottom: 10px;
+  background-color: #FFF;
+}
+
+.go-to-parent-card__container p {
+  margin: 0;
+  padding: 0;
+}
+
 .child-task__status {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.child-task__childs-number {
+  position: absolute;
+  font-size: 10px;
+  bottom: 5px;
+  right: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 .bottom-navigation__container {

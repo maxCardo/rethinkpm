@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux'
 import ActionBar from './ActionBar'
 import DetailsBar from './DetailsBar'
 import ChildTasks from './ChildTasks'
@@ -15,6 +17,15 @@ export class ServiceDetail extends Component {
       phone: '12345678',
       email: 'lagartoverde97@gmail.com'
     }
+    const {id} = this.props.match.params
+    let service = this.props.services[id]
+    if(service.childs) {
+      const childServices = service.childs.map((child) =>  this.props.services[child])
+      service = Object.assign({}, service, {childs: childServices})
+    } else {
+      service.childs = []
+    }
+    console.log(service)
     const task = {
       parentId: 123,
       opened: new Date(),
@@ -35,14 +46,13 @@ export class ServiceDetail extends Component {
           status: 'ready to start',
           issue: 'Paint wall'
         }
-
       ]
     }
     const screens = [
       {
         route: 'ticket',
         display: 'Ticket',
-        component: <TicketScreen task={task} />,
+        component: <TicketScreen service={service} />,
       },
       {
         route: 'history',
@@ -71,11 +81,11 @@ export class ServiceDetail extends Component {
           <ActionBar name='Oscar Rodriguez' title="MyCompany's CEO" contact={agentContact}/>
         </div>
         <div className='service-detail__detail-bar'>
-          <DetailsBar task={task}/>
+          <DetailsBar service={service}/>
         </div>
         <div className='service-detail__main-container'>
           <div className='service-detail__child-tasks-container'>
-            <ChildTasks tasks={task.child} />
+            <ChildTasks tasks={service.childs} parentId={service.parent}/>
           </div>
           <div className='service-detail__data-container'>
             <BottomNavigation screens={screens} />
@@ -86,4 +96,15 @@ export class ServiceDetail extends Component {
   }
 }
 
-export default ServiceDetail
+const mapStateToProps = state => ({
+  services: state.services.services
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ServiceDetail))

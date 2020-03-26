@@ -3,6 +3,7 @@ import {Link, withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types'
 import Table from '../Table'
 import {ButtonGroup, Button} from 'react-bootstrap'
+import {connect} from 'react-redux'
 import './style.css'
 
 export class ServiceList extends Component {
@@ -14,7 +15,7 @@ export class ServiceList extends Component {
         label: 'Type',
       },
       {
-        accessor: 'created',
+        accessor: 'opened',
         label: 'Created Date',
         mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
       },
@@ -54,74 +55,21 @@ export class ServiceList extends Component {
         </div>
       },
     ]
-    this.services = [
-      {
-        _id: 1,
-        created: new Date(),
-        unit: '1214 Wynne Ave',
-        madeBy: 'Bob',
-        serviceType: 'General Maintenance',
-        status: 'requested',
-        statusDate: new Date(),
-        closed: undefined,
-        type: 'service'
-      },
-    ]
-    this.tasks = [
-      {
-        _id: 2,
-        created: new Date(),
-        unit: '1214 Wynne Ave',
-        madeBy: 'Bob',
-        serviceType: 'General Maintenance',
-        status: 'requested',
-        statusDate: new Date(),
-        closed: undefined,
-        type:'task'
-      },
-      {
-        _id: 3,
-        created: new Date(),
-        unit: '1214 Wynne Ave',
-        madeBy: 'Bob',
-        serviceType: 'General Maintenance',
-        status: 'requested',
-        statusDate: new Date(),
-        closed: undefined,
-        type:'task'
-      },
-      {
-        _id: 4,
-        created: new Date(),
-        unit: '1214 Wynne Ave',
-        madeBy: 'Bob',
-        serviceType: 'General Maintenance',
-        status: 'requested',
-        statusDate: new Date(),
-        closed: undefined,
-        type:'task'
-      },
-    ]
-    this.servicesAndTasks = this.services.concat(this.tasks)
-    this.data = {
-      all: this.servicesAndTasks,
-      services: this.services,
-      tasks: this.tasks
-    }
     this.state = {
       filterString: '',
-      data: this.servicesAndTasks,
+      data: this.props.services,
       activeData: 'all'
     }
     this.changeActiveData = this.changeActiveData.bind(this)
   }
   render() {
+    console.log(this.state.data)
     return (
       <div style={{padding: '2rem 1rem'}}>
         <div className='service-list__button-group'>
           <ButtonGroup>
             <button className={`btn btn-success ${this.state.activeData !== 'all' ? 'inactive' : ''}`} onClick={() => this.changeActiveData('all')}>All</button>
-            <button className={`btn btn-warning ${this.state.activeData !== 'services' ? 'inactive' : ''}`} onClick={() => this.changeActiveData('services')}>Services</button>
+            <button className={`btn btn-warning ${this.state.activeData !== 'jobs' ? 'inactive' : ''}`} onClick={() => this.changeActiveData('jobs')}>Jobs</button>
             <button className={`btn btn-danger ${this.state.activeData !== 'tasks' ? 'inactive' : ''}`} onClick={() => this.changeActiveData('tasks')}>Tasks</button>
           </ButtonGroup>
         </div>
@@ -141,11 +89,28 @@ export class ServiceList extends Component {
     )
   }
   changeActiveData(activeData) {
+    let data = this.props.services
+    if(activeData == 'jobs') {
+      data = data.filter((service) => !service.parent)
+    } else if(activeData == 'tasks') {
+      data = data.filter((service) => service.parent)
+    }
     this.setState({
       activeData,
-      data: this.data[activeData]
+      data,
     })
   }
 }
 
-export default withRouter(ServiceList)
+const mapStateToProps = state => ({
+  services: Object.values(state.services.services)
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ServiceList))
