@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Header from './Header'
 import Pagination from './Pagination';
+import './style.css'
 
 export class Table extends Component {
   constructor(props) {
