@@ -50,7 +50,10 @@ router.post('/idx_lead', (req,res) => {
   `
 
   const emailSubject = `New contact message requesting info about listing with id: ${listingID}`
-  
+
+  console.log(emailSubject)
+  console.log(emailBody)
+
   // sendEmail(emailTo, emailSubject,'', emailBody)
   res.status(200).send('ok')
 })
