@@ -87,8 +87,6 @@ export class ChatScreen extends Component {
       const inquiry = this.props.inquiries.find((inquiry) => inquiry._id == activeChat.inquiryId)
       notes = inquiry.notes
     }
-    console.log(notes)
-    
     return (
       <div className='container-fluid h-100'>
         <div className='row h-100'>
@@ -108,7 +106,7 @@ export class ChatScreen extends Component {
             </div>
           </div>
           <div className='col-sm-3'>
-            <Profile name={this.props.chats[this.state.activeChat].name} notes={notes} /> 
+            <Profile name={this.props.chats[this.state.activeChat].name} notes={notes} inquiryId={this.props.chats[this.state.activeChat].inquiryId} /> 
           </div>
         </div>
       </div>

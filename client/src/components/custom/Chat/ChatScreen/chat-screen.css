@@ -30,6 +30,14 @@
   text-align: right;
 }
 
+.profile__add-note-button {
+  margin-bottom: 10px;
+}
+
+.profile__note-content {
+  width: 70%;
+}
+
 .note__date {
   font-size: 10px;
   text-align: right;
