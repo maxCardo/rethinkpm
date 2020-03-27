@@ -8,7 +8,6 @@ const router = express.Router();
 // @desc: create new task from user form
 // @ access: Public  *ToDo make private once tenants begin to log on on the software.
 router.post('/web_lead', (req,res) => {
-    console.log(req.body);
     const { name, email, phone, subject, message } = req.body
 
     //set to adampoznanski@outlook.com for prod
@@ -34,7 +33,6 @@ router.post('/web_lead', (req,res) => {
 // @desc: create new task from user form
 // @ access: Public  *ToDo make private once tenants begin to log on on the software.
 router.post('/idx_lead', (req,res) => {
-  console.log(req.body);
   const { name, lastName, email, phone, requestInfo, message, listingID } = req.body
 
   //set to adampoznanski@outlook.com for prod
@@ -52,9 +50,6 @@ router.post('/idx_lead', (req,res) => {
   `
 
   const emailSubject = `New contact message requesting info about listing with id: ${listingID}`
-
-  console.log(emailSubject)
-  console.log(emailBody)
   
   sendEmail(emailTo, emailSubject,'', emailBody)
   res.status(200).send('ok')
