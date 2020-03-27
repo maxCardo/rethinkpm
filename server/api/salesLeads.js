@@ -35,7 +35,7 @@ router.post('/web_lead', (req,res) => {
 // @ access: Public  *ToDo make private once tenants begin to log on on the software.
 router.post('/idx_lead', (req,res) => {
   console.log(req.body);
-  const { name, lastName, email, phone, requestInfo, message, listingId } = req.body
+  const { name, lastName, email, phone, requestInfo, message, listingID } = req.body
 
   //set to adampoznanski@outlook.com for prod
   const emailTo = 'adampoznanski@outlook.com'
@@ -47,11 +47,11 @@ router.post('/idx_lead', (req,res) => {
     Email: ${email} </br>
     Phone: ${phone} </br>
     Request Info: ${requestInfo} </br>
-    Listing ID: ${listingId} </br>
+    Listing ID: ${listingID} </br>
     ${message && `Message: ${message} </br>`}
   `
 
-  const emailSubject = `New contact message requesting info about listing with id: ${listingId}`
+  const emailSubject = `New contact message requesting info about listing with id: ${listingID}`
 
   console.log(emailSubject)
   console.log(emailBody)
