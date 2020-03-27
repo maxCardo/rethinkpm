@@ -56,7 +56,7 @@ router.post('/idx_lead', (req,res) => {
   console.log(emailSubject)
   console.log(emailBody)
   
-  // sendEmail(emailTo, emailSubject,'', emailBody)
+  sendEmail(emailTo, emailSubject,'', emailBody)
   res.status(200).send('ok')
 })
 
