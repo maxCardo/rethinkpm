@@ -11,6 +11,7 @@ const ChatInq  = require('./db/models/prospects/RentLeads/chat');
 const { postSlack } = require('./3ps/slack');
 //ToDo: change to call to DB once property table is created
 const { propertyNum } = require('./3ps/calandly');
+const idx = require('./3ps/idx')
 
 const app = express();
 const server = require('http').createServer(app);
@@ -24,6 +25,17 @@ app.use(cors())
 app.use(cookieParser());
 
 
+const testFunc = async () => {
+  //await idx.addListing(2, 1415842)
+  var test = await idx.getSavedListings(2)
+  var testData = test.data
+
+  testData.map(x => {
+    console.log(x.property.listingID);
+  })
+}
+
+testFunc()
 dbConnect();
 
 //Init middle ware. replaces bodyParser
