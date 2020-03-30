@@ -28,9 +28,8 @@ router.post('/web_lead', (req,res) => {
     res.status(200).send('ok')
 })
 
-//---------------------------------------------------------- New task from user form ----------------------------------------------------------//
 // @route: Post /api/sales/idx_lead;
-// @desc: create new task from user form
+// @desc: create new task from idx user form
 // @ access: Public  *ToDo make private once tenants begin to log on on the software.
 router.post('/idx_lead', (req,res) => {
   const { name, lastName, email, phone, requestInfo, message, listingID } = req.body
@@ -54,7 +53,6 @@ router.post('/idx_lead', (req,res) => {
   sendEmail(emailTo, emailSubject,'', emailBody)
   res.status(200).send('ok')
 })
-
 
 
 module.exports = router;
