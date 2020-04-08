@@ -12,6 +12,7 @@ import Landing from './components/custom/Landing';
 import Login from './components/core/Login';
 import Register from './components/core/Register';
 import Playground from './components/core/Playground';
+import BrokerDashboard from './components/custom/BrokerDashboard/BrokerDashboard';
 import Dashboard from './components/custom/dashboard/Dashboard';
 import Alert from './components/core/Alert';
 import ServiceList from './components/custom/service/ServiceList';
@@ -53,6 +54,7 @@ const App = ({loadUser, receiveMessage}) => {
           <Switch>
             <Route exact path = '/login' component = {Login}/>
             <Route exact path='/register' component={Register} />
+            <PrivateRoute exact path='/brokerLeads' component={BrokerDashboard} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <PrivateRoute exact path='/services' component={ServiceList} />
             <PrivateRoute exact path='/services/:id' component={ServiceDetail} />

@@ -25,6 +25,7 @@ export class Table extends Component {
       const sortBy = props.sortBy
       sortedData = sortedData.sort((a, b) => {
         if(props.sortDirection === 'desc') {
+          console.log(b[sortBy]);
           return b[sortBy] > a[sortBy] ? 1 : -1
         } else {
           return a[sortBy] > b[sortBy]  ? 1 : -1
@@ -105,7 +106,7 @@ export class Table extends Component {
   render() {
     return (
       <div>
-        <table className='table table-striped' style={{tableLayout: 'fixed', fontSize: this.props.fontSize}}>
+        <table className={this.props.className + ' table table-striped'} style={{tableLayout: 'fixed', fontSize: this.props.fontSize}}>
           <thead>
             <tr>
               {this.state.headers.map((header, index) => (

@@ -10,9 +10,9 @@ export class Pagination extends Component {
     const pageItems = this.generatePageItems(this.props.actualIndex, this.props.totalPages)
     return (
       <ul className="pagination" style={{fontSize: this.props.fontSize, display: 'flex', justifyContent: 'center'}}>
-        <li className="page-item"><button className="page-link" onClick={this.decreasePage}>Previous</button></li>
+        <li className="page-item"><button className={(this.props.actualIndex > 0 ? '' : 'disabled') + " page-link"} onClick={this.props.actualIndex > 0 ? this.decreasePage : null}>Previous</button></li>
         {pageItems}
-        <li className="page-item"><button className="page-link" onClick={this.increasePage}>Next</button></li>
+        <li className="page-item"><button className={(!(this.props.actualIndex + 1 == this.props.totalPages) ? '' : 'disabled') + " page-link"} onClick={!(this.props.actualIndex + 1 == this.props.totalPages) ? this.increasePage : null}>Next</button></li>
       </ul>
     )
   }

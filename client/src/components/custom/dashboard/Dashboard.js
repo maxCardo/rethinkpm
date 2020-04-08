@@ -12,12 +12,12 @@ const Dashboard = ({auth:{user}}) => {
         <div>
           <Link to='/addProfile' className='btn'><i className='fas fa-user-circle'></i> Add Profile</Link>
         </div>
-{/* inv dash 
+{/* inv dash */
         <div className = "dashboard">
           <Widgit/>
           <Widgit/>
           <Widgit/>  
-        </div> */}
+        </div> }
       </Fragment>
     )
 }
