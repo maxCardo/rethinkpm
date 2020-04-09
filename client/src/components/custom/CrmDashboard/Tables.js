@@ -71,10 +71,12 @@ export class Tables extends Component {
     return true
   }
   formatPhoneNumber(data) {
-    if(data.length > 10) {
-      return `(${data.substring(1,4)}) ${data.substring(4,7)}-${data.substring(7)}`
+    if(!data) return ''
+    const phoneNumber = data + ''
+    if(phoneNumber.length > 10) {
+      return `(${phoneNumber.substring(1,4)}) ${phoneNumber.substring(4,7)}-${phoneNumber.substring(7)}`
     } else {
-      return `(${data.substring(0,3)}) ${data.substring(3,6)}-${data.substring(6)}`
+      return `(${phoneNumber.substring(0,3)}) ${phoneNumber.substring(3,6)}-${phoneNumber.substring(6)}`
     }
   }
   static getDerivedStateFromProps(props, state) {
