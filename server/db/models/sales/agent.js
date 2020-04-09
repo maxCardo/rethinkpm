@@ -7,7 +7,9 @@ const agentSchema = new mongoose.Schema({
   emailAddress: String,
   officeId: String,
   officeName: String,
-  sales: Number
+  sales: Number,
+  phone: String,
+  status: String
 });
 
 
