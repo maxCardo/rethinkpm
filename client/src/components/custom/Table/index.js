@@ -62,8 +62,16 @@ export class Table extends Component {
     })
 
     let sortedData = state.data.length ? state.data.slice() : props.data.slice();
+    let newSortDirections = state.sortDirections.slice()
     if(props.sortBy && !state.alreadySorted) {
+     
       const sortBy = props.sortBy
+      newSortDirections = newSortDirections.map((sortDirection, index) => {
+        if(headers[index].accessor === sortBy) {
+          return props.sortDirection
+        }
+        return 'notSorted'
+      })
       sortedData = sortedData.sort((a, b) => {
         if(props.sortDirection === 'desc') {
           return b[sortBy] > a[sortBy] ? 1 : -1
@@ -79,7 +87,8 @@ export class Table extends Component {
       return {
         headers, 
         data: sortedData,
-        paginatedData: newPaginatedData
+        paginatedData: newPaginatedData,
+        sortDirections: newSortDirections
       };
     } 
     const newFilterString = props.filter ? props.filter : ''
@@ -90,6 +99,7 @@ export class Table extends Component {
       pageIndex: 0,
       actualFilterString: newFilterString,
       headers: headers,
+      sortDirections: newSortDirections
     }
   }
   static filterData(data, filterString, headers, level=0) {
@@ -180,7 +190,7 @@ export class Table extends Component {
     if(typeof mapper == 'string') {
       return commonMappers(mapper)(data)
     }
-      return mapper(data)
+    return mapper(data)
   }
   increasePage() {
     if(this.state.pageIndex >= Math.ceil(this.state.data.length/this.pageSize)) {
