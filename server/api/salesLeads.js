@@ -1,5 +1,6 @@
 const express = require('express');
 const {sendEmail} = require('../3ps/email')
+const AgentModel = require('../db/models/sales/agent')
 
 const router = express.Router();
 
@@ -53,6 +54,16 @@ router.post('/idx_lead', (req,res) => {
 
   sendEmail(emailTo, emailSubject,'', emailBody)
   res.status(200).send('ok')
+})
+
+
+// @route: Post /api/sales/agents
+// @desc: Get all agents
+// @ access: Private
+
+router.get('/agents', async (req,res) => {
+  const agents = await AgentModel.find({})
+  res.json(agents)
 })
 
 
