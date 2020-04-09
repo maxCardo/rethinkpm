@@ -25,7 +25,6 @@ export class Table extends Component {
       const sortBy = props.sortBy
       sortedData = sortedData.sort((a, b) => {
         if(props.sortDirection === 'desc') {
-          console.log(b[sortBy]);
           return b[sortBy] > a[sortBy] ? 1 : -1
         } else {
           return a[sortBy] > b[sortBy]  ? 1 : -1
@@ -201,9 +200,9 @@ export class Table extends Component {
             item = item[accessor]
           }
         })
-        return item + ''
+        return item 
       } else {
-        return dataItem[accessor] + ''
+        return dataItem[accessor] 
       }
     }
   }
