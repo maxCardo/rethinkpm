@@ -28,7 +28,7 @@ export class brokerDashboard extends Component {
                 {
                   accessor: 'phone',
                   label: 'Phone',
-                  mapper: this.formatPhoneNumber
+                  mapper: 'phone'
                 },
                 {
                     accessor: 'officeId',
@@ -45,20 +45,11 @@ export class brokerDashboard extends Component {
             filteredData: this.props.data
         }
     }
-    formatPhoneNumber(data) {
-      if(!data) return ''
-      const phoneNumber = (data + '').replace(/ /g, '')
-      if(phoneNumber.length > 10) {
-        return `(${phoneNumber.substring(1,4)}) ${phoneNumber.substring(4,7)}-${phoneNumber.substring(7)}`
-      } else {
-        return `(${phoneNumber.substring(0,3)}) ${phoneNumber.substring(3,6)}-${phoneNumber.substring(6)}`
-      }
-    }
+
     componentDidMount() {
         axios.get('/api/sales/agents').then( (res) => {
             let agentsWithSales = res.data.filter((agent) => agent.sales > 0)
             this.props.setAgents({agentOpportunities: agentsWithSales, agentOpportunitiesRaw: res.data});
-            console.log('Done')
         })
         .then((res) => {
             this.setState({ loading: false });

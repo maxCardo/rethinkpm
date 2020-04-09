@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Header from './Header'
 import Pagination from './Pagination';
+import commonMappers from './commonMappers'
 import './style.css'
 
 export class Table extends Component {
@@ -131,7 +132,7 @@ export class Table extends Component {
                 {this.state.headers.map((header, index) => (
                   <td key={`dataItem-${index}`} className={header.className}>
                     {header.mapper ? 
-                      header.mapper(Table.getData(dataItem, header)) :
+                      this.mapData(header.mapper, Table.getData(dataItem, header)) :
                       Table.getData(dataItem, header)
                     }
                   </td>
@@ -174,6 +175,12 @@ export class Table extends Component {
   changePage(index) {
     const newPaginatedData = this.state.data.slice(this.pageSize * index, this.pageSize * (index+1))
     this.setState({pageIndex: index, paginatedData: newPaginatedData})
+  }
+  mapData(mapper, data) {
+    if(typeof mapper == 'string') {
+      return commonMappers(mapper)(data)
+    }
+      return mapper(data)
   }
   increasePage() {
     if(this.state.pageIndex >= Math.ceil(this.state.data.length/this.pageSize)) {

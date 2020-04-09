@@ -17,7 +17,7 @@ export class ProfileTables extends Component {
       {
         accessor: 'date',
         label: 'Date',
-        mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
+        mapper: 'date'
       },
       {
         accessor: 'user.name',

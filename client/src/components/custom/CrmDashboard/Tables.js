@@ -24,12 +24,12 @@ export class Tables extends Component {
         {
           accessor: 'prospect.phone.phoneNumber',
           label: 'Phone',
-          mapper: this.formatPhoneNumber
+          mapper: 'phone'
         },
         {
           accessor: 'status.lastActive',
           label: 'Last Contact',
-          mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
+          mapper: 'date'
         },
         {
           accessor: 'status.scheduled.schDate',
@@ -69,15 +69,6 @@ export class Tables extends Component {
   cancelBubbling(e){
     e.stopPropagation()
     return true
-  }
-  formatPhoneNumber(data) {
-    if(!data) return ''
-    const phoneNumber = data + ''
-    if(phoneNumber.length > 10) {
-      return `(${phoneNumber.substring(1,4)}) ${phoneNumber.substring(4,7)}-${phoneNumber.substring(7)}`
-    } else {
-      return `(${phoneNumber.substring(0,3)}) ${phoneNumber.substring(3,6)}-${phoneNumber.substring(6)}`
-    }
   }
   static getDerivedStateFromProps(props, state) {
     const filteredData = {}
