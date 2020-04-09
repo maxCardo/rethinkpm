@@ -58,7 +58,6 @@ export class brokerDashboard extends Component {
     }
 
     render() {
-        if(!this.props.agents) return ''
         return (
             <div>
                 <div className='searchContainer'>
@@ -74,9 +73,11 @@ export class brokerDashboard extends Component {
                         <h2 className='sectionTitle'>Best of last 2 years</h2>
                         <Table
                             headers={this.state.headers}
-                            data={this.props.agents}
+                            data={this.props.agents ? this.props.agents : []}
                             pageSize={10}
                             sorting={true}
+                            sortBy='sales'
+                            sortDirection='desc'
                             filter={this.state.filterString}
                             fontSize={12}
                             onClickRow={this.handleClickRow}
