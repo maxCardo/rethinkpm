@@ -11,15 +11,6 @@ import './chatManager.css'
 export class ChatManager extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      contacts: [
-      ],
-      chats: [
-      ]
-    }
-    this.refsArray = this.state.chats.map(() => {
-      return React.createRef();
-    })
     this.handleAddChat = this.handleAddChat.bind(this)
     if(!this.props.chats || !this.props.chats.length) {
       this.getChats()
@@ -44,12 +35,8 @@ export class ChatManager extends Component {
           notes: []
         }
       })
-
-        this.props.updateChats(chatsParsed)
-        // this.forceUpdate(() => {
-        //   this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
-        // })
-      })
+      this.props.updateChats(chatsParsed)
+    })
   }
   render() {
     return (
@@ -72,8 +59,7 @@ export class ChatManager extends Component {
         index = i
       }
     })
-    if(chatAlreadyAdded) {
-    } else {
+    if(!chatAlreadyAdded) {
       this.props.openChat(chatToAdd.id)
     }
   }
