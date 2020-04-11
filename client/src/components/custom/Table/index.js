@@ -40,7 +40,8 @@ export class Table extends Component {
       pageIndex: 0,
       actualFilterString: this.props.filter,
       headers,
-      alreadySorted: false
+      alreadySorted: false,
+      rawData: props.data
     }
     this.increasePage = this.increasePage.bind(this);
     this.decreasePage = this.decreasePage.bind(this)
@@ -61,10 +62,9 @@ export class Table extends Component {
       return header;
     })
 
-    let sortedData = state.data.length ? state.data.slice() : props.data.slice();
+    let sortedData = state.data.length && state.rawData == props.data ? state.data.slice() : props.data.slice();
     let newSortDirections = state.sortDirections.slice()
-    if(props.sortBy && !state.alreadySorted) {
-     
+    if(state.rawData != props.data || props.sortBy && !state.alreadySorted) {
       const sortBy = props.sortBy
       newSortDirections = newSortDirections.map((sortDirection, index) => {
         if(headers[index].accessor === sortBy) {
@@ -80,7 +80,7 @@ export class Table extends Component {
         }
       });
     }
-    if(props.filter === state.actualFilterString) {
+    if(props.filter === state.actualFilterString && state.rawData != props.data) {
       const pageSize = props.pageSize ? props.pageSize : Infinity;
       const index = state.pageIndex ? state.pageIndex : 0;
       const newPaginatedData = sortedData.slice(pageSize * index, pageSize * (index+1))
@@ -133,7 +133,7 @@ export class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.paginatedData.map((dataItem, index) => (
+            {(this.state.paginatedData.length > 0) ? (this.state.paginatedData.map((dataItem, index) => (
               <tr 
                 key={`row-${index}`} 
                 style={{cursor: this.props.onClickRow ? 'pointer' : ''}} 
