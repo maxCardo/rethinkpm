@@ -14,7 +14,7 @@ export class Profile extends Component {
       {
         accessor: 'date',
         label: 'Date',
-        mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
+        mapper: 'date'
       },
       {
         accessor: 'content',
