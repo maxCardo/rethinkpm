@@ -133,7 +133,7 @@ export class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {(this.state.paginatedData.length > 0) ? (this.state.paginatedData.map((dataItem, index) => (
+            {(this.props.loading || this.state.paginatedData.length > 0) ? (this.state.paginatedData.map((dataItem, index) => (
               <tr 
                 key={`row-${index}`} 
                 style={{cursor: this.props.onClickRow ? 'pointer' : ''}} 
@@ -148,7 +148,7 @@ export class Table extends Component {
                   </td>
                 ))}
               </tr>
-            ))}
+            ))) : (<tr><td colspan="6">No results!</td></tr>)}
           </tbody>
         </table>
         {this.props.data.length > this.pageSize && 

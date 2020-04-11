@@ -86,6 +86,7 @@ export class brokerDashboard extends Component {
                             fontSize={12}
                             onClickRow={this.handleClickRow}
                             className="agentInfoTable"
+                            loading={this.state.loading}
                         />
                     </div>
                 </div>
