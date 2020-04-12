@@ -100,6 +100,7 @@ export class Tables extends Component {
               filter={this.state.filterString}   
               fontSize={12}
               onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div>
@@ -112,6 +113,7 @@ export class Tables extends Component {
               filter={this.state.filterString} 
               fontSize={12}
               onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div>
@@ -124,6 +126,7 @@ export class Tables extends Component {
               filter={this.state.filterString} 
               fontSize={12}
               onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div className='section'>
@@ -136,6 +139,7 @@ export class Tables extends Component {
               filter={this.state.filterString} 
               fontSize={12}
               onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div className='section'>
@@ -148,6 +152,7 @@ export class Tables extends Component {
               filter={this.state.filterString} 
               fontSize={12}
               onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div className='section'>
@@ -160,6 +165,7 @@ export class Tables extends Component {
               filter={this.state.filterString} 
               fontSize={12}
               onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
         </div>

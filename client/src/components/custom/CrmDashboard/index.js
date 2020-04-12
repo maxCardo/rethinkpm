@@ -13,7 +13,8 @@ export class CrmDashboard extends Component {
     super(props)
     this.state = {
       propertiesFilter: [],
-      propertiesOpen: false
+      propertiesOpen: false,
+      loading: true
     }
     this.onChangePropertiesFilter = this.onChangePropertiesFilter.bind(this)
     this.toggleProperties = this.toggleProperties.bind(this)
@@ -36,7 +37,7 @@ export class CrmDashboard extends Component {
       })
 
       this.props.setInquiries({inquiries: data, inquiriesRaw: res.data})
-      this.setState({properties: [...properties]})
+      this.setState({properties: [...properties], loading: false})
     })
     
   }
@@ -46,7 +47,7 @@ export class CrmDashboard extends Component {
         <div className='row'>
           <div className={`${this.state.propertiesOpen ? 'col-md-9' : 'col-md-11'} col-sm-12`} >
             {this.props.data &&
-              <Tables propertiesFilter={this.state.propertiesFilter} data={this.props.data}/>
+              <Tables propertiesFilter={this.state.propertiesFilter} data={this.props.data} loading={this.state.loading} />
             }
           </div>
           <div className={`${this.state.propertiesOpen ? 'col-md-3' : 'col-md-1'} col-sm-12`}>
