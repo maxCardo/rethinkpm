@@ -13,7 +13,6 @@ export class CrmDashboard extends Component {
     super(props)
     this.state = {
       propertiesFilter: [],
-      data: undefined,
       propertiesOpen: false
     }
     this.onChangePropertiesFilter = this.onChangePropertiesFilter.bind(this)
@@ -37,7 +36,7 @@ export class CrmDashboard extends Component {
       })
 
       this.props.setInquiries({inquiries: data, inquiriesRaw: res.data})
-      this.setState({data, properties: [...properties], })
+      this.setState({properties: [...properties]})
     })
     
   }

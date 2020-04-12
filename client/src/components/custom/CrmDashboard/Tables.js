@@ -172,7 +172,7 @@ export class Tables extends Component {
     this.props.history.push(`/profile/${row._id}`)
   }
   handleModalClose() {
-    this.setState((prevState) => ({showModal: false}))
+    this.setState({showModal: false})
   }
   openModal(row) {
     this.setState({showModal: true, prospectUpdating: row})
