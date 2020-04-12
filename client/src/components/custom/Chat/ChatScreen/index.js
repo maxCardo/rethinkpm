@@ -15,7 +15,6 @@ export class ChatScreen extends Component {
     super(props)
     this.state = {
       activeChat: 0,
-      chats: [],
     }
     this.addChat = this.addChat.bind(this)
     this.chatRef = React.createRef()
@@ -82,8 +81,9 @@ export class ChatScreen extends Component {
   render() {
     if(!this.props.chats || !this.props.chats.length ) return "";
     let notes = []
+    let activeChat = undefined
     if(this.props.inquiries && this.props.inquiries.length) {
-      const activeChat = this.props.chats[this.state.activeChat]
+      activeChat = this.props.chats[this.state.activeChat]
       const inquiry = this.props.inquiries.find((inquiry) => inquiry._id == activeChat.inquiryId)
       notes = inquiry.notes
     }
@@ -94,19 +94,19 @@ export class ChatScreen extends Component {
             <Contacts contacts={this.props.chats} handleAddChat={this.addChat} />
           </div>
           <div className='col-sm-6 h-100 chat-screen__chat-container'>
-            <ChatBar info={this.props.chats[this.state.activeChat]}/>
+            <ChatBar info={activeChat}/>
             <div className='chat-screen__chat-ui'>
               <ChatUI 
-                messages={this.props.chats[this.state.activeChat].messages}
+                messages={activeChat.messages}
                 onSendMessage={this.sendMessage}
                 chatRef={this.chatRef}
-                botOn={this.props.chats[this.state.activeChat].botOn}
+                botOn={activeChat.botOn}
                 scrollToBottom={this.scrollToBottom}
               />
             </div>
           </div>
           <div className='col-sm-3'>
-            <Profile name={this.props.chats[this.state.activeChat].name} notes={notes} inquiryId={this.props.chats[this.state.activeChat].inquiryId} /> 
+            <Profile name={activeChat.name} notes={notes} inquiryId={activeChat.inquiryId} /> 
           </div>
         </div>
       </div>
@@ -125,7 +125,8 @@ export class ChatScreen extends Component {
   }
   sendMessage(messageContent) {
     const chats = this.props.chats.slice()
-    chats[this.state.activeChat].messages.push({
+    const activeChat = chats[this.state.activeChat]
+    activeChat.messages.push({
       userMessage: true,
       sender: 'Admin',
       content: messageContent,
@@ -136,8 +137,7 @@ export class ChatScreen extends Component {
       message: messageContent,
       date: new Date()
     }
-    const chat = chats[this.state.activeChat]
-    this.socket.emit('ui_msg', {chatID: chat.id, msg: message})
+    this.socket.emit('ui_msg', {chatID: activeChat.id, msg: message})
     this.props.updateChats(chats)
     this.scrollToBottom()
   }
