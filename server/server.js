@@ -28,10 +28,20 @@ app.use(cookieParser());
 const testFunc = async () => {
   //await idx.addListing(2, 1415842)
   var test = await idx.getSavedListings(2)
+  
   var testData = test.data
 
   testData.map(x => {
-    console.log(x.property.listingID);
+    if (x.property.listingID === '1439017') {
+      const addressObj = {
+        number: x.streetNumber,
+        street: x.streetName.split(' ')[0],
+        state: 'pa',
+        zip: x.postalcode 
+
+      }
+      console.log(addressObj);
+    }
   })
 }
 

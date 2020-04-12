@@ -28,6 +28,7 @@ import { connect } from 'react-redux';
 import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
 import { showNotification } from './notifications'
+import DealUW from './components/custom/dealUW/DealUW'
 
 
 
@@ -65,6 +66,7 @@ const App = ({loadUser, receiveMessage}) => {
             <Route exact path='/addProperty' component={AddProperty} />
             <PrivateRoute exact path='/profile/:id' component={Profile}/>
             <Route exact path='/playground' component={Playground} />
+            <PrivateRoute exact path= '/dealUW' component={DealUW}/>
           </Switch>
         </section>
       </Fragment>

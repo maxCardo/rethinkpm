@@ -1,9 +1,25 @@
 //user appetite for underwiting assumptions
 const uwSchema = new mongoose.Schema({
-  user:{
-    type: String,
-    required: true
+  deal:{
+    askingPrice:{},
+    investmentValue:{},
+    //ask to value,
+    initalCapEx:{},
+    AvgRent:{},
+    occupany:{},
+    numUnits:{},
+    opexRatio:{},
+    controlableExp:{},
+    utilities:{},
+    insurance:{},
+    taxes:{},
+    leaseTradeOut:{
+      marketGrowth:{},
+    },
+
+
   },
+
 
 
 });

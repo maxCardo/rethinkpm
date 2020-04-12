@@ -1,5 +1,7 @@
 const express = require('express');
 const {sendEmail} = require('../3ps/email')
+const auth = require('../middleware/auth')
+const idx = require('../3ps/idx')
 
 const router = express.Router();
 
@@ -54,5 +56,24 @@ router.post('/idx_lead', (req,res) => {
   res.status(200).send('ok')
 })
 
+//---------------------------------------------------------- IDX API Calls ----------------------------------------------------------//
+
+// @route: Get /api/sales/deal_uw/:listing_id;
+// @desc: user req for listing data
+// @ access: Private  
+router.get('/deal_uw/:listing_id', async (req, res) => {
+  try {
+    //get user profile using req.user
+    //check if listing is included in saved listings if not save listing
+    //pull idx listing data 
+    //pull county data
+    //pull rent projection
+    //aggragate all data from api's into object 
+    //send to client
+    res.status(200).send('ok')  
+  } catch (err) {
+    res.status(400).send('server error')
+  }
+})
 
 module.exports = router;

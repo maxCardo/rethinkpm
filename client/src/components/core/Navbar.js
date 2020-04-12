@@ -19,6 +19,7 @@ const Navbar = ({auth:{isAuthenticated, loading, loginInProgress}, logout}) => {
             <li><Link to='/crm'>Dashboard</Link></li>
             <li><Link to='/chat'>Chat</Link></li>
             <li><Link to='/services'>Service</Link></li>
+            <li><Link to='/dealUW'>Deal</Link></li>
             {/* <li><Link to="/rentroll">Current Rentals</Link></li>
             <li><Link to="/acquisition">New Acquisition</Link></li> */}
             <li><a onClick = {handleLogout} href='/' >Logout</a></li>
