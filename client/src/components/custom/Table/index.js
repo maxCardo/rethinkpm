@@ -150,7 +150,7 @@ export class Table extends Component {
                   </td>
                 ))}
               </tr>
-            ))) : (<tr><td colspan="6">No results!</td></tr>)}
+            ))) : (<tr><td colspan={this.state.headers.length}>No results!</td></tr>)}
           </tbody>
         </table>
         {this.props.data.length > this.pageSize && 
