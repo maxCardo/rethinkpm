@@ -49,6 +49,8 @@ export class Table extends Component {
   }
   static getDerivedStateFromProps(props, state) {
     let data = props.data
+    console.log(data)
+
     const pageSize = props.pageSize ? props.pageSize : Infinity;
     const headers = props.headers.map((header) => {
       if(!header.label) {

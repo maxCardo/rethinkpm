@@ -749,4 +749,20 @@ table th {
   user-select: none;
 }
 
+.table th, .table td {
+  padding: 5px;
+  vertical-align: middle;
+}
+.tab-content {
+  padding: 10px 0;
+}
+.agentsSearchContainer {
+  justify-content: space-between !important;
+}
+.agentsSearchContainer .form-group {
+  display: flex;
+}
+.agentStatusFilter {
+  min-width: 200px;
+}
 /* END OF Bozidar CSS */
