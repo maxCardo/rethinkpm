@@ -39,7 +39,7 @@ export class ServiceList extends Component {
       {
         accessor: 'closed',
         label: 'Closed',
-        mapper: (data) => data ? 'Not Closed yet' : new Intl.DateTimeFormat().format(new Date(data)) 
+        mapper: (data) => data ? new Intl.DateTimeFormat().format(new Date(data))  : 'Not Closed yet' 
       },
       {
         reactComponent: true,
