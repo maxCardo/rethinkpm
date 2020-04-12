@@ -34,9 +34,8 @@ export class ProfileChat extends Component {
           notes: []
         }
       })
-
-        this.props.updateChats(chatsParsed)
-      })
+      this.props.updateChats(chatsParsed)
+    })
   }
   render() {
     if(!this.props.chats.length) return ''

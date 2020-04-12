@@ -1,6 +1,5 @@
 import React , {Fragment, Component} from 'react';
-import {Link, useParams, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import ProfileInfo from './ProfileInfo'
 import {Resizable} from 're-resizable'
 import axios from 'axios';
