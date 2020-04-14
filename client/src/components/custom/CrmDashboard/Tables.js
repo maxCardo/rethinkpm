@@ -175,7 +175,7 @@ export class Tables extends Component {
     )
   }
   handleClickRow(row) {
-    this.props.history.push(`/profile/${row._id}`)
+    this.props.history.push(`/profile/inquiry/${row._id}`)
   }
   handleModalClose() {
     this.setState({showModal: false})
