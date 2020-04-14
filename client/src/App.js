@@ -83,8 +83,10 @@ const App = ({loadUser, receiveMessage}) => {
             <Route exact path='/serviceTicket' component={ServiceTicket} />
             <Route exact path='/addProfile' component={AddProfile} />
             <Route exact path='/addProperty' component={AddProperty} />
-            <PrivateRoute exact path='/profile/:id' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens}} />
-            <PrivateRoute exact path='/profile/:id/:screen' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens}} />
+            <PrivateRoute exact path='/profile/inquiry/:id' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens, endpoint: '/api/profile/inquiry/'}} />
+            <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens, endpoint: '/api/profile/inquiry/'}} />
+            <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens}} />
+            <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens}} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
         </section>

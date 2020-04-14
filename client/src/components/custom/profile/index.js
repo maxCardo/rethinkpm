@@ -14,30 +14,20 @@ import BottomNavigation from '../service/BottomNavigation';
 
 
 export class Profile extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      profile: undefined
+    }
+  }
   componentDidMount() {
-    if(this.props.inquiries) return;
-    axios.get('/api/rent_lead/open_leads').then((res) => {
-      const properties = new Set()
-      const data = {
-        upcoming: [],
-        engaged: [],
-        cold: [],
-        scheduled: [],
-        toured: [],
-        application: [],
-        new: [],
-      }
-      res.data.forEach((lead) => {
-        properties.add(lead.listing)
-        data[lead.status.currentStatus].push(lead)
-      })
-      this.props.setInquiries({inquiries: data, inquiriesRaw: res.data})
+    const {id} = this.props.match.params
+    axios.get(`${this.props.endpoint}/${id}`).then((res) => {
+      this.setState({profile: res.data})
     })
   }
   render() {
-    if(!this.props.inquiries) return ''
-    const {id} = this.props.match.params
-    const inquiry = this.props.inquiries.find((inquiry) => inquiry._id === id)
+    if(!this.state.profile) return ''
     const screens = {
       notes: (profile) => ({
         route: 'notes',
@@ -45,7 +35,7 @@ export class Profile extends Component {
         component: <NotesScreen profile={profile} />,
       })
     }
-    const screensSelected = this.props.screens.map((screenName) => (screens[screenName](inquiry)))
+    const screensSelected = this.props.screens.map((screenName) => (screens[screenName](this.state.profile)))
     return (
         <Fragment>
           <div className='profile__main-container'>
@@ -70,7 +60,7 @@ export class Profile extends Component {
                 }}
               >
                 <div className='profile__info-container' >
-                  <ProfileInfo inquiry={inquiry} attributes={this.props.attributes} />
+                  <ProfileInfo inquiry={this.state.profile} attributes={this.props.attributes} />
                 </div>
               </Resizable>
               <div className='profile__logs-container'>
@@ -78,7 +68,7 @@ export class Profile extends Component {
               </div>
             </div>
             <div className='profile__chat-container'>
-              <ProfileChat inquiryId={id}/>
+              <ProfileChat inquiryId={this.state.profile._id}/>
             </div>
           </div>
         </Fragment>

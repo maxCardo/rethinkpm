@@ -9,7 +9,11 @@ const agentSchema = new mongoose.Schema({
   officeName: String,
   sales: Number,
   phone: String,
-  status: String
+  status: String,
+  notes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Note'
+  }],
 });
 
 
