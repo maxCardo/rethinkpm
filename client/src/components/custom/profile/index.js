@@ -9,6 +9,9 @@ import { SET_INQUIRIES } from '../../../actions/type'
 import './style.css'
 import ProfileChat from './ProfileChat';
 import ProfileTables from './ProfileTables';
+import NotesScreen from './screens/Notes'
+import BottomNavigation from '../service/BottomNavigation';
+
 
 export class Profile extends Component {
   componentDidMount() {
@@ -35,6 +38,14 @@ export class Profile extends Component {
     if(!this.props.inquiries) return ''
     const {id} = this.props.match.params
     const inquiry = this.props.inquiries.find((inquiry) => inquiry._id === id)
+    const screens = {
+      notes: (profile) => ({
+        route: 'notes',
+        display: 'Notes',
+        component: <NotesScreen profile={profile} />,
+      })
+    }
+    const screensSelected = this.props.screens.map((screenName) => (screens[screenName](inquiry)))
     return (
         <Fragment>
           <div className='profile__main-container'>
@@ -59,11 +70,11 @@ export class Profile extends Component {
                 }}
               >
                 <div className='profile__info-container' >
-                  <ProfileInfo inquiry={inquiry}/>
+                  <ProfileInfo inquiry={inquiry} attributes={this.props.attributes} />
                 </div>
               </Resizable>
               <div className='profile__logs-container'>
-                <ProfileTables inquiry={inquiry}/>
+                <BottomNavigation screens={screensSelected}/>
               </div>
             </div>
             <div className='profile__chat-container'>

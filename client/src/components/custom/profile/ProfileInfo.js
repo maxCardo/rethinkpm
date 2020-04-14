@@ -10,12 +10,31 @@ export class ProfileInfo extends Component {
           <ProfileIcon name={'Tests'} size={80} />
         </div>
         <div className='profile-info__data-container'>
-          <p>Name: {this.props.inquiry.prospect.name}</p>
-          <p>Phone: {this.props.inquiry.prospect.phone.phoneNumber}</p>
-          <p>Email: {this.props.inquiry.prospect.email}</p>
+          {this.props.attributes.map((attribute) => {
+            return (<p>{attribute.name}: {ProfileInfo.getData(this.props.inquiry, attribute)}</p>)
+          })}
         </div>
       </div>
     )
+  }
+  static getData(dataItem, header) {
+    if(header.reactComponent) {
+      return header.render(dataItem)
+    } else {
+      const {accessor} = header
+      if(accessor.includes('.')) {
+        const accessorsArray = accessor.split('.')
+        let item = dataItem;
+        accessorsArray.forEach((accessor) => {
+          if(item) {
+            item = item[accessor]
+          }
+        })
+        return item 
+      } else {
+        return dataItem[accessor] 
+      }
+    }
   }
 }
 

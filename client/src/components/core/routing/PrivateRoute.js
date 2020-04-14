@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {getCookie} from '../../../util/cookies'
 
-const PrivateRoute = ({ component: Component, auth: { isAuthenticated, loading, loginInProgress }, ...rest }) => (
-    <Route {...rest} render={(props) => renderFunction(Component, props, loginInProgress, isAuthenticated, loading)} />
+const PrivateRoute = ({ component: Component, auth: { isAuthenticated, loading, loginInProgress }, additionalProps, ...rest}) => (
+    <Route {...rest} render={(props) => renderFunction(Component, props, loginInProgress, isAuthenticated, loading, additionalProps)} />
 )
 
-const renderFunction = (Component, props, loginInProgress, isAuthenticated, loading) => {
+const renderFunction = (Component, props, loginInProgress, isAuthenticated, loading, additionalProps) => {
   if(loginInProgress) {
     if(getCookie('sid')){
-      return <Component {...props} />
+      return <Component {...props} {...additionalProps} />
     } else {
       return <NotAuthenticatedInfo />
     }
@@ -19,7 +19,7 @@ const renderFunction = (Component, props, loginInProgress, isAuthenticated, load
   if(!isAuthenticated && !loading) {
     return <NotAuthenticatedInfo />
   } else {
-    return <Component {...props} />
+    return <Component {...props} {...additionalProps} />
   }
 }
 
