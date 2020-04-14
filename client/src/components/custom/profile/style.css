@@ -49,6 +49,7 @@
 .profile-tables__table-container {
   padding-top: 10px;
   height: 100%;
+  position: relative;
 }
 
 .table-with-search__container {
@@ -61,7 +62,11 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  height: 13%;
+  height: 37px;
+}
+
+.table-with-search__controls-container .btn {
+  height: 37px;
 }
 
 .table-with-search__search-input {
@@ -75,9 +80,6 @@
 .table-with-search__table {
   overflow: auto;
   height: 87%;
-}
-.tab-content {
-  height: 100%;
 }
 .tab-pane.active {
   height: 90%;
