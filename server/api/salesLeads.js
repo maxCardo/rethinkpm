@@ -1,6 +1,7 @@
 const express = require('express');
 const {sendEmail} = require('../3ps/email')
 const AgentModel = require('../db/models/sales/agent')
+const OfficeModel = require('../db/models/sales/office')
 
 const router = express.Router();
 
@@ -57,12 +58,12 @@ router.post('/idx_lead', (req,res) => {
 })
 
 
-// @route: Post /api/sales/agents
+// @route: Get /api/sales/agents
 // @desc: Get all agents
 // @ access: Private
 
 router.get('/agents', async (req,res) => {
-  const agents = await AgentModel.find({})
+  const agents = await AgentModel.find({}).populate('office')
   res.json(agents)
 })
 

@@ -5,8 +5,11 @@ const agentSchema = new mongoose.Schema({
   lastName: String,
   firstName: String,
   emailAddress: String,
+  office: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Office'
+  },
   officeId: String,
-  officeName: String,
   sales: Number,
   phone: String,
   status: String
