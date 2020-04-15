@@ -40,6 +40,7 @@ export class ProfileChat extends Component {
   render() {
     if(!this.props.chats.length) return ''
     const chat = this.props.chats.find((chat) => chat.inquiryId == this.props.inquiryId)
+    if(!chat) return ''
     return (
       <ChatUI 
         messages={chat.messages}

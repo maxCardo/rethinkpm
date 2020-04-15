@@ -35,6 +35,7 @@ app.use('/api/rent_lead', require('./api/rentLead'));
 app.use('/api/tasks', require('./api/tasks'));
 app.use('/api/3ps',(req,res,next) => {req.io = {io:io}, next()}, require('./api/3ps'));
 app.use('/api/sales', require('./api/salesLeads'));
+app.use('/api/profile', require('./api/profile'))
 
 //Socket.io socket and API calls
 require('./socket/chat')(io);

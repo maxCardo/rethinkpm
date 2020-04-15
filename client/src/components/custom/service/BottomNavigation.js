@@ -8,6 +8,8 @@ export class BottomNavigation extends Component {
       active: 0,
       lastLocation: ''
     }
+    this.changeActive = this.changeActive.bind(this)
+    this.goToScreen = this.goToScreen.bind(this)
   }
   changeActive() {
     const location = this.props.location.pathname

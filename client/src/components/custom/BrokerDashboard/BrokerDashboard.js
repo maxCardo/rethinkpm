@@ -5,6 +5,7 @@ import {agentStatus} from "../../../util/statusSchemas";
 import Table from '../Table'
 import Select from 'react-select';
 import { SET_AGENT_OPPORTUNITIES } from '../../../actions/type'
+import { withRouter } from 'react-router-dom';
 
 export class brokerDashboard extends Component {
     constructor(props) {
@@ -47,6 +48,7 @@ export class brokerDashboard extends Component {
             agentStatusSelect: agentStatus,
             statusSelected: {}
         }
+        this.handleClickRow = this.handleClickRow.bind(this)
     }
 
     componentDidMount() {
@@ -152,6 +154,9 @@ export class brokerDashboard extends Component {
 
         )
     }
+    handleClickRow(row) {
+      this.props.history.push(`/profile/agent/${row._id}`)
+    }
 }
 
 const mapStateToProps = (state) => {
@@ -164,5 +169,5 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(brokerDashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(brokerDashboard))
 
