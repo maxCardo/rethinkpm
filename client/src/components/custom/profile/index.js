@@ -8,9 +8,10 @@ import { SET_INQUIRIES } from '../../../actions/type'
 
 import './style.css'
 import ProfileChat from './ProfileChat';
-import ProfileTables from './ProfileTables';
-import NotesScreen from './screens/Notes'
 import BottomNavigation from '../service/BottomNavigation';
+
+import NotesScreen from './screens/Notes'
+import SalesScreen from './screens/SalesHistory'
 
 
 export class Profile extends Component {
@@ -33,6 +34,11 @@ export class Profile extends Component {
         route: 'notes',
         display: 'Notes',
         component: <NotesScreen profile={profile} />,
+      }),
+      sales: (profile) => ({
+        route: 'sales',
+        display: 'Sales',
+        component: <SalesScreen profile={profile} />,
       })
     }
     const screensSelected = this.props.screens.map((screenName) => (screens[screenName](this.state.profile)))

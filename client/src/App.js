@@ -77,6 +77,8 @@ const agentProfileAttributes = [
   },
 ]
 
+const agentProfileScreens = ['notes', 'sales']
+
 const App = ({loadUser, receiveMessage}) => {
   console.log(Notification.permission)
   if(Notification.permission == 'default') {
@@ -112,8 +114,8 @@ const App = ({loadUser, receiveMessage}) => {
             <Route exact path='/addProperty' component={AddProperty} />
             <PrivateRoute exact path='/profile/inquiry/:id' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens, endpoint: '/api/profile/inquiry'}} />
             <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens, endpoint: '/api/profile/inquiry'}} />
-            <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: agentProfileAttributes, screens: profileScreens, endpoint: '/api/profile/agent'}} />
-            <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: agentProfileAttributes, screens: profileScreens, endpoint: '/api/profile/agent'}} />
+            <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: agentProfileAttributes, screens: agentProfileScreens, endpoint: '/api/profile/agent'}} />
+            <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: agentProfileAttributes, screens: agentProfileScreens, endpoint: '/api/profile/agent'}} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
         </section>
