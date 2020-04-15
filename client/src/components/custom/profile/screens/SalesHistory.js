@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 
-class AgentHistory extends Component {
+class SalesHistory extends Component {
   render() {
     const propertiesSold = this.props.profile.agentSells;
     const propertiesBought = this.props.profile.agentBuys;
@@ -21,8 +21,8 @@ class AgentHistory extends Component {
                       <div className="zip"><b>Zip:</b> {val.zipcode}</div>
                       <div className="county"><b>County:</b> {val.county}</div>
                       <div className="area"><b>Area:</b> {val.area}</div>
-                      <div className="listPrice"><b>Listing price:</b> {this.props.moneyFormat(val.listPrice)}</div>
-                      <div className="listPrice"><b>Price Sold:</b> {this.props.moneyFormat(val.soldPrice)}</div>
+                      <div className="listPrice"><b>Listing price:</b> {this.moneyFormat(val.listPrice)}</div>
+                      <div className="listPrice"><b>Price Sold:</b> {this.moneyFormat(val.soldPrice)}</div>
                     </li>
                   })}
                 </ul>
@@ -35,8 +35,8 @@ class AgentHistory extends Component {
                       <div className="zip">Zip: {val.zipcode}</div>
                       <div className="county">County: {val.county}</div>
                       <div className="area">Area: {val.area}</div>
-                      <div className="listPrice">Listing price: {this.props.moneyFormat(val.listPrice)}</div>
-                      <div className="listPrice">Price sold: {this.props.moneyFormat(val.soldPrice)}</div>
+                      <div className="listPrice">Listing price: {this.moneyFormat(val.listPrice)}</div>
+                      <div className="listPrice">Price sold: {this.moneyFormat(val.soldPrice)}</div>
                     </li>
                   })}
                 </ul>
@@ -49,8 +49,8 @@ class AgentHistory extends Component {
                       <div className="zip">Zip: {val.zipcode}</div>
                       <div className="county">County: {val.county}</div>
                       <div className="area">Area: {val.area}</div>
-                      <div className="listPrice">Listing price: {this.props.moneyFormat(val.listPrice)}</div>
-                      <div className="listPrice">Price sold: {this.props.moneyFormat(val.soldPrice)}</div>
+                      <div className="listPrice">Listing price: {this.moneyFormat(val.listPrice)}</div>
+                      <div className="listPrice">Price sold: {this.moneyFormat(val.soldPrice)}</div>
                     </li>
                   })}
                 </ul>
@@ -61,10 +61,11 @@ class AgentHistory extends Component {
       </Fragment>
     );
   }
+  moneyFormat(sum) {
+    return (new Intl.NumberFormat('en-US',
+      {style: 'currency', currency: 'USD'}
+    ).format(sum))
+  }
 }
 
-const mapStateToProps = state => ({
-  agentSelected: state.brokerDashboard.agentSelected
-});
-
-export default  connect(mapStateToProps)(AgentHistory);
+export default  SalesHistory;
