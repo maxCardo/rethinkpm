@@ -29,55 +29,8 @@ import { connect } from 'react-redux';
 import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
 import { showNotification } from './notifications'
+import settings from './settings.json'
 
-const profileAttributes = [
-  {
-    name: 'Name',
-    accessor: 'prospect.name',
-    col: 6
-  },
-  {
-    name: 'Phone',
-    accessor: 'prospect.phone.phoneNumber',
-    col: 6,
-  },
-  {
-    name: 'Email',
-    accessor: 'prospect.email',
-    col: 12
-  },
-]
-
-const profileScreens = ['notes']
-
-const agentProfileAttributes = [
-  {
-    name: 'First Name',
-    accessor: 'firstName'
-  },
-  {
-    name: 'Last Name',
-    accessor: 'lastName'
-  },
-  {
-    name: 'Status',
-    accessor: 'status'
-  },
-  {
-    name: 'Phone',
-    accessor: 'phone'
-  },
-  {
-    name: 'Email',
-    accessor: 'emailAddress'
-  },
-  {
-    name: 'Sales',
-    accessor: 'sales'
-  },
-]
-
-const agentProfileScreens = ['notes', 'sales']
 
 const App = ({loadUser, receiveMessage}) => {
   console.log(Notification.permission)
@@ -91,6 +44,7 @@ const App = ({loadUser, receiveMessage}) => {
     receiveMessage({chat_id, message, uuid})
     showNotification(`New message from ${chat_id}`, message)
   } )
+  const routeSettings = settings.routes
   return (
     <Router>
       <Fragment>
@@ -112,10 +66,10 @@ const App = ({loadUser, receiveMessage}) => {
             <Route exact path='/serviceTicket' component={ServiceTicket} />
             <Route exact path='/addProfile' component={AddProfile} />
             <Route exact path='/addProperty' component={AddProperty} />
-            <PrivateRoute exact path='/profile/inquiry/:id' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens, endpoint: '/api/profile/inquiry'}} />
-            <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: profileAttributes, screens: profileScreens, endpoint: '/api/profile/inquiry'}} />
-            <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: agentProfileAttributes, screens: agentProfileScreens, endpoint: '/api/profile/agent'}} />
-            <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: agentProfileAttributes, screens: agentProfileScreens, endpoint: '/api/profile/agent'}} />
+            <PrivateRoute exact path='/profile/inquiry/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
+            <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
+            <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent'}} />
+            <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent'}} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
         </section>

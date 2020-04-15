@@ -1,0 +1,57 @@
+{
+  "routes": {
+    "profile": {
+      "agentPros": {
+        "profileInfo": [
+          {
+            "name": "First Name",
+            "accessor": "firstName"
+          },
+          {
+            "name": "Last Name",
+            "accessor": "lastName"
+          },
+          {
+            "name": "Status",
+            "accessor": "status"
+          },
+          {
+            "name": "Phone",
+            "accessor": "phone"
+          },
+          {
+            "name": "Email",
+            "accessor": "emailAddress"
+          },
+          {
+            "name": "Sales",
+            "accessor": "sales"
+          }
+        ],
+        "screens": [
+          "notes",
+          "sales"
+        ]
+      },
+      "leasingPros": {
+        "profileInfo": [
+          {
+            "name": "Name",
+            "accessor": "prospect.name"
+          },
+          {
+            "name": "Phone",
+            "accessor": "prospect.phone.phoneNumber"
+          },
+          {
+            "name": "Email",
+            "accessor": "prospect.email"
+          }
+        ],
+        "screens": [
+          "notes"
+        ]
+      }
+    }
+  }
+}
