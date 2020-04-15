@@ -42,6 +42,8 @@ router.get('/agent/:id', async (req, res) => {
       lead.agentMultiSales = agentMultiSalesResult
       lead.bestZipCodes = bestZipCodes
       lead.bestAreas = bestAreas
+      lead.bestZipCodesString = bestZipCodes.map(({name}) => name).join(', ')
+      lead.bestAreasString = bestAreas.map(({name}) => name).join(', ')
       res.status(200).send(lead);
   } catch (error) {
       console.error(error);
