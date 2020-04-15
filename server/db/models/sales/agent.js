@@ -17,6 +17,10 @@ const agentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Note'
   }],
+  leadOwner: String,
+  lastContact: Date,
+  targetOffer: String,
+  reasonForLoss: String,
 });
 
 
