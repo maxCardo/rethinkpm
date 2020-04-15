@@ -714,7 +714,12 @@ button {
   }
 }
 
+
 /* Bozidar CSS */
+.navbar h2, .navbar ul {
+  margin-bottom: 0;
+}
+
 .agentInfoTable td {
   overflow-x: auto;
 }
@@ -765,4 +770,3 @@ table th {
 .agentStatusFilter {
   min-width: 200px;
 }
-/* END OF Bozidar CSS */

@@ -9,6 +9,7 @@ import { SET_INQUIRIES } from '../../../actions/type'
 import './style.css'
 import ProfileChat from './ProfileChat';
 import BottomNavigation from '../service/BottomNavigation';
+import AgentList from "../BrokerDashboard/AgentList";
 
 import NotesScreen from './screens/Notes'
 import SalesScreen from './screens/SalesHistory'
@@ -44,7 +45,7 @@ export class Profile extends Component {
     const screensSelected = this.props.screens.map((screenName) => (screens[screenName](this.state.profile)))
     return (
         <Fragment>
-          <div className='profile__main-container'>
+          <div className={this.props.isAgent ? 'agentProfile profile__main-container' : 'profile__main-container'}>
             <div className='profile__left-container'>
               <Resizable 
                 defaultSize={{
@@ -66,21 +67,27 @@ export class Profile extends Component {
                 }}
               >
                 <div className='profile__info-container' >
-                  <ProfileInfo inquiry={this.state.profile} attributes={this.props.attributes} />
+                  <ProfileInfo inquiry={this.state.profile} attributes={this.props.attributes} isAgent={this.props.isAgent} />
                 </div>
               </Resizable>
               <div className='profile__logs-container'>
                 <BottomNavigation screens={screensSelected}/>
               </div>
             </div>
-            <div className='profile__chat-container'>
+            <div className='profile__chat-container chat__sidebar'>
               <ProfileChat inquiryId={this.state.profile._id}/>
             </div>
+            {this.props.isAgent ? (
+              <div className="sidebar__left profile__agent-leads">
+                <AgentList />
+              </div>
+            ) : ''}
           </div>
         </Fragment>
     )
   }
 }
+
 const mapStateToProps = state => ({
   inquiries: state.dashboard.inquiriesRaw
 })

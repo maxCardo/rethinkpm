@@ -68,8 +68,8 @@ const App = ({loadUser, receiveMessage}) => {
             <Route exact path='/addProperty' component={AddProperty} />
             <PrivateRoute exact path='/profile/inquiry/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
             <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
-            <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent'}} />
-            <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent'}} />
+            <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true}} />
+            <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true}} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
         </section>
