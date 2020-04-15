@@ -26,6 +26,14 @@
           {
             "name": "Sales",
             "accessor": "sales"
+          },
+          {
+            "name": "Best Zip Codes",
+            "accessor": "bestZipCodesString"
+          },
+          {
+            "name": "Best Areas",
+            "accessor": "bestAreasString"
           }
         ],
         "screens": [

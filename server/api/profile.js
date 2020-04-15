@@ -35,14 +35,61 @@ router.get('/agent/:id', async (req, res) => {
       const agentMultiSalesPromise = multiSalesModel.find({agentId: lead.agentId})
       console.log(await Promise.all([agentSellsPromise, agentBuysPromise, agentMultiSalesPromise]))
       const [agentSellsResult, agentBuysResult, agentMultiSalesResult] = await Promise.all([agentSellsPromise, agentBuysPromise, agentMultiSalesPromise])
+      const allSales = agentSellsResult.concat(agentBuysResult,agentMultiSalesResult)
+      const {bestZipCodes, bestAreas} = calculateBestZipCodesAndAreas(allSales)
       lead.agentSells = agentSellsResult
       lead.agentBuys = agentBuysResult
       lead.agentMultiSales = agentMultiSalesResult
+      lead.bestZipCodes = bestZipCodes
+      lead.bestAreas = bestAreas
+      lead.bestZipCodesString = bestZipCodes.map(({name}) => name).join(', ')
+      lead.bestAreasString = bestAreas.map(({name}) => name).join(', ')
       res.status(200).send(lead);
   } catch (error) {
       console.error(error);
       res.status(400).send('server error')
   }
 });
+
+function calculateBestZipCodesAndAreas(sales) {
+  const zipCodes = {
+
+  }
+  const areas = {
+
+  }
+  sales.forEach((sale) => {
+    const {zipcode, area} = sale
+    const saleValue = sale.soldPrice;
+    if(zipCodes[zipcode]) {
+      zipCodes[zipcode] += saleValue
+    } else {
+      zipCodes[zipcode] = saleValue
+    }
+    if(areas[area]) {
+      areas[area] += saleValue
+    } else {
+      areas[area] = saleValue
+    }
+  })
+  const sortedZipcodes = transformObjectIntoSortedArray(zipCodes)
+  const sortedAreas = transformObjectIntoSortedArray(areas)
+  return {
+    bestZipCodes: sortedZipcodes.slice(0,3),
+    bestAreas: sortedAreas.slice(0,3)
+  }
+}
+
+function transformObjectIntoSortedArray(object) {
+  const array = []
+  for(prop in object) {
+    array.push({
+      name: prop,
+      value: object[prop]
+    })
+  }
+  const arraySorted = array.sort((a, b) => (a.value < b.value) ? 1 : -1)
+  return arraySorted
+}
 
 module.exports = router;
