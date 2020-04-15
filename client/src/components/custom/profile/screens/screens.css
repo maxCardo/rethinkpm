@@ -1,0 +1,57 @@
+.agent__stats-container {
+  display: flex;
+  height: 100%;
+  position: relative;
+  width: auto;
+}
+.agent__stats {
+  width: 33.3333333%;
+  overflow: auto;
+  background: #f7f7f7;
+  padding: 20px 10px 15px 10px;
+}
+.agent__stats li {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background: white;
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+  justify-content: space-between;
+}
+.agent__stats li:first-child {
+  margin-top: 0;
+}
+.agent__stats li:last-child {
+  margin-bottom: 0;
+}
+.agent__stats h6 {
+  padding: 5px;
+  background: #fff;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-shadow: 0 1px 1px rgba(0,0,0,.25);
+}
+.agent__stats.agent__stats-sold h6 {
+  width: 33.3333333%;
+}
+.agent__stats.agent__stats-bought h6 {
+  width: 33.3333333%;
+  right: 33.3333333%;
+  left: 33.3333333%;
+}
+.agent__stats.agent__stats-multi h6 {
+  width: 33.3333333%;
+  right: 0;
+  left: 66.6666666%;
+}
+.agent__stats li div {
+  min-width: 25%;
+}
+.agent__stats ul {
+  padding-top: 20px;
+  margin-bottom: 0;
+}
