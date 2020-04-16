@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import {connect} from 'react-redux'
 
-import Tables from './Tables'
+import UpdateModal from './UpdateModal'
 import Properties from './Properties'
 import ChatManager from '../Chat/ChatManager'
 import {SET_INQUIRIES, OPEN_INQUIRY_CHAT} from '../../../actions/type'
@@ -17,11 +17,13 @@ export class CrmDashboard extends Component {
       propertiesFilter: [],
       propertiesOpen: false,
       loading: true,
-      data: this.props.data
+      data: this.props.data,
+      showModal: false
     }
     this.onChangePropertiesFilter = this.onChangePropertiesFilter.bind(this)
     this.toggleProperties = this.toggleProperties.bind(this)
     this.handleClickRow = this.handleClickRow.bind(this)
+    this.handleModalClose = this.handleModalClose.bind(this)
     this.headers = [
       {
         accessor: 'prospect.name',
@@ -131,7 +133,7 @@ export class CrmDashboard extends Component {
           <div className={`${this.state.propertiesOpen ? 'col-md-9' : 'col-md-11'} col-sm-12`} >
             {this.state.data &&
               <Dashboard
-                type='tabbed'
+                type='select'
                 data={this.state.data} 
                 loading={this.state.loading} 
                 headers={this.headers}
@@ -151,6 +153,7 @@ export class CrmDashboard extends Component {
             }
           </div>
         </div>
+        <UpdateModal show={this.state.showModal} data={this.state.prospectUpdating} handleClose={this.handleModalClose}/>
         <ChatManager />
       </div>
     )
