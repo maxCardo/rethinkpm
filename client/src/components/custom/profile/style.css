@@ -393,5 +393,8 @@
 .list__search-container .searchInput {
   width: 100%;
 }
-
+.agentProfile .bottom-navigation__tab:first-child,
+.agentProfile .bottom-navigation__container {
+  border-radius: 0;
+}
 /* END OF Bozidar CSS */

@@ -95,7 +95,7 @@ export class Profile extends Component {
             </div>
             {this.props.isAgent ? (
               <div className="sidebar__left profile__agent-leads">
-                <AgentList />
+                <AgentList agents={this.props.listData} />
               </div>
             ) : ''}
           </div>

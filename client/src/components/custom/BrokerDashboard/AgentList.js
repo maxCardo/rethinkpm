@@ -14,7 +14,8 @@ class AgentList extends Component {
     this.state = {
       agentStatusSelect: agentStatus,
       data: [],
-      filterString: ''
+      filterString: '',
+      statusSelected: ''
     };
 
   }
@@ -43,12 +44,11 @@ class AgentList extends Component {
     if (prevState.statusSelected !== this.state.statusSelected && this.props.allAgents) {
       this.setState({loading: true});
 
-      this.state.data.forEach((agent) => {
+      this.props.allAgents.forEach((agent) => {
         if (agent.status == this.state.statusSelected.value && agent.sales > 0) {
           filteredAgents.push(agent);
         }
       });
-
 
       this.props.setAgents({agentOpportunities: filteredAgents, agentOpportunitiesRaw: agentsAll});
       this.setState({data: filteredAgents, loading: false});
@@ -57,7 +57,7 @@ class AgentList extends Component {
     if (prevState.filterString !== this.state.filterString) {
       let filteredAgents = [];
 
-      this.state.data.forEach((agent) => {
+      this.props.allAgents.forEach((agent) => {
         const name = agent.firstName;
         const lastName = agent.lastName;
         const fullName = (name + ' ' + lastName).toLowerCase();
@@ -81,8 +81,8 @@ class AgentList extends Component {
     if (this.props.allAgents) {
       theAgents = this.props.allAgents;
     }
-    if (this.state.agentOpportunities) {
-      theAgents = this.state.agentOpportunities;
+    if (this.state.data.length > 0) {
+      theAgents = this.state.data;
     }
 
     return (
@@ -103,17 +103,19 @@ class AgentList extends Component {
           />
         </div>
         <ul>
-          {this.props.allAgents ? (
-            theAgents.map((val, idx) => {
-              return (<li>
-                <Link to={`/profile/agent/${val._id}`}>
-                  <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span> <span
-                    className="label__gray">{val.status}</span></div>
-                  <div className="list__picker-body">
-                    <span>skills status</span><span>{this.moneyFormat(val.sales)}</span>
-                  </div>
-                </Link>
-              </li>)
+          {this.state.data ? (
+            this.state.data.map((val, idx) => {
+              if (val.sales > 0) {
+                return (<li>
+                  <Link to={`/profile/agent/${val._id}`}>
+                    <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span> <span
+                      className="label__gray">{val.status}</span></div>
+                    <div className="list__picker-body">
+                      <span>skills status</span><span>{this.moneyFormat(val.sales)}</span>
+                    </div>
+                  </Link>
+                </li> )
+              }
             })) : ''}
         </ul>
       </Fragment>
@@ -123,7 +125,7 @@ class AgentList extends Component {
 }
 
 const mapStateToProps = state => ({
-  allAgents: state.brokerDashboard.agentOpportunities
+  allAgents: state.brokerDashboard.agentOpportunitiesRaw
 });
 
 const mapDispatchToProps = dispatch => {
