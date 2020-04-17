@@ -303,7 +303,7 @@
   max-height: calc(75% - 40px);
   margin: 20px 0;
 }
-.sidebar__left li {
+.sidebar__left a {
   background: #fff;
   display: flex;
   flex-wrap: wrap;
@@ -316,11 +316,15 @@
   width: 100%;
   display: flex;
 }
-.sidebar__left .agent__picker-header {
+.sidebar__left .list__picker-header {
   text-align: center;
-}
-.sidebar__left .agent__picker-body {
+  display: flex;
   justify-content: space-between;
+}
+.sidebar__left .list__picker-body {
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 5px;
 }
 .profile-info__actions-container {
   width: 100%;
@@ -379,6 +383,15 @@
 }
 .agentProfilePage .profile__info-container {
   background: #fff;
+}
+.agentStatusFilter {
+  margin: 10px;
+}
+.list__search-container {
+  padding: 0 10px 10px 10px;
+}
+.list__search-container .searchInput {
+  width: 100%;
 }
 
 /* END OF Bozidar CSS */

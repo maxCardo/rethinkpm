@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Header from './Header'
 import Pagination from './Pagination';
-import commonMappers from './commonMappers'
+import commonMappers from './commonMappers';
+import { filterData, getData } from "../../../util/commonFunctions";
 import './style.css'
 
 export class Table extends Component {
@@ -32,7 +33,7 @@ export class Table extends Component {
         }
       });
     }
-    const data = Table.filterData(sortedData, this.filter, headers)
+    const data = filterData(sortedData, this.filter, headers)
     this.state = {
       sortDirections: this.sortDirectionsInitial.slice(),
       data: data,
@@ -94,7 +95,7 @@ export class Table extends Component {
       };
     } 
     const newFilterString = props.filter ? props.filter : ''
-    const newData = Table.filterData(sortedData, newFilterString, headers)
+    const newData = filterData(sortedData, newFilterString, headers)
     return {
       data: newData,
       paginatedData: newData.slice(0, pageSize),
@@ -104,19 +105,7 @@ export class Table extends Component {
       sortDirections: newSortDirections
     }
   }
-  static filterData(data, filterString, headers, level=0) {
-    const newData = data.filter((elem) => {
-      let includeItem = false;
-      headers.forEach((header) => {
-        const columnString = '' + Table.getData(elem, header)
-        if(columnString.toLowerCase().includes(filterString.toLowerCase())) {
-          includeItem = true;
-        }
-      })
-      return includeItem
-    })
-    return newData
-  }
+
   render() {
     return (
       <div>
@@ -144,8 +133,8 @@ export class Table extends Component {
                 {this.state.headers.map((header, index) => (
                   <td key={`dataItem-${index}`} className={header.className}>
                     {header.mapper ? 
-                      this.mapData(header.mapper, Table.getData(dataItem, header)) :
-                      Table.getData(dataItem, header)
+                      this.mapData(header.mapper, getData(dataItem, header)) :
+                      getData(dataItem, header)
                     }
                   </td>
                 ))}
@@ -177,9 +166,9 @@ export class Table extends Component {
 
     const data = this.state.data.sort((a, b) => {
       if(newSortDirections[index] === 'asc') {
-        return Table.getData(a, this.state.headers[index]) > Table.getData(b, this.state.headers[index]) ? 1 : -1
+        return getData(a, this.state.headers[index]) > getData(b, this.state.headers[index]) ? 1 : -1
       } else {
-        return Table.getData(b, this.state.headers[index]) > Table.getData(a, this.state.headers[index])  ? 1 : -1
+        return getData(b, this.state.headers[index]) > getData(a, this.state.headers[index])  ? 1 : -1
       }
     });
     this.setState({alreadySorted: true, sortDirections: newSortDirections, data, paginatedData: data.slice(0, this.pageSize), pageIndex: 0 })
@@ -205,25 +194,6 @@ export class Table extends Component {
       return;
     }
     this.changePage(this.state.pageIndex - 1)
-  }
-  static getData(dataItem, header) {
-    if(header.reactComponent) {
-      return header.render(dataItem)
-    } else {
-      const {accessor} = header
-      if(accessor.includes('.')) {
-        const accessorsArray = accessor.split('.')
-        let item = dataItem;
-        accessorsArray.forEach((accessor) => {
-          if(item) {
-            item = item[accessor]
-          }
-        })
-        return item 
-      } else {
-        return dataItem[accessor] 
-      }
-    }
   }
 }
 

@@ -770,3 +770,13 @@ table th {
 .agentStatusFilter {
   min-width: 200px;
 }
+
+.label__gray {
+  padding: 0 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,.175);
+  background: #dee2e6;
+  color: #343a40;
+  font-size: 12px;
+  white-space: nowrap;
+  margin: 3px;
+}

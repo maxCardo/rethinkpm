@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ProfileIcon from '../common/ProfileIcon';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import { getData } from "../../../util/commonFunctions";
+
 
 export class ProfileInfo extends Component {
   toggleAgentsMenu(event) {
@@ -30,7 +32,7 @@ export class ProfileInfo extends Component {
         </div>
         <div className='profile-info__data-container'>
           {this.props.attributes.map((attribute) => {
-            return (<p>{attribute.name}: {ProfileInfo.getData(this.props.inquiry, attribute)}</p>)
+            return (<p>{attribute.name}: {getData(this.props.inquiry, attribute)}</p>)
           })}
         </div>
         <div className="profile-info__actions-container">
@@ -47,25 +49,6 @@ export class ProfileInfo extends Component {
         </div>
       </div>
     )
-  }
-  static getData(dataItem, header) {
-    if(header.reactComponent) {
-      return header.render(dataItem)
-    } else {
-      const {accessor} = header
-      if(accessor.includes('.')) {
-        const accessorsArray = accessor.split('.')
-        let item = dataItem;
-        accessorsArray.forEach((accessor) => {
-          if(item) {
-            item = item[accessor]
-          }
-        })
-        return item 
-      } else {
-        return dataItem[accessor] 
-      }
-    }
   }
 }
 
