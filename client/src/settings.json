@@ -81,8 +81,7 @@
           {
             "name": "Email",
             "accessor": "prospect.email",
-            "col": 1,
-
+            "col": 1
           }
         ],
         "screens": [

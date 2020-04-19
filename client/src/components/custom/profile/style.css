@@ -47,6 +47,9 @@
   width: 100%;
   margin-left: 40px;
 }
+.profile-info__data-container .column__one {
+  padding: 0 10px;
+}
 
 .profile-tables__container {
   padding: 20px;
