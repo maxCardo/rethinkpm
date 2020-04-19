@@ -31,8 +31,8 @@ export class ProfileInfo extends Component {
           <ProfileIcon name={'Tests'} size={80} />
         </div>
         <div className='profile-info__data-container'>
-          {this.props.attributes.map((attribute) => {
-            return (<p>{attribute.name}: {getData(this.props.inquiry, attribute)}</p>)
+          {this.props.attributes.map((attribute, idx) => {
+            return (<p key={idx}>{attribute.name}: {getData(this.props.inquiry, attribute)}</p>)
           })}
         </div>
         <div className="profile-info__actions-container">
