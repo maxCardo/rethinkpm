@@ -12,7 +12,7 @@ export class brokerDashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: undefined,
+            data: this.props.agents,
             filterString: '',
             loading: true,
             filteredData: this.props.data,
@@ -75,6 +75,7 @@ export class brokerDashboard extends Component {
     }
 
     componentDidMount() {
+      if(this.props.agents) return;
         axios.get('/api/sales/agents').then( (res) => {
           let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
           const data = {
@@ -84,12 +85,11 @@ export class brokerDashboard extends Component {
             agent: [],
             notInterested: [],
           }
-          console.log(agentsWithSales)
           agentsWithSales.forEach((agent) => {
             console.log(agent)
             data[agent.status].push(agent)
           })
-          this.props.setAgents({agentOpportunities: agentsWithSales, agentOpportunitiesRaw: res.data});
+          this.props.setAgents({agentOpportunities: data, agentOpportunitiesRaw: res.data});
           this.setState({ data });
         })
         .then((res) => {
