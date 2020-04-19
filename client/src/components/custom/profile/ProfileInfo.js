@@ -25,15 +25,27 @@ export class ProfileInfo extends Component {
   }
 
   render() {
+    let col1 = [];
+    let col2 = [];
+    let col3 = [];
+    this.props.attributes.map((attribute, idx) => {
+      if (attribute.col === 1) {
+        col1.push((<p key={idx}>{attribute.name}: {getData(this.props.inquiry, attribute)}</p>));
+      } else if (attribute.col === 2) {
+        col2.push((<p key={idx}>{attribute.name}: {getData(this.props.inquiry, attribute)}</p>));
+      } else if (attribute.col === 3) {
+        col3.push((<p key={idx}>{attribute.name}: {getData(this.props.inquiry, attribute)}</p>));
+      }
+    });
     return (
       <div className='profile-info__main-container'>
         <div className='profile-info__icon-container'>
           <ProfileIcon name={'Tests'} size={80} />
         </div>
         <div className='profile-info__data-container'>
-          {this.props.attributes.map((attribute, idx) => {
-            return (<p key={idx}>{attribute.name}: {getData(this.props.inquiry, attribute)}</p>)
-          })}
+          {col1 ? (<div className="column__one">{col1}</div>): ''}
+          {col2 ? (<div className="column__one">{col2}</div>): ''}
+          {col3 ?  (<div className="column__one">{col3}</div>): ''}
         </div>
         <div className="profile-info__actions-container">
           {this.props.isAgent ?

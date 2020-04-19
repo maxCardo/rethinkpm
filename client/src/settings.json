@@ -5,35 +5,60 @@
         "profileInfo": [
           {
             "name": "First Name",
-            "accessor": "firstName"
+            "accessor": "firstName",
+            "col": 1
           },
           {
             "name": "Last Name",
-            "accessor": "lastName"
+            "accessor": "lastName",
+            "col": 1
           },
           {
             "name": "Status",
-            "accessor": "status"
+            "accessor": "status",
+            "col": 1
           },
           {
             "name": "Phone",
-            "accessor": "phone"
+            "accessor": "phone",
+            "col": 1
           },
           {
             "name": "Email",
-            "accessor": "emailAddress"
+            "accessor": "emailAddress",
+            "col": 1
           },
           {
             "name": "Sales",
-            "accessor": "sales"
+            "accessor": "sales",
+            "col": 2
+
+          },
+          {
+            "name": "Codes",
+            "accessor": "bestZipCodesString",
+            "col": 2
+          },
+          {
+            "name": "Areas",
+            "accessor": "bestAreasString",
+            "col": 2
+          },
+          {
+            "name": "Sales",
+            "accessor": "sales",
+            "col": 3
+
           },
           {
             "name": "Best Zip Codes",
-            "accessor": "bestZipCodesString"
+            "accessor": "bestZipCodesString",
+            "col": 3
           },
           {
             "name": "Best Areas",
-            "accessor": "bestAreasString"
+            "accessor": "bestAreasString",
+            "col": 3
           }
         ],
         "screens": [
@@ -45,15 +70,19 @@
         "profileInfo": [
           {
             "name": "Name",
-            "accessor": "prospect.name"
+            "accessor": "prospect.name",
+            "col": 1
           },
           {
             "name": "Phone",
-            "accessor": "prospect.phone.phoneNumber"
+            "accessor": "prospect.phone.phoneNumber",
+            "col": 1
           },
           {
             "name": "Email",
-            "accessor": "prospect.email"
+            "accessor": "prospect.email",
+            "col": 1,
+
           }
         ],
         "screens": [

@@ -41,6 +41,10 @@
 }
 
 .profile-info__data-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
   margin-left: 40px;
 }
 
@@ -107,7 +111,7 @@
   margin:  0;
   width: 100%;
 }
-.agentProfile .profile-info__data-container p {
+.profile-info__data-container p {
   margin: 0;
 }
 .agentProfile .profile__left-container {
