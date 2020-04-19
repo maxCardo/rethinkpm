@@ -103,7 +103,6 @@ export class brokerDashboard extends Component {
     }
 
     render() {
-      console.log(this.state.data)
         return (
             <div>
               {this.state.data &&
