@@ -6,56 +6,91 @@ import Table from '../Table'
 import Select from 'react-select';
 import { SET_AGENT_OPPORTUNITIES } from '../../../actions/type'
 import { withRouter } from 'react-router-dom';
+import Dashboard from '../dashboard/Dashboard';
 
 export class brokerDashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: [],
+            data: undefined,
             filterString: '',
             loading: true,
-            headers: [
-                {
-                    accessor: 'firstName',
-                    label: 'First Name'
-                },
-                {
-                    accessor: 'lastName',
-                    label: 'Last Name'
-                },
-                {
-                    accessor: 'emailAddress',
-                    label: 'Email'
-                },
-                {
-                  accessor: 'phone',
-                  label: 'Phone',
-                  mapper: 'phone'
-                },
-                {
-                    accessor: 'officeId',
-                    label: 'Office ID'
-                },
-                {
-                    accessor: 'sales',
-                    label: 'Revenue',
-                    mapper: (data) => (new Intl.NumberFormat('en-US',
-                        { style: 'currency', currency: 'USD' }
-                    ).format(data)) // '$100.00')
-                },
-            ],
             filteredData: this.props.data,
             agentStatusSelect: agentStatus,
             statusSelected: {}
         }
         this.handleClickRow = this.handleClickRow.bind(this)
+        this.headers = [
+          {
+              accessor: 'firstName',
+              label: 'First Name'
+          },
+          {
+              accessor: 'lastName',
+              label: 'Last Name'
+          },
+          {
+              accessor: 'emailAddress',
+              label: 'Email'
+          },
+          {
+            accessor: 'phone',
+            label: 'Phone',
+            mapper: 'phone'
+          },
+          {
+              accessor: 'officeId',
+              label: 'Office ID'
+          },
+          {
+              accessor: 'sales',
+              label: 'Revenue',
+              mapper: (data) => (new Intl.NumberFormat('en-US',
+                  { style: 'currency', currency: 'USD' }
+              ).format(data)) // '$100.00')
+          },
+      ]
+      this.states = [
+        {
+          label: 'Lead',
+          key: 'new'
+        },
+        {
+          label: 'Prospect',
+          key: 'prospect'
+        },
+        {
+          label: 'Pending Agent',
+          key: 'pending'
+        },
+        {
+          label: 'Agent',
+          key: 'agent'
+        },
+        {
+          label: 'Not Interested',
+          key: 'notInterested'
+        }
+      ]
     }
 
     componentDidMount() {
         axios.get('/api/sales/agents').then( (res) => {
-            let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
-            this.props.setAgents({agentOpportunities: agentsWithSales, agentOpportunitiesRaw: res.data});
-            this.setState({ data: res.data });
+          let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
+          const data = {
+            new: [],
+            prospect: [],
+            pending: [],
+            agent: [],
+            notInterested: [],
+          }
+          console.log(agentsWithSales)
+          agentsWithSales.forEach((agent) => {
+            console.log(agent)
+            data[agent.status].push(agent)
+          })
+          this.props.setAgents({agentOpportunities: agentsWithSales, agentOpportunitiesRaw: res.data});
+          this.setState({ data });
         })
         .then((res) => {
             this.setState({ loading: false });
@@ -66,90 +101,21 @@ export class brokerDashboard extends Component {
         e.stopPropagation()
         return true
     }
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        let filteredAgents = [];
-
-        if (prevState.statusSelected !== this.state.statusSelected && this.props.agents) {
-            this.setState({loading: true});
-
-            this.state.data.forEach((agent) => {
-                if (agent.status == this.state.statusSelected.value && agent.sales > 0) {
-                    filteredAgents.push(agent);
-                }
-            });
-
-            const agentsAll = (prevProps.agents) ? prevProps.agents : this.props.agents;
-
-            this.props.setAgents({agentOpportunities: filteredAgents, agentOpportunitiesRaw: this.state.data});
-            this.setState({loading: false});
-        }
-        if (prevProps.agents !== this.props.agents) {
-            this.forceUpdate();
-        }
-    }
 
     render() {
-        const groupStyles = {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-        };
-        const groupBadgeStyles = {
-            backgroundColor: '#EBECF0',
-            borderRadius: '2em',
-            color: '#172B4D',
-            display: 'inline-block',
-            fontSize: 12,
-            fontWeight: 'normal',
-            lineHeight: '1',
-            minWidth: 1,
-            padding: '0.16666666666667em 0.5em',
-            textAlign: 'center',
-        };
-
-        const formatGroupLabel = data => (
-            <div style={groupStyles}>
-                <span>{data.label}</span>
-                <span style={groupBadgeStyles}>{data.options.length}</span>
-            </div>
-        );
-
+      console.log(this.state.data)
         return (
             <div>
-
-                <div className='searchContainer agentsSearchContainer'>
-                    <Select
-                        className="agentStatusFilter"
-                        onChange={value => this.setState({ statusSelected: value })}
-                        defaultValue="All"
-                        options={this.state.agentStatusSelect}
-                        formatGroupLabel={formatGroupLabel}
-                    />
-                    <input 
-                      className='form-control searchInput' 
-                      tabIndex={0}
-                      onChange={(e) => this.setState({filterString: e.target.value})} 
-                      placeholder='Search' 
-                    />
-                </div>
-                <div className="container-fluid " style={{overflow: 'auto', maxHeight: '80vh'}}>
-                    <div className="col-12" >
-                        <h2 className='sectionTitle'>All Agents</h2>
-                        <Table
-                            headers={this.state.headers}
-                            data={this.props.agents ? this.props.agents : []}
-                            pageSize={10}
-                            sorting={true}
-                            sortBy='sales'
-                            sortDirection='desc'
-                            filter={this.state.filterString}
-                            fontSize={12}
-                            onClickRow={this.handleClickRow}
-                            className="agentInfoTable"
-                            loading={this.state.loading}
-                        />
-                    </div>
-                </div>
+              {this.state.data &&
+                <Dashboard
+                  type='select'
+                  data={this.state.data} 
+                  loading={this.state.loading} 
+                  headers={this.headers}
+                  states={this.states}
+                  handleClickRow={this.handleClickRow}
+                />
+              }
             </div>
 
         )
