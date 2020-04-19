@@ -47,9 +47,15 @@ export class Table extends Component {
     this.decreasePage = this.decreasePage.bind(this)
     this.changePage = this.changePage.bind(this)
   }
+  static compareArrays(arr1, arr2) {
+    if(arr1.length != arr2.length) return false
+    for(let i = 0; i < arr1.length; i++) {
+      if(arr1[i]._id != arr2[i]._id) return false
+    }
+    return true;
+  }
   static getDerivedStateFromProps(props, state) {
     let data = props.data
-    console.log(data)
 
     const pageSize = props.pageSize ? props.pageSize : Infinity;
     const headers = props.headers.map((header) => {
@@ -64,9 +70,10 @@ export class Table extends Component {
       return header;
     })
 
-    let sortedData = state.data.length && state.rawData == props.data ? state.data.slice() : props.data.slice();
+    let sortedData = state.data.length && Table.compareArrays(state.rawData, props.data) ? state.data.slice() : props.data.slice();
+
     let newSortDirections = state.sortDirections.slice()
-    if(state.rawData != props.data || props.sortBy && !state.alreadySorted) {
+    if(!Table.compareArrays(state.rawData,props.data) || props.sortBy && !state.alreadySorted) {
       const sortBy = props.sortBy
       newSortDirections = newSortDirections.map((sortDirection, index) => {
         if(headers[index].accessor === sortBy) {
@@ -82,7 +89,7 @@ export class Table extends Component {
         }
       });
     }
-    if(props.filter === state.actualFilterString && state.rawData != props.data) {
+    if(props.filter === state.actualFilterString && !Table.compareArrays(state.rawData,props.data)) {
       const pageSize = props.pageSize ? props.pageSize : Infinity;
       const index = state.pageIndex ? state.pageIndex : 0;
       const newPaginatedData = sortedData.slice(pageSize * index, pageSize * (index+1))
@@ -182,6 +189,7 @@ export class Table extends Component {
         return Table.getData(b, this.state.headers[index]) > Table.getData(a, this.state.headers[index])  ? 1 : -1
       }
     });
+    console.log(data)
     this.setState({alreadySorted: true, sortDirections: newSortDirections, data, paginatedData: data.slice(0, this.pageSize), pageIndex: 0 })
   }
   changePage(index) {
