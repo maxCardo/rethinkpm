@@ -112,7 +112,7 @@ export class brokerDashboard extends Component {
                   loading={this.state.loading} 
                   headers={this.headers}
                   states={this.states}
-                  handleClickRow={this.handleClickRow}
+                  onClickRow={this.handleClickRow}
                   sortBy='sales'
                   sortDirection='desc'
                 />

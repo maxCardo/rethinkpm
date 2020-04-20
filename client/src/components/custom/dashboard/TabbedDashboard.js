@@ -23,14 +23,13 @@ export class SeparatedDashboard extends Component {
                 <div className='section'>
                   <h2 className='sectionTitle'>Status {index+1}: {label}</h2>
                   <Table
-                      headers={this.props.headers}
-                      data={this.props.data[key]}
-                      pageSize={15}
-                      sorting={true}
-                      filter={this.state.filterString}
-                      fontSize={12}
-                      onClickRow={this.props.handleClickRow}
-                      loading={this.props.loading}
+                    pageSize={10}
+                    sorting={true}
+                    filter={this.state.filterString}
+                    fontSize={12}
+                    className="agentInfoTable"
+                    {...this.props}
+                    data={this.props.data[key]}
                   />
                 </div>
               </Tab>

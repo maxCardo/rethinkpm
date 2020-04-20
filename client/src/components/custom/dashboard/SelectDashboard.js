@@ -38,17 +38,13 @@ export class SelectDashboard extends Component {
         <div className="container-fluid " style={{overflow: 'auto', maxHeight: '80vh'}}>
           <div className="col-12" >
             <Table
-              headers={this.props.headers}
-              data={this.props.data[this.state.statusSelected.value]}
               pageSize={10}
               sorting={true}
-              sortBy={this.props.sortBy}
-              sortDirection={this.props.sortDirection}
               filter={this.state.filterString}
               fontSize={12}
-              onClickRow={this.props.handleClickRow}
               className="agentInfoTable"
-              loading={this.props.loading}
+              {...this.props}
+              data={this.props.data[this.state.statusSelected.value]}
             />
           </div>
         </div>
