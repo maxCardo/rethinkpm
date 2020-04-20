@@ -26,7 +26,7 @@ router.get('/inquiry/:id', async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.get('/agent/:id', async (req, res) => {
   try {
-      const leadResult = await  Agent.findById(req.params.id).populate('prospect notes');
+      const leadResult = await  Agent.findById(req.params.id).populate('prospect notes office');
       const notesPopulated = await  Note.populate(leadResult.notes, {path: 'user'})
       leadResult.notes = notesPopulated
       const lead = Object.assign({}, leadResult._doc)
