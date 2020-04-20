@@ -4,6 +4,7 @@ const agentSchema = new mongoose.Schema({
   agentId: String,
   lastName: String,
   firstName: String,
+  fullName: String,
   emailAddress: String,
   office: {
     type: mongoose.Schema.Types.ObjectId,
