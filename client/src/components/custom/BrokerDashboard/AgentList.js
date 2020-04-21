@@ -74,46 +74,35 @@ class AgentList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    let filteredAgents = [];
-    let filteredTwice = [];
     const agentsAll = (prevProps.allAgents) ? prevProps.allAgents : this.props.allAgents;
+    let filteredAgents = agentsAll.filter((agent) => agent.sales > 0)
 
     if ((prevState.statusSelected !== this.state.statusSelected) || (prevState.filterString !== this.state.filterString)) {
       this.setState({loading: true});
 
       if (this.state.statusSelected.value !== 'all') {
-        agentsAll.forEach((agent) => {
-          if (agent.status == this.state.statusSelected.value && agent.sales > 0 ) {
-            filteredAgents.push(agent);
-          }
-        });
-      } else {
-        filteredAgents = agentsAll;
+        filteredAgents = filteredAgents.filter((agent) => agent.status == this.state.statusSelected.value)
+      }
+      const filterString = this.state.filterString.toLowerCase()
+      if(filterString) {
+        filteredAgents = filteredAgents.filter((agent) => {
+          const fullName = agent.fullName.toLowerCase()
+          return fullName.includes(filterString)
+        })
       }
 
-        filteredAgents.forEach((agent) => {
-          const name = agent.firstName;
-          const lastName = agent.lastName;
-          const fullName = (name + ' ' + lastName).toLowerCase();
-
-          if (fullName.includes(this.state.filterString.toLowerCase())) {
-            filteredTwice.push(agent);
-          }
-        });
-
-      console.log(filteredTwice);
-
       let hasMore = false;
-      if (filteredTwice.length > this.getItemsFromData(filteredTwice).length) {
+      if (filteredAgents.length > this.getItemsFromData(filteredAgents).length) {
         hasMore = true;
       }
 
-      this.setState({data: filteredTwice, items: this.getItemsFromData(filteredTwice), loading: false, hasMore: hasMore});
+      this.setState({data: filteredAgents, items: this.getItemsFromData(filteredAgents), loading: false, hasMore: hasMore});
     }
     this.refreshFunction(this.state.items);
   }
 
   render() {
+    console.log(this.state.items)
     return (
       <Fragment>
         <Select
@@ -143,18 +132,16 @@ class AgentList extends Component {
             <p style={ {textAlign: "center"} }>No more results!</p>
           }>
           {this.state.items ? (
-            this.state.items.map((val, idx) => {
-              if (val.sales > 0) {
-                return <div key={val._id}>
-                  <Link to={`/profile/agent/${val._id}`}>
-                    <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span> <span
-                      className="label__gray">{val.status}</span></div>
-                    <div className="list__picker-body">
-                      <span>skills status</span><span>{this.moneyFormat(val.sales)}</span>
-                    </div>
-                  </Link>
-                </div>
-              }
+            this.state.items.map((val) => {
+              return <div key={val._id}>
+                <Link to={`/profile/agent/${val._id}`}>
+                  <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span> <span
+                    className="label__gray">{val.status}</span></div>
+                  <div className="list__picker-body">
+                    <span>skills status</span><span>{this.moneyFormat(val.sales)}</span>
+                  </div>
+                </Link>
+              </div>
             })) : ''}
         </InfiniteScroll>
 
