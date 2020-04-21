@@ -133,12 +133,12 @@ export class CrmDashboard extends Component {
           <div className={`${this.state.propertiesOpen ? 'col-md-9' : 'col-md-11'} col-sm-12`} >
             {this.state.data &&
               <Dashboard
-                type='select'
+                type='tabbed'
                 data={this.state.data} 
                 loading={this.state.loading} 
                 headers={this.headers}
                 states={this.states}
-                handleClickRow={this.handleClickRow}
+                onClickRow={this.handleClickRow}
               />
             }
           </div>
