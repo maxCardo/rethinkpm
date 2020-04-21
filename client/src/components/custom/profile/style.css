@@ -42,15 +42,61 @@
 
 .profile-info__data-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-direction: row;
   width: 100%;
-  margin-left: 40px;
+  margin-left: 15px;
 }
-.profile-info__data-container .column__one {
-  padding: 0 10px;
+.profile-info__data-container .column {
+   flex-grow: 1;
+   display: flex;
+   padding: 10px;
+ }
+.profile-info__data-container .column h2 {
+ font-size: 1.65em;
 }
-
+.profile-info__data-container .column-content {
+  background: #f7f7f7;
+  padding: 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.22);
+  overflow: auto;
+  flex-grow: 1;
+}
+.profile-info__data-container .column-content p,
+.profile-info__data-container .column-content > div {
+  display: flex;
+  align-items: center;
+}
+.agentStatusEdit {
+  flex-grow: 1;
+}
+.agentStatusEdit > div:first-child,
+.agentStatusEdit > span:first-child + div:nth-child(2) {
+  min-height: 26px;
+  max-height: 26px;
+}
+.agentStatusEdit > div:first-child > div,
+.agentStatusEdit > span:first-child + div:nth-child(2) > div {
+  max-height: 26px;
+  min-height: 26px;
+  font-size: 14px;
+}
+.agentStatusEdit input {
+  line-height: 14px;
+  top: -2px;
+  position: relative;
+}
+.agentStatusEdit > div:last-child:not(:first-child) > div > div {
+  padding: 2px 10px;
+  font-size: 12px;
+}
+.agentStatusEdit.editable-false > div {
+  border: none;
+  background: #f7f7f7;
+}
+.css-9gakcf-option {
+  background-color: #6f9dd4 !important;
+}
 .profile-tables__container {
   padding: 20px;
   height: 100%;
@@ -107,15 +153,31 @@
 .agentProfilePage > div > div:first-child {
   width: 100% !important;
 }
-.agentProfile .profile-info__main-container {
-  padding: 10px 20px;
+.profile-info__icon-container {
+  display: flex;
+}
+.profile-icon__container {
+  align-self: center;
+}
+.profile-info__main-container {
+  padding: 10px 20px 40px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   background-color: #FFF;
   margin:  0;
   width: 100%;
 }
-.profile-info__data-container p {
+.profile-info__data-container p,
+.profile-info__data-container .column-content > div {
   margin: 0;
+  padding: 5px 0;
+  border-bottom: 1px solid #ededed;
+  font-size: 14px;
+  width: 100%;
+}
+.profile-info__data-container p:last-child,
+.profile-info__data-container .column-content > div:last-child:not(:only-child) {
+  border-bottom: none;
+  padding: 0;
 }
 .agentProfile .profile__left-container {
   width: 100%;
@@ -252,10 +314,7 @@
   align-self: flex-start;
 }
 .agentProfilePage .profile-info__data-container {
-  margin-left: 40px;
   width: calc(100% - 186px);
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -339,9 +398,20 @@
   position: absolute;
   bottom: 10px;
 }
+.action-buttons__button {
+  background: #fff;
+  color: #6f9dd4;
+  width: 30px;
+  height: 30px;
+  transition: color 225ms, box-shadow 225ms;
+}
+.action-buttons__button:hover {
+  box-shadow: 1px 1px 8px rgba(0,0,0,.227);
+}
 
 .profile-info__actions-container .action-buttons__button {
   margin-right: 15px;
+
 }
 .action-buttons__button:first-child {
   margin-left: 0;
@@ -398,6 +468,7 @@
 }
 .list__search-container .searchInput {
   width: 100%;
+  margin: 0;
 }
 .agentProfile .bottom-navigation__tab:first-child,
 .agentProfile .bottom-navigation__container {
@@ -406,5 +477,27 @@
 .form-control.searchInput:focus,
 .form-control.searchInput:active {
   border: 2px solid #2684ff;
+}
+
+.singleFieldEdit {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+}
+.singleFieldEdit i {
+  margin-left: 2px;
+}
+.edit-profile__button {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center ;
+  align-items: center;
+  font-size: 20px;
+  color: #343a40;
 }
 /* END OF Bozidar CSS */

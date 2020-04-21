@@ -29,8 +29,10 @@ export class Profile extends Component {
     })
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
+
+    /*SIDEBAR LINK POPULATION UPDATE*/
     if (prevProps !== this.props) {
-      const {id} = this.props.match.params
+      const {id} = this.props.match.params;
 
       if (this.props.isAgent) {
         axios.get(`/api/profile/agent/${this.props.match.params.id}`).then((res) => {

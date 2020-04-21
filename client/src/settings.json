@@ -14,14 +14,15 @@
             "col": 1
           },
           {
-            "name": "Status",
-            "accessor": "status",
+            "name": "Office",
+            "accessor": "office.name",
             "col": 1
           },
           {
             "name": "Phone",
             "accessor": "phone",
-            "col": 1
+            "col": 1,
+            "formatter": "formatPhone"
           },
           {
             "name": "Email",
@@ -29,35 +30,46 @@
             "col": 1
           },
           {
-            "name": "Sales",
+            "name": "Sales Volume",
             "accessor": "sales",
-            "col": 2
-
+            "col": 2,
+            "formatter": "formatMoney"
           },
           {
-            "name": "Codes",
-            "accessor": "bestZipCodesString",
-            "col": 2
-          },
-          {
-            "name": "Areas",
+            "name": "Active Neighborhoods",
             "accessor": "bestAreasString",
             "col": 2
           },
           {
-            "name": "Sales",
-            "accessor": "sales",
+            "name": "Active Zip Codes",
+            "accessor": "bestZipCodesString",
+            "col": 2
+          },
+          {
+            "name": "Target Offer",
+            "accessor": "targetOffer",
+            "col": 2
+          },
+          {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
+            "name": "Lead Owner",
+            "accessor": "leadOwner",
             "col": 3
 
           },
           {
-            "name": "Best Zip Codes",
-            "accessor": "bestZipCodesString",
+            "name": "Reason for loss",
+            "accessor": "reasonForLoss",
             "col": 3
           },
           {
-            "name": "Best Areas",
-            "accessor": "bestAreasString",
+            "name": "Last Contact",
+            "accessor": "lastContact",
             "col": 3
           }
         ],

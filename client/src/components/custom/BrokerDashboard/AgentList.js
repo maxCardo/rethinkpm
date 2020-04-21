@@ -12,7 +12,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 class AgentList extends Component {
   constructor(props) {
     super(props);
-    this.infiniteScroll = React.createRef();
     this.state = {
       agentStatusSelect: agentStatus,
       data: [],
