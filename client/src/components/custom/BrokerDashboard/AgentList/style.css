@@ -1,0 +1,17 @@
+.agent-list__search-container {
+  display: flex;
+  margin: 10px;
+  position: relative;
+  align-items: stretch;
+}
+
+.agent-list__search-input {
+  width: 80%;
+}
+
+.agent-list__filter-icon {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
