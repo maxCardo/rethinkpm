@@ -51,6 +51,21 @@ router.get('/agent/:id', async (req, res) => {
   }
 });
 
+router.put("/agent/:id", async (request, response) => {
+  try {
+    var agent = await Agent.findById(request.params.id).exec();
+
+    agent.set({
+      ...agent,
+      ...request.body
+    });
+    var result = await agent.save();
+    response.send(result);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
 function calculateBestZipCodesAndAreas(sales) {
   const zipCodes = {
 

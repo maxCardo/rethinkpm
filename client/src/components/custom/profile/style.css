@@ -487,7 +487,8 @@
   border: 2px solid #2684ff;
 }
 
-.singleFieldEdit {
+.singleFieldEdit,
+.addPhoneNumber {
   width: 22px;
   height: 22px;
   display: flex;
@@ -507,12 +508,38 @@
   align-items: center;
   color: #343a40;
 }
+/*EDIT MODAL CSS*/
 .modalFooterBtns {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 0;
 }
-.modalFooterBtns .btn {
+.modalFooterBtns .btn,
+.phone .form-group label {
   margin: 0;
+}
+.phone.form-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.phone .form-group {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  margin: 0 15px 0 0;
+}
+.phone .form-group input,
+.phone .form-group select {
+  margin-left: 5px;
+}
+.phone .form-group label.form-check-label {
+  margin-left: 20px;
+}
+.phone .action-buttons__button {
+  margin-left: auto;
+}
+.phone .action-buttons__button i {
+  margin-left: 1px;
 }
 /* END OF Bozidar CSS */

@@ -23,9 +23,7 @@ export class ProfileInfo extends Component {
         statusEditable: true
       },
       profileOpened: props.inquiry,
-      modalData: {
-
-      }
+      modalData: {}
     };
     this.makeEditable = this.makeEditable.bind(this)
     this.handleEditProfileClose = this.handleEditProfileClose.bind(this)
@@ -33,6 +31,7 @@ export class ProfileInfo extends Component {
     this.handleStatusChange = this.handleStatusChange.bind(this)
     this.handleModalInputChange = this.handleModalInputChange.bind(this)
     this.handleModalSaveData = this.handleModalSaveData.bind(this)
+    this.editProfile = this.editProfile.bind(this);
   }
 
   formatData(formatter, data) {
@@ -86,6 +85,27 @@ export class ProfileInfo extends Component {
     }
   }
 
+  editProfile(modalData) {
+    fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
+      method: "put",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({
+        firstName: modalData.firstName,
+        lastName: modalData.lastName,
+        fullName: modalData.firstName + " " + modalData.lastName,
+        phone: modalData.phone,
+        /* TODO: REWORK TO USE ARRAY OF OBJECTS */
+        phoneNumbers: [
+          {
+            number: modalData.phone
+          }
+        ],
+        status: modalData.status
+      })
+    }).then((res) => {
+      console.log(res);
+    })
+  }
 
   render() {
 
@@ -207,21 +227,49 @@ export class ProfileInfo extends Component {
             </button> : ''}
 
         </div>
-        <Modal size='lg' show={this.state.showEditProfileModal} onHide={this.handleEditProfileClose}>
+        <Modal size='xl' show={this.state.showEditProfileModal} onHide={this.handleEditProfileClose}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Lead</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
-            {this.props.inquiry ? (
+            {this.props.inquiry && this.props.isAgent ? (
               <Form>
-
                 {this.props.attributes.map((attribute, idx) => {
                   if (attribute.editable === 'input') {
-                    return (<Form.Group key={`form-${idx}`}>
-                      <Form.Label>{attribute.name}:</Form.Label>
-                      <Form.Control type="text" name={attribute.accessor} value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : '' } onChange={this.handleModalInputChange}/>
-                    </Form.Group>);
+                    if (attribute.accessor !== 'phone') {
+                      return (<Form.Group key={`form-${idx}`}>
+                        <Form.Label>{attribute.name}:</Form.Label>
+                        <Form.Control type="text" name={attribute.accessor}
+                                      value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
+                                      onChange={this.handleModalInputChange}/>
+                      </Form.Group>);
+                    } else {
+                      /*IF IS PHONE*/
+                      return (<Form.Group key={`form-${idx}`} className={attribute.accessor}>
+                        <Form.Group>
+                          <Form.Label>{attribute.name}:</Form.Label>
+                          <Form.Control type="text" name={attribute.accessor}
+                                        value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
+                                        onChange={this.handleModalInputChange}/>
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Label>Stop texting:</Form.Label>
+                          <Form.Control as="select" name="okToText"
+                                        value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
+                                        onChange={this.handleModalSelectChange}>
+                            <option value={true}>No</option>
+                            <option value={false}>Yes</option>
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Check type="checkbox" label="Make Primary"/>
+                        </Form.Group>
+                        <button className='action-buttons__button addPhoneNumber' onClick={this.makeEditable}>
+                          <i className="fas fa-plus"></i>
+                        </button>
+                      </Form.Group>)
+                    }
                   } else if (attribute.editable === 'select') {
                     return (
                       <Form.Group key={`form-${idx}`}>
@@ -233,13 +281,17 @@ export class ProfileInfo extends Component {
                           })}
                         </Form.Control>
                       </Form.Group>)
+                  } else if (attribute.editable === 'array') {
+                    console.log(attribute);
                   }
 
                 })}
-                {(this.state.modalData.status && this.state.modalData.status === 'notInterested' ) ?
+                {(this.state.modalData.status && this.state.modalData.status === 'notInterested') ?
                   (<Form.Group key="reason-loss">
                     <Form.Label>Reason for loss:</Form.Label>
-                    <Form.Control type="text" name="reasonForLoss" value={(this.state.modalData['reason-for-loss']) ? (this.state.modalData['reason-for-loss']) : '' } onChange={this.handleModalInputChange}/>
+                    <Form.Control type="text" name="reasonForLoss"
+                                  value={(this.state.modalData['reason-for-loss']) ? (this.state.modalData['reason-for-loss']) : ''}
+                                  onChange={this.handleModalInputChange}/>
                   </Form.Group>)
                   : ''}
               </Form>
@@ -259,7 +311,6 @@ export class ProfileInfo extends Component {
   }
 
   handleModalInputChange(event) {
-    console.log(event.target.name);
     this.setState({
       modalData: {
         ...this.state.modalData,
@@ -268,6 +319,9 @@ export class ProfileInfo extends Component {
     })
   }
 
+  handleModalSelectChange(event) {
+    console.log(event.target.value);
+  }
 
   handleEditProfileClose() {
     this.setState({showEditProfileModal: false})
@@ -287,7 +341,7 @@ export class ProfileInfo extends Component {
   }
 
   handleModalSaveData() {
-    console.log(this.state.modalData);
+    this.editProfile(this.state.modalData);
   }
 
   handleModalStatusChange(event) {
