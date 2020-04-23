@@ -13,6 +13,14 @@ const agentSchema = new mongoose.Schema({
   officeId: String,
   sales: Number,
   phone: String,
+  phoneNumbers: [{
+    number: {
+      type: String
+    },
+    phoneType: String,
+    isPrimary: Boolean,
+    okToText: Boolean
+  }],
   status: String,
   notes: [{
     type: mongoose.Schema.Types.ObjectId,
