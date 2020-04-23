@@ -33,8 +33,6 @@ export class ProfileInfo extends Component {
     this.handleStatusChange = this.handleStatusChange.bind(this)
     this.handleModalInputChange = this.handleModalInputChange.bind(this)
     this.handleModalSaveData = this.handleModalSaveData.bind(this)
-
-
   }
 
   formatData(formatter, data) {
@@ -220,13 +218,13 @@ export class ProfileInfo extends Component {
 
                 {this.props.attributes.map((attribute, idx) => {
                   if (attribute.editable === 'input') {
-                    return (<Form.Group>
+                    return (<Form.Group key={`form-${idx}`}>
                       <Form.Label>{attribute.name}:</Form.Label>
-                      <Form.Control type="text" name={attribute.accessor} value={this.state.modalData[`${attribute.accessor}`]} onChange={this.handleModalInputChange}/>
+                      <Form.Control type="text" name={attribute.accessor} value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : '' } onChange={this.handleModalInputChange}/>
                     </Form.Group>);
                   } else if (attribute.editable === 'select') {
                     return (
-                      <Form.Group>
+                      <Form.Group key={`form-${idx}`}>
                         <Form.Label>{attribute.name}:</Form.Label>
                         <Form.Control as="select" value={this.state.statusSelected.value}
                                       onChange={this.handleModalStatusChange.bind(this)}>
@@ -238,6 +236,12 @@ export class ProfileInfo extends Component {
                   }
 
                 })}
+                {(this.state.modalData.status && this.state.modalData.status === 'notInterested' ) ?
+                  (<Form.Group key="reason-loss">
+                    <Form.Label>Reason for loss:</Form.Label>
+                    <Form.Control type="text" name="reasonForLoss" value={(this.state.modalData['reason-for-loss']) ? (this.state.modalData['reason-for-loss']) : '' } onChange={this.handleModalInputChange}/>
+                  </Form.Group>)
+                  : ''}
               </Form>
             ) : 'nodata'}
           </Modal.Body>
@@ -288,12 +292,25 @@ export class ProfileInfo extends Component {
 
   handleModalStatusChange(event) {
     const newValue = {label: (event.target.value[0] + event.target.value.slice(1)), value: event.target.value};
-    this.setState({statusSelected: newValue});
-
+    this.setState({
+      statusSelected: newValue,
+      modalData: {
+        ...this.state.modalData,
+        status: newValue.value,
+        statusSelected: newValue
+      }
+    });
   }
 
   handleStatusChange = selectedOption => {
-    this.setState({statusSelected: selectedOption});
+    this.setState({
+      statusSelected: selectedOption,
+      modalData: {
+        ...this.state.modalData,
+        status: selectedOption.value,
+        statusSelected: selectedOption
+      }
+    });
     console.log(`Option selected:`, selectedOption);
   };
 }
