@@ -6,12 +6,14 @@
           {
             "name": "First Name",
             "accessor": "firstName",
-            "col": 1
+            "col": 1,
+            "editable": "input"
           },
           {
             "name": "Last Name",
             "accessor": "lastName",
-            "col": 1
+            "col": 1,
+            "editable": "input"
           },
           {
             "name": "Office",
@@ -22,12 +24,14 @@
             "name": "Phone",
             "accessor": "phone",
             "col": 1,
-            "formatter": "formatPhone"
+            "formatter": "formatPhone",
+            "editable": "input"
           },
           {
             "name": "Email",
             "accessor": "emailAddress",
-            "col": 1
+            "col": 1,
+            "editable": "input"
           },
           {
             "name": "Sales Volume",
@@ -37,13 +41,15 @@
           },
           {
             "name": "Active Neighborhoods",
-            "accessor": "bestAreasString",
-            "col": 2
+            "accessor": "bestAreas",
+            "col": 2,
+            "formatter": "formatLabels"
           },
           {
             "name": "Active Zip Codes",
-            "accessor": "bestZipCodesString",
-            "col": 2
+            "accessor": "bestZipCodes",
+            "col": 2,
+            "formatter": "formatLabels"
           },
           {
             "name": "Target Offer",
