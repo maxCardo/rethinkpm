@@ -9,6 +9,7 @@ import {filterData} from "../../../../util/commonFunctions";
 import InfiniteScroll from "react-infinite-scroll-component";
 import './style.css'
 import FilteredList from './FilteredList';
+import AgentFiltersModal from './AgentFiltersModal';
 
 class AgentList extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class AgentList extends Component {
     this.state = {
       agentStatusSelect: agentStatus,
       data: [],
+      showModal: false,
       filterString: '',
       statusSelected: {label: 'All', value: 'all'},
       hasMore: true,
@@ -26,14 +28,33 @@ class AgentList extends Component {
           type: '>',
           value: 0
         }
-      ]
+      ],
+      modalFilters: []
     };
+    this.handleModalSubmit = this.handleModalSubmit.bind(this)
   }
 
   componentDidMount() {
     axios.get('/api/sales/agents').then((res) => {
       let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
       this.props.setAgents({agentOpportunities: agentsWithSales, agentOpportunitiesRaw: res.data});
+      const status = new Set()
+      const zipcodes = new Set()
+      const areas = new Set()
+      agentsWithSales = agentsWithSales.map((agent) => {
+        const agentCopy = Object.assign({}, agent)
+        if(agent.areas) {
+          agentCopy.areasArray = agent.areas.map((area) => area.name)
+        } else {
+          agentCopy.areasArray = []
+        }
+        if(agent.zipCodes) {
+          agentCopy.zipCodesArray = agent.zipCodes.map((zipcode) => zipcode.name)
+        } else {
+          agentCopy.zipCodesArray = []
+        }
+        return agentCopy
+      })
       this.setState({data: agentsWithSales});
     })
       .then((res) => {
@@ -44,6 +65,8 @@ class AgentList extends Component {
 
   render() {
     let filters = this.state.defaultFilters.slice()
+    let modalFilters = this.state.modalFilters.slice()
+    filters = filters.concat(modalFilters)
     if(this.state.statusSelected.value !== 'all') {
       filters.push({
         field: 'status',
@@ -56,7 +79,6 @@ class AgentList extends Component {
       type: 'includes',
       value: this.state.filterString ? this.state.filterString : ''
     })
-    console.log(filters)
     return (
       <Fragment>
         <Select
@@ -73,17 +95,24 @@ class AgentList extends Component {
             onChange={(e) => this.setState({filterString: e.target.value})}
             placeholder='Search'
           />
-          <div className='agent-list__filter-icon'>
+          <button className='agent-list__filter-icon' onClick={() => this.setState({showModal: true})}>
             <i className="fas fa-filter"></i>
-          </div>
+          </button>
         </div>
         <FilteredList
           data={this.state.data}
           filters={filters}
           />
+        <AgentFiltersModal 
+          show={this.state.showModal} 
+          handleClose={() => this.setState({showModal: false})}
+          handleSubmit={this.handleModalSubmit}
+        />
       </Fragment>
-
     );
+  }
+  handleModalSubmit(filters) {
+    this.setState({modalFilters: filters})
   }
 }
 
