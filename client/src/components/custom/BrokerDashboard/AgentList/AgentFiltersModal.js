@@ -168,21 +168,21 @@ export class AgentFiltersModal extends Component {
     if(this.state.officeFilterType.value != 'noFilter') {
       filters.push({
         field: 'office.name',
-        type: this.state.officeFilterType.value,
+        filterType: this.state.officeFilterType.value,
         value: this.state.officeFilterValue
       })
     }
     if(this.state.statusFilterType.value != 'noFilter') {
       filters.push({
         field: 'status',
-        type: this.state.statusFilterType.value,
+        filterType: this.state.statusFilterType.value,
         value: this.state.statusFilterValue.map((status) => status.value)
       })
     }
     if(this.state.leadOwnerFilterType.value != 'noFilter') {
       filters.push({
         field: 'leadOwner',
-        type: this.state.leadOwnerFilterType.value,
+        filterType: this.state.leadOwnerFilterType.value,
         value: this.state.leadOwnerFilterValue
       })
     }
@@ -190,13 +190,13 @@ export class AgentFiltersModal extends Component {
       if(this.state.salesFilterType.value === 'range') {
         filters.push({
           field: 'sales',
-          type: this.state.salesFilterType.value,
+          filterType: this.state.salesFilterType.value,
           value: [this.state.salesFilterFirstValue, this.state.salesFilterSecondValue]
         })
       } else {
         filters.push({
           field: 'sales',
-          type: this.state.salesFilterType.value,
+          filterType: this.state.salesFilterType.value,
           value: this.state.salesFilterValue
         })
       }
@@ -204,14 +204,14 @@ export class AgentFiltersModal extends Component {
     if(this.state.zipcodesFilterType.value != 'noFilter') {
       filters.push({
         field: 'zipCodesArray',
-        type: this.state.zipcodesFilterType.value,
+        filterType: this.state.zipcodesFilterType.value,
         value: this.state.zipcodesFilterValue.map((status) => status.value)
       })
     }
     if(this.state.areasFilterType.value != 'noFilter') {
       filters.push({
         field: 'areasArray',
-        type: this.state.areasFilterType.value,
+        filterType: this.state.areasFilterType.value,
         value: this.state.areasFilterValue.map((status) => status.value)
       })
     }

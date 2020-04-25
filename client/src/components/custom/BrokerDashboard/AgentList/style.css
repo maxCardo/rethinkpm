@@ -14,4 +14,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 5px;
+}
+
+.agent-list__filtering-options-container {
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.agent-list__filtering-options-container button {
+  padding: 0 20px
 }

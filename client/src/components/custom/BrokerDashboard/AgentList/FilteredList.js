@@ -15,7 +15,7 @@ export class FilteredList extends Component {
   static processFilter(filter, data) {
     const filteredData = data.filter((item) => {
       const field = item[filter.field]
-      const filterFunction = filterFunctions[filter.type]
+      const filterFunction = filterFunctions[filter.filterType]
       return filterFunction(field, filter.value)
     })
     return filteredData

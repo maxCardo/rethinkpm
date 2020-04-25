@@ -17,7 +17,8 @@ export class InfiniteList extends Component {
     if(state.rawData == props.data) return
     return {
       items: InfiniteList.getItemsFromData(props.data),
-      rawData: props.data
+      rawData: props.data,
+      hasMore: true
     }
   }
 
@@ -64,6 +65,7 @@ export class InfiniteList extends Component {
         hasMore={this.state.hasMore}
         loader={<p>Loading...</p>}
         height={'76vh'}
+        key={this.props.dataSetKey}
         endMessage={
           <p style={ {textAlign: "center"} }>No more results!</p>
         }>
