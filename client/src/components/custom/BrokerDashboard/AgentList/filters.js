@@ -36,7 +36,7 @@ function lessOrEqualThanFilter(field, value) {
 }
 
 function rangeFilter(field, values) {
-  return field >=values[0] && field <= values[0]
+  return field >=values[0] && field <= values[1]
 }
 
 function includesFilter(field, value) {
