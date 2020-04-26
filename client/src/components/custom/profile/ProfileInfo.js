@@ -19,8 +19,10 @@ export class ProfileInfo extends Component {
         label: props.inquiry.status[0] ? (props.inquiry.status[0].toUpperCase() + props.inquiry.status.slice(1)) : '',
         value: props.inquiry.status ? props.inquiry.status : ''
       },
+      reasonForLoss: '',
       UI: {
-        statusEditable: true
+        statusEditable: false,
+        phoneEditable: false,
       },
       profileOpened: props.inquiry,
       modalData: {}
@@ -32,6 +34,12 @@ export class ProfileInfo extends Component {
     this.handleModalInputChange = this.handleModalInputChange.bind(this)
     this.handleModalSaveData = this.handleModalSaveData.bind(this)
     this.editProfile = this.editProfile.bind(this);
+    this.handleStatusEdit = this.handleStatusEdit.bind(this);
+    this.confirmStatusChange = this.confirmStatusChange.bind(this);
+    this.denyStatusChange = this.denyStatusChange.bind(this);
+    this.handleLossChange = this.handleLossChange.bind(this);
+
+
   }
 
   formatData(formatter, data) {
@@ -66,6 +74,14 @@ export class ProfileInfo extends Component {
         statusEditable: !this.state.UI.statusEditable
       }
     });
+  }
+
+  componentDidMount() {
+    this.props.attributes.forEach((attribute, idx) => {
+      if (attribute.editable === "phoneNumbers") {
+        {this.setState( {primaryPhone: this.formatData(attribute.formatter, getData(this.props.inquiry, attribute)) })}
+      }
+    })
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -107,7 +123,25 @@ export class ProfileInfo extends Component {
     })
   }
 
+  handleStatusEdit() {
+    this.confirmStatusChange();
+    fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
+      method: "put",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({
+        status: this.state.statusSelected.value,
+        reasonForLoss: this.state.reasonForLoss
+      })
+    }).then((res) => {
+      console.log(res);
+      this.makeEditable();
+    })
+
+  }
+
   render() {
+
+
 
     let col1 = [];
     let col2 = [];
@@ -117,13 +151,29 @@ export class ProfileInfo extends Component {
       if (attribute.col === 1) {
         col1.push(
           (attribute.formatter) ?
-            (<div key={idx} dangerouslySetInnerHTML={{
+            ((attribute.editable === "phoneNumbers") ? (
+              <div className={attribute.name}>
+                <b>{attribute.name}:</b>
+                  <input type="text" disabled={!this.state.UI.phoneEditable} value={this.state.primaryPhone} onChange={(evt) => this.setState({primaryPhone: evt.target.value })} />
+                <button className='action-buttons__button singleFieldEdit' onClick={() => this.setState({
+                  UI: {
+                    ...this.state.UI,
+                    phoneEditable: !this.state.UI.phoneEditable
+                  }
+                })}>
+                  <i className="fas fa-pencil-alt"></i>
+                </button>
+                <button className='action-buttons__button addPhoneNumber'>
+                  <i className="fas fa-plus"></i>
+                </button>
+              </div>) : (<div key={idx} dangerouslySetInnerHTML={{
               __html: (
                 `<p>
                  <b>${attribute.name}:</b> ${this.formatData(attribute.formatter, getData(this.props.inquiry, attribute))}
                </p>`
               )
-            }}/>) :
+            }}/>))
+            :
             (<p key={idx}>
               <b>{attribute.name}:</b> {getData(this.props.inquiry, attribute) ? getData(this.props.inquiry, attribute) : 'Not Implemented'}
             </p>)
@@ -165,9 +215,10 @@ export class ProfileInfo extends Component {
                       placeholder='Select Status'
                       isDisabled={this.state.UI.statusEditable}
                       onChange={this.handleStatusChange}
+                      onBlur={this.confirmStatusChange}
                     />
                     <button className='action-buttons__button singleFieldEdit' onClick={this.makeEditable}>
-                      <i className="fas fa-pencil-alt"></i>
+                      {(this.state.UI.statusEditable) ? <i className="fas fa-pencil-alt"></i> :  <i className="fas fa-save"></i> }
                     </button>
                   </Fragment>
                 ) : '')
@@ -227,87 +278,136 @@ export class ProfileInfo extends Component {
             </button> : ''}
 
         </div>
-        <Modal size='xl' show={this.state.showEditProfileModal} onHide={this.handleEditProfileClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit Lead</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
 
-            {this.props.inquiry && this.props.isAgent ? (
-              <Form>
-                {this.props.attributes.map((attribute, idx) => {
-                  if (attribute.editable === 'input') {
-                    if (attribute.accessor !== 'phone') {
-                      return (<Form.Group key={`form-${idx}`}>
-                        <Form.Label>{attribute.name}:</Form.Label>
-                        <Form.Control type="text" name={attribute.accessor}
-                                      value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
-                                      onChange={this.handleModalInputChange}/>
-                      </Form.Group>);
-                    } else {
-                      /*IF IS PHONE*/
-                      return (<Form.Group key={`form-${idx}`} className={attribute.accessor}>
-                        <Form.Group>
+        {this.props.inquiry && this.props.isAgent ? (
+          <Fragment>
+
+            <Modal size='xl' show={this.state.showEditProfileModal} onHide={this.handleEditProfileClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Lead</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+
+                  {this.props.attributes.map((attribute, idx) => {
+                    if (attribute.editable === 'input') {
+                      if (attribute.accessor !== 'phone') {
+                        return (<Form.Group key={`form-${idx}`}>
                           <Form.Label>{attribute.name}:</Form.Label>
                           <Form.Control type="text" name={attribute.accessor}
                                         value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
                                         onChange={this.handleModalInputChange}/>
-                        </Form.Group>
-                        <Form.Group>
-                          <Form.Label>Stop texting:</Form.Label>
-                          <Form.Control as="select" name="okToText"
-                                        value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
-                                        onChange={this.handleModalSelectChange}>
-                            <option value={true}>No</option>
-                            <option value={false}>Yes</option>
+                        </Form.Group>);
+                      } else {
+                        /*IF IS PHONE*/
+                        return (<Form.Group key={`form-${idx}`} className={attribute.accessor}>
+                          <Form.Group>
+                            <Form.Label>{attribute.name}:</Form.Label>
+                            <Form.Control type="text" name={attribute.accessor}
+                                          value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
+                                          onChange={this.handleModalInputChange}/>
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Label>Stop texting:</Form.Label>
+                            <Form.Control as="select" name="okToText"
+                                          value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
+                                          onChange={this.handleModalSelectChange}>
+                              <option value={true}>No</option>
+                              <option value={false}>Yes</option>
+                            </Form.Control>
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Check type="checkbox" label="Make Primary"/>
+                          </Form.Group>
+                          <button className='action-buttons__button addPhoneNumber' onClick={this.makeEditable}>
+                            <i className="fas fa-plus"></i>
+                          </button>
+                        </Form.Group>)
+                      }
+                    } else if (attribute.editable === 'select') {
+                      return (
+                        <Form.Group key={`form-${idx}`}>
+                          <Form.Label>{attribute.name}:</Form.Label>
+                          <Form.Control as="select" value={this.state.statusSelected.value}
+                                        onChange={this.handleModalStatusChange.bind(this)}>
+                            {this.state.agentStatusSelect.map((item) => {
+                              return <option value={item.value}>{item.label}</option>
+                            })}
                           </Form.Control>
-                        </Form.Group>
-                        <Form.Group>
-                          <Form.Check type="checkbox" label="Make Primary"/>
-                        </Form.Group>
-                        <button className='action-buttons__button addPhoneNumber' onClick={this.makeEditable}>
-                          <i className="fas fa-plus"></i>
-                        </button>
-                      </Form.Group>)
+                        </Form.Group>)
+                    } else if (attribute.editable === 'array') {
+                      console.log(attribute);
                     }
-                  } else if (attribute.editable === 'select') {
-                    return (
-                      <Form.Group key={`form-${idx}`}>
-                        <Form.Label>{attribute.name}:</Form.Label>
-                        <Form.Control as="select" value={this.state.statusSelected.value}
-                                      onChange={this.handleModalStatusChange.bind(this)}>
-                          {this.state.agentStatusSelect.map((item) => {
-                            return <option value={item.value}>{item.label}</option>
-                          })}
-                        </Form.Control>
-                      </Form.Group>)
-                  } else if (attribute.editable === 'array') {
-                    console.log(attribute);
-                  }
 
-                })}
-                {(this.state.modalData.status && this.state.modalData.status === 'notInterested') ?
-                  (<Form.Group key="reason-loss">
-                    <Form.Label>Reason for loss:</Form.Label>
-                    <Form.Control type="text" name="reasonForLoss"
-                                  value={(this.state.modalData['reason-for-loss']) ? (this.state.modalData['reason-for-loss']) : ''}
-                                  onChange={this.handleModalInputChange}/>
-                  </Form.Group>)
-                  : ''}
-              </Form>
-            ) : 'nodata'}
-          </Modal.Body>
-          <Modal.Footer className="modalFooterBtns">
-            <Button className="btn btn-success" variant="secondary" onClick={this.handleModalSaveData}>
-              <i className="fas fa-pencil-alt"></i> Save
-            </Button>
-            <Button className="btn btn-danger" variant="secondary" onClick={this.handleEditProfileClose}>
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
+                  })}
+                  {(this.state.modalData.status && this.state.modalData.status === 'notInterested') ?
+                    (<Form.Group key="reason-loss">
+                      <Form.Label>Reason for loss:</Form.Label>
+                      <Form.Control type="text" name="reasonForLoss"
+                                    value={(this.state.modalData['reason-for-loss']) ? (this.state.modalData['reason-for-loss']) : ''}
+                                    onChange={this.handleModalInputChange}/>
+                    </Form.Group>)
+                    : ''}
+                </Form>
+              </Modal.Body>
+              <Modal.Footer className="modalFooterBtns">
+                <Button className="btn btn-primary" variant="secondary" onClick={this.handleModalSaveData}>
+                  <i className="fas fa-pencil-alt"></i> Save
+                </Button>
+                <Button className="btn btn-danger" variant="secondary" onClick={this.handleEditProfileClose}>
+                  Cancel
+                </Button>
+              </Modal.Footer>
+            </Modal>
+            <Modal size='md' show={this.state.showEditStatusConfirm} onHide={this.denyStatusChange}>
+              <Modal.Header closeButton>
+                <Modal.Title>Are you sure you want to change the status</Modal.Title>
+              </Modal.Header>
+              {this.state.statusSelected.value === 'notInterested' ? (
+                <Modal.Body>
+                  <Form>
+                    <Form.Group>
+                      <Form.Label>Reason for loss:</Form.Label>
+                      <Form.Control type="text" name="reasonForLoss" value={this.state.reasonForLoss}
+                                    onChange={this.handleLossChange}/>
+                    </Form.Group>
+                  </Form>
+                </Modal.Body>
+              ) : ''}
+
+              <Modal.Footer className="modalFooterBtns">
+                <Button className="btn btn-primary" variant="secondary" onClick={this.handleStatusEdit}>
+                  Yes
+                </Button>
+                <Button className="btn btn-danger" variant="secondary" onClick={this.denyStatusChange}>
+                  No
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Fragment>
+        ) : 'nodata'}
+
       </div>
     )
+  }
+
+  confirmStatusChange() {
+    this.setState({showEditStatusConfirm: !this.state.showEditStatusConfirm})
+  }
+
+  denyStatusChange() {
+    this.setState({
+      showEditStatusConfirm: false, statusSelected: {
+        label: this.props.inquiry.status[0] ? (this.props.inquiry.status[0].toUpperCase() + this.props.inquiry.status.slice(1)) : '',
+        value: this.props.inquiry.status ? this.props.inquiry.status : ''
+      }
+    })
+  }
+
+  handleLossChange(event) {
+    this.setState({
+      reasonForLoss: event.target.value
+    })
   }
 
   handleModalInputChange(event) {
@@ -359,6 +459,7 @@ export class ProfileInfo extends Component {
   handleStatusChange = selectedOption => {
     this.setState({
       statusSelected: selectedOption,
+      reasonForLoss: (selectedOption.value !== 'notInterested') ? '' : this.state.reasonForLoss,
       modalData: {
         ...this.state.modalData,
         status: selectedOption.value,

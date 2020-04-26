@@ -28,6 +28,13 @@
             "editable": "input"
           },
           {
+            "name": "Phone",
+            "accessor": "phoneNumbers",
+            "col": 1,
+            "formatter": "formatPhoneNumbers",
+            "editable": "phoneNumbers"
+          },
+          {
             "name": "Email",
             "accessor": "emailAddress",
             "col": 1,

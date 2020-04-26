@@ -542,4 +542,8 @@
 .phone .action-buttons__button i {
   margin-left: 1px;
 }
+.Phone .singleFieldEdit {
+  margin-left: auto;
+  top: -1px;
+}
 /* END OF Bozidar CSS */

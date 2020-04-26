@@ -8,6 +8,23 @@ function formatPhone(data) {
   }
 }
 
+function formatPhoneNumbers(data) {
+  if (!data) return '';
+  let phoneNumber = '';
+  data.forEach((phone, idx) => {
+    if (phone.isPrimary == true) {
+      phoneNumber = phone.number;
+    }
+  });
+
+
+  if (phoneNumber.length > 10) {
+    return `(${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(4, 7)}-${phoneNumber.substring(7)}`
+  } else {
+    return `(${phoneNumber.substring(0, 3)}) ${phoneNumber.substring(3, 6)}-${phoneNumber.substring(6)}`
+  }
+}
+
 function formatMoney(data) {
   if (!data) return '';
   return (new Intl.NumberFormat('en-US',
@@ -26,6 +43,7 @@ function formatLabels(data) {
 
 const formatters = {
   formatPhone,
+  formatPhoneNumbers,
   formatMoney,
   formatLabels
 };
