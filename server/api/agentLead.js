@@ -7,18 +7,19 @@ const ChatAgent = require('../db/models/sales/chat')
 const router = express.Router();
 
 //----------------------------------------------------------- Chats ---------------------------------------------------------//
+// NOT ACTIVE ...
 // @route: GET /api/agent_lead/chats;
 // @desc: get all chats (read and unread): use when loading chat page.
 // @ access: Public *ToDo: update to make private
 router.get('/chats', async (req, res) => {
     console.log(' All chats api fired');
-    try {
-        const chats = await ChatInq.find().populate({ path: 'inq', select: 'prospect', select: 'listing', populate: { path: 'prospect', select: 'name' } });
-        res.status(200).send(chats);
-    } catch (error) {
-        console.error(error);
-        res.status(400).send('server error')
-    }
+    // try {
+    //     const chats = await ChatInq.find().populate({ path: 'inq', select: 'prospect', select: 'listing', populate: { path: 'prospect', select: 'name' } });
+    //     res.status(200).send(chats);
+    // } catch (error) {
+    //     console.error(error);
+    //     res.status(400).send('server error')
+    // }
 });
 
 // NOT ACTIVE ...
