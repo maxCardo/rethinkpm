@@ -3,6 +3,7 @@ const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const Agent = require('../db/models/sales/agent')
 const singleFamilySalesModel = require('../db/models/sales/singleFamilySales')
 const multiSalesModel = require('../db/models/sales/multiSales')
+const {validateNum} = require('../3ps/sms')
 
 const router = express.Router();
 
@@ -51,18 +52,26 @@ router.get('/agent/:id', async (req, res) => {
   }
 });
 
-router.put("/agent/:id", async (request, response) => {
+// @route: PUT /api/profile/agent/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/agent/:id", async (req, res) => {
   try {
-    var agent = await Agent.findById(request.params.id).exec();
-
-    agent.set({
+    if (req.body.phoneNumbers) {
+      console.log('validate number functined not running in dev');
+      //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+    }
+    const agent = await Agent.findById(req.params.id)
+    await agent.set({
       ...agent,
-      ...request.body
-    });
-    var result = await agent.save();
-    response.send(result);
-  } catch (error) {
-    response.status(500).send(error);
+      ...req.body
+    })
+
+    //var result = await agent.save();
+    res.send(agent);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
   }
 });
 
