@@ -30,6 +30,10 @@ const agentSchema = new mongoose.Schema({
   lastContact: Date,
   targetOffer: String,
   reasonForLoss: String,
+  Chat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ChatAgent'
+  },
 });
 
 
