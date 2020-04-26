@@ -1,14 +1,15 @@
 import React , {Fragment, Component} from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import ProfileInfo from './ProfileInfo'
 import {Resizable} from 're-resizable'
 import axios from 'axios';
 import {connect} from 'react-redux'
-import { SET_INQUIRIES } from '../../../actions/type'
+import {AGENT_SELECTED, SET_INQUIRIES} from '../../../actions/type'
 
 import './style.css'
 import ProfileChat from './ProfileChat';
 import BottomNavigation from '../service/BottomNavigation';
+import AgentList from "../BrokerDashboard/AgentList/AgentList";
 
 import NotesScreen from './screens/Notes'
 import SalesScreen from './screens/SalesHistory'
@@ -27,6 +28,24 @@ export class Profile extends Component {
       this.setState({profile: res.data})
     })
   }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+    /*SIDEBAR LINK POPULATION UPDATE*/
+    if (prevProps !== this.props) {
+      const {id} = this.props.match.params;
+
+      if (this.props.isAgent) {
+        axios.get(`/api/profile/agent/${this.props.match.params.id}`).then((res) => {
+          let agentWithSales = res.data;
+          this.setState({profile: agentWithSales});
+        })
+          .then((res) => {
+            this.setState({loadingAgent: false});
+          });
+      }
+    }
+  }
+
   render() {
     if(!this.state.profile) return ''
     const screens = {
@@ -44,7 +63,7 @@ export class Profile extends Component {
     const screensSelected = this.props.screens.map((screenName) => (screens[screenName](this.state.profile)))
     return (
         <Fragment>
-          <div className='profile__main-container'>
+          <div className={this.props.isAgent ? 'agentProfile profile__main-container' : 'profile__main-container'}>
             <div className='profile__left-container'>
               <Resizable 
                 defaultSize={{
@@ -66,30 +85,37 @@ export class Profile extends Component {
                 }}
               >
                 <div className='profile__info-container' >
-                  <ProfileInfo inquiry={this.state.profile} attributes={this.props.attributes} />
+                  <ProfileInfo inquiry={this.state.profile} attributes={this.props.attributes} isAgent={this.props.isAgent} />
                 </div>
               </Resizable>
               <div className='profile__logs-container'>
                 <BottomNavigation screens={screensSelected}/>
               </div>
             </div>
-            <div className='profile__chat-container'>
+            <div className='profile__chat-container chat__sidebar'>
               <ProfileChat inquiryId={this.state.profile._id}/>
             </div>
+            {this.props.isAgent ? (
+              <div className="sidebar__left profile__agent-leads">
+                <AgentList agents={this.props.listData} />
+              </div>
+            ) : ''}
           </div>
         </Fragment>
     )
   }
 }
+
 const mapStateToProps = state => ({
-  inquiries: state.dashboard.inquiriesRaw
+  inquiries: state.dashboard.inquiriesRaw,
+  agentSelected: state.brokerDashboard.agentSelected
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    setInquiries:(inquiries) => dispatch({type: SET_INQUIRIES, payload: inquiries})
+    setInquiries:(inquiries) => dispatch({type: SET_INQUIRIES, payload: inquiries}),
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Profile))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withRouter(Profile)))

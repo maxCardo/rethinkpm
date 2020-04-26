@@ -714,7 +714,12 @@ button {
   }
 }
 
+
 /* Bozidar CSS */
+.navbar h2, .navbar ul {
+  margin-bottom: 0;
+}
+
 .agentInfoTable td {
   overflow-x: auto;
 }
@@ -765,4 +770,29 @@ table th {
 .agentStatusFilter {
   min-width: 200px;
 }
-/* END OF Bozidar CSS */
+
+.label__gray {
+  padding: 0 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,.175);
+  background: #dee2e6;
+  color: #343a40;
+  font-size: 12px;
+  white-space: nowrap;
+  margin: 3px;
+}
+/*REMOVE FOCUS OUTLINE*/
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+  box-shadow: inset 0 -1px 0 #ddd;
+}
+/*REMOVE FOCUS OUTLINE*/
