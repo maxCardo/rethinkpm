@@ -21,8 +21,8 @@ export class ProfileInfo extends Component {
       },
       reasonForLoss: '',
       UI: {
-        statusEditable: false,
-        phoneEditable: false,
+        statusEditable: true,
+        phoneEditable: true,
       },
       profileOpened: props.inquiry,
       modalData: {}
@@ -39,6 +39,14 @@ export class ProfileInfo extends Component {
     this.denyStatusChange = this.denyStatusChange.bind(this);
     this.handleLossChange = this.handleLossChange.bind(this);
 
+    /*PHONE EDIT*/
+    this.setPhoneInputRef = element => {
+      this.phoneInput = element;
+    };
+    this.focusPhoneInput = () => {
+      if (this.phoneInput) this.phoneInput.focus();
+    }
+    this.editPrimaryPhone = this.editPrimaryPhone.bind(this);
 
   }
 
@@ -93,12 +101,14 @@ export class ProfileInfo extends Component {
         },
         primaryPhone: this.props.inquiry.phoneNumbers ? this.formatData("formatPhone", this.props.inquiry.phoneNumbers[0].number) : '',
         UI: {
-          statusEditable: {
-            label: this.props.inquiry.status[0] ? (this.props.inquiry.status[0].toUpperCase() + this.props.inquiry.status.slice(1)) : '',
-            value: this.props.inquiry.status ? this.props.inquiry.status : ''
-          }
+          statusEditable: this.state.UI.statusEditable ? this.state.UI.statusEditable : false
         }
       });
+    }
+
+    /*FOCUS phoneInput on edit click*/
+    if (this.state.UI.phoneEditable && !prevState.UI.phoneEditable) {
+      this.focusPhoneInput();
     }
   }
 
@@ -137,7 +147,15 @@ export class ProfileInfo extends Component {
       console.log(res);
       this.makeEditable();
     })
+  }
 
+  editPrimaryPhone() {
+    this.setState({
+      UI: {
+        ...this.state.UI,
+        phoneEditable: !this.state.UI.phoneEditable
+      }
+    });
   }
 
   render() {
@@ -152,13 +170,20 @@ export class ProfileInfo extends Component {
             ((attribute.editable === "phoneNumbers") ? (
               <div className={attribute.name}>
                 <b>{attribute.name}:</b>
-                  <input type="text" disabled={!this.state.UI.phoneEditable} value={this.state.primaryPhone} onChange={(evt) => this.setState({primaryPhone: evt.target.value })} />
-                <button className='action-buttons__button singleFieldEdit' onClick={() => this.setState({
-                  UI: {
-                    ...this.state.UI,
-                    phoneEditable: !this.state.UI.phoneEditable
-                  }
-                })}>
+                  <input type="text" name="phonePrimary"
+                         disabled={!this.state.UI.phoneEditable}
+                         defaultValue={this.state.primaryPhone}
+                         onChange={(evt) => this.setState({primaryPhone: evt.target.value })}
+                         ref={this.setPhoneInputRef}
+                         onBlur={() => this.setState({
+                           UI: {
+                             ...this.state.UI,
+                             phoneEditable: !this.state.UI.phoneEditable
+                           }
+                         })}
+                  />
+                <button className='action-buttons__button singleFieldEdit'
+                        onClick={this.editPrimaryPhone}>
                   <i className="fas fa-pencil-alt"></i>
                 </button>
                 <button className='action-buttons__button addPhoneNumber'>
