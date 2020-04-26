@@ -91,6 +91,7 @@ export class ProfileInfo extends Component {
           label: this.props.inquiry.status[0] ? (this.props.inquiry.status[0].toUpperCase() + this.props.inquiry.status.slice(1)) : '',
           value: this.props.inquiry.status ? this.props.inquiry.status : ''
         },
+        primaryPhone: this.props.inquiry.phoneNumbers ? this.formatData("formatPhone", this.props.inquiry.phoneNumbers[0].number) : '',
         UI: {
           statusEditable: {
             label: this.props.inquiry.status[0] ? (this.props.inquiry.status[0].toUpperCase() + this.props.inquiry.status.slice(1)) : '',
@@ -140,9 +141,6 @@ export class ProfileInfo extends Component {
   }
 
   render() {
-
-
-
     let col1 = [];
     let col2 = [];
     let col3 = [];

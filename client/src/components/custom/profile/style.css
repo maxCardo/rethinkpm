@@ -544,6 +544,12 @@
 }
 .Phone .singleFieldEdit {
   margin-left: auto;
-  top: -1px;
+}
+.Phone input {
+  color: #333;
+}
+.Phone input[disabled] {
+  border-color: transparent;
+  background: transparent;
 }
 /* END OF Bozidar CSS */
