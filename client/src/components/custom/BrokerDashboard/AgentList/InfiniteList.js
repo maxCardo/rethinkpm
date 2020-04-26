@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {Link} from 'react-router-dom';
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -57,33 +57,38 @@ export class InfiniteList extends Component {
 
   render() {
     return (
-      <InfiniteScroll
-        className="inf-scroll"
-        ref={this.infiniteScroll}
-        dataLength={this.state.items.length}
-        next={this.fetchMoreData}
-        hasMore={this.state.hasMore}
-        loader={<p>Loading...</p>}
-        height={'76vh'}
-        key={this.props.dataSetKey}
-        endMessage={
-          <p style={ {textAlign: "center"} }>No more results!</p>
-        }>
-        {this.state.items ? (
-          this.state.items.map((val) => {
-            return (
-              <div key={val._id}>
-                <Link to={`/profile/agent/${val._id}`}>
-                  <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span> <span
-                    className="label__gray">{val.status}</span></div>
-                  <div className="list__picker-body">
-                    <span>skills status</span><span>{this.moneyFormat(val.sales)}</span>
-                  </div>
-                </Link>
-              </div>
-            )
-          })) : ''}
-        </InfiniteScroll>
+      <Fragment>
+        <InfiniteScroll
+          className="inf-scroll"
+          ref={this.infiniteScroll}
+          dataLength={this.state.items.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.hasMore}
+          loader={<p>Loading...</p>}
+          height={'76vh'}
+          key={this.props.dataSetKey}
+          endMessage={
+            <p style={ {textAlign: "center"} }>No more results!</p>
+          }>
+          {this.state.items ? (
+            this.state.items.map((val) => {
+              return (
+                <div key={val._id}>
+                  <Link to={`/profile/agent/${val._id}`}>
+                    <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span> <span
+                      className="label__gray">{val.status}</span></div>
+                    <div className="list__picker-body">
+                      <span>skills status</span><span>{this.moneyFormat(val.sales)}</span>
+                    </div>
+                  </Link>
+                </div>
+              )
+            })) : ''}
+          </InfiniteScroll>
+          <div className='infinite-list__length-info'>
+            <p>Total of Agents: {this.props.data.length}</p>
+          </div>
+        </Fragment>
     )
   }
 }
