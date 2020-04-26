@@ -40,12 +40,17 @@ function rangeFilter(field, values) {
 }
 
 function includesFilter(field, value) {
-  return field.includes(value)
+  if(!field) return false
+  if(field.constructor === Array) {
+    return field.includes(value)
+  }
+  const lowerCaseField = field.toLowerCase()
+  const lowerCaseValue = (value + '').toLowerCase()
+  return lowerCaseField.includes(lowerCaseValue)
 }
 
 function inFilter(field, values) {
-  console.log(values)
-  console.log(field)
+  if(!field) return false
   if(field.constructor === Array) {
     console.log('enters')
     for(let i = 0; i<field.length; i++) {
@@ -60,6 +65,7 @@ function inFilter(field, values) {
 }
 
 function outFilter(field, values) {
+  if(!field) return false
   if(field.constructor === Array) {
     for(let i = 0; i<field.length; i++) {
       const elem = field[i]
