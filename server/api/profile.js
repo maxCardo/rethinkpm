@@ -70,7 +70,6 @@ router.put("/agent/:id", async (req, res) => {
     //var result = await agent.save();
     res.send(agent);
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 });
