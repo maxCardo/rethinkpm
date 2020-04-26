@@ -44,13 +44,13 @@ export class AgentFiltersModal extends Component {
     ]
     const numberFilters = [
       {label: 'Don\'t filter', value: 'noFilter'},
+      {label: 'range', value: 'range'},
       {label: '==', value: '=='},
       {label: '!=', value: '!='},
       {label: '>', value: '>'},
       {label: '>=', value: '>='},
       {label: '<', value: '<'},
       {label: '<=', value: '<='},
-      {label: 'range', value: 'range'}
     ]
     return (
       <Modal size='lg' show={this.props.show} onHide={this.handleClose}>
