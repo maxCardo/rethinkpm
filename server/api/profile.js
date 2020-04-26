@@ -57,6 +57,7 @@ router.get('/agent/:id', async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/agent/:id", async (req, res) => {
   try {
+
     if (req.body.phoneNumbers) {
       console.log('validate number functined not running in dev');
       //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))

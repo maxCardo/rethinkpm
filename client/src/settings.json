@@ -22,6 +22,13 @@
           },
           {
             "name": "Phone",
+            "accessor": "phone",
+            "col": 1,
+            "formatter": "formatPhone",
+            "editable": "input"
+          },
+          {
+            "name": "Phone",
             "accessor": "phoneNumbers",
             "col": 1,
             "formatter": "formatPhoneNumbers",
