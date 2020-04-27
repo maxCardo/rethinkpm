@@ -73,6 +73,7 @@
 }
 .agentStatusEdit {
   flex-grow: 1;
+  max-width: 200px;
 }
 .agentStatusEdit > div:first-child,
 .agentStatusEdit > span:first-child + div:nth-child(2) {
@@ -552,4 +553,21 @@
   border-color: transparent;
   background: transparent;
 }
+.action-buttons__button.ab__cancel,
+.action-buttons__button.ab__confirm {
+  color: #fff;
+}
+.action-buttons__button.ab__cancel {
+  background: #F44336;
+}
+.action-buttons__button.ab__confirm {
+  background: #4CAF50;
+}
+.agentStatusEdit + .singleFieldEdit {
+  margin-left: auto;
+}
+.action-buttons__button i {
+  margin-left: 0;
+}
+
 /* END OF Bozidar CSS */

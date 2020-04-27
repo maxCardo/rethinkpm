@@ -21,7 +21,7 @@ export class ProfileInfo extends Component {
       },
       reasonForLoss: '',
       UI: {
-        statusEditable: true,
+        statusEditable: false,
         phoneEditable: false,
       },
       profileOpened: props.inquiry,
@@ -283,18 +283,29 @@ export class ProfileInfo extends Component {
                 ((attribute.editable === 'select') ? (
                   <Fragment>
                     <Select
-                      className={`editable-${!this.state.UI.statusEditable} agentStatusEdit`}
+                      className={(!this.state.UI.statusEditable ? 'editable-false' : 'editable-true') + ' agentStatusEdit'}
                       value={this.state.statusSelected}
                       options={this.state.agentStatusSelect}
                       placeholder='Select Status'
-                      isDisabled={this.state.UI.statusEditable}
+                      isDisabled={!this.state.UI.statusEditable}
                       onChange={this.handleStatusChange}
-                      onBlur={() => this.confirmStatusChange()}
+                      isSearchable={false}
                     />
-                    <button className='action-buttons__button singleFieldEdit' onClick={() => this.makeEditable()}>
-                      {(this.state.UI.statusEditable) ? <i className="fas fa-pencil-alt"></i> :
-                        <i className="fas fa-save"></i>}
-                    </button>
+                    {(!this.state.UI.statusEditable) ? (
+                      <button className='action-buttons__button singleFieldEdit' onClick={() => this.makeEditable()}>
+                        <i className="fas fa-pencil-alt"></i>
+                      </button>
+                    ) : (
+                      <Fragment>
+                        <button className='action-buttons__button ab__confirm singleFieldEdit' onClick={() => this.confirmStatusChange()}>
+                          <i className="fas fa-check"></i>
+                        </button>
+                        <button className='action-buttons__button ab__cancel singleFieldEdit' onClick={this.denyStatusChange}>
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </Fragment>
+                    )}
+
                   </Fragment>
                 ) : '')
                 :
@@ -525,14 +536,23 @@ export class ProfileInfo extends Component {
   }
 
   confirmStatusChange() {
-    this.setState({showEditStatusConfirm: !this.state.showEditStatusConfirm})
+    if (this.props.inquiry.status !== this.state.statusSelected.value) {
+      this.setState({showEditStatusConfirm: !this.state.showEditStatusConfirm})
+    } else {
+      this.denyStatusChange();
+    }
   }
 
   denyStatusChange() {
     this.setState({
-      showEditStatusConfirm: false, statusSelected: {
+      showEditStatusConfirm: false,
+      statusSelected: {
         label: this.props.inquiry.status[0] ? (this.props.inquiry.status[0].toUpperCase() + this.props.inquiry.status.slice(1)) : '',
         value: this.props.inquiry.status ? this.props.inquiry.status : ''
+      },
+      UI: {
+        ...this.state.UI,
+        statusEditable: false
       }
     })
   }
