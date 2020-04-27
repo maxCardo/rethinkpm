@@ -2,6 +2,8 @@ const express = require('express');
 const {sendEmail} = require('../3ps/email')
 const AgentModel = require('../db/models/sales/agent')
 const OfficeModel = require('../db/models/sales/office')
+const AudienceModel = require('../db/models/sales/audience')
+const FilterModel = require('../db/models/sales/filters')
 
 const router = express.Router();
 
@@ -61,10 +63,35 @@ router.post('/idx_lead', (req,res) => {
 // @route: Get /api/sales/agents
 // @desc: Get all agents
 // @ access: Private
-
 router.get('/agents', async (req,res) => {
   const agents = await AgentModel.find({}).populate('office')
   res.json(agents)
+})
+
+router.get('/audiences', async (req,res) => {
+  const audiences = await AudienceModel.find({})
+  res.json(audiences)
+})
+
+router.post('/audiences', async (req,res) => {
+  const {name, filters, leads} = req.body
+  const audience = new AudienceModel({name, filters, leads});
+  await audience.save()
+  console.log('Audience saved')
+  res.json({result: 'ok'})
+})
+
+router.get('/filters', async (req,res) => {
+  const filters = await FilterModel.find({})
+  res.json(filters)
+})
+
+router.post('/filters', async (req,res) => {
+  const {name, filters} = req.body
+  const filter = new FilterModel({name, filters});
+  await filter.save()
+  console.log('Filter saved')
+  res.json({result: 'ok'})
 })
 
 

@@ -34,7 +34,6 @@ router.get('/agent/:id', async (req, res) => {
       const agentSellsPromise = singleFamilySalesModel.find({agentId: lead.agentId})
       const agentBuysPromise = singleFamilySalesModel.find({sellingAgentId: lead.agentId})
       const agentMultiSalesPromise = multiSalesModel.find({agentId: lead.agentId})
-      console.log(await Promise.all([agentSellsPromise, agentBuysPromise, agentMultiSalesPromise]))
       const [agentSellsResult, agentBuysResult, agentMultiSalesResult] = await Promise.all([agentSellsPromise, agentBuysPromise, agentMultiSalesPromise])
       const allSales = agentSellsResult.concat(agentBuysResult,agentMultiSalesResult)
       const {bestZipCodes, bestAreas} = calculateBestZipCodesAndAreas(allSales)

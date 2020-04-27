@@ -9,7 +9,7 @@ import {AGENT_SELECTED, SET_INQUIRIES} from '../../../actions/type'
 import './style.css'
 import ProfileChat from './ProfileChat';
 import BottomNavigation from '../service/BottomNavigation';
-import AgentList from "../BrokerDashboard/AgentList";
+import AgentList from "../BrokerDashboard/AgentList/AgentList";
 
 import NotesScreen from './screens/Notes'
 import SalesScreen from './screens/SalesHistory'
