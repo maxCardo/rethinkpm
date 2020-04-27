@@ -6,41 +6,55 @@ const agentSchema = new mongoose.Schema({
   firstName: String,
   fullName: String,
   emailAddress: String,
+  email: [
+    {
+      address:String,
+      isPrimary: Boolean,
+    },
+  ],
   office: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Office'
+    ref: 'Office',
   },
   officeId: String,
   sales: Number,
   phone: String,
-  phoneNumbers: [{
-    number: {
-      type: String
+  phoneNumbers: [
+    {
+      number: {
+        type: String,
+      },
+      phoneType: String,
+      isPrimary: Boolean,
+      okToText: Boolean,
     },
-    phoneType: String,
-    isPrimary: Boolean,
-    okToText: Boolean
-  }],
+  ],
   status: String,
-  notes: [{
-    type: {
-      type: String
+  notes: [
+    {
+      type: {
+        type: String,
+      },
+      content: {
+        type: String,
+      },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
-    content: {
-      type: String
-    },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  }],
+  ],
   leadOwner: String,
   lastContact: Date,
   targetOffer: String,
   reasonForLoss: String,
   chat: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'ChatAgent'
+    ref: 'ChatAgent',
   },
 });
 
