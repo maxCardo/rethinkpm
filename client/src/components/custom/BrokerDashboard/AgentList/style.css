@@ -36,3 +36,16 @@
 .infinite-list__length-info p {
   margin: none;
 }
+
+.filter-pills__container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter-pills__pill {
+  font-size: 12px;
+  border-radius: 10px;
+  background-color: #DDD;
+  padding: 0 20px;
+  margin: 5px;
+}

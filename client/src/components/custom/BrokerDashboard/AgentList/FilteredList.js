@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import filterFunctions from './filters'
 import InfiniteList from './InfiniteList'
+import FilterPills from './FilterPills'
 
 export class FilteredList extends Component {
   static getDerivedStateFromProps(props, state) {
@@ -37,7 +38,10 @@ export class FilteredList extends Component {
   render() {
     console.log(this.state.filteredData)
     return (
-      <InfiniteList data={this.state.filteredData} dataSetKey={this.props.dataSetKey}/>
+      <Fragment>
+        <FilterPills filters={this.props.filters} />
+        <InfiniteList data={this.state.filteredData} dataSetKey={this.props.dataSetKey}/>
+      </Fragment>
     )
   }
 }

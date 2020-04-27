@@ -93,11 +93,13 @@ class AgentList extends Component {
         })
       }
     }
-    filters.push({
-      field: 'fullName',
-      filterType: 'includes',
-      value: this.state.filterString ? this.state.filterString : ''
-    })
+    if(this.state.filterString) {
+      filters.push({
+        field: 'fullName',
+        filterType: 'includes',
+        value: this.state.filterString
+      })
+    }
     const selectOptions = this.state.agentStatusSelect.slice()
     if(this.state.audiences.length) {
       const audiencesOptions = this.state.audiences.map((audience) => ({value: audience._id, label: audience.name}))
