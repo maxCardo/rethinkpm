@@ -23,12 +23,15 @@ const agentSchema = new mongoose.Schema({
   }],
   status: String,
   notes: [{
-    note: {
-      type: String,
+    type: {
+      type: String
     },
-    date: {
-      type: Date,
-      default: Date.now
+    content: {
+      type: String
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     }
   }],
   leadOwner: String,
