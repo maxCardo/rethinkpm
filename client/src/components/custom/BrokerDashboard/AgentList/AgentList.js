@@ -52,6 +52,7 @@ class AgentList extends Component {
         } else {
           agentCopy.zipCodesArray = []
         }
+        agentCopy.areasAndZipCodesArray = agentCopy.areasArray.concat(agentCopy.zipCodesArray)
         return agentCopy
       })
       this.setState({data: agentsWithSales});

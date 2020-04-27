@@ -220,20 +220,28 @@ export class AgentFiltersModal extends Component {
       }
     }
     if(this.state.zipcodesFilterType.value != 'noFilter') {
-      filters.push({
-        field: 'zipCodesArray',
-        filterType: this.state.zipcodesFilterType.value,
-        value: this.state.zipcodesFilterValue.map((status) => status.value)
-      })
+      if(this.state.zipcodesFilterType.value == this.state.areasFilterType.value) {
+        const value = this.state.zipcodesFilterValue.map((status) => status.value).concat(this.state.areasFilterValue.map((status) => status.value))
+        filters.push({
+          field: 'areasAndZipCodesArray',
+          filterType: this.state.zipcodesFilterType.value,
+          value: value
+        })
+      } else {
+        filters.push({
+          field: 'areasAndZipCodesArray',
+          filterType: this.state.zipcodesFilterType.value,
+          value: this.state.zipcodesFilterValue.map((status) => status.value)
+        })
+      }
     }
-    if(this.state.areasFilterType.value != 'noFilter') {
+    if(this.state.areasFilterType.value != 'noFilter' && this.state.zipcodesFilterType.value != this.state.areasFilterType.value) {
       filters.push({
-        field: 'areasArray',
+        field: 'areasAndZipCodesArray',
         filterType: this.state.areasFilterType.value,
         value: this.state.areasFilterValue.map((status) => status.value)
       })
     }
-    console.log(filters)
     this.props.handleSubmit(filters)
     this.handleClose()
   }

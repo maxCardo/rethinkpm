@@ -65,7 +65,6 @@ export class InfiniteList extends Component {
           next={this.fetchMoreData}
           hasMore={this.state.hasMore}
           loader={<p>Loading...</p>}
-          height={'76vh'}
           key={this.props.dataSetKey}
           endMessage={
             <p style={ {textAlign: "center"} }>No more results!</p>
