@@ -63,7 +63,6 @@ router.post('/idx_lead', (req,res) => {
 // @route: Get /api/sales/agents
 // @desc: Get all agents
 // @ access: Private
-
 router.get('/agents', async (req,res) => {
   const agents = await AgentModel.find({}).populate('office')
   res.json(agents)
