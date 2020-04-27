@@ -166,6 +166,7 @@ export class ProfileInfo extends Component {
       method: "put",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({
+        phone: this.state.primaryPhone,
         phoneNumbers: [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
           return phoneNumber.isPrimary ? {...phoneNumber, number: this.state.primaryPhone} : phoneNumber
         })],
