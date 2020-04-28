@@ -7,6 +7,6 @@ export const agentStatus = [
 ];
 
 export const trueFalse = [
-    {value: 'true', label: 'Yes'},
-    {value: 'false', label: 'No'}
+    {value: true, label: 'Yes'},
+    {value: false, label: 'No'}
 ];

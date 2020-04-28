@@ -45,12 +45,16 @@ export class ProfileInfo extends Component {
     this.handleModalInputChange = this.handleModalInputChange.bind(this)
     this.handleModalSaveData = this.handleModalSaveData.bind(this)
     this.editProfile = this.editProfile.bind(this);
+
     this.handleStatusEdit = this.handleStatusEdit.bind(this);
     this.confirmStatusChange = this.confirmStatusChange.bind(this);
     this.denyStatusChange = this.denyStatusChange.bind(this);
     this.handleLossChange = this.handleLossChange.bind(this);
+
+    /* ADD PHONE*/
     this.handleOkToTextChange = this.handleOkToTextChange.bind(this);
     this.handleAddPhoneNumber = this.handleAddPhoneNumber.bind(this);
+    this.handleIsPrimaryToggle = this.handleIsPrimaryToggle.bind(this);
 
         /*PHONE EDIT*/
     this.setPhoneInputRef = element => {
@@ -240,6 +244,15 @@ export class ProfileInfo extends Component {
       () => console.log(`Option selected:`, this.state.addPhone.okToText)
     );
   };
+
+  handleIsPrimaryToggle() {
+    this.setState({
+      addPhone: {
+        ...this.state.addPhone,
+        isPrimary: !this.state.addPhone.isPrimary
+      }
+    })
+  }
 
   render() {
     let col1 = [];
@@ -539,26 +552,36 @@ export class ProfileInfo extends Component {
                                       onChange={this.handleAddPhoneNumber}/>
                       </Form.Group>
                       <Form.Group>
-                        <Form.Label>Stop texting:</Form.Label>
+                        <Form.Label>Ok to text:</Form.Label>
                         <Select name="okToText"
-                                placeholder="Select..."
-                                value={this.state.addPhone.okToText}
+                                defaultValue={trueFalse.map((option) => {
+                                 if (option.value === this.state.addPhone.okToText) return option
+                                })[0]}
                                 options={trueFalse}
                                 onChange={this.handleOkToTextChange}
-                                searchable={false}
+                                isSearchable={false}
                                 />
                       </Form.Group>
                       <Form.Group>
-                        <Form.Check type="checkbox" value={this.state.addPhone.isPrimary} label="Make Primary"/>
+                        <div className="element-wrapper with--checkbox">
+                          <label className="checkbox path"  checked={this.state.addPhone.isPrimary} onChange={this.handleIsPrimaryToggle} >
+                            <input type="checkbox"  />
+                              <svg viewBox="0 0 21 21">
+                                <path
+                                  d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
+                              </svg>
+                              &nbsp; MakePrimary
+                          </label>
+                        </div>
                       </Form.Group>
                     </Form.Group>
                  ) : 'You can not add a phone number!' }
               </Modal.Body>
               <Modal.Footer className="modalFooterBtns">
-                <Button className="btn btn-primary" variant="secondary" onClick={() => this.handlePhonesEdit()}>
+                <Button className="btn btn-primary" variant="secondary" onClick={() => this.handleAddPhone()}>
                   Yes
                 </Button>
-                <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyPhonesChange()}>
+                <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyPhoneAdd()}>
                   No
                 </Button>
               </Modal.Footer>
