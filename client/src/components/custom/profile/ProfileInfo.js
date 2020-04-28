@@ -57,7 +57,7 @@ export class ProfileInfo extends Component {
     this.handleIsPrimaryToggle = this.handleIsPrimaryToggle.bind(this);
     this.handleAddPhone = this.handleAddPhone.bind(this);
 
-        /*PHONE EDIT*/
+    /*PHONE EDIT*/
     this.setPhoneInputRef = element => {
       this.phoneInput = element;
     };
@@ -101,10 +101,6 @@ export class ProfileInfo extends Component {
         statusEditable: !this.state.UI.statusEditable
       }
     });
-  }
-
-  componentDidMount() {
-
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -274,6 +270,7 @@ export class ProfileInfo extends Component {
 
   /*Send api call after confirm*/
   handleAddPhone() {
+    /*Add number validation here*/
     let newPhoneNumbers = this.props.inquiry.phoneNumbers;
     newPhoneNumbers.push(this.state.addPhone);
 
@@ -285,7 +282,14 @@ export class ProfileInfo extends Component {
       })
     }).then((res) => {
       console.log(res.body);
-      this.addPhoneNumber();
+      this.setState({
+        addPhoneNumber: false,
+        addPhone: {
+          number: '',
+          isPrimary: false,
+          okToText: true,
+        }
+      })
     })
   }
   /*END OF ADD PHONE NUMBER*/
