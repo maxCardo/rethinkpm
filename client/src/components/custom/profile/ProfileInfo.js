@@ -22,19 +22,20 @@ export class ProfileInfo extends Component {
       UI: {
         statusEditable: false,
         phoneEditable: false,
+        showPhoneChangeConfirm: false,
+        newPhoneValid: true,
       },
       addPhone: {
         number: '',
         isPrimary: false,
         okToText: true,
       },
-      primaryPhone:  this.formatData("formatPhone", [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
+      primaryPhone:  (props.isAgent && props.inquiry.phoneNumbers) ? this.formatData("formatPhone", [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
                         return phoneNumber.isPrimary ? {...phoneNumber} : ''
-                      })][0].number),
+                      })][0].number) : '',
       profileOpened: props.inquiry,
       modalData: {},
       inquiry: {},
-      showPhoneChangeConfirm: false,
       addPhoneNumber: false,
       reasonForLoss: '',
     };
@@ -65,7 +66,7 @@ export class ProfileInfo extends Component {
       if (this.phoneInput) this.phoneInput.focus();
     }
     this.editPrimaryPhone = this.editPrimaryPhone.bind(this);
-
+    this.denyPhoneChange = this.denyPhoneChange.bind(this);
   }
 
   formatData(formatter, data) {
@@ -123,6 +124,7 @@ export class ProfileInfo extends Component {
     if (this.state.UI.phoneEditable && !prevState.UI.phoneEditable) {
       this.focusPhoneInput();
     }
+
   }
 
   editProfile(modalData) {
@@ -164,21 +166,33 @@ export class ProfileInfo extends Component {
 
   /*Primary Phone Edit*/
   handlePhoneEdit() {
-    this.confirmPrimaryPhoneEdit();
-    fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
-      method: "put",
-      headers: {"Content-type": "application/json"},
-      body: JSON.stringify({
-        phone: this.state.primaryPhone,
-        phoneNumbers: [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
-          return phoneNumber.isPrimary ? {...phoneNumber, number: this.state.primaryPhone} : phoneNumber
-        })],
+    if (this.validatePhoneNum(this.state.primaryPhone)) {
+      this.confirmPrimaryPhoneEdit();
 
+      fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
+        method: "put",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({
+          phone: this.state.primaryPhone,
+          phoneNumbers: [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
+            return phoneNumber.isPrimary ? {...phoneNumber, number: this.state.primaryPhone} : phoneNumber
+          })],
+
+        })
+      }).then((res) => {
+        console.log(res.body);
+        this.setState({
+          UI: {
+            ...this.state.UI,
+            showPhoneChangeConfirm: false,
+            phoneEditable: false
+          }
+        })
       })
-    }).then((res) => {
-      console.log(res.body);
-      this.editPrimaryPhone();
-    })
+    } else {
+      this.denyPhoneChange();
+      alert("The phone number you have entered is invalid!!!");
+    }
   }
 
   editPrimaryPhone() {
@@ -194,23 +208,44 @@ export class ProfileInfo extends Component {
     this.setState({
       UI: {
         ...this.state.UI,
-        phoneEditable: !this.state.UI.phoneEditable
+        showPhoneChangeConfirm: true
       },
-      showPhoneChangeConfirm: !this.state.showPhoneChangeConfirm
     });
   }
+
   denyPhoneChange() {
     this.setState({
-      UI: {
-        ...this.state.UI,
-        phoneEditable: false,
-      },
       primaryPhone: this.props.inquiry.phoneNumbers.filter((number) => {
         if (number.isPrimary) return number
       }).map((primaryNum) => {
         return formatPhone(primaryNum.number);
-      })[0]
-    });
+      })[0],
+      UI: {
+        ...this.state.UI,
+        phoneEditable: false,
+        showPhoneChangeConfirm: false,
+      },
+    })
+  }
+
+  validatePhoneNum(number) {
+    var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+    return !!number.match(validPhone);
+  }
+
+  onPrimaryPhoneEdit(evt) {
+    const newPhoneNumber = evt.target.value;
+
+    if (this.validatePhoneNum(newPhoneNumber)) {
+      if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
+      evt.target.classList.add('valid');
+    } else {
+      if (evt.target.classList.contains('valid')) evt.target.classList.remove('valid');
+      evt.target.classList.add('invalid');
+    }
+
+    this.setState({primaryPhone: newPhoneNumber})
   }
   /*END OF PRIMARY PHONE EDIT*/
 
@@ -308,7 +343,7 @@ export class ProfileInfo extends Component {
                 <input type="text" name="phonePrimary"
                        disabled={!this.state.UI.phoneEditable}
                        value={this.state.primaryPhone}
-                       onChange={(evt) => this.setState({primaryPhone: evt.target.value})}
+                       onChange={(evt) => this.onPrimaryPhoneEdit(evt)}
                        ref={this.setPhoneInputRef}
                 />
                 {(!this.state.UI.phoneEditable) ? (
@@ -444,10 +479,10 @@ export class ProfileInfo extends Component {
           <a className='action-buttons__button' href='#' onClick={this.toggleChat}>
             <i className="fas fa-comments"></i>
           </a>
-          <a className='action-buttons__button' href={`tel:${this.props.phoneNumber}`}>
+          <a className='action-buttons__button' href={`tel:${this.props.inquiry.phoneNumber}`}>
             <i className="fas fa-phone"></i>
           </a>
-          <a className='action-buttons__button' href={`mailto:${this.props.email}`}>
+          <a className='action-buttons__button' href={`mailto:${this.props.inquiry.email}`}>
             <i className="fas fa-envelope"></i>
           </a>
           {this.props.isAgent ?
@@ -564,7 +599,7 @@ export class ProfileInfo extends Component {
               </Modal.Footer>
             </Modal>
 
-            <Modal size='md' show={this.state.showPhoneChangeConfirm} onHide={() => this.denyPhoneChange()}>
+            <Modal size='md' show={this.state.UI.showPhoneChangeConfirm} onHide={() => this.denyPhoneChange()}>
               <Modal.Header closeButton>
                 <Modal.Title>Are you sure you want to change the primary phone number</Modal.Title>
               </Modal.Header>

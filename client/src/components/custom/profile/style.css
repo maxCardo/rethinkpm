@@ -548,6 +548,24 @@
 }
 .Phone input {
   color: #333;
+  border: 1px solid rgb(204,204,204);
+  border-radius: 4px;
+  padding: 0px 5px;
+  transition: box-shadow 200ms, border-color 200ms;
+}
+.Phone input:focus {
+  border-color: #2684ff;
+  box-shadow: 0 0 0 1px #2684ff;
+}
+.Phone input.invalid:not([disabled]):focus {
+  border-color: #F44336;
+  outline-color: #F44336;
+  box-shadow: 0 0 0 1px #F44336;
+}
+.Phone input.valid:not([disabled]):focus {
+  border-color: #4CAF50;
+  outline-color: #4CAF50;
+  box-shadow: 0 0 0 1px #4CAF50;
 }
 .Phone input[disabled] {
   border-color: transparent;
