@@ -35,7 +35,7 @@ export class ProfileInfo extends Component {
       modalData: {},
       inquiry: {},
       showPhoneChangeConfirm: false,
-      editPhoneNumbers: false,
+      addPhoneNumber: false,
       reasonForLoss: '',
     };
     this.makeEditable = this.makeEditable.bind(this)
@@ -55,6 +55,7 @@ export class ProfileInfo extends Component {
     this.handleOkToTextChange = this.handleOkToTextChange.bind(this);
     this.handleAddPhoneNumber = this.handleAddPhoneNumber.bind(this);
     this.handleIsPrimaryToggle = this.handleIsPrimaryToggle.bind(this);
+    this.handleAddPhone = this.handleAddPhone.bind(this);
 
         /*PHONE EDIT*/
     this.setPhoneInputRef = element => {
@@ -217,12 +218,15 @@ export class ProfileInfo extends Component {
   }
   /*END OF PRIMARY PHONE EDIT*/
 
-  editPhoneNumbers() {
+  /*ADD PHONE NUMBER*/
+  /*Toggle modal*/
+  addPhoneNumber() {
     this.setState({
-      editPhoneNumbers: true,
+      addPhoneNumber: !this.state.addPhoneNumber,
     });
   }
 
+  /*Update number in state*/
   handleAddPhoneNumber(event) {
     this.setState({
       addPhone: {
@@ -232,6 +236,7 @@ export class ProfileInfo extends Component {
     })
   }
 
+  /*Update okToTExt in state*/
   handleOkToTextChange = selectedOption => {
     console.log(selectedOption);
     this.setState(
@@ -245,6 +250,7 @@ export class ProfileInfo extends Component {
     );
   };
 
+  /*Update isPrimary in state*/
   handleIsPrimaryToggle() {
     this.setState({
       addPhone: {
@@ -253,6 +259,36 @@ export class ProfileInfo extends Component {
       }
     })
   }
+
+  /*Reset state*/
+  denyAddPhone() {
+    this.setState({
+      addPhoneNumber: false,
+      addPhone: {
+        number: '',
+        isPrimary: false,
+        okToText: true,
+      }
+    })
+  }
+
+  /*Send api call after confirm*/
+  handleAddPhone() {
+    let newPhoneNumbers = this.props.inquiry.phoneNumbers;
+    newPhoneNumbers.push(this.state.addPhone);
+
+    fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
+      method: "put",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({
+        phoneNumbers: newPhoneNumbers
+      })
+    }).then((res) => {
+      console.log(res.body);
+      this.addPhoneNumber();
+    })
+  }
+  /*END OF ADD PHONE NUMBER*/
 
   render() {
     let col1 = [];
@@ -289,7 +325,7 @@ export class ProfileInfo extends Component {
 
 
                 <button className='action-buttons__button addPhoneNumber'
-                onClick={() => this.editPhoneNumbers()}>
+                onClick={() => this.addPhoneNumber()}>
                   <i className="fas fa-plus"></i>
                 </button>
               </div>) : (<div key={idx} dangerouslySetInnerHTML={{
@@ -538,7 +574,7 @@ export class ProfileInfo extends Component {
               </Modal.Footer>
             </Modal>
 
-            <Modal size='xl' show={this.state.editPhoneNumbers} onHide={() => this.denyAddPhone()}>
+            <Modal size='xl' show={this.state.addPhoneNumber} onHide={() => this.denyAddPhone()}>
               <Modal.Header closeButton>
                 <Modal.Title>Add a phone number</Modal.Title>
               </Modal.Header>
@@ -581,7 +617,7 @@ export class ProfileInfo extends Component {
                 <Button className="btn btn-primary" variant="secondary" onClick={() => this.handleAddPhone()}>
                   Yes
                 </Button>
-                <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyPhoneAdd()}>
+                <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyAddPhone()}>
                   No
                 </Button>
               </Modal.Footer>
