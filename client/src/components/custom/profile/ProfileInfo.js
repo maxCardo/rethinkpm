@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {formatPhone, getData} from "../../../util/commonFunctions";
 import commonFormatters from "../../../util/commonDataFormatters";
 import Select from "react-select";
-import {agentStatus} from "../../../util/statusSchemas";
+import { agentStatus, trueFalse} from "../../../util/statusSchemas";
 import {Button, Modal} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
@@ -19,16 +19,24 @@ export class ProfileInfo extends Component {
         label: props.inquiry.status[0] ? (props.inquiry.status[0].toUpperCase() + props.inquiry.status.slice(1)) : '',
         value: props.inquiry.status ? props.inquiry.status : ''
       },
-      reasonForLoss: '',
       UI: {
         statusEditable: false,
         phoneEditable: false,
       },
+      addPhone: {
+        number: '',
+        isPrimary: false,
+        okToText: true,
+      },
+      primaryPhone:  this.formatData("formatPhone", [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
+                        return phoneNumber.isPrimary ? {...phoneNumber} : ''
+                      })][0].number),
       profileOpened: props.inquiry,
       modalData: {},
       inquiry: {},
       showPhoneChangeConfirm: false,
       editPhoneNumbers: false,
+      reasonForLoss: '',
     };
     this.makeEditable = this.makeEditable.bind(this)
     this.handleEditProfileClose = this.handleEditProfileClose.bind(this)
@@ -41,8 +49,10 @@ export class ProfileInfo extends Component {
     this.confirmStatusChange = this.confirmStatusChange.bind(this);
     this.denyStatusChange = this.denyStatusChange.bind(this);
     this.handleLossChange = this.handleLossChange.bind(this);
+    this.handleOkToTextChange = this.handleOkToTextChange.bind(this);
+    this.handleAddPhoneNumber = this.handleAddPhoneNumber.bind(this);
 
-    /*PHONE EDIT*/
+        /*PHONE EDIT*/
     this.setPhoneInputRef = element => {
       this.phoneInput = element;
     };
@@ -89,15 +99,7 @@ export class ProfileInfo extends Component {
   }
 
   componentDidMount() {
-    this.props.attributes.forEach((attribute, idx) => {
-      if (attribute.editable === "phoneNumbers") {
-        {
-          this.setState({
-            primaryPhone: this.formatData(attribute.formatter, getData(this.props.inquiry, attribute))
-          })
-        }
-      }
-    })
+
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -198,7 +200,10 @@ export class ProfileInfo extends Component {
   }
   denyPhoneChange() {
     this.setState({
-      showPhoneChangeConfirm: false,
+      UI: {
+        ...this.state.UI,
+        phoneEditable: false,
+      },
       primaryPhone: this.props.inquiry.phoneNumbers.filter((number) => {
         if (number.isPrimary) return number
       }).map((primaryNum) => {
@@ -214,6 +219,28 @@ export class ProfileInfo extends Component {
     });
   }
 
+  handleAddPhoneNumber(event) {
+    this.setState({
+      addPhone: {
+        ...this.state.addPhone,
+        number: event.target.value
+      }
+    })
+  }
+
+  handleOkToTextChange = selectedOption => {
+    console.log(selectedOption);
+    this.setState(
+      {
+        addPhone: {
+          ...this.state.addPhone,
+          okToText: selectedOption.value
+        }
+      },
+      () => console.log(`Option selected:`, this.state.addPhone.okToText)
+    );
+  };
+
   render() {
     let col1 = [];
     let col2 = [];
@@ -223,22 +250,34 @@ export class ProfileInfo extends Component {
         col1.push(
           (attribute.formatter) ?
             ((attribute.editable === "phoneNumbers") ? (
-              <div className={attribute.name}>
+              <div key={idx} className={attribute.name}>
                 <b>{attribute.name}:</b>
                 <input type="text" name="phonePrimary"
                        disabled={!this.state.UI.phoneEditable}
                        value={this.state.primaryPhone}
                        onChange={(evt) => this.setState({primaryPhone: evt.target.value})}
                        ref={this.setPhoneInputRef}
-                       onBlur={() => this.confirmPrimaryPhoneEdit()}
                 />
-                <button className='action-buttons__button singleFieldEdit'
-                        onClick={() => this.editPrimaryPhone()}>
-                  <i className="fas fa-pencil-alt"></i>
-                </button>
+                {(!this.state.UI.phoneEditable) ? (
+                  <button className='action-buttons__button singleFieldEdit'
+                          onClick={() => this.editPrimaryPhone()}>
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                ) : (
+                  <Fragment>
+                    <button className='action-buttons__button ab__confirm singleFieldEdit' onClick={() => this.confirmPrimaryPhoneEdit()}>
+                      <i className="fas fa-check"></i>
+                    </button>
+                    <button className='action-buttons__button ab__cancel singleFieldEdit' onClick={() => this.denyPhoneChange()}>
+                      <i className="fas fa-times"></i>
+                    </button>
+                  </Fragment>
+                )}
+
+
                 <button className='action-buttons__button addPhoneNumber'
                 onClick={() => this.editPhoneNumbers()}>
-                  <i className="fas fa-list-ol"></i>
+                  <i className="fas fa-plus"></i>
                 </button>
               </div>) : (<div key={idx} dangerouslySetInnerHTML={{
               __html: (
@@ -416,8 +455,8 @@ export class ProfileInfo extends Component {
                           <Form.Label>{attribute.name}:</Form.Label>
                           <Form.Control as="select" value={this.state.statusSelected.value}
                                         onChange={this.handleModalStatusChange.bind(this)}>
-                            {this.state.agentStatusSelect.map((item) => {
-                              return <option value={item.value}>{item.label}</option>
+                            {this.state.agentStatusSelect.map((item, idx) => {
+                              return <option key={idx} value={item.value}>{item.label}</option>
                             })}
                           </Form.Control>
                         </Form.Group>)
@@ -486,37 +525,34 @@ export class ProfileInfo extends Component {
               </Modal.Footer>
             </Modal>
 
-            <Modal size='xl' show={this.state.editPhoneNumbers} onHide={() => this.denyPhonesChange()}>
+            <Modal size='xl' show={this.state.editPhoneNumbers} onHide={() => this.denyAddPhone()}>
               <Modal.Header closeButton>
-                <Modal.Title>Are you sure you want to change the primary phone number</Modal.Title>
+                <Modal.Title>Add a phone number</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 { this.state.inquiry.phoneNumbers && this.props.isAgent ? (
-                  this.state.inquiry.phoneNumbers.map((number, idx) => {
-
-                     return (<Form.Group key={`phone-${idx}`}>
+                <Form.Group className="addPhoneGroup">
                       <Form.Group>
-                        <Form.Label>Phone {idx}:</Form.Label>
-                        <Form.Control type="text" name={`Phone ${idx}`}
-                                      value={number.number}
-                                      onChange={this.handlePhoneInputChange}/>
+                        <Form.Label>Number:</Form.Label>
+                        <Form.Control type="text" name='newPhone'
+                                      value={this.state.addPhone.number}
+                                      onChange={this.handleAddPhoneNumber}/>
                       </Form.Group>
                       <Form.Group>
                         <Form.Label>Stop texting:</Form.Label>
-                        <Form.Control as="select" name="okToText"
-                                      value={number.okToText}
-                                      onChange={this.handleModalSelectChange}>
-                          <option value={true}>No</option>
-                          <option value={false}>Yes</option>
-                        </Form.Control>
+                        <Select name="okToText"
+                                placeholder="Select..."
+                                value={this.state.addPhone.okToText}
+                                options={trueFalse}
+                                onChange={this.handleOkToTextChange}
+                                searchable={false}
+                                />
                       </Form.Group>
                       <Form.Group>
-                        <Form.Check type="checkbox" value={number.isPrimary} label="Make Primary"/>
+                        <Form.Check type="checkbox" value={this.state.addPhone.isPrimary} label="Make Primary"/>
                       </Form.Group>
-                    </Form.Group>)
-                  })
-
-                ) : 'shet' }
+                    </Form.Group>
+                 ) : 'You can not add a phone number!' }
               </Modal.Body>
               <Modal.Footer className="modalFooterBtns">
                 <Button className="btn btn-primary" variant="secondary" onClick={() => this.handlePhonesEdit()}>
@@ -570,10 +606,6 @@ export class ProfileInfo extends Component {
         [event.target.name]: event.target.value
       }
     })
-  }
-
-  handleModalSelectChange(event) {
-    console.log(event.target.value);
   }
 
   handleEditProfileClose() {

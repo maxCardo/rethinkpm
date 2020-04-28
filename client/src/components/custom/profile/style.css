@@ -543,7 +543,7 @@
 .phone .action-buttons__button i {
   margin-left: 1px;
 }
-.Phone .singleFieldEdit {
+.Phone input + button {
   margin-left: auto;
 }
 .Phone input {
@@ -570,4 +570,21 @@
   margin-left: 0;
 }
 
+.addPhoneGroup {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 0;
+}
+.addPhoneGroup .form-group {
+  margin-bottom: 0;
+  margin-right: 15px;
+}
+.addPhoneGroup .form-group:last-child {
+  margin-left: auto;
+  margin-right: 0;
+}
+.addPhoneGroup .css-yk16xz-control {
+  min-width: 125px;
+}
 /* END OF Bozidar CSS */
