@@ -76,7 +76,10 @@ export class brokerDashboard extends Component {
     }
 
     componentDidMount() {
-      if(this.props.agents) return;
+      if(this.props.agents) {
+        this.setState({loading: false})
+        return
+      }
         axios.get('/api/sales/agents').then( (res) => {
           let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
           const data = {
@@ -102,10 +105,10 @@ export class brokerDashboard extends Component {
     render() {
         return (
               <LoadingScreen loading={this.state.loading}>
-                {this.state.data &&
+                {this.props.agents &&
                   <Dashboard
                     type='select'
-                    data={this.state.data} 
+                    data={this.props.agents} 
                     loading={this.state.loading} 
                     headers={this.headers}
                     states={this.states}
