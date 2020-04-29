@@ -37,15 +37,36 @@
   margin: none;
 }
 
-.filter-pills__container {
+.filter-pills__pills-container {
   display: flex;
   flex-wrap: wrap;
 }
 
-.filter-pills__pill {
+.pill__container {
   font-size: 12px;
   border-radius: 10px;
   background-color: #DDD;
   padding: 0 20px;
   margin: 5px;
+}
+
+.filter-pills__title-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 5px;
+}
+
+.filter-pills__title-container p {
+  margin: 0;
+  padding: 0;
+}
+
+.filter-pills__title-container button {
+  border: none;
+  background: none;
+  text-decoration: underline;
+  padding: 0;
+  margin: 0;
+  height: fit-content;
+  border: none
 }
