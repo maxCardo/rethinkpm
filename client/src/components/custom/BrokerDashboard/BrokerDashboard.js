@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { SET_AGENT_OPPORTUNITIES } from '../../../actions/type'
 import { withRouter } from 'react-router-dom';
 import Dashboard from '../dashboard/Dashboard';
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
 
 export class brokerDashboard extends Component {
     constructor(props) {
@@ -104,21 +105,20 @@ export class brokerDashboard extends Component {
 
     render() {
         return (
-            <div>
-              {this.state.data &&
-                <Dashboard
-                  type='select'
-                  data={this.state.data} 
-                  loading={this.state.loading} 
-                  headers={this.headers}
-                  states={this.states}
-                  onClickRow={this.handleClickRow}
-                  sortBy='sales'
-                  sortDirection='desc'
-                />
-              }
-            </div>
-
+              <LoadingScreen loading={this.state.loading}>
+                {this.state.data &&
+                  <Dashboard
+                    type='select'
+                    data={this.state.data} 
+                    loading={this.state.loading} 
+                    headers={this.headers}
+                    states={this.states}
+                    onClickRow={this.handleClickRow}
+                    sortBy='sales'
+                    sortDirection='desc'
+                  />
+                }
+              </LoadingScreen>
         )
     }
     handleClickRow(row) {

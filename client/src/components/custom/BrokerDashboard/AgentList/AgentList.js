@@ -8,6 +8,7 @@ import './style.css'
 import FilteredList from './FilteredList';
 import AgentFiltersModal from './AgentFiltersModal';
 import SaveFilterModal from './SaveFilterModal'
+import LoadingScreen from '../../LoadingScreen/LoadingScreen'
 
 class AgentList extends Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class AgentList extends Component {
       ],
       modalFilters: [],
       audiences: [],
-      filters:[]
+      filters:[],
+      loading: true
     };
     this.handleModalSubmit = this.handleModalSubmit.bind(this)
     this.saveAudience = this.saveAudience.bind(this)
@@ -55,11 +57,8 @@ class AgentList extends Component {
         agentCopy.areasAndZipCodesArray = agentCopy.areasArray.concat(agentCopy.zipCodesArray)
         return agentCopy
       })
-      this.setState({data: agentsWithSales});
+      this.setState({data: agentsWithSales, loading:false});
     })
-      .then((res) => {
-        this.setState({loadingAgents: false});
-      });
     axios.get('/api/sales/audiences').then((res) => {
       this.setState({audiences: res.data})
     })
@@ -117,7 +116,7 @@ class AgentList extends Component {
       })
     }
     return (
-      <Fragment>
+      <LoadingScreen loading={this.state.loading}>
         <Select
           className="agentStatusFilter"
           onChange={value => this.setState({statusSelected: value})}
@@ -160,7 +159,7 @@ class AgentList extends Component {
           saveAudience={this.saveAudience}
           saveFilter={this.saveFilter}
         />
-      </Fragment>
+      </LoadingScreen>
     );
   }
   handleModalSubmit(filters) {
