@@ -36,7 +36,6 @@ export class FilteredList extends Component {
     }
   }
   render() {
-    console.log(this.state.filteredData)
     return (
       <Fragment>
         <FilterPills filters={this.props.filters} />

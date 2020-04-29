@@ -87,14 +87,10 @@ export class brokerDashboard extends Component {
             notInterested: [],
           }
           agentsWithSales.forEach((agent) => {
-            console.log(agent)
             data[agent.status].push(agent)
           })
           this.props.setAgents({agentOpportunities: data, agentOpportunitiesRaw: res.data});
-          this.setState({ data });
-        })
-        .then((res) => {
-            this.setState({ loading: false });
+          this.setState({ data, loading: false });
         })
     }
 

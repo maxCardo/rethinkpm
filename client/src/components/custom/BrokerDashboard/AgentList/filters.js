@@ -52,7 +52,6 @@ function includesFilter(field, value) {
 function inFilter(field, values) {
   if(!field) return false
   if(field.constructor === Array) {
-    console.log('enters')
     for(let i = 0; i<field.length; i++) {
       const elem = field[i]
       if(values.includes(elem)) {
