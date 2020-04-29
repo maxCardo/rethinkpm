@@ -29,6 +29,12 @@
           },
           {
             "name": "Email",
+            "accessor": "email",
+            "col": 1,
+            "editable": "emails"
+          },
+          {
+            "name": "Email",
             "accessor": "emailAddress",
             "col": 1,
             "editable": "input"

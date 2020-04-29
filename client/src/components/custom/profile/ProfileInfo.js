@@ -26,6 +26,7 @@ export class ProfileInfo extends Component {
       UI: {
         statusEditable: false,
         phoneEditable: false,
+        emailEditable: false,
         showPhoneChangeConfirm: false,
         newPhoneValid: true,
         showInvalidAlert: false
@@ -35,9 +36,16 @@ export class ProfileInfo extends Component {
         isPrimary: false,
         okToText: true,
       },
+      addEmail: {
+        address: '',
+        isPrimary: ''
+      },
       primaryPhone:  (props.isAgent && props.inquiry.phoneNumbers) ? this.formatData("formatPhone", [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
                         return phoneNumber.isPrimary ? {...phoneNumber} : ''
                       })][0].number) : '',
+      primaryEmail: (props.isAgent && props.inquiry.email) ? [...this.props.inquiry.email.map(email => {
+        return email.isPrimary ? {...email} : ''
+      })][0].address : '',
       profileOpened: props.inquiry,
       modalData: {},
       inquiry: {},
@@ -69,9 +77,17 @@ export class ProfileInfo extends Component {
     };
     this.focusPhoneInput = () => {
       if (this.phoneInput) this.phoneInput.focus();
-    }
+    };
     this.editPrimaryPhone = this.editPrimaryPhone.bind(this);
     this.denyPhoneChange = this.denyPhoneChange.bind(this);
+
+    /*EMAIL EDIT*/
+    this.setEmailInputRef = element => {
+      this.emailInput = element;
+    };
+    this.focusEmailInput = () => {
+      if (this.emailInput) this.emailInput.focus();
+    };
   }
 
   formatData(formatter, data) {
@@ -130,7 +146,9 @@ export class ProfileInfo extends Component {
     if (this.state.UI.phoneEditable && !prevState.UI.phoneEditable) {
       this.focusPhoneInput();
     }
-
+    if (this.state.UI.emailEditable && !prevState.UI.emailEditable) {
+      this.focusEmailInput();
+    }
   }
 
   editProfile(modalData) {
@@ -240,8 +258,6 @@ export class ProfileInfo extends Component {
       },
     })
   }
-
-
 
   onPrimaryPhoneEdit(evt) {
     const newPhoneNumber = evt.target.value;
@@ -376,6 +392,99 @@ export class ProfileInfo extends Component {
   }
   /*END OF ADD PHONE NUMBER*/
 
+  /*EDIT EMAIL*/
+
+  /*Primary Email Edit*/
+  handleEmailEdit() {
+    // if (validatePhoneNum(this.state.primaryPhone)) {
+      this.confirmPrimaryEmailEdit();
+
+      fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
+        method: "put",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({
+          email: [...this.props.inquiry.email.map(email => {
+            return email.isPrimary ? {...email, address: this.state.primaryEmail} : email
+          })],
+
+        })
+      }).then((res) => {
+        console.log(res.body);
+        this.setState({
+          UI: {
+            ...this.state.UI,
+            showEmailChangeConfirm: false,
+            emailEditable: false
+          }
+        })
+      })
+    // } else {
+    //   this.setState({
+    //     UI: {
+    //       ...this.state.UI,
+    //       showPhoneChangeConfirm: false,
+    //       showInvalidAlert: true
+    //     },
+    //     invalidInfo: 'Phone number'
+    //   });
+    //   setTimeout( () => this.denyPhoneChange(), 125 )
+    // }
+  }
+
+  addEmail() {
+    this.setState({
+      addEmail: !this.state.addEmail,
+    });
+  }
+
+  onPrimaryEmailEdit(evt) {
+    const newEmail = evt.target.value;
+
+    /*MIGRATE TO STATE UI OBJECT*/
+    if (newEmail) {
+      if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
+      evt.target.classList.add('valid');
+    } else {
+      if (evt.target.classList.contains('valid')) evt.target.classList.remove('valid');
+      evt.target.classList.add('invalid');
+    }
+
+    this.setState({primaryEmail: newEmail})
+  }
+
+  editPrimaryEmail() {
+    this.setState({
+      UI: {
+        ...this.state.UI,
+        emailEditable: !this.state.UI.emailEditable
+      }
+    });
+  }
+
+  confirmPrimaryEmailEdit() {
+    this.setState({
+      UI: {
+        ...this.state.UI,
+        showEmailChangeConfirm: true
+      },
+    });
+  }
+
+  denyEmailChange() {
+    this.setState({
+      primaryEmail: this.props.inquiry.email.filter((address) => {
+        if (address.isPrimary) return address
+      }).map((primaryAddress) => {
+        return primaryAddress.address;
+      })[0],
+      UI: {
+        ...this.state.UI,
+        emailEditable: false,
+        showEmailChangeConfirm: false,
+      },
+    })
+  }
+
   render() {
     let col1 = [];
     let col2 = [];
@@ -422,9 +531,41 @@ export class ProfileInfo extends Component {
               )
             }}/>))
             :
-            (<p key={idx}>
-              <b>{attribute.name}:</b> {getData(this.props.inquiry, attribute) ? getData(this.props.inquiry, attribute) : 'Not Implemented'}
-            </p>)
+            ((attribute.editable === "emails") ? (
+                  <div key={idx} className={attribute.name}>
+                    <b>{attribute.name}:</b>
+                    <input type="text" name="emailPrimary"
+                           disabled={!this.state.UI.emailEditable}
+                           value={this.state.primaryEmail}
+                           onChange={(evt) => this.onPrimaryEmailEdit(evt)}
+                           ref={this.setEmailInputRef}
+                    />
+                    {(!this.state.UI.emailEditable) ? (
+                      <button className='action-buttons__button singleFieldEdit'
+                              onClick={() => this.editPrimaryEmail()}>
+                        <i className="fas fa-pencil-alt"></i>
+                      </button>
+                    ) : (
+                      <Fragment>
+                        <button className='action-buttons__button ab__confirm singleFieldEdit' onClick={() => this.confirmPrimaryEmailEdit()}>
+                          <i className="fas fa-check"></i>
+                        </button>
+                        <button className='action-buttons__button ab__cancel singleFieldEdit' onClick={() => this.denyEmailChange()}>
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </Fragment>
+                    )}
+
+
+                    <button className='action-buttons__button addEmail'
+                            onClick={() => this.addEmail()}>
+                      <i className="fas fa-plus"></i>
+                    </button>
+                  </div>) :
+                (<p key={idx}>
+                  <b>{attribute.name}:</b> {getData(this.props.inquiry, attribute) ? getData(this.props.inquiry, attribute) : 'Not Implemented'}
+                </p>)
+            )
         );
       } else if (attribute.col === 2) {
         col2.push(
@@ -625,6 +766,20 @@ export class ProfileInfo extends Component {
                   Yes
                 </Button>
                 <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyPhoneChange()}>
+                  No
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            <Modal size='md' show={this.state.UI.showEmailChangeConfirm} onHide={() => this.denyEmailChange()}>
+              <Modal.Header closeButton>
+                <Modal.Title>Are you sure you want to change the primary email</Modal.Title>
+              </Modal.Header>
+              <Modal.Footer className="modalFooterBtns">
+                <Button className="btn btn-primary" variant="secondary" onClick={() => this.handleEmailEdit()}>
+                  Yes
+                </Button>
+                <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyEmailChange()}>
                   No
                 </Button>
               </Modal.Footer>
