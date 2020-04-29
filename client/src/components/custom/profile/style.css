@@ -414,7 +414,8 @@
   height: 30px;
   transition: color 225ms, box-shadow 225ms;
 }
-.action-buttons__button:hover {
+.action-buttons__button:hover,
+.action-buttons__button:focus {
   box-shadow: 1px 1px 8px rgba(0,0,0,.227);
 }
 
@@ -553,16 +554,20 @@
   padding: 0px 5px;
   transition: box-shadow 200ms, border-color 200ms;
 }
-.Phone input:focus {
+.Phone input:focus,
+.addPhoneGroup input:focus {
   border-color: #2684ff;
+  outline-color: #2684ff;
   box-shadow: 0 0 0 1px #2684ff;
 }
-.Phone input.invalid:not([disabled]):focus {
+.Phone input.invalid:not([disabled]):focus,
+.addPhoneGroup input.invalid:not([disabled]):focus {
   border-color: #F44336;
   outline-color: #F44336;
   box-shadow: 0 0 0 1px #F44336;
 }
-.Phone input.valid:not([disabled]):focus {
+.Phone input.valid:not([disabled]):focus,
+.addPhoneGroup input.valid:not([disabled]):focus {
   border-color: #4CAF50;
   outline-color: #4CAF50;
   box-shadow: 0 0 0 1px #4CAF50;
@@ -604,5 +609,11 @@
 }
 .addPhoneGroup .form-group:nth-child(2) {
   min-width: 125px;
+}
+.invalidAlert {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
 }
 /* END OF Bozidar CSS */

@@ -41,3 +41,8 @@ export const formatPhone = function (data) {
     return `(${phoneNumber.substring(0, 3)}) ${phoneNumber.substring(3, 6)}-${phoneNumber.substring(6)}`
   }
 }
+
+export const stringifyPhone = function(data) {
+  if (!data) return '';
+  return data.split('(').join('').split(')').join('').split('-').join('').split(' ').join('').split('+').join('');
+}

@@ -8,6 +8,7 @@ function formatPhone(data) {
   }
 }
 
+
 function formatPhoneNumbers(data) {
   if (!data) return '';
   let phoneNumber = '';
@@ -45,9 +46,8 @@ const formatters = {
   formatPhone,
   formatPhoneNumbers,
   formatMoney,
-  formatLabels
+  formatLabels,
 };
-
 
 export default function commonFormatter(name) {
   if (formatters[name]) {

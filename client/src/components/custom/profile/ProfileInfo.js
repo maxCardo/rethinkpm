@@ -1,12 +1,16 @@
 import React, {Component, Fragment} from 'react'
 import ProfileIcon from '../common/ProfileIcon';
 import {connect} from 'react-redux';
-import {formatPhone, getData} from "../../../util/commonFunctions";
+import {formatPhone, getData, stringifyPhone} from "../../../util/commonFunctions";
 import commonFormatters from "../../../util/commonDataFormatters";
 import Select from "react-select";
 import { agentStatus, trueFalse} from "../../../util/statusSchemas";
-import {Button, Modal} from "react-bootstrap";
-import Form from "react-bootstrap/Form";
+import {
+  Button,
+  Modal,
+  Alert,
+  Form
+} from "react-bootstrap";
 
 
 export class ProfileInfo extends Component {
@@ -24,6 +28,7 @@ export class ProfileInfo extends Component {
         phoneEditable: false,
         showPhoneChangeConfirm: false,
         newPhoneValid: true,
+        showInvalidAlert: false
       },
       addPhone: {
         number: '',
@@ -38,6 +43,7 @@ export class ProfileInfo extends Component {
       inquiry: {},
       addPhoneNumber: false,
       reasonForLoss: '',
+      invalidInfo: '',
     };
     this.makeEditable = this.makeEditable.bind(this)
     this.handleEditProfileClose = this.handleEditProfileClose.bind(this)
@@ -113,6 +119,7 @@ export class ProfileInfo extends Component {
         },
         primaryPhone: this.props.inquiry.phoneNumbers ? this.formatData("formatPhone", this.props.inquiry.phoneNumbers[0].number) : '',
         UI: {
+          ...this.state.UI,
           phoneEditable: this.state.UI.phoneEditable ? this.state.UI.phoneEditable : false,
           statusEditable: this.state.UI.statusEditable ? this.state.UI.statusEditable : false
         },
@@ -175,7 +182,7 @@ export class ProfileInfo extends Component {
         body: JSON.stringify({
           phone: this.state.primaryPhone,
           phoneNumbers: [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
-            return phoneNumber.isPrimary ? {...phoneNumber, number: this.state.primaryPhone} : phoneNumber
+            return phoneNumber.isPrimary ? {...phoneNumber, number: stringifyPhone(this.state.primaryPhone)} : phoneNumber
           })],
 
         })
@@ -190,8 +197,15 @@ export class ProfileInfo extends Component {
         })
       })
     } else {
-      this.denyPhoneChange();
-      alert("The phone number you have entered is invalid!!!");
+      this.setState({
+        UI: {
+          ...this.state.UI,
+          showPhoneChangeConfirm: false,
+          showInvalidAlert: true
+        },
+        invalidInfo: 'Phone number'
+      });
+      setTimeout( () => this.denyPhoneChange(), 125 )
     }
   }
 
@@ -237,6 +251,7 @@ export class ProfileInfo extends Component {
   onPrimaryPhoneEdit(evt) {
     const newPhoneNumber = evt.target.value;
 
+    /*MIGRATE TO STATE UI OBJECT*/
     if (this.validatePhoneNum(newPhoneNumber)) {
       if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
       evt.target.classList.add('valid');
@@ -259,6 +274,16 @@ export class ProfileInfo extends Component {
 
   /*Update number in state*/
   handleAddPhoneNumber(event) {
+    const newPhoneNumber = event.target.value;
+    /*MIGRATE TO STATE UI OBJECT*/
+    if (this.validatePhoneNum(newPhoneNumber)) {
+      if (event.target.classList.contains('invalid'))  event.target.classList.remove('invalid');
+      event.target.classList.add('valid');
+    } else {
+      if (event.target.classList.contains('valid')) event.target.classList.remove('valid');
+      event.target.classList.add('invalid');
+    }
+
     this.setState({
       addPhone: {
         ...this.state.addPhone,
@@ -305,27 +330,54 @@ export class ProfileInfo extends Component {
 
   /*Send api call after confirm*/
   handleAddPhone() {
-    /*Add number validation here*/
-    let newPhoneNumbers = this.props.inquiry.phoneNumbers;
-    newPhoneNumbers.push(this.state.addPhone);
+    if (this.validatePhoneNum(this.state.addPhone.number)) {
+      /*Add number validation here*/
+      let newPhoneNumbers = this.props.inquiry.phoneNumbers;
+      newPhoneNumbers.push(this.state.addPhone);
 
-    fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
-      method: "put",
-      headers: {"Content-type": "application/json"},
-      body: JSON.stringify({
-        phoneNumbers: newPhoneNumbers
+      fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
+        method: "put",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({
+          phoneNumbers: newPhoneNumbers
+        })
+      }).then((res) => {
+        console.log(res.body);
+        this.setState({
+          addPhoneNumber: false,
+          addPhone: {
+            number: '',
+            isPrimary: false,
+            okToText: true,
+          }
+        })
       })
-    }).then((res) => {
-      console.log(res.body);
+    } else {
       this.setState({
+        UI: {
+          ...this.state.UI,
+          showInvalidAlert: true
+        },
         addPhoneNumber: false,
-        addPhone: {
-          number: '',
-          isPrimary: false,
-          okToText: true,
-        }
-      })
-    })
+        invalidInfo: 'Phone number'
+      });
+      setTimeout( () => this.denyAddPhone(), 125 )
+    }
+  }
+
+  onAddPhoneEdit(evt) {
+    const newPhoneNumber = evt.target.value;
+
+    /*MIGRATE TO STATE UI OBJECT*/
+    if (this.validatePhoneNum(newPhoneNumber)) {
+      if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
+      evt.target.classList.add('valid');
+    } else {
+      if (evt.target.classList.contains('valid')) evt.target.classList.remove('valid');
+      evt.target.classList.add('invalid');
+    }
+
+    this.setState({primaryPhone: newPhoneNumber})
   }
   /*END OF ADD PHONE NUMBER*/
 
@@ -494,7 +546,7 @@ export class ProfileInfo extends Component {
 
         {this.props.inquiry && this.props.isAgent ? (
           <Fragment>
-
+            {/*MODALS*/}
             <Modal size='xl' show={this.state.showEditProfileModal} onHide={() => this.handleEditProfileClose()}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit Lead</Modal.Title>
@@ -661,12 +713,30 @@ export class ProfileInfo extends Component {
                 </Button>
               </Modal.Footer>
             </Modal>
+            {/*END OF MODALS*/}
 
+            {/*ALERTS*/}
+            <Alert className='invalidAlert' variant="danger" show={this.state.UI.showInvalidAlert} onClose={() => this.clearAlert()} dismissible>
+              <Alert.Heading>Invalid data inserted!</Alert.Heading>
+              <p>
+                Please insert a valid US {this.state.invalidInfo}}
+              </p>
+            </Alert>
+            {/*END OF ALERTS*/}
           </Fragment>
         ) : ''}
 
       </div>
     )
+  }
+
+  clearAlert() {
+    this.setState({
+      UI: {
+        ...this.state.UI,
+        showInvalidAlert: false
+      }
+    });
   }
 
   confirmStatusChange() {
