@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react'
 import ProfileIcon from '../common/ProfileIcon';
 import {connect} from 'react-redux';
-import {formatPhone, getData, stringifyPhone} from "../../../util/commonFunctions";
+import {formatPhone, getData, stringifyPhone, validatePhoneNum} from "../../../util/commonFunctions";
 import commonFormatters from "../../../util/commonDataFormatters";
 import Select from "react-select";
 import { agentStatus, trueFalse} from "../../../util/statusSchemas";
@@ -172,7 +172,7 @@ export class ProfileInfo extends Component {
 
   /*Primary Phone Edit*/
   handlePhoneEdit() {
-    if (this.validatePhoneNum(this.state.primaryPhone)) {
+    if (validatePhoneNum(this.state.primaryPhone)) {
       this.confirmPrimaryPhoneEdit();
 
       fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
@@ -241,17 +241,13 @@ export class ProfileInfo extends Component {
     })
   }
 
-  validatePhoneNum(number) {
-    var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-    return !!number.match(validPhone);
-  }
 
   onPrimaryPhoneEdit(evt) {
     const newPhoneNumber = evt.target.value;
 
     /*MIGRATE TO STATE UI OBJECT*/
-    if (this.validatePhoneNum(newPhoneNumber)) {
+    if (validatePhoneNum(newPhoneNumber)) {
       if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
       evt.target.classList.add('valid');
     } else {
@@ -275,7 +271,7 @@ export class ProfileInfo extends Component {
   handleAddPhoneNumber(event) {
     const newPhoneNumber = event.target.value;
     /*MIGRATE TO STATE UI OBJECT*/
-    if (this.validatePhoneNum(newPhoneNumber)) {
+    if (validatePhoneNum(newPhoneNumber)) {
       if (event.target.classList.contains('invalid'))  event.target.classList.remove('invalid');
       event.target.classList.add('valid');
     } else {
@@ -329,7 +325,7 @@ export class ProfileInfo extends Component {
 
   /*Send api call after confirm*/
   handleAddPhone() {
-    if (this.validatePhoneNum(this.state.addPhone.number)) {
+    if (validatePhoneNum(this.state.addPhone.number)) {
       /*Add number validation here*/
       let newPhoneNumbers = this.props.inquiry.phoneNumbers;
       newPhoneNumbers.push(this.state.addPhone);
@@ -368,7 +364,7 @@ export class ProfileInfo extends Component {
     const newPhoneNumber = evt.target.value;
 
     /*MIGRATE TO STATE UI OBJECT*/
-    if (this.validatePhoneNum(newPhoneNumber)) {
+    if (validatePhoneNum(newPhoneNumber)) {
       if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
       evt.target.classList.add('valid');
     } else {
@@ -572,10 +568,7 @@ export class ProfileInfo extends Component {
                             })}
                           </Form.Control>
                         </Form.Group>)
-                    } else if (attribute.editable === 'array') {
-                      console.log(attribute);
                     }
-
                   })}
                   {(this.state.modalData.status && this.state.modalData.status === 'notInterested') ?
                     (<Form.Group key="reason-loss">

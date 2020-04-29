@@ -46,3 +46,9 @@ export const stringifyPhone = function(data) {
   if (!data) return '';
   return data.split('(').join('').split(')').join('').split('-').join('').split(' ').join('').split('+').join('');
 }
+
+export const  validatePhoneNum = function(number) {
+  var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+  return !!number.match(validPhone);
+}
