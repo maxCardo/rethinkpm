@@ -52,3 +52,11 @@ export const  validatePhoneNum = function(number) {
 
   return !!number.match(validPhone);
 }
+
+export const  validateEmail = function(address) {
+  var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+
+  return !!address.match(validEmail);
+}
+
+

@@ -1,7 +1,13 @@
 import React, {Component, Fragment} from 'react'
 import ProfileIcon from '../common/ProfileIcon';
 import {connect} from 'react-redux';
-import {formatPhone, getData, stringifyPhone, validatePhoneNum} from "../../../util/commonFunctions";
+import {
+  formatPhone,
+  getData,
+  stringifyPhone,
+  validatePhoneNum,
+  validateEmail
+} from "../../../util/commonFunctions";
 import commonFormatters from "../../../util/commonDataFormatters";
 import Select from "react-select";
 import { agentStatus, trueFalse} from "../../../util/statusSchemas";
@@ -29,7 +35,8 @@ export class ProfileInfo extends Component {
         emailEditable: false,
         showPhoneChangeConfirm: false,
         newPhoneValid: true,
-        showInvalidAlert: false
+        showInvalidAlert: false,
+        addEmailModal: false,
       },
       addPhone: {
         number: '',
@@ -88,6 +95,12 @@ export class ProfileInfo extends Component {
     this.focusEmailInput = () => {
       if (this.emailInput) this.emailInput.focus();
     };
+    this.addEmailModal = this.addEmailModal.bind(this);
+
+    /*Add EMAIL*/
+    this.handleAddEmail = this.handleAddEmail.bind(this);
+    this.handleIsEmailPrimaryToggle = this.handleIsEmailPrimaryToggle.bind(this);
+    this.handleAddEmailAddress = this.handleAddEmailAddress.bind(this);
   }
 
   formatData(formatter, data) {
@@ -376,27 +389,13 @@ export class ProfileInfo extends Component {
     }
   }
 
-  onAddPhoneEdit(evt) {
-    const newPhoneNumber = evt.target.value;
-
-    /*MIGRATE TO STATE UI OBJECT*/
-    if (validatePhoneNum(newPhoneNumber)) {
-      if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
-      evt.target.classList.add('valid');
-    } else {
-      if (evt.target.classList.contains('valid')) evt.target.classList.remove('valid');
-      evt.target.classList.add('invalid');
-    }
-
-    this.setState({primaryPhone: newPhoneNumber})
-  }
   /*END OF ADD PHONE NUMBER*/
 
   /*EDIT EMAIL*/
 
   /*Primary Email Edit*/
   handleEmailEdit() {
-    // if (validatePhoneNum(this.state.primaryPhone)) {
+    if (validateEmail(this.state.primaryPhone)) {
       this.confirmPrimaryEmailEdit();
 
       fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
@@ -418,23 +417,17 @@ export class ProfileInfo extends Component {
           }
         })
       })
-    // } else {
-    //   this.setState({
-    //     UI: {
-    //       ...this.state.UI,
-    //       showPhoneChangeConfirm: false,
-    //       showInvalidAlert: true
-    //     },
-    //     invalidInfo: 'Phone number'
-    //   });
-    //   setTimeout( () => this.denyPhoneChange(), 125 )
-    // }
-  }
-
-  addEmail() {
-    this.setState({
-      addEmail: !this.state.addEmail,
-    });
+    } else {
+      this.setState({
+        UI: {
+          ...this.state.UI,
+          showEmailChangeConfirm: false,
+          showInvalidAlert: true
+        },
+        invalidInfo: 'Email address'
+      });
+      setTimeout( () => this.denyEmailChange(), 125 )
+    }
   }
 
   onPrimaryEmailEdit(evt) {
@@ -484,6 +477,102 @@ export class ProfileInfo extends Component {
       },
     })
   }
+
+  /*ADD AN EMAIL */
+  addEmailModal() {
+    this.setState({
+      UI: {
+        ...this.state.UI,
+        addEmailModal: !this.state.UI.addEmailModal
+      }
+    });
+  }
+
+  /*cancel add email*/
+  denyAddEmail() {
+    this.setState({
+      UI: {
+        ...this.state.UI,
+        addEmailModal: false
+      },
+      addEmail: {
+        number: '',
+        isPrimary: false,
+        okToText: true,
+      }
+    })
+  }
+
+  /*Update isPrimary in state*/
+  handleIsEmailPrimaryToggle() {
+    this.setState({
+      addEmail: {
+        ...this.state.addEmail,
+        isPrimary: !this.state.addEmail.isPrimary
+      }
+    })
+  }
+
+  /*Update number in state*/
+  handleAddEmailAddress(event) {
+    const newEmail = event.target.value;
+    /*MIGRATE TO STATE UI OBJECT*/
+    if (validateEmail(newEmail)) {
+      if (event.target.classList.contains('invalid'))  event.target.classList.remove('invalid');
+      event.target.classList.add('valid');
+    } else {
+      if (event.target.classList.contains('valid')) event.target.classList.remove('valid');
+      event.target.classList.add('invalid');
+    }
+
+    this.setState({
+      addEmail: {
+        ...this.state.addEmail,
+        address: event.target.value
+      }
+    })
+  }
+
+
+  handleAddEmail() {
+    if (validateEmail(this.state.addEmail.address)) {
+      /*Add number validation here*/
+      let newEmails = this.props.inquiry.email;
+      newEmails.push(this.state.addEmail);
+
+      fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
+        method: "put",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({
+          email: newEmails
+        })
+      }).then((res) => {
+        console.log(res.body);
+        this.setState({
+          UI: {
+            ...this.state.UI,
+            addEmailModal: false
+          },
+          addEmail: {
+            address: '',
+            isPrimary: false,
+          }
+        })
+      })
+    } else {
+      this.setState({
+        UI: {
+          ...this.state.UI,
+          showInvalidAlert: true,
+          addEmailModal: false,
+        },
+        invalidInfo: 'Email Address'
+      });
+      setTimeout( () => this.denyAddEmail(), 125 )
+    }
+  }
+
+  /*END OF ADD EMAIL*/
 
   render() {
     let col1 = [];
@@ -556,9 +645,8 @@ export class ProfileInfo extends Component {
                       </Fragment>
                     )}
 
-
                     <button className='action-buttons__button addEmail'
-                            onClick={() => this.addEmail()}>
+                            onClick={() => this.addEmailModal()}>
                       <i className="fas fa-plus"></i>
                     </button>
                   </div>) :
@@ -829,6 +917,44 @@ export class ProfileInfo extends Component {
                   Yes
                 </Button>
                 <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyAddPhone()}>
+                  No
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            <Modal size='xl' show={this.state.UI.addEmailModal} onHide={() => this.denyAddEmail()}>
+              <Modal.Header closeButton>
+                <Modal.Title>Add an email</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                { this.state.inquiry.email && this.props.isAgent ? (
+                  <Form.Group className="addEmailGroup">
+                    <Form.Group>
+                      <Form.Label>Address:</Form.Label>
+                      <Form.Control type="text" name='newPhone'
+                                    value={this.state.addEmail.address}
+                                    onChange={this.handleAddEmailAddress}/>
+                    </Form.Group>
+                    <Form.Group>
+                      <div className="element-wrapper with--checkbox">
+                        <label className="checkbox path"  checked={this.state.addEmail.isPrimary} onChange={this.handleIsEmailPrimaryToggle} >
+                          <input type="checkbox"  />
+                          <svg viewBox="0 0 21 21">
+                            <path
+                              d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
+                          </svg>
+                          &nbsp; MakePrimary
+                        </label>
+                      </div>
+                    </Form.Group>
+                  </Form.Group>
+                ) : 'You can not add a phone number!' }
+              </Modal.Body>
+              <Modal.Footer className="modalFooterBtns">
+                <Button className="btn btn-primary" variant="secondary" onClick={() => this.handleAddEmail()}>
+                  Yes
+                </Button>
+                <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyAddEmail()}>
                   No
                 </Button>
               </Modal.Footer>
