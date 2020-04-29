@@ -45,18 +45,17 @@ export class ProfileInfo extends Component {
       reasonForLoss: '',
       invalidInfo: '',
     };
-    this.makeEditable = this.makeEditable.bind(this)
     this.handleEditProfileClose = this.handleEditProfileClose.bind(this)
     this.handleEditProfile = this.handleEditProfile.bind(this)
     this.handleStatusChange = this.handleStatusChange.bind(this)
     this.handleModalInputChange = this.handleModalInputChange.bind(this)
     this.handleModalSaveData = this.handleModalSaveData.bind(this)
     this.editProfile = this.editProfile.bind(this);
-
     this.handleStatusEdit = this.handleStatusEdit.bind(this);
     this.confirmStatusChange = this.confirmStatusChange.bind(this);
     this.denyStatusChange = this.denyStatusChange.bind(this);
     this.handleLossChange = this.handleLossChange.bind(this);
+    this.makeStatusEditable = this.makeStatusEditable.bind(this)
 
     /* ADD PHONE*/
     this.handleOkToTextChange = this.handleOkToTextChange.bind(this);
@@ -101,7 +100,7 @@ export class ProfileInfo extends Component {
     }
   }
 
-  makeEditable() {
+  makeStatusEditable() {
     this.setState({
       UI: {
         ...this.state.UI,
@@ -167,7 +166,7 @@ export class ProfileInfo extends Component {
       })
     }).then((res) => {
       console.log(res);
-      this.makeEditable();
+      this.makeStatusEditable();
     })
   }
 
@@ -471,7 +470,7 @@ export class ProfileInfo extends Component {
                       isSearchable={false}
                     />
                     {(!this.state.UI.statusEditable) ? (
-                      <button className='action-buttons__button singleFieldEdit' onClick={() => this.makeEditable()}>
+                      <button className='action-buttons__button singleFieldEdit' onClick={() => this.makeStatusEditable()}>
                         <i className="fas fa-pencil-alt"></i>
                       </button>
                     ) : (
@@ -556,39 +555,12 @@ export class ProfileInfo extends Component {
 
                   {this.props.attributes.map((attribute, idx) => {
                     if (attribute.editable === 'input') {
-                      if (attribute.accessor !== 'phone') {
                         return (<Form.Group key={`form-${idx}`}>
                           <Form.Label>{attribute.name}:</Form.Label>
                           <Form.Control type="text" name={attribute.accessor}
                                         value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
                                         onChange={this.handleModalInputChange}/>
                         </Form.Group>);
-                      } else {
-                        /*IF IS PHONE*/
-                        return (<Form.Group key={`form-${idx}`} className={attribute.accessor}>
-                          <Form.Group>
-                            <Form.Label>{attribute.name}:</Form.Label>
-                            <Form.Control type="text" name={attribute.accessor}
-                                          value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
-                                          onChange={this.handleModalInputChange}/>
-                          </Form.Group>
-                          <Form.Group>
-                            <Form.Label>Stop texting:</Form.Label>
-                            <Form.Control as="select" name="okToText"
-                                          value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
-                                          onChange={this.handleModalSelectChange}>
-                              <option value={true}>No</option>
-                              <option value={false}>Yes</option>
-                            </Form.Control>
-                          </Form.Group>
-                          <Form.Group>
-                            <Form.Check type="checkbox" label="Make Primary"/>
-                          </Form.Group>
-                          <button className='action-buttons__button addPhoneNumber' onClick={() => this.makeEditable()}>
-                            <i className="fas fa-plus"></i>
-                          </button>
-                        </Form.Group>)
-                      }
                     } else if (attribute.editable === 'select') {
                       return (
                         <Form.Group key={`form-${idx}`}>
