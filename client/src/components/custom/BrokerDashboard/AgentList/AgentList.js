@@ -31,7 +31,8 @@ class AgentList extends Component {
       modalFilters: [],
       audiences: [],
       filters:[],
-      loading: true
+      loading: true,
+      officeOptions: []
     };
     this.handleModalSubmit = this.handleModalSubmit.bind(this)
     this.saveAudience = this.saveAudience.bind(this)
@@ -64,6 +65,10 @@ class AgentList extends Component {
     })
     axios.get('/api/sales/filters').then((res) => {
       this.setState({filters: res.data})
+    })
+    axios.get('/api/sales/offices').then((res) => {
+      const officeOptions = res.data.map((office) => ({value: office.name, label: office.name}))
+      this.setState({officeOptions})
     })
   }
 
@@ -152,6 +157,7 @@ class AgentList extends Component {
           show={this.state.showAgentFiltersModal} 
           handleClose={() => this.setState({showAgentFiltersModal: false})}
           handleSubmit={this.handleModalSubmit}
+          officeOptions={this.state.officeOptions}
         />
         <SaveFilterModal
           show={this.state.showSaveFilterModal}

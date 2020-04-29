@@ -65,10 +65,10 @@ export class AgentFiltersModal extends Component {
                   <Form.Label>Office:</Form.Label>
                   <Row>
                     <Col xs={5}>
-                      <Select options={stringFilters} value={this.state.officeFilterType} onChange={this.handleSelectChange.bind(this, 'officeFilterType')}/>
+                      <Select options={arrayFilters} value={this.state.officeFilterType} onChange={this.handleSelectChange.bind(this, 'officeFilterType')}/>
                     </Col>
                     <Col xs={7}>
-                      <Form.Control type="text" value={this.state.officeFilterValue} onChange={this.handleChange.bind(this, 'officeFilterValue')}/>
+                      <Select isMulti options={this.props.officeOptions} value={this.state.officeFilterValue} onChange={this.handleSelectChange.bind(this, 'officeFilterValue')}/>
                     </Col>
                   </Row>
                 </Form.Group>
@@ -187,7 +187,7 @@ export class AgentFiltersModal extends Component {
       filters.push({
         field: 'office.name',
         filterType: this.state.officeFilterType.value,
-        value: this.state.officeFilterValue
+        value: this.state.officeFilterValue.map((status) => status.value)
       })
     }
     if(this.state.statusFilterType.value != 'noFilter') {
