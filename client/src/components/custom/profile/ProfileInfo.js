@@ -185,7 +185,6 @@ export class ProfileInfo extends Component {
         status: modalData.status
       })
     }).then((res) => {
-      console.log(res);
     })
   }
 
@@ -199,7 +198,6 @@ export class ProfileInfo extends Component {
         reasonForLoss: this.state.reasonForLoss
       })
     }).then((res) => {
-      console.log(res);
       this.makeStatusEditable();
     })
   }
@@ -328,7 +326,6 @@ export class ProfileInfo extends Component {
 
   /*Update okToTExt in state*/
   handleOkToTextChange = selectedOption => {
-    console.log(selectedOption);
     this.setState(
       {
         addPhone: {
@@ -336,7 +333,6 @@ export class ProfileInfo extends Component {
           okToText: selectedOption.value
         }
       },
-      () => console.log(`Option selected:`, this.state.addPhone.okToText)
     );
   };
 
@@ -365,7 +361,6 @@ export class ProfileInfo extends Component {
   /*Send api call after confirm*/
   handleAddPhone() {
     if (validatePhoneNum(this.state.addPhone.number)) {
-      console.log('wat');
       /*Add number validation here*/
       let newPhoneNumbers = this.props.inquiry.phoneNumbers;
       newPhoneNumbers.push(this.state.addPhone);
@@ -1124,7 +1119,6 @@ export class ProfileInfo extends Component {
         statusSelected: selectedOption
       }
     });
-    console.log(`Option selected:`, selectedOption);
   };
 }
 
