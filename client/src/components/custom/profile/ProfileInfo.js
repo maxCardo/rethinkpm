@@ -10,7 +10,7 @@ import {
 } from "../../../util/commonFunctions";
 import commonFormatters from "../../../util/commonDataFormatters";
 import Select from "react-select";
-import { agentStatus, trueFalse} from "../../../util/statusSchemas";
+import {agentStatus, trueFalse} from "../../../util/statusSchemas";
 import {
   Button,
   Modal,
@@ -49,9 +49,9 @@ export class ProfileInfo extends Component {
         address: '',
         isPrimary: ''
       },
-      primaryPhone:  (props.isAgent && props.inquiry.phoneNumbers) && this.formatData("formatPhone", [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
-                        return phoneNumber.isPrimary ? {...phoneNumber} : ''
-                      })][0].number),
+      primaryPhone: (props.isAgent && props.inquiry.phoneNumbers) && this.formatData("formatPhone", [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
+        return phoneNumber.isPrimary ? {...phoneNumber} : ''
+      })][0].number),
       primaryEmail: (props.isAgent && props.inquiry.email) ? [...this.props.inquiry.email.map(email => {
         return email.isPrimary ? {...email} : ''
       })][0].address : '',
@@ -215,7 +215,10 @@ export class ProfileInfo extends Component {
         body: JSON.stringify({
           phone: this.state.primaryPhone,
           phoneNumbers: [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
-            return phoneNumber.isPrimary ? {...phoneNumber, number: clearPhoneFormatting(this.state.primaryPhone)} : phoneNumber
+            return phoneNumber.isPrimary ? {
+              ...phoneNumber,
+              number: clearPhoneFormatting(this.state.primaryPhone)
+            } : phoneNumber
           })],
 
         })
@@ -229,13 +232,13 @@ export class ProfileInfo extends Component {
           },
           successfulUpdate: 'updated the Primary Phone number'
         });
-        setTimeout( () =>
+        setTimeout(() =>
           this.setState({
             UI: {
               ...this.state.UI,
               showSuccessfulUpdate: false
             }
-          }), 2000 )
+          }), 2000)
       })
     } else {
       this.setState({
@@ -246,7 +249,7 @@ export class ProfileInfo extends Component {
         },
         invalidInfo: 'Phone number'
       });
-      setTimeout( () => this.denyPhoneChange(), 125 )
+      setTimeout(() => this.denyPhoneChange(), 125)
     }
   }
 
@@ -287,17 +290,19 @@ export class ProfileInfo extends Component {
     const newPhoneNumber = evt.target.value;
 
     /*MIGRATE TO STATE UI OBJECT*/
-      this.setState({
-        UI: {
-          ...this.state.UI,
-          newPhoneValid: validatePhoneNum(newPhoneNumber)
-        },
-        primaryPhone: newPhoneNumber
-      })
+    this.setState({
+      UI: {
+        ...this.state.UI,
+        newPhoneValid: validatePhoneNum(newPhoneNumber)
+      },
+      primaryPhone: newPhoneNumber
+    })
   }
+
   /*END OF PRIMARY PHONE EDIT*/
 
   /*ADD PHONE NUMBER*/
+
   /*Toggle modal*/
   addPhoneNumber() {
     this.setState({
@@ -360,6 +365,7 @@ export class ProfileInfo extends Component {
   /*Send api call after confirm*/
   handleAddPhone() {
     if (validatePhoneNum(this.state.addPhone.number)) {
+      console.log('wat');
       /*Add number validation here*/
       let newPhoneNumbers = this.props.inquiry.phoneNumbers;
       newPhoneNumbers.push(this.state.addPhone);
@@ -374,12 +380,10 @@ export class ProfileInfo extends Component {
 
         this.setState({
           UI: {
-            UI: {
-              ...this.state.UI,
-              showSuccessfulUpdate: true
-            },
-            successfulUpdate: 'added a Phone number'
+            ...this.state.UI,
+            showSuccessfulUpdate: true
           },
+          successfulUpdate: 'added a Phone number',
           addPhoneNumber: false,
           addPhone: {
             number: '',
@@ -387,14 +391,14 @@ export class ProfileInfo extends Component {
             okToText: true,
           }
         });
-        setTimeout( () =>
+        setTimeout(() =>
           this.setState({
             UI: {
               ...this.state.UI,
               showSuccessfulUpdate: false
             }
-          }), 2000 );
-      })
+          }), 2000);
+      });
     } else {
       this.setState({
         UI: {
@@ -404,7 +408,7 @@ export class ProfileInfo extends Component {
         addPhoneNumber: false,
         invalidInfo: 'added a Phone number'
       });
-      setTimeout( () => this.denyAddPhone(), 125 )
+      setTimeout(() => this.denyAddPhone(), 125)
     }
   }
 
@@ -436,13 +440,13 @@ export class ProfileInfo extends Component {
           },
           successfulUpdate: 'updated primary email'
         });
-        setTimeout( () =>
+        setTimeout(() =>
           this.setState({
             UI: {
               ...this.state.UI,
               showSuccessfulUpdate: false
             }
-          }), 2000 );
+          }), 2000);
       })
     } else {
       this.setState({
@@ -453,7 +457,7 @@ export class ProfileInfo extends Component {
         },
         invalidInfo: 'Email address'
       });
-      setTimeout( () => this.denyEmailChange(), 125 )
+      setTimeout(() => this.denyEmailChange(), 125)
     }
   }
 
@@ -465,7 +469,8 @@ export class ProfileInfo extends Component {
         ...this.state.UI,
         newEmailValid: validateEmail(newEmail)
       },
-      primaryEmail: newEmail})
+      primaryEmail: newEmail
+    })
   }
 
   editPrimaryEmail() {
@@ -577,13 +582,13 @@ export class ProfileInfo extends Component {
           },
           successfulUpdate: 'added an Email address'
         });
-        setTimeout( () =>
+        setTimeout(() =>
           this.setState({
             UI: {
               ...this.state.UI,
               showSuccessfulUpdate: false
             }
-          }), 2000 )
+          }), 2000)
       })
     } else {
       this.setState({
@@ -594,7 +599,7 @@ export class ProfileInfo extends Component {
         },
         invalidInfo: 'Email Address'
       });
-      setTimeout( () => this.denyAddEmail(), 125 )
+      setTimeout(() => this.denyAddEmail(), 125)
     }
   }
 
@@ -603,9 +608,9 @@ export class ProfileInfo extends Component {
   render() {
     const checkBoxCheck = (
       <svg viewBox="0 0 21 21">
-      <path
-        d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
-    </svg>
+        <path
+          d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
+      </svg>
     );
 
     let col1 = [];
@@ -636,7 +641,8 @@ export class ProfileInfo extends Component {
                             onClick={() => this.confirmPrimaryPhoneEdit()}>
                       <i className="fas fa-check"></i>
                     </button>
-                    <button className='action-buttons__button ab__cancel singleFieldEdit' onClick={() => this.denyPhoneChange()}>
+                    <button className='action-buttons__button ab__cancel singleFieldEdit'
+                            onClick={() => this.denyPhoneChange()}>
                       <i className="fas fa-times"></i>
                     </button>
                   </Fragment>
@@ -644,7 +650,7 @@ export class ProfileInfo extends Component {
 
 
                 <button className='action-buttons__button addPhoneNumber'
-                onClick={() => this.addPhoneNumber()}>
+                        onClick={() => this.addPhoneNumber()}>
                   <i className="fas fa-plus"></i>
                 </button>
               </div>) : (<div key={idx} dangerouslySetInnerHTML={{
@@ -677,7 +683,8 @@ export class ProfileInfo extends Component {
                                 onClick={() => this.confirmPrimaryEmailEdit()}>
                           <i className="fas fa-check"></i>
                         </button>
-                        <button className='action-buttons__button ab__cancel singleFieldEdit' onClick={() => this.denyEmailChange()}>
+                        <button className='action-buttons__button ab__cancel singleFieldEdit'
+                                onClick={() => this.denyEmailChange()}>
                           <i className="fas fa-times"></i>
                         </button>
                       </Fragment>
@@ -733,15 +740,18 @@ export class ProfileInfo extends Component {
                       isSearchable={false}
                     />
                     {(!this.state.UI.statusEditable) ? (
-                      <button className='action-buttons__button singleFieldEdit' onClick={() => this.makeStatusEditable()}>
+                      <button className='action-buttons__button singleFieldEdit'
+                              onClick={() => this.makeStatusEditable()}>
                         <i className="fas fa-pencil-alt"></i>
                       </button>
                     ) : (
                       <Fragment>
-                        <button className='action-buttons__button ab__confirm singleFieldEdit' onClick={() => this.confirmStatusChange()}>
+                        <button className='action-buttons__button ab__confirm singleFieldEdit'
+                                onClick={() => this.confirmStatusChange()}>
                           <i className="fas fa-check"></i>
                         </button>
-                        <button className='action-buttons__button ab__cancel singleFieldEdit' onClick={this.denyStatusChange}>
+                        <button className='action-buttons__button ab__cancel singleFieldEdit'
+                                onClick={this.denyStatusChange}>
                           <i className="fas fa-times"></i>
                         </button>
                       </Fragment>
@@ -784,11 +794,11 @@ export class ProfileInfo extends Component {
         </div>
         <div className="profile-info__actions-container">
           {this.props.isAgent &&
-            (
-              <a className='action-buttons__button' href='#' onClick={this.toggleAgentsMenu}>
-                <i className="fas fa-user-tag"></i>
-              </a>
-            )}
+          (
+            <a className='action-buttons__button' href='#' onClick={this.toggleAgentsMenu}>
+              <i className="fas fa-user-tag"></i>
+            </a>
+          )}
 
           <a className='action-buttons__button' href='#' onClick={this.toggleChat}>
             <i className="fas fa-comments"></i>
@@ -800,9 +810,9 @@ export class ProfileInfo extends Component {
             <i className="fas fa-envelope"></i>
           </a>
           {this.props.isAgent &&
-            <button className='action-buttons__button edit-profile__button' onClick={() => this.handleEditProfile()}>
-              <i className="fas fa-cogs"></i>
-            </button>}
+          <button className='action-buttons__button edit-profile__button' onClick={() => this.handleEditProfile()}>
+            <i className="fas fa-cogs"></i>
+          </button>}
 
         </div>
 
@@ -818,12 +828,12 @@ export class ProfileInfo extends Component {
 
                   {this.props.attributes.map((attribute, idx) => {
                     if (attribute.editable === 'input') {
-                        return (<Form.Group key={`form-${idx}`}>
-                          <Form.Label>{attribute.name}:</Form.Label>
-                          <Form.Control type="text" name={attribute.accessor}
-                                        value={(this.state.modalData[`${attribute.accessor}`]) && (this.state.modalData[`${attribute.accessor}`])}
-                                        onChange={this.handleModalInputChange}/>
-                        </Form.Group>);
+                      return (<Form.Group key={`form-${idx}`}>
+                        <Form.Label>{attribute.name}:</Form.Label>
+                        <Form.Control type="text" name={attribute.accessor}
+                                      value={(this.state.modalData[`${attribute.accessor}`]) && (this.state.modalData[`${attribute.accessor}`])}
+                                      onChange={this.handleModalInputChange}/>
+                      </Form.Group>);
                     } else if (attribute.editable === 'select') {
                       return (
                         <Form.Group key={`form-${idx}`}>
@@ -838,12 +848,12 @@ export class ProfileInfo extends Component {
                     }
                   })}
                   {(this.state.modalData.status && this.state.modalData.status === 'notInterested') &&
-                    (<Form.Group key="reason-loss">
-                      <Form.Label>Reason for loss:</Form.Label>
-                      <Form.Control type="text" name="reasonForLoss"
-                                    value={(this.state.modalData['reason-for-loss']) && (this.state.modalData['reason-for-loss'])}
-                                    onChange={this.handleModalInputChange}/>
-                    </Form.Group>)}
+                  (<Form.Group key="reason-loss">
+                    <Form.Label>Reason for loss:</Form.Label>
+                    <Form.Control type="text" name="reasonForLoss"
+                                  value={(this.state.modalData['reason-for-loss']) && (this.state.modalData['reason-for-loss'])}
+                                  onChange={this.handleModalInputChange}/>
+                  </Form.Group>)}
                 </Form>
               </Modal.Body>
               <Modal.Footer className="modalFooterBtns">
@@ -915,40 +925,42 @@ export class ProfileInfo extends Component {
                 <Modal.Title>Add a phone number</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                { (this.state.inquiry.phoneNumbers && this.props.isAgent) && (
-                <Form.Group className="addPhoneGroup">
-                      <Form.Group>
-                        <Form.Label>Number:</Form.Label>
-                        <Form.Control type="text" name='newPhone'
-                                      className={this.state.UI.newPhoneValid ? 'valid' : 'invalid' }
-                                      value={this.state.addPhone.number}
-                                      onChange={this.handleAddPhoneNumber}/>
-                      </Form.Group>
-                      <Form.Group>
-                        <Form.Label>Ok to text:</Form.Label>
-                        <Select name="okToText"
-                                defaultValue={trueFalse.map((option) => {
-                                 if (option.value === this.state.addPhone.okToText) return option
-                                })[0]}
-                                options={trueFalse}
-                                onChange={this.handleOkToTextChange}
-                                isSearchable={false}
-                                />
-                      </Form.Group>
-                      <Form.Group>
-                        <div className="element-wrapper with--checkbox">
-                          <label className="checkbox path"  checked={this.state.addPhone.isPrimary} onChange={this.handleIsPrimaryToggle} >
-                            <input type="checkbox" />
-                            {checkBoxCheck}
-                              &nbsp; MakePrimary
-                          </label>
-                        </div>
-                      </Form.Group>
+                {(this.state.inquiry.phoneNumbers && this.props.isAgent) && (
+                  <Form.Group className="addPhoneGroup">
+                    <Form.Group>
+                      <Form.Label>Number:</Form.Label>
+                      <Form.Control type="text" name='newPhone'
+                                    className={this.state.UI.newPhoneValid ? 'valid' : 'invalid'}
+                                    value={this.state.addPhone.number}
+                                    onChange={this.handleAddPhoneNumber}/>
                     </Form.Group>
-                 )}
+                    <Form.Group>
+                      <Form.Label>Ok to text:</Form.Label>
+                      <Select name="okToText"
+                              defaultValue={trueFalse.map((option) => {
+                                if (option.value === this.state.addPhone.okToText) return option
+                              })[0]}
+                              options={trueFalse}
+                              onChange={this.handleOkToTextChange}
+                              isSearchable={false}
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <div className="element-wrapper with--checkbox">
+                        <label className="checkbox path" checked={this.state.addPhone.isPrimary}
+                               onChange={this.handleIsPrimaryToggle}>
+                          <input type="checkbox"/>
+                          {checkBoxCheck}
+                          &nbsp; MakePrimary
+                        </label>
+                      </div>
+                    </Form.Group>
+                  </Form.Group>
+                )}
               </Modal.Body>
               <Modal.Footer className="modalFooterBtns">
-                <Button className="btn btn-primary" disabled={!this.state.UI.newPhoneValid} variant="secondary" onClick={() => this.handleAddPhone()}>
+                <Button className="btn btn-primary" disabled={!this.state.UI.newPhoneValid} variant="secondary"
+                        onClick={() => this.handleAddPhone()}>
                   Yes
                 </Button>
                 <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyAddPhone()}>
@@ -962,19 +974,21 @@ export class ProfileInfo extends Component {
                 <Modal.Title>Add an email</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                { this.state.inquiry.email && this.props.isAgent && (
+                {this.state.inquiry.email && this.props.isAgent && (
                   <Form.Group className="addEmailGroup">
                     <Form.Group>
                       <Form.Label>Address:</Form.Label>
-                      <Form.Control type="text" name='newPhone' className={this.state.UI.newEmailValid ? 'valid' : 'invalid'}
+                      <Form.Control type="text" name='newPhone'
+                                    className={this.state.UI.newEmailValid ? 'valid' : 'invalid'}
                                     value={this.state.addEmail.address}
                                     onChange={this.handleAddEmailAddress}/>
                     </Form.Group>
                     <Form.Group>
                       <div className="element-wrapper with--checkbox">
-                        <label className="checkbox path"  checked={this.state.addEmail.isPrimary} onChange={this.handleIsEmailPrimaryToggle} >
-                          <input type="checkbox"  />
-                         {checkBoxCheck}
+                        <label className="checkbox path" checked={this.state.addEmail.isPrimary}
+                               onChange={this.handleIsEmailPrimaryToggle}>
+                          <input type="checkbox"/>
+                          {checkBoxCheck}
                           &nbsp; MakePrimary
                         </label>
                       </div>
@@ -983,7 +997,8 @@ export class ProfileInfo extends Component {
                 )}
               </Modal.Body>
               <Modal.Footer className="modalFooterBtns">
-                <Button className="btn btn-primary" disabled={!this.state.UI.newEmailValid} variant="secondary" onClick={() => this.handleAddEmail()}>
+                <Button className="btn btn-primary" disabled={!this.state.UI.newEmailValid} variant="secondary"
+                        onClick={() => this.handleAddEmail()}>
                   Yes
                 </Button>
                 <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyAddEmail()}>
@@ -995,7 +1010,8 @@ export class ProfileInfo extends Component {
 
             {/*ALERTS*/}
             {this.state.UI.showInvalidAlert &&
-            <Alert className='invalidAlert' variant="danger" show={this.state.UI.showInvalidAlert} onClose={() => this.clearAlert()} dismissible>
+            <Alert className='invalidAlert' variant="danger" show={this.state.UI.showInvalidAlert}
+                   onClose={() => this.clearAlert()} dismissible>
               <Alert.Heading>Invalid data inserted!</Alert.Heading>
               <p>
                 Please insert a valid US {this.state.invalidInfo}}
@@ -1003,7 +1019,8 @@ export class ProfileInfo extends Component {
             </Alert>}
 
             {this.state.UI.showSuccessfulUpdate &&
-            <Alert className='validAlert' variant="success" show={this.state.UI.showSuccessfulUpdate} onClose={() => this.clearAlert()}>
+            <Alert className='validAlert' variant="success" show={this.state.UI.showSuccessfulUpdate}
+                   onClose={() => this.clearAlert()}>
               <Alert.Heading>Success!</Alert.Heading>
               <p>
                 You have successfully {this.state.successfulUpdate}
