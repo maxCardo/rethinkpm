@@ -52,6 +52,9 @@
    display: flex;
    padding: 10px;
  }
+.profile-info__data-container .column:not(:only-child) {
+  max-width: 33.3333%;
+}
 .profile-info__data-container .column h2 {
  font-size: 1.65em;
 }
@@ -65,10 +68,12 @@
 .profile-info__data-container .column-content p,
 .profile-info__data-container .column-content > div {
   display: flex;
-  align-items: center;
+  align-items: baseline;
+  word-wrap: normal;
 }
 .agentStatusEdit {
   flex-grow: 1;
+  max-width: 200px;
 }
 .agentStatusEdit > div:first-child,
 .agentStatusEdit > span:first-child + div:nth-child(2) {
@@ -86,9 +91,13 @@
   top: -2px;
   position: relative;
 }
-.agentStatusEdit > div:last-child:not(:first-child) > div > div {
+.agentStatusEdit .css-4ljt47-MenuList div {
   padding: 2px 10px;
   font-size: 12px;
+}
+.agentStatusEdit .css-b8ldur-Input {
+  padding-top: 1px;
+  line-height: 12px;
 }
 .agentStatusEdit.editable-false > div {
   border: none;
@@ -413,7 +422,8 @@
   height: 30px;
   transition: color 225ms, box-shadow 225ms;
 }
-.action-buttons__button:hover {
+.action-buttons__button:hover,
+.action-buttons__button:focus {
   box-shadow: 1px 1px 8px rgba(0,0,0,.227);
 }
 
@@ -487,7 +497,9 @@
   border: 2px solid #2684ff;
 }
 
-.singleFieldEdit {
+.singleFieldEdit,
+.addPhoneNumber,
+.addEmail {
   width: 22px;
   height: 22px;
   display: flex;
@@ -496,16 +508,127 @@
 .singleFieldEdit i {
   margin-left: 2px;
 }
+.editable-false > div > div:last-child {
+  opacity: 0;
+}
 .edit-profile__button {
   position: absolute;
-  top: 6px;
-  left: 0;
-  width: 40px;
-  height: 40px;
+  right: 20px;
   display: flex;
   justify-content: center ;
   align-items: center;
-  font-size: 20px;
   color: #343a40;
+}
+/*EDIT MODAL CSS*/
+.modalFooterBtns {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+}
+.modalFooterBtns .btn {
+  margin: 0;
+}
+
+.Phone input + button,
+.Email input + button {
+  margin-left: auto;
+}
+.Phone input,
+.Email input{
+  color: #333;
+  border: 1px solid rgb(204,204,204);
+  border-radius: 4px;
+  padding: 0px 5px;
+  transition: box-shadow 200ms, border-color 200ms;
+}
+.Phone input[type="text"]:focus,
+.addPhoneGroup input[type="text"]:focus,
+.Email input[type="text"]:focus,
+.addEmailGroup input[type="text"]:focus {
+  border-color: #2684ff;
+  outline-color: #2684ff;
+  box-shadow: 0 0 0 1px rgba(38, 132, 255, 0.75);
+}
+.Phone input.invalid:not([disabled]):focus,
+.addPhoneGroup input.invalid:not([disabled]):focus,
+.Email input.invalid:not([disabled]):focus,
+.addEmailGroup input.invalid:not([disabled]):focus {
+  border-color: #F44336;
+  outline-color: #F44336;
+  box-shadow: 0 0 0 1px #F44336;
+}
+.Phone input.valid:not([disabled]):focus,
+.addPhoneGroup input.valid:not([disabled]):focus,
+.Email input.valid:not([disabled]):focus,
+.addEmailGroup input.valid:not([disabled]):focus {
+  border-color: #4CAF50;
+  outline-color: #4CAF50;
+  box-shadow: 0 0 0 1px #4CAF50;
+}
+.Phone input[disabled],
+.Email input[disabled] {
+  border-color: transparent;
+  background: transparent;
+}
+.Email input[type="text"] {
+  flex-grow: 1;
+  margin: 0 10px 0 0;
+}
+.action-buttons__button.ab__cancel,
+.action-buttons__button.ab__confirm {
+  color: #fff;
+}
+.action-buttons__button.ab__cancel {
+  background: #F44336;
+}
+.action-buttons__button.ab__confirm {
+  background: #4CAF50;
+}
+.action-buttons__button.ab__confirm[disabled] {
+  background: #448947;
+  color: #ededed;
+}
+.agentStatusEdit + .singleFieldEdit {
+  margin-left: auto;
+}
+.action-buttons__button i {
+  margin-left: 0;
+}
+
+.addPhoneGroup,
+.addEmailGroup {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 0;
+}
+.addPhoneGroup .form-group,
+.addEmailGroup .form-group {
+  margin-bottom: 0;
+  margin-right: 15px;
+}
+.addPhoneGroup .form-group:last-child,
+.addEmailGroup .form-group:last-child {
+  margin-left: auto;
+  margin-right: 0;
+}
+.addPhoneGroup .form-group:nth-child(2),
+.addEmailGroup .form-group:nth-child(2) {
+  min-width: 125px;
+}
+.addEmailGroup .form-group:first-child {
+  flex-grow: 1;
+}
+.invalidAlert,
+.validAlert {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  box-shadow: 1px 1px 7px rgba(0,0,0,.15),
+  -1px 1px 7px rgba(0,0,0,.15),
+  0px 0px 25px 10px rgba(0,0,0,.142);
+  border: none;
+
 }
 /* END OF Bozidar CSS */

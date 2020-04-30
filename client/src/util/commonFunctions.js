@@ -31,3 +31,33 @@ export const getData = function (dataItem, header) {
     }
   }
 };
+
+export const formatPhone = function (data) {
+  if (!data) return '';
+  const phoneNumber = (data + '').replace(/ /g, '')
+  if (phoneNumber.length > 10) {
+    return `(${phoneNumber.substring(1, 4)}) ${phoneNumber.substring(4, 7)}-${phoneNumber.substring(7)}`
+  } else {
+    return `(${phoneNumber.substring(0, 3)}) ${phoneNumber.substring(3, 6)}-${phoneNumber.substring(6)}`
+  }
+}
+
+export const clearPhoneFormatting = function(data) {
+  if (!data) return '';
+  return data.split('(').join('').split(')').join('').split('-').join('').split(' ').join('').split('+').join('');
+}
+
+export const  validatePhoneNum = function(number) {
+  const clearedNumber = clearPhoneFormatting(number);
+  var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+  return !!clearedNumber.match(validPhone);
+}
+
+export const  validateEmail = function(address) {
+  var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+
+  return !!address.match(validEmail);
+}
+
+
