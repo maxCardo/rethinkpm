@@ -42,15 +42,16 @@ export const formatPhone = function (data) {
   }
 }
 
-export const stringifyPhone = function(data) {
+export const clearPhoneFormatting = function(data) {
   if (!data) return '';
   return data.split('(').join('').split(')').join('').split('-').join('').split(' ').join('').split('+').join('');
 }
 
 export const  validatePhoneNum = function(number) {
+  const clearedNumber = clearPhoneFormatting(number);
   var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-  return !!number.match(validPhone);
+  return !!clearedNumber.match(validPhone);
 }
 
 export const  validateEmail = function(address) {

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {
   formatPhone,
   getData,
-  stringifyPhone,
+  clearPhoneFormatting,
   validatePhoneNum,
   validateEmail
 } from "../../../util/commonFunctions";
@@ -34,9 +34,11 @@ export class ProfileInfo extends Component {
         phoneEditable: false,
         emailEditable: false,
         showPhoneChangeConfirm: false,
-        newPhoneValid: true,
+        newPhoneValid: false,
+        newEmailValid: false,
         showInvalidAlert: false,
         addEmailModal: false,
+        showSuccessfulUpdate: false
       },
       addPhone: {
         number: '',
@@ -47,9 +49,9 @@ export class ProfileInfo extends Component {
         address: '',
         isPrimary: ''
       },
-      primaryPhone:  (props.isAgent && props.inquiry.phoneNumbers) ? this.formatData("formatPhone", [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
+      primaryPhone:  (props.isAgent && props.inquiry.phoneNumbers) && this.formatData("formatPhone", [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
                         return phoneNumber.isPrimary ? {...phoneNumber} : ''
-                      })][0].number) : '',
+                      })][0].number),
       primaryEmail: (props.isAgent && props.inquiry.email) ? [...this.props.inquiry.email.map(email => {
         return email.isPrimary ? {...email} : ''
       })][0].address : '',
@@ -59,6 +61,7 @@ export class ProfileInfo extends Component {
       addPhoneNumber: false,
       reasonForLoss: '',
       invalidInfo: '',
+      successfulUpdate: '',
     };
     this.handleEditProfileClose = this.handleEditProfileClose.bind(this)
     this.handleEditProfile = this.handleEditProfile.bind(this)
@@ -145,7 +148,7 @@ export class ProfileInfo extends Component {
           label: this.props.inquiry.status[0] ? (this.props.inquiry.status[0].toUpperCase() + this.props.inquiry.status.slice(1)) : '',
           value: this.props.inquiry.status ? this.props.inquiry.status : ''
         },
-        primaryPhone: this.props.inquiry.phoneNumbers ? this.formatData("formatPhone", this.props.inquiry.phoneNumbers[0].number) : '',
+        primaryPhone: this.props.inquiry && this.props.inquiry.phoneNumbers && this.formatData("formatPhone", this.props.inquiry.phoneNumbers[0].number),
         UI: {
           ...this.state.UI,
           phoneEditable: this.state.UI.phoneEditable ? this.state.UI.phoneEditable : false,
@@ -212,19 +215,27 @@ export class ProfileInfo extends Component {
         body: JSON.stringify({
           phone: this.state.primaryPhone,
           phoneNumbers: [...this.props.inquiry.phoneNumbers.map(phoneNumber => {
-            return phoneNumber.isPrimary ? {...phoneNumber, number: stringifyPhone(this.state.primaryPhone)} : phoneNumber
+            return phoneNumber.isPrimary ? {...phoneNumber, number: clearPhoneFormatting(this.state.primaryPhone)} : phoneNumber
           })],
 
         })
       }).then((res) => {
-        console.log(res.body);
         this.setState({
           UI: {
             ...this.state.UI,
             showPhoneChangeConfirm: false,
-            phoneEditable: false
-          }
-        })
+            phoneEditable: false,
+            showSuccessfulUpdate: true
+          },
+          successfulUpdate: 'updated the Primary Phone number'
+        });
+        setTimeout( () =>
+          this.setState({
+            UI: {
+              ...this.state.UI,
+              showSuccessfulUpdate: false
+            }
+          }), 2000 )
       })
     } else {
       this.setState({
@@ -276,15 +287,13 @@ export class ProfileInfo extends Component {
     const newPhoneNumber = evt.target.value;
 
     /*MIGRATE TO STATE UI OBJECT*/
-    if (validatePhoneNum(newPhoneNumber)) {
-      if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
-      evt.target.classList.add('valid');
-    } else {
-      if (evt.target.classList.contains('valid')) evt.target.classList.remove('valid');
-      evt.target.classList.add('invalid');
-    }
-
-    this.setState({primaryPhone: newPhoneNumber})
+      this.setState({
+        UI: {
+          ...this.state.UI,
+          newPhoneValid: validatePhoneNum(newPhoneNumber)
+        },
+        primaryPhone: newPhoneNumber
+      })
   }
   /*END OF PRIMARY PHONE EDIT*/
 
@@ -299,19 +308,15 @@ export class ProfileInfo extends Component {
   /*Update number in state*/
   handleAddPhoneNumber(event) {
     const newPhoneNumber = event.target.value;
-    /*MIGRATE TO STATE UI OBJECT*/
-    if (validatePhoneNum(newPhoneNumber)) {
-      if (event.target.classList.contains('invalid'))  event.target.classList.remove('invalid');
-      event.target.classList.add('valid');
-    } else {
-      if (event.target.classList.contains('valid')) event.target.classList.remove('valid');
-      event.target.classList.add('invalid');
-    }
 
     this.setState({
       addPhone: {
         ...this.state.addPhone,
         number: event.target.value
+      },
+      UI: {
+        ...this.state.UI,
+        newPhoneValid: validatePhoneNum(newPhoneNumber)
       }
     })
   }
@@ -366,15 +371,29 @@ export class ProfileInfo extends Component {
           phoneNumbers: newPhoneNumbers
         })
       }).then((res) => {
-        console.log(res.body);
+
         this.setState({
+          UI: {
+            UI: {
+              ...this.state.UI,
+              showSuccessfulUpdate: true
+            },
+            successfulUpdate: 'added a Phone number'
+          },
           addPhoneNumber: false,
           addPhone: {
             number: '',
             isPrimary: false,
             okToText: true,
           }
-        })
+        });
+        setTimeout( () =>
+          this.setState({
+            UI: {
+              ...this.state.UI,
+              showSuccessfulUpdate: false
+            }
+          }), 2000 );
       })
     } else {
       this.setState({
@@ -383,7 +402,7 @@ export class ProfileInfo extends Component {
           showInvalidAlert: true
         },
         addPhoneNumber: false,
-        invalidInfo: 'Phone number'
+        invalidInfo: 'added a Phone number'
       });
       setTimeout( () => this.denyAddPhone(), 125 )
     }
@@ -395,7 +414,7 @@ export class ProfileInfo extends Component {
 
   /*Primary Email Edit*/
   handleEmailEdit() {
-    if (validateEmail(this.state.primaryPhone)) {
+    if (validateEmail(this.state.primaryEmail)) {
       this.confirmPrimaryEmailEdit();
 
       fetch('http://localhost:5000/api/profile/agent/' + this.props.inquiry._id, {
@@ -408,14 +427,22 @@ export class ProfileInfo extends Component {
 
         })
       }).then((res) => {
-        console.log(res.body);
         this.setState({
           UI: {
             ...this.state.UI,
             showEmailChangeConfirm: false,
-            emailEditable: false
-          }
-        })
+            emailEditable: false,
+            showSuccessfulUpdate: true,
+          },
+          successfulUpdate: 'updated primary email'
+        });
+        setTimeout( () =>
+          this.setState({
+            UI: {
+              ...this.state.UI,
+              showSuccessfulUpdate: false
+            }
+          }), 2000 );
       })
     } else {
       this.setState({
@@ -433,16 +460,12 @@ export class ProfileInfo extends Component {
   onPrimaryEmailEdit(evt) {
     const newEmail = evt.target.value;
 
-    /*MIGRATE TO STATE UI OBJECT*/
-    if (newEmail) {
-      if (evt.target.classList.contains('invalid'))  evt.target.classList.remove('invalid');
-      evt.target.classList.add('valid');
-    } else {
-      if (evt.target.classList.contains('valid')) evt.target.classList.remove('valid');
-      evt.target.classList.add('invalid');
-    }
-
-    this.setState({primaryEmail: newEmail})
+    this.setState({
+      UI: {
+        ...this.state.UI,
+        newEmailValid: validateEmail(newEmail)
+      },
+      primaryEmail: newEmail})
   }
 
   editPrimaryEmail() {
@@ -516,19 +539,15 @@ export class ProfileInfo extends Component {
   /*Update number in state*/
   handleAddEmailAddress(event) {
     const newEmail = event.target.value;
-    /*MIGRATE TO STATE UI OBJECT*/
-    if (validateEmail(newEmail)) {
-      if (event.target.classList.contains('invalid'))  event.target.classList.remove('invalid');
-      event.target.classList.add('valid');
-    } else {
-      if (event.target.classList.contains('valid')) event.target.classList.remove('valid');
-      event.target.classList.add('invalid');
-    }
 
     this.setState({
       addEmail: {
         ...this.state.addEmail,
         address: event.target.value
+      },
+      UI: {
+        ...this.state.UI,
+        newEmailValid: validateEmail(newEmail)
       }
     })
   }
@@ -536,7 +555,6 @@ export class ProfileInfo extends Component {
 
   handleAddEmail() {
     if (validateEmail(this.state.addEmail.address)) {
-      /*Add number validation here*/
       let newEmails = this.props.inquiry.email;
       newEmails.push(this.state.addEmail);
 
@@ -547,17 +565,25 @@ export class ProfileInfo extends Component {
           email: newEmails
         })
       }).then((res) => {
-        console.log(res.body);
         this.setState({
           UI: {
             ...this.state.UI,
-            addEmailModal: false
+            addEmailModal: false,
+            showSuccessfulUpdate: true,
           },
           addEmail: {
             address: '',
             isPrimary: false,
-          }
-        })
+          },
+          successfulUpdate: 'added an Email address'
+        });
+        setTimeout( () =>
+          this.setState({
+            UI: {
+              ...this.state.UI,
+              showSuccessfulUpdate: false
+            }
+          }), 2000 )
       })
     } else {
       this.setState({
@@ -575,6 +601,13 @@ export class ProfileInfo extends Component {
   /*END OF ADD EMAIL*/
 
   render() {
+    const checkBoxCheck = (
+      <svg viewBox="0 0 21 21">
+      <path
+        d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
+    </svg>
+    );
+
     let col1 = [];
     let col2 = [];
     let col3 = [];
@@ -585,7 +618,7 @@ export class ProfileInfo extends Component {
             ((attribute.editable === "phoneNumbers") ? (
               <div key={idx} className={attribute.name}>
                 <b>{attribute.name}:</b>
-                <input type="text" name="phonePrimary"
+                <input type="text" className={(this.state.UI.newPhoneValid) ? 'valid' : 'invalid'} name="phonePrimary"
                        disabled={!this.state.UI.phoneEditable}
                        value={this.state.primaryPhone}
                        onChange={(evt) => this.onPrimaryPhoneEdit(evt)}
@@ -598,7 +631,9 @@ export class ProfileInfo extends Component {
                   </button>
                 ) : (
                   <Fragment>
-                    <button className='action-buttons__button ab__confirm singleFieldEdit' onClick={() => this.confirmPrimaryPhoneEdit()}>
+                    <button className='action-buttons__button ab__confirm singleFieldEdit'
+                            disabled={!this.state.UI.newPhoneValid}
+                            onClick={() => this.confirmPrimaryPhoneEdit()}>
                       <i className="fas fa-check"></i>
                     </button>
                     <button className='action-buttons__button ab__cancel singleFieldEdit' onClick={() => this.denyPhoneChange()}>
@@ -624,6 +659,7 @@ export class ProfileInfo extends Component {
                   <div key={idx} className={attribute.name}>
                     <b>{attribute.name}:</b>
                     <input type="text" name="emailPrimary"
+                           className={(this.state.UI.newEmailValid) ? 'valid' : 'invalid'}
                            disabled={!this.state.UI.emailEditable}
                            value={this.state.primaryEmail}
                            onChange={(evt) => this.onPrimaryEmailEdit(evt)}
@@ -636,7 +672,9 @@ export class ProfileInfo extends Component {
                       </button>
                     ) : (
                       <Fragment>
-                        <button className='action-buttons__button ab__confirm singleFieldEdit' onClick={() => this.confirmPrimaryEmailEdit()}>
+                        <button className='action-buttons__button ab__confirm singleFieldEdit'
+                                disabled={!this.state.UI.newEmailValid}
+                                onClick={() => this.confirmPrimaryEmailEdit()}>
                           <i className="fas fa-check"></i>
                         </button>
                         <button className='action-buttons__button ab__cancel singleFieldEdit' onClick={() => this.denyEmailChange()}>
@@ -683,7 +721,7 @@ export class ProfileInfo extends Component {
               <b>{attribute.name}</b>:
               {attribute.editable
                 ?
-                ((attribute.editable === 'select') ? (
+                ((attribute.editable === 'select') && (
                   <Fragment>
                     <Select
                       className={(!this.state.UI.statusEditable ? 'editable-false' : 'editable-true') + ' agentStatusEdit'}
@@ -710,7 +748,7 @@ export class ProfileInfo extends Component {
                     )}
 
                   </Fragment>
-                ) : '')
+                ))
                 :
                 (getData(this.props.inquiry, attribute) ? getData(this.props.inquiry, attribute) : 'Not Implemented')
               }
@@ -725,50 +763,50 @@ export class ProfileInfo extends Component {
 
         </div>
         <div className='profile-info__data-container'>
-          {col1.length > 0 ? (<div className="column">
+          {col1.length > 0 && (<div className="column">
             <div className="column-content">
               <h2>Personal Info</h2>
               {col1}
             </div>
-          </div>) : ''}
-          {col2.length > 0 ? (<div className="column">
+          </div>)}
+          {col2.length > 0 && (<div className="column">
             <div className="column-content">
               <h2>Sales Info</h2>
               {col2}
             </div>
-          </div>) : ''}
-          {col3.length > 0 ? (<div className="column">
+          </div>)}
+          {col3.length > 0 && (<div className="column">
             <div className="column-content">
               <h2>Communication Info</h2>
               {col3}
             </div>
-          </div>) : ''}
+          </div>)}
         </div>
         <div className="profile-info__actions-container">
-          {this.props.isAgent ?
+          {this.props.isAgent &&
             (
               <a className='action-buttons__button' href='#' onClick={this.toggleAgentsMenu}>
                 <i className="fas fa-user-tag"></i>
               </a>
-            ) : ''}
+            )}
 
           <a className='action-buttons__button' href='#' onClick={this.toggleChat}>
             <i className="fas fa-comments"></i>
           </a>
-          <a className='action-buttons__button' href={`tel:${this.props.inquiry.phoneNumber}`}>
+          <a className='action-buttons__button' href={`tel:${this.state.primaryPhone}`}>
             <i className="fas fa-phone"></i>
           </a>
-          <a className='action-buttons__button' href={`mailto:${this.props.inquiry.email}`}>
+          <a className='action-buttons__button' href={`mailto:${this.state.primaryEmail}`}>
             <i className="fas fa-envelope"></i>
           </a>
-          {this.props.isAgent ?
+          {this.props.isAgent &&
             <button className='action-buttons__button edit-profile__button' onClick={() => this.handleEditProfile()}>
               <i className="fas fa-cogs"></i>
-            </button> : ''}
+            </button>}
 
         </div>
 
-        {this.props.inquiry && this.props.isAgent ? (
+        {this.props.inquiry && this.props.isAgent && (
           <Fragment>
             {/*MODALS*/}
             <Modal size='xl' show={this.state.showEditProfileModal} onHide={() => this.handleEditProfileClose()}>
@@ -783,7 +821,7 @@ export class ProfileInfo extends Component {
                         return (<Form.Group key={`form-${idx}`}>
                           <Form.Label>{attribute.name}:</Form.Label>
                           <Form.Control type="text" name={attribute.accessor}
-                                        value={(this.state.modalData[`${attribute.accessor}`]) ? (this.state.modalData[`${attribute.accessor}`]) : ''}
+                                        value={(this.state.modalData[`${attribute.accessor}`]) && (this.state.modalData[`${attribute.accessor}`])}
                                         onChange={this.handleModalInputChange}/>
                         </Form.Group>);
                     } else if (attribute.editable === 'select') {
@@ -799,14 +837,13 @@ export class ProfileInfo extends Component {
                         </Form.Group>)
                     }
                   })}
-                  {(this.state.modalData.status && this.state.modalData.status === 'notInterested') ?
+                  {(this.state.modalData.status && this.state.modalData.status === 'notInterested') &&
                     (<Form.Group key="reason-loss">
                       <Form.Label>Reason for loss:</Form.Label>
                       <Form.Control type="text" name="reasonForLoss"
-                                    value={(this.state.modalData['reason-for-loss']) ? (this.state.modalData['reason-for-loss']) : ''}
+                                    value={(this.state.modalData['reason-for-loss']) && (this.state.modalData['reason-for-loss'])}
                                     onChange={this.handleModalInputChange}/>
-                    </Form.Group>)
-                    : ''}
+                    </Form.Group>)}
                 </Form>
               </Modal.Body>
               <Modal.Footer className="modalFooterBtns">
@@ -823,7 +860,7 @@ export class ProfileInfo extends Component {
               <Modal.Header closeButton>
                 <Modal.Title>Are you sure you want to change the status</Modal.Title>
               </Modal.Header>
-              {this.state.statusSelected.value === 'notInterested' ? (
+              {this.state.statusSelected.value === 'notInterested' && (
                 <Modal.Body>
                   <Form>
                     <Form.Group>
@@ -833,7 +870,7 @@ export class ProfileInfo extends Component {
                     </Form.Group>
                   </Form>
                 </Modal.Body>
-              ) : ''}
+              )}
 
               <Modal.Footer className="modalFooterBtns">
                 <Button className="btn btn-primary" variant="secondary" onClick={() => this.handleStatusEdit()}>
@@ -878,11 +915,12 @@ export class ProfileInfo extends Component {
                 <Modal.Title>Add a phone number</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                { this.state.inquiry.phoneNumbers && this.props.isAgent ? (
+                { (this.state.inquiry.phoneNumbers && this.props.isAgent) && (
                 <Form.Group className="addPhoneGroup">
                       <Form.Group>
                         <Form.Label>Number:</Form.Label>
                         <Form.Control type="text" name='newPhone'
+                                      className={this.state.UI.newPhoneValid ? 'valid' : 'invalid' }
                                       value={this.state.addPhone.number}
                                       onChange={this.handleAddPhoneNumber}/>
                       </Form.Group>
@@ -900,20 +938,17 @@ export class ProfileInfo extends Component {
                       <Form.Group>
                         <div className="element-wrapper with--checkbox">
                           <label className="checkbox path"  checked={this.state.addPhone.isPrimary} onChange={this.handleIsPrimaryToggle} >
-                            <input type="checkbox"  />
-                              <svg viewBox="0 0 21 21">
-                                <path
-                                  d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
-                              </svg>
+                            <input type="checkbox" />
+                            {checkBoxCheck}
                               &nbsp; MakePrimary
                           </label>
                         </div>
                       </Form.Group>
                     </Form.Group>
-                 ) : 'You can not add a phone number!' }
+                 )}
               </Modal.Body>
               <Modal.Footer className="modalFooterBtns">
-                <Button className="btn btn-primary" variant="secondary" onClick={() => this.handleAddPhone()}>
+                <Button className="btn btn-primary" disabled={!this.state.UI.newPhoneValid} variant="secondary" onClick={() => this.handleAddPhone()}>
                   Yes
                 </Button>
                 <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyAddPhone()}>
@@ -922,16 +957,16 @@ export class ProfileInfo extends Component {
               </Modal.Footer>
             </Modal>
 
-            <Modal size='xl' show={this.state.UI.addEmailModal} onHide={() => this.denyAddEmail()}>
+            <Modal size='lg' show={this.state.UI.addEmailModal} onHide={() => this.denyAddEmail()}>
               <Modal.Header closeButton>
                 <Modal.Title>Add an email</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                { this.state.inquiry.email && this.props.isAgent ? (
+                { this.state.inquiry.email && this.props.isAgent && (
                   <Form.Group className="addEmailGroup">
                     <Form.Group>
                       <Form.Label>Address:</Form.Label>
-                      <Form.Control type="text" name='newPhone'
+                      <Form.Control type="text" name='newPhone' className={this.state.UI.newEmailValid ? 'valid' : 'invalid'}
                                     value={this.state.addEmail.address}
                                     onChange={this.handleAddEmailAddress}/>
                     </Form.Group>
@@ -939,19 +974,16 @@ export class ProfileInfo extends Component {
                       <div className="element-wrapper with--checkbox">
                         <label className="checkbox path"  checked={this.state.addEmail.isPrimary} onChange={this.handleIsEmailPrimaryToggle} >
                           <input type="checkbox"  />
-                          <svg viewBox="0 0 21 21">
-                            <path
-                              d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
-                          </svg>
+                         {checkBoxCheck}
                           &nbsp; MakePrimary
                         </label>
                       </div>
                     </Form.Group>
                   </Form.Group>
-                ) : 'You can not add a phone number!' }
+                )}
               </Modal.Body>
               <Modal.Footer className="modalFooterBtns">
-                <Button className="btn btn-primary" variant="secondary" onClick={() => this.handleAddEmail()}>
+                <Button className="btn btn-primary" disabled={!this.state.UI.newEmailValid} variant="secondary" onClick={() => this.handleAddEmail()}>
                   Yes
                 </Button>
                 <Button className="btn btn-danger" variant="secondary" onClick={() => this.denyAddEmail()}>
@@ -962,15 +994,24 @@ export class ProfileInfo extends Component {
             {/*END OF MODALS*/}
 
             {/*ALERTS*/}
+            {this.state.UI.showInvalidAlert &&
             <Alert className='invalidAlert' variant="danger" show={this.state.UI.showInvalidAlert} onClose={() => this.clearAlert()} dismissible>
               <Alert.Heading>Invalid data inserted!</Alert.Heading>
               <p>
                 Please insert a valid US {this.state.invalidInfo}}
               </p>
-            </Alert>
+            </Alert>}
+
+            {this.state.UI.showSuccessfulUpdate &&
+            <Alert className='validAlert' variant="success" show={this.state.UI.showSuccessfulUpdate} onClose={() => this.clearAlert()}>
+              <Alert.Heading>Success!</Alert.Heading>
+              <p>
+                You have successfully {this.state.successfulUpdate}
+              </p>
+            </Alert>}
             {/*END OF ALERTS*/}
           </Fragment>
-        ) : ''}
+        )}
 
       </div>
     )
@@ -980,7 +1021,8 @@ export class ProfileInfo extends Component {
     this.setState({
       UI: {
         ...this.state.UI,
-        showInvalidAlert: false
+        showInvalidAlert: false,
+        showSuccessfulUpdate: false,
       }
     });
   }

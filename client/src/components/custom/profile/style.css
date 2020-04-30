@@ -490,7 +490,8 @@
 }
 
 .singleFieldEdit,
-.addPhoneNumber {
+.addPhoneNumber,
+.addEmail {
   width: 22px;
   height: 22px;
   display: flex;
@@ -516,65 +517,54 @@
   justify-content: space-between;
   padding: 0.75rem 0;
 }
-.modalFooterBtns .btn,
-.phone .form-group label {
+.modalFooterBtns .btn {
   margin: 0;
 }
-.phone.form-group {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.phone .form-group {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  margin: 0 15px 0 0;
-}
-.phone .form-group input,
-.phone .form-group select {
-  margin-left: 5px;
-}
-.phone .form-group label.form-check-label {
-  margin-left: 20px;
-}
-.phone .action-buttons__button {
+
+.Phone input + button,
+.Email input + button {
   margin-left: auto;
 }
-.phone .action-buttons__button i {
-  margin-left: 1px;
-}
-.Phone input + button {
-  margin-left: auto;
-}
-.Phone input {
+.Phone input,
+.Email input{
   color: #333;
   border: 1px solid rgb(204,204,204);
   border-radius: 4px;
   padding: 0px 5px;
   transition: box-shadow 200ms, border-color 200ms;
 }
-.Phone input:focus,
-.addPhoneGroup input:focus {
+.Phone input[type="text"]:focus,
+.addPhoneGroup input[type="text"]:focus,
+.Email input[type="text"]:focus,
+.addEmailGroup input[type="text"]:focus {
   border-color: #2684ff;
   outline-color: #2684ff;
-  box-shadow: 0 0 0 1px #2684ff;
+  box-shadow: 0 0 0 1px rgba(38, 132, 255, 0.75);
 }
 .Phone input.invalid:not([disabled]):focus,
-.addPhoneGroup input.invalid:not([disabled]):focus {
+.addPhoneGroup input.invalid:not([disabled]):focus,
+.Email input.invalid:not([disabled]):focus,
+.addEmailGroup input.invalid:not([disabled]):focus {
   border-color: #F44336;
   outline-color: #F44336;
   box-shadow: 0 0 0 1px #F44336;
 }
 .Phone input.valid:not([disabled]):focus,
-.addPhoneGroup input.valid:not([disabled]):focus {
+.addPhoneGroup input.valid:not([disabled]):focus,
+.Email input.valid:not([disabled]):focus,
+.addEmailGroup input.valid:not([disabled]):focus {
   border-color: #4CAF50;
   outline-color: #4CAF50;
   box-shadow: 0 0 0 1px #4CAF50;
 }
-.Phone input[disabled] {
+.Phone input[disabled],
+.Email input[disabled] {
   border-color: transparent;
   background: transparent;
+}
+.Email input[type="text"] {
+  flex-grow: 1;
+  margin: 0 10px 0 0;
 }
 .action-buttons__button.ab__cancel,
 .action-buttons__button.ab__confirm {
@@ -586,6 +576,10 @@
 .action-buttons__button.ab__confirm {
   background: #4CAF50;
 }
+.action-buttons__button.ab__confirm[disabled] {
+  background: #448947;
+  color: #ededed;
+}
 .agentStatusEdit + .singleFieldEdit {
   margin-left: auto;
 }
@@ -593,24 +587,32 @@
   margin-left: 0;
 }
 
-.addPhoneGroup {
+.addPhoneGroup,
+.addEmailGroup {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 0;
 }
-.addPhoneGroup .form-group {
+.addPhoneGroup .form-group,
+.addEmailGroup .form-group {
   margin-bottom: 0;
   margin-right: 15px;
 }
-.addPhoneGroup .form-group:last-child {
+.addPhoneGroup .form-group:last-child,
+.addEmailGroup .form-group:last-child {
   margin-left: auto;
   margin-right: 0;
 }
-.addPhoneGroup .form-group:nth-child(2) {
+.addPhoneGroup .form-group:nth-child(2),
+.addEmailGroup .form-group:nth-child(2) {
   min-width: 125px;
 }
-.invalidAlert {
+.addEmailGroup .form-group:first-child {
+  flex-grow: 1;
+}
+.invalidAlert,
+.validAlert {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
