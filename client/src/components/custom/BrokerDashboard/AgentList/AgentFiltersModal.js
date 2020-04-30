@@ -53,92 +53,110 @@ export class AgentFiltersModal extends Component {
       {label: '<=', value: '<='},
     ]
     return (
-      <Modal size='lg' show={this.props.show} onHide={this.handleClose}>
+      <Modal size='xl' show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Create filter</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group>
-              <Form.Label>Office:</Form.Label>
-              <Row>
-                <Col xs={5}>
-                  <Select options={stringFilters} value={this.state.officeFilterType} onChange={this.handleSelectChange.bind(this, 'officeFilterType')}/>
-                </Col>
-                <Col xs={7}>
-                  <Form.Control type="text" value={this.state.officeFilterValue} onChange={this.handleChange.bind(this, 'officeFilterValue')}/>
-                </Col>
-              </Row>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Status:</Form.Label>
-              <Row>
-                <Col xs={5}>
-                  <Select options={arrayFilters} value={this.state.statusFilterType} onChange={this.handleSelectChange.bind(this, 'statusFilterType')}/>
-                </Col>
-                <Col xs={7}>
-                  <Select isMulti options={status} value={this.state.statusFilterValue} onChange={this.handleSelectChange.bind(this, 'statusFilterValue')}/>
-                </Col>
-              </Row>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Lead Owner:</Form.Label>
-              <Row>
-                <Col xs={5}>
-                  <Select options={stringFilters} value={this.state.leadOwnerFilterType} onChange={this.handleSelectChange.bind(this, 'leadOwnerFilterType')}/>
-                </Col>
-                <Col xs={7}>
-                  <Form.Control type="text" value={this.state.leadOwnerFilterValue} onChange={this.handleChange.bind(this, 'leadOwnerFilterValue')}/>
-                </Col>
-              </Row>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Sales Volume:</Form.Label>
-              <Row>
-                <Col xs={5}>
-                  <Select options={numberFilters} value={this.state.salesFilterType} onChange={this.handleSelectChange.bind(this, 'salesFilterType')}/>
-                </Col>
-                {this.state.salesFilterType && this.state.salesFilterType.value == 'range' ?
-                  <Fragment>
-                    <Col xs={3}>
-                      <Form.Control type="text" value={this.state.salesFilterFirstValue} onChange={this.handleChange.bind(this, 'salesFilterFirstValue')}/>
+            <Row>
+              <Col xs={6}>
+                <Form.Group>
+                  <Form.Label>Office:</Form.Label>
+                  <Row>
+                    <Col xs={5}>
+                      <Select options={arrayFilters} value={this.state.officeFilterType} onChange={this.handleSelectChange.bind(this, 'officeFilterType')}/>
                     </Col>
-                    <Col xs={1}>
-                      TO
+                    <Col xs={7}>
+                      <Select isMulti options={this.props.officeOptions} value={this.state.officeFilterValue} onChange={this.handleSelectChange.bind(this, 'officeFilterValue')}/>
                     </Col>
-                    <Col xs={3}>
-                      <Form.Control type="text" value={this.state.salesFilterSecondValue} onChange={this.handleChange.bind(this, 'salesFilterSecondValue')}/>
+                  </Row>
+                </Form.Group>
+              </Col>
+              <Col xs={6}>
+                <Form.Group>
+                  <Form.Label>Status:</Form.Label>
+                  <Row>
+                    <Col xs={5}>
+                      <Select options={arrayFilters} value={this.state.statusFilterType} onChange={this.handleSelectChange.bind(this, 'statusFilterType')}/>
                     </Col>
-                  </Fragment>
-                  :
-                  <Col xs={7}>
-                    <Form.Control type="text" value={this.state.salesFilterValue} onChange={this.handleChange.bind(this, 'salesFilterValue')}/>
-                  </Col>
-                }
-              </Row>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Active Zipcodes:</Form.Label>
-              <Row>
-                <Col xs={5}>
-                  <Select options={arrayFilters} value={this.state.zipcodesFilterType} onChange={this.handleSelectChange.bind(this, 'zipcodesFilterType')}/>
-                </Col>
-                <Col xs={7}>
-                  <Select isMulti options={zipcodes} value={this.state.zipcodesFilterValue} onChange={this.handleSelectChange.bind(this, 'zipcodesFilterValue')}/>
-                </Col>
-              </Row>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Active Neighborhoods:</Form.Label>
-              <Row>
-                <Col xs={5}>
-                  <Select options={arrayFilters} value={this.state.areasFilterType} onChange={this.handleSelectChange.bind(this, 'areasFilterType')}/>
-                </Col>
-                <Col xs={7}>
-                  <Select isMulti options={areas} value={this.state.areasFilterValue} onChange={this.handleSelectChange.bind(this, 'areasFilterValue')}/>
-                </Col>
-              </Row>
-            </Form.Group>
+                    <Col xs={7}>
+                      <Select isMulti options={status} value={this.state.statusFilterValue} onChange={this.handleSelectChange.bind(this, 'statusFilterValue')}/>
+                    </Col>
+                  </Row>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={6}>
+                <Form.Group>
+                  <Form.Label>Lead Owner:</Form.Label>
+                  <Row>
+                    <Col xs={5}>
+                      <Select options={stringFilters} value={this.state.leadOwnerFilterType} onChange={this.handleSelectChange.bind(this, 'leadOwnerFilterType')}/>
+                    </Col>
+                    <Col xs={7}>
+                      <Form.Control type="text" value={this.state.leadOwnerFilterValue} onChange={this.handleChange.bind(this, 'leadOwnerFilterValue')}/>
+                    </Col>
+                  </Row>
+                </Form.Group>
+              </Col>
+              <Col xs={6}>
+                <Form.Group>
+                  <Form.Label>Sales Volume:</Form.Label>
+                  <Row>
+                    <Col xs={5}>
+                      <Select options={numberFilters} value={this.state.salesFilterType} onChange={this.handleSelectChange.bind(this, 'salesFilterType')}/>
+                    </Col>
+                    {this.state.salesFilterType && this.state.salesFilterType.value == 'range' ?
+                      <Fragment>
+                        <Col xs={3}>
+                          <Form.Control type="text" value={this.state.salesFilterFirstValue} onChange={this.handleChange.bind(this, 'salesFilterFirstValue')}/>
+                        </Col>
+                        <Col xs={1}>
+                          TO
+                        </Col>
+                        <Col xs={3}>
+                          <Form.Control type="text" value={this.state.salesFilterSecondValue} onChange={this.handleChange.bind(this, 'salesFilterSecondValue')}/>
+                        </Col>
+                      </Fragment>
+                      :
+                      <Col xs={7}>
+                        <Form.Control type="text" value={this.state.salesFilterValue} onChange={this.handleChange.bind(this, 'salesFilterValue')}/>
+                      </Col>
+                    }
+                  </Row>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={6}>
+                <Form.Group>
+                  <Form.Label>Active Zipcodes:</Form.Label>
+                  <Row>
+                    <Col xs={5}>
+                      <Select options={arrayFilters} value={this.state.zipcodesFilterType} onChange={this.handleSelectChange.bind(this, 'zipcodesFilterType')}/>
+                    </Col>
+                    <Col xs={7}>
+                      <Select isMulti options={zipcodes} value={this.state.zipcodesFilterValue} onChange={this.handleSelectChange.bind(this, 'zipcodesFilterValue')}/>
+                    </Col>
+                  </Row>
+                </Form.Group>
+              </Col>
+              <Col xs={6}>
+                <Form.Group>
+                  <Form.Label>Active Neighborhoods:</Form.Label>
+                  <Row>
+                    <Col xs={5}>
+                      <Select options={arrayFilters} value={this.state.areasFilterType} onChange={this.handleSelectChange.bind(this, 'areasFilterType')}/>
+                    </Col>
+                    <Col xs={7}>
+                      <Select isMulti options={areas} value={this.state.areasFilterValue} onChange={this.handleSelectChange.bind(this, 'areasFilterValue')}/>
+                    </Col>
+                  </Row>
+                </Form.Group>
+              </Col>
+            </Row>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -169,7 +187,7 @@ export class AgentFiltersModal extends Component {
       filters.push({
         field: 'office.name',
         filterType: this.state.officeFilterType.value,
-        value: this.state.officeFilterValue
+        value: this.state.officeFilterValue.map((status) => status.value)
       })
     }
     if(this.state.statusFilterType.value != 'noFilter') {
@@ -202,20 +220,28 @@ export class AgentFiltersModal extends Component {
       }
     }
     if(this.state.zipcodesFilterType.value != 'noFilter') {
-      filters.push({
-        field: 'zipCodesArray',
-        filterType: this.state.zipcodesFilterType.value,
-        value: this.state.zipcodesFilterValue.map((status) => status.value)
-      })
+      if(this.state.zipcodesFilterType.value == this.state.areasFilterType.value) {
+        const value = this.state.zipcodesFilterValue.map((status) => status.value).concat(this.state.areasFilterValue.map((status) => status.value))
+        filters.push({
+          field: 'areasAndZipCodesArray',
+          filterType: this.state.zipcodesFilterType.value,
+          value: value
+        })
+      } else {
+        filters.push({
+          field: 'areasAndZipCodesArray',
+          filterType: this.state.zipcodesFilterType.value,
+          value: this.state.zipcodesFilterValue.map((status) => status.value)
+        })
+      }
     }
-    if(this.state.areasFilterType.value != 'noFilter') {
+    if(this.state.areasFilterType.value != 'noFilter' && this.state.zipcodesFilterType.value != this.state.areasFilterType.value) {
       filters.push({
-        field: 'areasArray',
+        field: 'areasAndZipCodesArray',
         filterType: this.state.areasFilterType.value,
         value: this.state.areasFilterValue.map((status) => status.value)
       })
     }
-    console.log(filters)
     this.props.handleSubmit(filters)
     this.handleClose()
   }

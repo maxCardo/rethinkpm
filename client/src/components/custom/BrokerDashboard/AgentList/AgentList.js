@@ -8,6 +8,7 @@ import './style.css'
 import FilteredList from './FilteredList';
 import AgentFiltersModal from './AgentFiltersModal';
 import SaveFilterModal from './SaveFilterModal'
+import LoadingScreen from '../../LoadingScreen/LoadingScreen'
 
 class AgentList extends Component {
   constructor(props) {
@@ -29,7 +30,9 @@ class AgentList extends Component {
       ],
       modalFilters: [],
       audiences: [],
-      filters:[]
+      filters:[],
+      loading: true,
+      officeOptions: []
     };
     this.handleModalSubmit = this.handleModalSubmit.bind(this)
     this.saveAudience = this.saveAudience.bind(this)
@@ -52,18 +55,20 @@ class AgentList extends Component {
         } else {
           agentCopy.zipCodesArray = []
         }
+        agentCopy.areasAndZipCodesArray = agentCopy.areasArray.concat(agentCopy.zipCodesArray)
         return agentCopy
       })
-      this.setState({data: agentsWithSales});
+      this.setState({data: agentsWithSales, loading:false});
     })
-      .then((res) => {
-        this.setState({loadingAgents: false});
-      });
     axios.get('/api/sales/audiences').then((res) => {
       this.setState({audiences: res.data})
     })
     axios.get('/api/sales/filters').then((res) => {
       this.setState({filters: res.data})
+    })
+    axios.get('/api/sales/offices').then((res) => {
+      const officeOptions = res.data.map((office) => ({value: office.name, label: office.name}))
+      this.setState({officeOptions})
     })
   }
 
@@ -93,11 +98,13 @@ class AgentList extends Component {
         })
       }
     }
-    filters.push({
-      field: 'fullName',
-      filterType: 'includes',
-      value: this.state.filterString ? this.state.filterString : ''
-    })
+    if(this.state.filterString) {
+      filters.push({
+        field: 'fullName',
+        filterType: 'includes',
+        value: this.state.filterString
+      })
+    }
     const selectOptions = this.state.agentStatusSelect.slice()
     if(this.state.audiences.length) {
       const audiencesOptions = this.state.audiences.map((audience) => ({value: audience._id, label: audience.name}))
@@ -114,7 +121,7 @@ class AgentList extends Component {
       })
     }
     return (
-      <Fragment>
+      <LoadingScreen loading={this.state.loading}>
         <Select
           className="agentStatusFilter"
           onChange={value => this.setState({statusSelected: value})}
@@ -150,6 +157,7 @@ class AgentList extends Component {
           show={this.state.showAgentFiltersModal} 
           handleClose={() => this.setState({showAgentFiltersModal: false})}
           handleSubmit={this.handleModalSubmit}
+          officeOptions={this.state.officeOptions}
         />
         <SaveFilterModal
           show={this.state.showSaveFilterModal}
@@ -157,7 +165,7 @@ class AgentList extends Component {
           saveAudience={this.saveAudience}
           saveFilter={this.saveFilter}
         />
-      </Fragment>
+      </LoadingScreen>
     );
   }
   handleModalSubmit(filters) {

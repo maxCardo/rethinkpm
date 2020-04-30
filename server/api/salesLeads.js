@@ -94,6 +94,10 @@ router.post('/filters', async (req,res) => {
   res.json({result: 'ok'})
 })
 
+router.get('/offices', async(req,res) => {
+  const offices = await OfficeModel.find({})
+  res.json(offices)
+})
 
 
 module.exports = router;

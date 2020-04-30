@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { SET_AGENT_OPPORTUNITIES } from '../../../actions/type'
 import { withRouter } from 'react-router-dom';
 import Dashboard from '../dashboard/Dashboard';
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
 
 export class brokerDashboard extends Component {
     constructor(props) {
@@ -75,7 +76,10 @@ export class brokerDashboard extends Component {
     }
 
     componentDidMount() {
-      if(this.props.agents) return;
+      if(this.props.agents) {
+        this.setState({loading: false})
+        return
+      }
         axios.get('/api/sales/agents').then( (res) => {
           let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
           const data = {
@@ -86,14 +90,10 @@ export class brokerDashboard extends Component {
             notInterested: [],
           }
           agentsWithSales.forEach((agent) => {
-            console.log(agent)
             data[agent.status].push(agent)
           })
           this.props.setAgents({agentOpportunities: data, agentOpportunitiesRaw: res.data});
-          this.setState({ data });
-        })
-        .then((res) => {
-            this.setState({ loading: false });
+          this.setState({ data, loading: false });
         })
     }
 
@@ -104,21 +104,20 @@ export class brokerDashboard extends Component {
 
     render() {
         return (
-            <div>
-              {this.state.data &&
-                <Dashboard
-                  type='select'
-                  data={this.state.data} 
-                  loading={this.state.loading} 
-                  headers={this.headers}
-                  states={this.states}
-                  onClickRow={this.handleClickRow}
-                  sortBy='sales'
-                  sortDirection='desc'
-                />
-              }
-            </div>
-
+              <LoadingScreen loading={this.state.loading}>
+                {this.props.agents &&
+                  <Dashboard
+                    type='select'
+                    data={this.props.agents} 
+                    loading={this.state.loading} 
+                    headers={this.headers}
+                    states={this.states}
+                    onClickRow={this.handleClickRow}
+                    sortBy='sales'
+                    sortDirection='desc'
+                  />
+                }
+              </LoadingScreen>
         )
     }
     handleClickRow(row) {

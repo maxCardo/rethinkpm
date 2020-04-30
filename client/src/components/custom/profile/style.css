@@ -291,6 +291,8 @@
   background: white;
   transition: left 200ms;
   box-shadow: 2px 2px 5px rgba(0,0,0,.217);
+  display: flex;
+  flex-flow: column;
 }
 .left__sidebar-open .profile__agent-leads {
   left: 0;
@@ -374,8 +376,14 @@
   background: #f7f7f7;
   border-radius: 0;
   padding: 10px 15px;
+}
+
+.sidebar__left .infinite-scroll-component__outerdiv{
+  display: flex;
+  flex-flow: column;
+  flex: 1 1 auto;
   overflow: auto;
-  height: calc(100vh - 214px) !important;
+  background: #f7f7f7;
 }
 .sidebar__left a {
   background: #fff;
