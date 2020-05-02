@@ -168,7 +168,7 @@ class AgentList extends Component {
         {this.state.modalFilters.length ?
           <div className='agent-list__filtering-options-container'>
             <button onClick={() => this.setState({modalFilters: []})}>Clear filter</button>
-            <button onClick={() => this.setState({showSaveFilterModal: true})}>Save audience</button>
+            <button onClick={() => this.setState({showSaveFilterModal: true})}>Save filter</button>
           </div>
           :
           ''
