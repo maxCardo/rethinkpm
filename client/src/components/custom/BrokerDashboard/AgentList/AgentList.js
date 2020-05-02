@@ -40,10 +40,8 @@ class AgentList extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/sales/agents').then((res) => {
-      let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
-      this.props.setAgents({agentOpportunities: agentsWithSales, agentOpportunitiesRaw: res.data});
-      agentsWithSales = agentsWithSales.map((agent) => {
+    if(this.props.allAgents) {
+      const agentsProccessed = this.props.allAgents.map((agent) => {
         const agentCopy = Object.assign({}, agent)
         if(agent.areas) {
           agentCopy.areasArray = agent.areas.map((area) => area.name)
@@ -58,8 +56,39 @@ class AgentList extends Component {
         agentCopy.areasAndZipCodesArray = agentCopy.areasArray.concat(agentCopy.zipCodesArray)
         return agentCopy
       })
-      this.setState({data: agentsWithSales, loading:false});
-    })
+      this.setState({data: agentsProccessed, loading:false});
+    } else {
+      axios.get('/api/sales/agents').then((res) => {
+        let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
+        const data = {
+          new: [],
+          prospect: [],
+          pending: [],
+          agent: [],
+          notInterested: [],
+        }
+        agentsWithSales.forEach((agent) => {
+          data[agent.status].push(agent)
+        })
+        this.props.setAgents({agentOpportunities: data, agentOpportunitiesRaw: res.data});
+        const agentsProccessed = res.data.map((agent) => {
+          const agentCopy = Object.assign({}, agent)
+          if(agent.areas) {
+            agentCopy.areasArray = agent.areas.map((area) => area.name)
+          } else {
+            agentCopy.areasArray = []
+          }
+          if(agent.zipCodes) {
+            agentCopy.zipCodesArray = agent.zipCodes.map((zipcode) => zipcode.name)
+          } else {
+            agentCopy.zipCodesArray = []
+          }
+          agentCopy.areasAndZipCodesArray = agentCopy.areasArray.concat(agentCopy.zipCodesArray)
+          return agentCopy
+        })
+        this.setState({data: agentsProccessed, loading:false});
+      })
+    }
     axios.get('/api/sales/audiences').then((res) => {
       this.setState({audiences: res.data})
     })
@@ -80,10 +109,6 @@ class AgentList extends Component {
     if(this.state.statusSelected.value !== 'all') {
       const foundInFilters = this.state.filters.find(elem => elem._id == this.state.statusSelected.value)
       const foundInAudiences = this.state.audiences.find(elem => elem._id == this.state.statusSelected.value)
-      console.log('Found in audiences')
-      console.log(foundInAudiences)
-      console.log('Found in filters')
-      console.log(foundInFilters)
       if(foundInFilters) {
         filters = filters.concat(foundInFilters.filters)
       } else if(foundInAudiences) {

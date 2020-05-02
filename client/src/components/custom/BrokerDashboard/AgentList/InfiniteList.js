@@ -58,7 +58,7 @@ export class InfiniteList extends Component {
   render() {
     return (
       <Fragment>
-        <InfiniteScroll
+        <div
           className="inf-scroll"
           ref={this.infiniteScroll}
           dataLength={this.state.items.length}
@@ -66,11 +66,12 @@ export class InfiniteList extends Component {
           hasMore={this.state.hasMore}
           loader={<p>Loading...</p>}
           key={this.props.dataSetKey}
+          scrollThreshold={'50000px'}
           endMessage={
             <p style={ {textAlign: "center"} }>No more results!</p>
           }>
-          {this.state.items ? (
-            this.state.items.map((val) => {
+          {this.props.data ? (
+            this.props.data.map((val) => {
               return (
                 <div key={val._id}>
                   <Link to={`/profile/agent/${val._id}`}>
@@ -83,7 +84,7 @@ export class InfiniteList extends Component {
                 </div>
               )
             })) : ''}
-          </InfiniteScroll>
+          </div>
           <div className='infinite-list__length-info'>
             <p>Total of Agents: {this.props.data.length}</p>
           </div>
