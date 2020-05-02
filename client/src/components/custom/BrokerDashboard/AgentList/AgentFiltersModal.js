@@ -174,7 +174,6 @@ export class AgentFiltersModal extends Component {
     this.setState({[property]: e.target.value})
   }
   handleSelectChange(property, value) {
-    console.log(value)
     this.setState({[property]: value})
   }
   handleClose() {

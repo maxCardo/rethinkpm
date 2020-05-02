@@ -25,7 +25,6 @@ export class ServiceDetail extends Component {
     } else {
       service.childs = []
     }
-    console.log(service)
     const task = {
       parentId: 123,
       opened: new Date(),

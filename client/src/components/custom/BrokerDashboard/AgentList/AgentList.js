@@ -206,14 +206,12 @@ class AgentList extends Component {
     const config = {headers: {'Content-Type': 'application/json'}};
     const body = JSON.stringify({ name, filters, leads});
     await axios.post('/api/sales/audiences',body, config)
-    console.log('Audience saved')
   }
   async saveFilter(name) {
     const filters = this.state.modalFilters;
     const config = {headers: {'Content-Type': 'application/json'}};
     const body = JSON.stringify({ name, filters});
     await axios.post('/api/sales/filters',body, config)
-    console.log('Filter saved')
   }
 }
 

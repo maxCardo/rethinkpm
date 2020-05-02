@@ -63,7 +63,6 @@ export class ServiceList extends Component {
     this.changeActiveData = this.changeActiveData.bind(this)
   }
   render() {
-    console.log(this.state.data)
     return (
       <div style={{padding: '2rem 1rem'}}>
         <div className='service-list__button-group'>
