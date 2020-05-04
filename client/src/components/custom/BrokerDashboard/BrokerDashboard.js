@@ -1,13 +1,15 @@
 import React, {Component} from 'react'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios';
 import {connect} from 'react-redux'
 import {agentStatus} from "../../../util/statusSchemas";
 import Table from '../Table'
 import Select from 'react-select';
-import { SET_AGENT_OPPORTUNITIES } from '../../../actions/type'
+import { SET_AGENT_OPPORTUNITIES, SET_ACTIVE_PROFILE } from '../../../actions/type'
 import { withRouter } from 'react-router-dom';
 import Dashboard from '../dashboard/Dashboard';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
+
 
 export class brokerDashboard extends Component {
     constructor(props) {
@@ -121,7 +123,10 @@ export class brokerDashboard extends Component {
         )
     }
     handleClickRow(row) {
-      this.props.history.push(`/profile/agent/${row._id}`)
+      console.log('runnning haddle click');
+      //set records as slected record activeProfile 
+      this.props.setActiveProfile(row)
+      this.props.history.push(`/profile_ii`)
     }
 }
 
@@ -131,7 +136,8 @@ const mapStateToProps = (state) => {
 }};
 const mapDispatchToProps = dispatch => {
     return {
-        setAgents:(agents) => dispatch({type: SET_AGENT_OPPORTUNITIES, payload: agents})
+        setAgents:(agents) => dispatch({type: SET_AGENT_OPPORTUNITIES, payload: agents}),
+        setActiveProfile: (profile) => dispatch({type: SET_ACTIVE_PROFILE, payload: profile})
     }
 };
 

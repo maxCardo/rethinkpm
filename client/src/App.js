@@ -22,6 +22,7 @@ import ServiceTicket from './components/custom/service/ServiceTicket';
 import AddProfile from './components/custom/profile/AddProfile';
 import AddProperty from './components/custom/assets/AddProperty';
 import Profile from './components/custom/profile'
+import Profile_ii from './components/custom/profile/Profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 import {loadUser} from './actions/auth';
@@ -70,6 +71,7 @@ const App = ({loadUser, receiveMessage}) => {
             <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
             <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true}} />
             <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true}} />
+            <PrivateRoute exact path='/profile_ii' component={Profile_ii} additionalProps={{ attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true }} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
         </section>
