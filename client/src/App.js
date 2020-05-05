@@ -71,7 +71,7 @@ const App = ({loadUser, receiveMessage}) => {
             <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
             <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true}} />
             <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true}} />
-            <PrivateRoute exact path='/profile_ii' component={Profile_ii} additionalProps={{ attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true }} />
+            <PrivateRoute exact path='/profile_ii' component={Profile_ii} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
         </section>

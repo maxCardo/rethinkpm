@@ -1,28 +1,46 @@
-import React, { Fragment, Component } from 'react';
-import { withRouter } from 'react-router';
-import ProfileInfo from './profileInfo/ProfileInfo'
-import { Resizable } from 're-resizable'
+import React, { Fragment, useEffect } from 'react';
 import axios from 'axios';
+import qs from 'query-string'
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux'
-import { AGENT_SELECTED, SET_INQUIRIES } from '../../../actions/type'
 
 import './style.css'
+import ProfileInfo from './profileInfo/ProfileInfo'
+import { Resizable } from 're-resizable'
 import ProfileChat from './ProfileChat';
 import BottomNavigation from '../service/BottomNavigation';
 import AgentList from "../BrokerDashboard/AgentList/AgentList";
 import Loading from '../../core/LoadingScreen/Loading'
-
 import NotesScreen from './screens/Notes'
 import SalesScreen from './screens/SalesHistory'
 
-const Profile = ({isAgent, profile:{activeProfile, loading }}) => {
+import { AGENT_SELECTED, SET_INQUIRIES } from '../../../actions/type'
+import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
+
+
+const Profile = ({profile:{activeProfile, loading }, location:{search}, settings:{profileType}}) => {
+
+    var isAgent = true
+
+    //run on load only
+    useEffect(() => {
+        console.log('useEffect Running');
+        if(!activeProfile){
+            const backUpProfile = qs.parse(search).profile 
+            backUpProfile ? loadBackUpProfile(profileType, backUpProfile) : loadProfileDefault(profileType)
+        }
+    
+    }, [])
+
+    
+
 
     return loading ? <Loading/> :
     <Fragment>
         <div className={isAgent ? 'agentProfile profile__main-container left__sidebar-open' : 'profile__main-container'}>
             <div className='profile__left-container'>
                 <div className='profile__info-container'>
-                    <ProfileInfo/>
+                    <ProfileInfo profile={activeProfile}/>
                 </div>
                 <div className='profile__logs-container'>
                     <p>logs container</p>
@@ -33,7 +51,9 @@ const Profile = ({isAgent, profile:{activeProfile, loading }}) => {
                 <p>chat sidebar</p>
             </div>
             <div className="sidebar__left profile__agent-leads">
-                <p>profiles sidebar</p>
+                {/* <AgentList/> */}
+                <p>agent list placeholder</p>
+
             </div>
         </div>
     </Fragment>

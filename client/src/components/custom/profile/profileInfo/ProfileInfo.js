@@ -10,11 +10,11 @@ import {Button,Modal,Alert,Form} from "react-bootstrap";
 
 const ProfileInfo = (props) => {
     
-    console.log('profile info props: ', props);
+    console.log('pi props: ', props)
 
     return (
         <Fragment>
-            <div><p>Profile info</p></div>
+            <div><p>test</p></div>
         </Fragment>
     )
     

@@ -5,6 +5,7 @@
 
 .profile__left-container {
   height: 100%;
+  /* change */
   width: 100%;
   border-right: 1px solid #EEE;
   display: flex;
@@ -285,7 +286,8 @@
 .profile__agent-leads {
   position: absolute;
   width: 20%;
-  left: 0;
+  /* change */
+  left: -20%;
   height: calc(100% - 64px);
   z-index: 2;
   background: white;

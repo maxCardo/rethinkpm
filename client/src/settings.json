@@ -2,6 +2,7 @@
   "routes": {
     "profile": {
       "agentPros": {
+        "profileType": "agentPros",
         "profileInfo": [
           {
             "name": "First Name",

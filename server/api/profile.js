@@ -115,4 +115,21 @@ function transformObjectIntoSortedArray(object) {
   return arraySorted
 }
 
+
+//---------------------------------- new api call from refactor 5-5-20 -----------------------------------------------------//
+
+// @route: GET /api/profile/agentPros;
+// @desc: Get one profile when loading profile screen (agentPros) 
+// @ access: Public * ToDo: update to make private
+router.get('/agentPros', async (req, res) => {
+  try {
+      const record = await  Agent.findOne().populate('prospect notes office');
+      console.log(record);
+      res.status(200).send(record);
+  } catch (error) {
+      console.error(error);
+      res.status(400).send('server error')
+  }
+});
+
 module.exports = router;
