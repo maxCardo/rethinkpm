@@ -18,13 +18,12 @@ import { AGENT_SELECTED, SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
 
 
-const Profile = ({profile:{activeProfile, loading }, location:{search}, settings:{profileType}}) => {
+const Profile = ({profile:{activeProfile, loading }, location:{search}, settings:{profileType}, loadBackUpProfile, loadProfileDefault}) => {
 
     var isAgent = true
 
     //run on load only
     useEffect(() => {
-        console.log('useEffect Running');
         if(!activeProfile){
             const backUpProfile = qs.parse(search).profile 
             backUpProfile ? loadBackUpProfile(profileType, backUpProfile) : loadProfileDefault(profileType)
@@ -33,8 +32,6 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
     }, [])
 
     
-
-
     return loading ? <Loading/> :
     <Fragment>
         <div className={isAgent ? 'agentProfile profile__main-container left__sidebar-open' : 'profile__main-container'}>
@@ -73,4 +70,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withRouter(Profile)))
+export default connect(mapStateToProps, {loadProfileDefault, loadBackUpProfile})(Profile)
