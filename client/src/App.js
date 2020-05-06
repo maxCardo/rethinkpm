@@ -35,7 +35,7 @@ import settings from './settings.json'
 
 const App = ({loadUser, receiveMessage}) => {
   console.log(Notification.permission)
-  if(Notification.permission == 'default') {
+  if(Notification.permission === 'default') {
     Notification.requestPermission();
   }
   registerServiceWorker()

@@ -4,7 +4,7 @@ import ProfileInfo from './ProfileInfo'
 import {Resizable} from 're-resizable'
 import axios from 'axios';
 import {connect} from 'react-redux'
-import {AGENT_SELECTED, SET_INQUIRIES} from '../../../actions/type'
+import {SET_INQUIRIES} from '../../../actions/type'
 
 import './style.css'
 import ProfileChat from './ProfileChat';
@@ -32,7 +32,6 @@ export class Profile extends Component {
 
     /*SIDEBAR LINK POPULATION UPDATE*/
     if (prevProps !== this.props) {
-      const {id} = this.props.match.params;
 
       if (this.props.isAgent) {
         axios.get(`/api/profile/agent/${this.props.match.params.id}`).then((res) => {

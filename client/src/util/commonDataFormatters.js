@@ -13,7 +13,7 @@ function formatPhoneNumbers(data) {
   if (!data) return '';
   let phoneNumber = '';
   data.forEach((phone, idx) => {
-    if (phone.isPrimary == true) {
+    if (phone.isPrimary === true) {
       phoneNumber = phone.number;
     }
   });
@@ -36,8 +36,9 @@ function formatMoney(data) {
 function formatLabels(data) {
   if (!data) return '';
   let dataString = '';
-  data.map((item) => {
+  data.forEach((item) => {
     dataString += `<span class='label__blue'>${item.name}</span>`;
+    return;
   });
   return dataString;
 }

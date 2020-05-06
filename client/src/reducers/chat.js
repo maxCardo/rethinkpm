@@ -14,7 +14,7 @@ export default function (state = initialState, action) {
         case OPEN_CHAT: 
             const openChats = state.openChats.slice()
             const chatsWithOpen = state.chats.slice().map((chatElement) => {
-              if(chatElement.id == payload) {
+              if(chatElement.id === payload) {
                 chatElement.open = true
               }
               return chatElement
@@ -38,7 +38,7 @@ export default function (state = initialState, action) {
             const openedChatsRightNow = state.openChats.slice()
             let chat;
             const chats = state.chats.slice().map((chatElement) => {
-              if(chatElement.inquiryId == inquiryId) {
+              if(chatElement.inquiryId === inquiryId) {
                 chat = chatElement
                 chatElement.open = true
 
@@ -78,7 +78,7 @@ export default function (state = initialState, action) {
               unread: payload.unread,
               messages: payload.messages.map((message) => ({
                 date: new Date(message.date),
-                sender: message.from == 'User-SMS' ? payload.inq.prospect.name : message.from,
+                sender: message.from === 'User-SMS' ? payload.inq.prospect.name : message.from,
                 content: message.message,
                 userMessage: message.from !== 'User-SMS'
               })),
@@ -96,7 +96,7 @@ export default function (state = initialState, action) {
         case TOGGLE_OPEN_CHAT:
             const chatId = payload
             const newChats = state.chats.map(chat => {
-              if(chat.id == chatId) {
+              if(chat.id === chatId) {
                 chat.open = !chat.open
               }
               return chat
@@ -108,7 +108,7 @@ export default function (state = initialState, action) {
         case RECEIVE_MESSAGE:
           const {chat_id, message, uuid} = payload
           const chatsWithNewMessage = state.chats.map(chat => {
-            if(chat.id == chat_id && chat.lastMessageProccessed !== uuid) {
+            if(chat.id === chat_id && chat.lastMessageProccessed !== uuid) {
               chat.messages.push({
                 userMessage: false,
                 sender: chat.name,

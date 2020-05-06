@@ -13,7 +13,7 @@ export class BottomNavigation extends Component {
   }
   changeActive() {
     const location = this.props.location.pathname
-    if(this.state.lastLocation ==location) return
+    if(this.state.lastLocation === location) return
     const last = location.split('/').pop()
     for(let i=0; i< this.props.screens.length; i++) {
       const screenRoute = this.props.screens[i].route
@@ -35,7 +35,7 @@ export class BottomNavigation extends Component {
         </div>
         <div className='bottom-navigation__tabs'>
           {this.props.screens.map((screen, index) => (
-            <button className='bottom-navigation__tab' active={(index == this.state.active).toString()} onClick={this.goToScreen.bind(this,index)}>
+            <button className='bottom-navigation__tab' active={(index === this.state.active).toString()} onClick={this.goToScreen.bind(this,index)}>
               {screen.display}
             </button>
           ))}

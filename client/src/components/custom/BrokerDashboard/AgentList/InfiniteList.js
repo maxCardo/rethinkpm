@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import {Link} from 'react-router-dom';
-import InfiniteScroll from "react-infinite-scroll-component";
 
 export class InfiniteList extends Component {
 
@@ -14,7 +13,7 @@ export class InfiniteList extends Component {
   }
 
   static getDerivedStateFromProps(props,state) {
-    if(state.rawData == props.data) return
+    if(state.rawData === props.data) return
     return {
       items: InfiniteList.getItemsFromData(props.data),
       rawData: props.data,

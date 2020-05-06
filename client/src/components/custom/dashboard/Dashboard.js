@@ -12,8 +12,10 @@ export class Dashboard extends Component {
         return <SeparatedDashboard {...this.props} />
       case "tabbed":
         return <TabbedDashboard {...this.props} />
+      default:
+        console.error(`The dashboard type ${this.props.type} is not yet implemented`)
+        return <p>Dashboard {this.props.type} not implemented yet</p>
     }
-    console.error(`The dashboard type ${this.props.type} is not yet implemented`)
   }
 }
 

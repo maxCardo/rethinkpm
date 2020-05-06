@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
 import {Modal, Button, Form} from 'react-bootstrap'
-import DateTimeField from 'react-datetime'
 import 'react-datetime/css/react-datetime.css'
-import axios from 'axios'
 import {connect} from 'react-redux'
 import { UPDATE_INQUIRY } from '../../../actions/type'
 
 export class UpdateAgentModal extends Component {
-  constructor(props) {
-    super(props)
-
-  }
   render() {
     return (
       <Modal size='lg' show={this.props.show} onHide={this.handleClose}>

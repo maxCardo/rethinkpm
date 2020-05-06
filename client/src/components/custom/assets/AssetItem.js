@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 const AssetItem = props => {
     return (
@@ -21,8 +20,5 @@ const AssetItem = props => {
     )
 }
 
-AssetItem.propTypes = {
-
-}
 
 export default AssetItem

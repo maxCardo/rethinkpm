@@ -1,10 +1,7 @@
 import React, {Component} from 'react'
-import { Redirect } from 'react-router-dom'
 import axios from 'axios';
 import {connect} from 'react-redux'
 import {agentStatus} from "../../../util/statusSchemas";
-import Table from '../Table'
-import Select from 'react-select';
 import { SET_AGENT_OPPORTUNITIES, SET_ACTIVE_PROFILE } from '../../../actions/type'
 import { withRouter } from 'react-router-dom';
 import Dashboard from '../dashboard/Dashboard';

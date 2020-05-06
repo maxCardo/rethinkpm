@@ -1,9 +1,7 @@
-import React, { Fragment, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 
 const AddProfile = () => {
 
-    const [toDateDisabled, toggleDisabled] = useState(false);
 
     const onChange = e => {console.log('a change was made');};
 

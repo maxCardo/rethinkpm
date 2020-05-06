@@ -38,7 +38,7 @@ export class CommunicationScreen extends Component {
           unread: chat.unread,
           messages: chat.messages.map((message) => ({
             date: new Date(message.date),
-            sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
+            sender: message.from === 'User-SMS' ? chat.inq.prospect.name : message.from,
             content: message.message,
             userMessage: message.from !== 'User-SMS'
           })),
