@@ -57,18 +57,7 @@ export class InfiniteList extends Component {
   render() {
     return (
       <Fragment>
-        <div
-          className="inf-scroll"
-          ref={this.infiniteScroll}
-          dataLength={this.state.items.length}
-          next={this.fetchMoreData}
-          hasMore={this.state.hasMore}
-          loader={<p>Loading...</p>}
-          key={this.props.dataSetKey}
-          scrollThreshold={'50000px'}
-          endMessage={
-            <p style={ {textAlign: "center"} }>No more results!</p>
-          }>
+        <div className="inf-scroll">
           {this.props.data ? (
             this.props.data.map((val) => {
               return (
