@@ -18,7 +18,7 @@ import { AGENT_SELECTED, SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
 
 
-const Profile = ({profile:{activeProfile, loading }, location:{search}, settings:{profileType}, loadBackUpProfile, loadProfileDefault}) => {
+const Profile = ({profile:{activeProfile, loading }, location:{search}, settings, loadBackUpProfile, loadProfileDefault}) => {
 
     var isAgent = true
 
@@ -26,19 +26,30 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
     useEffect(() => {
         if(!activeProfile){
             const backUpProfile = qs.parse(search).profile 
-            backUpProfile ? loadBackUpProfile(profileType, backUpProfile) : loadProfileDefault(profileType)
+            backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
-    
     }, [])
-
     
     return loading ? <Loading/> :
     <Fragment>
         <div className={isAgent ? 'agentProfile profile__main-container left__sidebar-open' : 'profile__main-container'}>
             <div className='profile__left-container'>
-                <div className='profile__info-container'>
-                    <ProfileInfo profile={activeProfile}/>
-                </div>
+                <Resizable defaultSize={{height: '400'}}style={{height: '400', display: 'flex'}} minWidth='100%' maxHeight={window.innerHeight*(4/6)} minHeight='100'
+                    enable={{
+                    top: false,
+                    topRight: false,
+                    right: false,
+                    bottomRight: false, 
+                    bottom: true,
+                    bottomLeft: false,
+                    left: false,
+                    topLeft: false
+                    }}
+                >
+                    <div className='profile__info-container'>
+                        <ProfileInfo profile={activeProfile} settings={settings}/>
+                    </div>
+                </Resizable>
                 <div className='profile__logs-container'>
                     <p>logs container</p>
                 </div>

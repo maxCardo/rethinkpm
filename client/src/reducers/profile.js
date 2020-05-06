@@ -1,6 +1,6 @@
 import { SET_ACTIVE_PROFILE, PROFILE_ERROR } from '../actions/type';
 const initialState = {
-    loading:false
+    loading:true
 }
 
 export default function (state = initialState, action) {

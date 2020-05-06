@@ -56,8 +56,8 @@ export const loadProfileDefault = profileType => async dispatch => {
     dispatch({
       type: PROFILE_ERROR,
       payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
+        msg: err,
+        status: err,
       },
     });
   }
