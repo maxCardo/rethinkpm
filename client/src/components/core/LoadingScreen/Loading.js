@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import BeatLoader from "react-spinners/BeatLoader";
 import './style.css'
 

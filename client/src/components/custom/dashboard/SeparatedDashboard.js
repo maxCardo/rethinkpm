@@ -17,7 +17,7 @@ export class SeparatedDashboard extends Component {
         </div>
         <div style={{overflow: 'auto', maxHeight: '80vh'}}>
           {this.props.states.map(({label, key}, index) => (
-            <div>
+            <div key={key}>
               <h2 className='sectionTitle'>Status {index+1}: {label}</h2>
               <Table
                 pageSize={10}

@@ -4,6 +4,12 @@ import InfiniteList from './InfiniteList'
 import FilterPills from './FilterPills'
 
 export class FilteredList extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      filteredData: []
+    }
+  }
   static getDerivedStateFromProps(props, state) {
     let filteredData = props.data
     props.filters.forEach(filter => {

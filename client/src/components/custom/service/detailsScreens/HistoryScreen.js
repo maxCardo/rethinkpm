@@ -67,7 +67,7 @@ export class HistoryScreen extends Component {
     return (
       <div className='history-screen__container'>
         <div className='history-screen__select-container'>
-          <Form.Control as="select" custom className='history-screen__select' size="sm" onChange={this.handleChange.bind(this, "dataToShow")}>
+          <Form.Control as="select" className='history-screen__select' size="sm" onChange={this.handleChange.bind(this, "dataToShow")}>
             <option value='all'>All</option>
             <option value='notes'>Notes</option>
             <option value='logs'>Logs</option>

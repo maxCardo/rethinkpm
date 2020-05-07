@@ -1,16 +1,15 @@
-import React , {Fragment, useEffect} from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React , {useEffect} from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth'
 import PropTypes from 'prop-types'
 import {loadUser} from '../../actions/auth';
 import {getCookie} from '../../util/cookies'
 
-const Navbar = ({auth:{isAuthenticated, loading, loginInProgress}, logout}) => {
+const Navbar = ({auth:{isAuthenticated, loginInProgress}, logout}) => {
     useEffect(() => {
         loadUser();    
-    }, [loadUser]);
-    let history = useHistory()
+    });
     const handleLogout = () => {
       logout()
     }

@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE } from './type';
-import { setAlert } from './alert';
+import { SET_ACTIVE_PROFILE, PROFILE_ERROR } from './type';
 
 //Set Active profile for selected lead record. 
 export const setActiveProfile = profile => async dispatch => {
