@@ -1,46 +1,107 @@
-import React from 'react'
+import React, {Fragment, useEffect, useRef, useState} from 'react'
+import { connect } from 'react-redux';
+import {validateEmail} from '../../../../../util/commonFunctions'
+import {Button, Modal} from "react-bootstrap";
+import {tglAddEmailMod} from "../../../../../actions/profile";
 
 
+const EmailField = ({tglAddEmailMod, field, data: {data}}) => {
 
-const EmailField = ({ field, data: { data } }) => {
-    
+    const emailInput = useRef();
+
+    let email = 'getemail@email.com';
+
+    const [edit, toggleEdit] = useState(false);
+    const [emailValid, setEmailValid] = useState(true);
+    const [editEmail, setEditEmail] = useState(email);
+    const [showConfModal, setConfModal] = useState(false);
+
+    const editEmailFunc = async (email) => {
+        const newEMail = email;
+        setEditEmail(newEMail);
+        setEmailValid(validateEmail(newEMail))
+    }
+
+    const editPrimaryEmail = () => {
+        console.log('edit prime email place holder')
+    }
+
+
+    useEffect(() => {
+        if (emailInput.current && edit) {
+            emailInput.current.focus();
+        }
+    }, [edit])
+
     return (
-        <div className={field.name}>
-            <b>{field.name}:</b>
-            <input type="text" name="emailPrimary"
-                className= 'invalid'
-                //{(this.state.UI.newEmailValid) ? 'valid' : 'invalid'}
-                disabled={true}
-                //{!this.state.UI.emailEditable}
-                value='getemail@email.com'
-                //{this.state.primaryEmail}
-                //onChange={(evt) => this.onPrimaryEmailEdit(evt)}
-                //ref={this.setEmailInputRef}
-            />
-            <button className='action-buttons__button singleFieldEdit'
-                //onClick={() => this.editPrimaryEmail()}
-            >
-                <i className="fas fa-pencil-alt"></i>
-            </button>                    
-            <button className='action-buttons__button ab__confirm singleFieldEdit'
-                disabled='true'
-                //{!this.state.UI.newEmailValid}
-                //onClick={() => this.confirmPrimaryEmailEdit()}
-            >
-                <i className="fas fa-check"></i>
-            </button>
-            <button className='action-buttons__button ab__cancel singleFieldEdit'
-                //onClick={() => this.denyEmailChange()}
-            >
-                <i className="fas fa-times"></i>
-            </button>     
+        <Fragment>
+            <div className={field.name}>
+                <b>{field.name}:</b>
+                <input type="text" name="emailPrimary"
+                       className={emailValid ? 'valid' : 'invalid'}
+                       disabled={!edit}
+                       value={edit ? editEmail : email}
+                       onChange={(evt) => editEmailFunc(evt.target.value)}
+                        ref={emailInput}
+                />
+                {!edit ? (
+                    <button className='action-buttons__button singleFieldEdit' onClick={() => toggleEdit(true)}>
+                        <i className='fas fa-pencil-alt'></i>
+                    </button>
+                ) : (
+                    <Fragment>
+                        <button
+                            className='action-buttons__button ab__confirm singleFieldEdit'
+                            disabled={!emailValid}
+                            onClick={() => {
+                                editEmail !== email ? setConfModal(true) : toggleEdit(false)
+                            }}
+                        >
+                            <i className='fas fa-check'></i>
+                        </button>
+                        <button className='action-buttons__button ab__cancel singleFieldEdit'
+                                onClick={() => {
+                                    toggleEdit(false);
+                                    editEmailFunc(email)
+                                }}
+                        >
+                            <i className='fas fa-times'></i>
+                        </button>
+                    </Fragment>
+                )}
 
-            <button className='action-buttons__button addEmail'
-                onClick={() => this.addEmailModal()}>
-                <i className="fas fa-plus"></i>
-            </button>
-        </div>
+                <button className='action-buttons__button addEmail'
+                        onClick={() => {
+                            toggleEdit(false);
+                            editEmailFunc(email);
+                            tglAddEmailMod(true)
+                        }}>
+                    <i className="fas fa-plus"></i>
+                </button>
+            </div>
+
+            <Modal size='md' show={showConfModal} onHide={() => {
+                editEmailFunc(email);
+                setConfModal(false)
+            }}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Are you sure you want to change the primary email</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer className="modalFooterBtns">
+                    <Button className="btn btn-primary" variant="secondary" onClick={() => editPrimaryEmail()}>
+                        Confirm
+                    </Button>
+                    <Button className="btn btn-danger" variant="secondary" onClick={() => {
+                        toggleEdit(false);
+                        editEmailFunc(email);
+                        setConfModal(false)
+                    }}>
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </Fragment>
     )
 }
 
-export default EmailField
+export default connect(null, {tglAddEmailMod})(EmailField)

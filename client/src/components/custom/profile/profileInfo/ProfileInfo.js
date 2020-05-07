@@ -9,6 +9,7 @@ import {Button,Modal,Alert,Form} from "react-bootstrap";
 import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
 import AddPhoneModal from '../edit_add_updated/AddPhoneModal'
+import AddEmailModal from "../edit_add_updated/AddEmailModal";
 
 
 const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
@@ -30,11 +31,11 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
           <ProfileIcon name={'Tests'} size={80} />
         </div>
         <div className='profile-info__data-container'>
-          {Object.keys(columns).map((col) => (  
-            <div className='column'>
+          {Object.keys(columns).map((col, index) => (
+            <div className='column' key={index}>
               <div className='column-content'>
                 <h2>{colHeader[col]}</h2>
-                {columns[col].map((field) => <InfoField field={field} data={profile} />)}
+                {columns[col].map((field, index) => <InfoField key={index} field={field} data={profile} />)}
                 </div>
             </div>
           ))}
@@ -59,6 +60,7 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
           </button>
         </div>
         <AddPhoneModal/>
+         <AddEmailModal/>
       </div>
     
     
