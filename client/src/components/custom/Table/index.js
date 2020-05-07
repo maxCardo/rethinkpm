@@ -103,10 +103,11 @@ export class Table extends Component {
     } 
     const newFilterString = props.filter ? props.filter : ''
     const newData = filterData(sortedData, newFilterString, headers)
+    const pageIndex = state.pageIndex ? state.pageIndex : 0
     return {
       data: newData,
-      paginatedData: newData.slice(0, pageSize),
-      pageIndex: 0,
+      paginatedData: state.pageIndex ? state.paginatedData : newData.slice(0, pageSize),
+      pageIndex: pageIndex,
       actualFilterString: newFilterString,
       headers: headers,
       sortDirections: newSortDirections,
@@ -183,7 +184,8 @@ export class Table extends Component {
   }
   changePage(index) {
     const newPaginatedData = this.state.data.slice(this.pageSize * index, this.pageSize * (index+1))
-    this.setState({pageIndex: index, paginatedData: newPaginatedData})
+    console.log(newPaginatedData)
+    this.setState({pageIndex: index, paginatedData: newPaginatedData, alreadySorted: true})
   }
   mapData(mapper, data) {
     if(typeof mapper == 'string') {
