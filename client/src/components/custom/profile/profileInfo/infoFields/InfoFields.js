@@ -2,19 +2,18 @@ import React from 'react';
 import SimpleField from './SimpleField';
 import EmailField from './EmailField';
 import PhoneField from './PhoneField';
-
+import StatusField from './StatusField';
 
 const InfoFields = (props) => {
-
-    console.log('props from infoFiels', props);
-    var test = 'test123'
-
-
-    switch (test) {
+  
+  const {field:{accessor}} = props
+    switch (accessor) {
       case 'phoneNumbers':
         return <PhoneField {...props} />;
       case 'email':
         return <EmailField {...props} />;
+      case 'status':
+        return <StatusField {...props} />;
       default:
         return <SimpleField {...props} />;
     }

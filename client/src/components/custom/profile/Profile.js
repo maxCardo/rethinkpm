@@ -17,6 +17,11 @@ import SalesScreen from './screens/SalesHistory'
 import { AGENT_SELECTED, SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
 
+//ToDo: action.addPhoneNumSubmit : 
+    // - remove toggle dispactch 
+    // - check that phone num is not already included in record, if in send msg 
+    // - send put call to API to add phoneNum
+
 
 const Profile = ({profile:{activeProfile, loading }, location:{search}, settings, loadBackUpProfile, loadProfileDefault}) => {
 

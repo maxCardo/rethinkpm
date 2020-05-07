@@ -1,9 +1,12 @@
 import React from 'react'
 
 
-const SimpleField = (Props) => {
+const SimpleField = ({field, data:{data}}) => {
+
     return (
-        <div><p>simple field</p></div>
+        <p>
+            <b>{field.name}:</b>&nbsp;{eval(`data.${field.accessor}`) ? eval(`data.${field.accessor}`) :'n/a'}
+        </p>
     )
 }
 

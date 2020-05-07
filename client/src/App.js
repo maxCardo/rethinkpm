@@ -19,7 +19,6 @@ import ServiceList from './components/custom/service/ServiceList';
 import ServiceDetail from './components/custom/service/ServiceDetail';
 import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
-import AddProfile from './components/custom/profile/AddProfile';
 import AddProperty from './components/custom/assets/AddProperty';
 import Profile from './components/custom/profile'
 import Profile_ii from './components/custom/profile/Profile'
@@ -65,7 +64,6 @@ const App = ({loadUser, receiveMessage}) => {
             <PrivateRoute exact path='/chat' component={ChatScreen} />
             <Route exact path='/serviceReq' component={ServiceReq} />
             <Route exact path='/serviceTicket' component={ServiceTicket} />
-            <Route exact path='/addProfile' component={AddProfile} />
             <Route exact path='/addProperty' component={AddProperty} />
             <PrivateRoute exact path='/profile/inquiry/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
             <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />

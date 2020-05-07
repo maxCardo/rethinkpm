@@ -1,6 +1,8 @@
-import { SET_ACTIVE_PROFILE, PROFILE_ERROR } from '../actions/type';
+import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE } from '../actions/type';
 const initialState = {
-    loading:true
+    activeProfile:'',
+    loading:true,
+    showAddPhoneMod: false
 }
 
 export default function (state = initialState, action) {
@@ -11,6 +13,11 @@ export default function (state = initialState, action) {
                 ...state,
                 activeProfile: payload,
                 loading:false
+            };
+        case TOGGLE_ADD_PHONE:
+            return {
+                ...state,
+                showAddPhoneMod: payload,
             };
         case PROFILE_ERROR:
             return {
