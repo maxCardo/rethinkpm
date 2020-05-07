@@ -48,7 +48,7 @@ export class ServiceList extends Component {
         <div>
           <div>
             <Link className='service__action-button' to={`/services/${row._id}`}>
-              <i class="fas fa-ellipsis-h"></i>
+              <i className="fas fa-ellipsis-h"></i>
             </Link>
           </div>
         </div>

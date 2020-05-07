@@ -72,7 +72,7 @@ export class BillingScreen extends Component {
         render: (row) =>
         <div>
           <div>
-            <Link className='service__action-button'>
+            <Link className='service__action-button' to='#'>
               <i class="fas fa-ellipsis-h"></i>
             </Link>
           </div>
