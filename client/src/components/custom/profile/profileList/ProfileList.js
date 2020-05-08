@@ -62,12 +62,12 @@ const ProfileList = () => {
                 //filters={filters}
                 //dataSetKey={this.state.statusSelected.value}
             />
-            <FilterModal
+            {/* <FilterModal
                 //show={this.state.showAgentFiltersModal}
                 //handleClose={() => this.setState({ showAgentFiltersModal: false })}
                 //handleSubmit={this.handleModalSubmit}
                 //officeOptions={this.state.officeOptions}
-            />
+            /> */}
             <SaveFilterMod
                 show={showSaveFltrMod}
                 handleClose={() => tglSaveFltrMod(false)}
