@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 
 import './style.css'
 import ProfileInfo from './profileInfo/ProfileInfo'
+import ProfileList from './profileList/ProfileList'
 import { Resizable } from 're-resizable'
 import ProfileChat from './ProfileChat';
 import BottomNavigation from '../service/BottomNavigation';
@@ -64,9 +65,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
                 <p>chat sidebar</p>
             </div>
             <div className="sidebar__left profile__agent-leads">
-                {/* <AgentList/> */}
-                <p>agent list placeholder</p>
-
+                <ProfileList/>
             </div>
         </div>
     </Fragment>
