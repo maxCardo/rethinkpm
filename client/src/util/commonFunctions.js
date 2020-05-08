@@ -47,14 +47,14 @@ export const clearPhoneFormatting = function(data) {
   return data.split('(').join('').split(')').join('').split('-').join('').split(' ').join('').split('+').join('');
 }
 
-export const  validatePhoneNum = function(number) {
+export const validatePhoneNum = function(number) {
   const clearedNumber = clearPhoneFormatting(number);
   var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
   return !!clearedNumber.match(validPhone);
 }
 
-export const  validateEmail = function(address) {
+export const validateEmail = function(address) {
   var validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
   return !!address.match(validEmail);
