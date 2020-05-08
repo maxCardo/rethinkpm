@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL } from './type';
+import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL, EDIT_EMAIL } from './type';
+
+const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
 
 //Set Active profile for selected lead record. 
 export const setActiveProfile = profile => async dispatch => {
@@ -106,7 +108,7 @@ export const addPhoneNumSubmit = () => async dispatch => {
   }
 }
 
-//Toggle view control for show add phone modal
+//Toggle view control for show add email modal
 export const tglAddEmailMod = action => async dispatch =>{
     try {
         console.log('running tglAddEmailMod');
@@ -124,13 +126,13 @@ export const tglAddEmailMod = action => async dispatch =>{
     }
 }
 
-//Toggle view control for show add phone modal
-//set params active profile _id and new phone nun object
+//Toggle view control for show add email modal
+//set params active profile _id and new email nun object
 export const addEmailSubmit = () => async dispatch => {
     console.log('running add email submit');
 
     //set screen to loading
-    //api call to add number
+    //api call to add email
     //reset active profile in dom
 
     try {
@@ -150,5 +152,18 @@ export const addEmailSubmit = () => async dispatch => {
     }
 }
 
-
+// update email
+export const updateEmail = (formData, id) => (dispatch) => {
+    dispatch({ type: EDIT_EMAIL });
+    axios.put(`/api/profile/agent/${id}`, formData, config)
+        .then((res) => {
+            console.log(res);
+        })
+        .catch(err => {
+            dispatch({
+                type: PROFILE_ERROR,
+                payload: { msg: 'Could not update record' }
+            });
+        });
+};
 

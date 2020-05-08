@@ -2,14 +2,17 @@ import React, {Fragment, useEffect, useRef, useState} from 'react'
 import { connect } from 'react-redux';
 import {validateEmail} from '../../../../../util/commonFunctions'
 import {Button, Modal} from "react-bootstrap";
-import {tglAddEmailMod} from "../../../../../actions/profile";
+import {tglAddEmailMod, updateEmail} from "../../../../../actions/profile";
+import PropTypes from 'prop-types';
 
 
-const EmailField = ({tglAddEmailMod, field, data: {data}}) => {
+const EmailField = ({updateEmail, tglAddEmailMod, field, data: {data}}) => {
 
     const emailInput = useRef();
 
-    let email = 'getemail@email.com';
+    let email = data.email.map((address) => {
+        if (address.isPrimary) return address.address
+    })[0];
 
     const [edit, toggleEdit] = useState(false);
     const [emailValid, setEmailValid] = useState(true);
@@ -23,7 +26,15 @@ const EmailField = ({tglAddEmailMod, field, data: {data}}) => {
     }
 
     const editPrimaryEmail = () => {
-        console.log('edit prime email place holder')
+        const postEmails = data.email.map((item) => {
+            if (item.isPrimary) {
+                item.address = editEmail;
+                return item
+            }
+        })
+        updateEmail({email: postEmails}, data._id);
+        toggleEdit(false);
+        setConfModal(false);
     }
 
 
@@ -104,4 +115,9 @@ const EmailField = ({tglAddEmailMod, field, data: {data}}) => {
     )
 }
 
-export default connect(null, {tglAddEmailMod})(EmailField)
+EmailField.propTypes ={
+    tglAddEmailMod: PropTypes.func.isRequired,
+    updateEmail: PropTypes.func.isRequired,
+}
+
+export default connect(null, {tglAddEmailMod, updateEmail})(EmailField)
