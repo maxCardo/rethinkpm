@@ -11,11 +11,10 @@ const AddEmailModal = ({ profile:{_id},addEmailSubmit, tglAddEmailMod, showMod})
     const emailInput = useRef();
 
     useEffect(() => {
-        console.log(emailInput);
-        if (emailInput.current !== undefined) emailInput.current.focus()
+        if (emailInput.current !== undefined && !valid) emailInput.current.focus()
     });
 
-    let form = { address: '', makePrimary: '' }
+    let form = { emailAddress: '', makePrimary: '' }
     const [valid, setValid] = useState(false)
     const [formData, setFormData] = useState(form)
 
@@ -65,7 +64,7 @@ const AddEmailModal = ({ profile:{_id},addEmailSubmit, tglAddEmailMod, showMod})
                 </Modal.Body>
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" disabled={!valid} variant="secondary"
-                            onClick={() => { tglAddEmailMod(false); addEmailSubmit({_id, formData})}}
+                            onClick={() => { tglAddEmailMod(false); addEmailSubmit({_id, formData}); setFormData(form)}}
                     >
                         Submit
                     </Button>
