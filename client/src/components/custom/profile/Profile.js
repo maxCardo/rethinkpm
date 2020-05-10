@@ -30,10 +30,8 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
 
     //run on load only
     useEffect(() => {
-        //added to allow for reuse of profile component when redux data is orginized by component 
-        let activeProfile
-        activeProfile.profile && activeProfile.profileType === settings.profileType ? activeProfile = activeProfile.profile : activeProfile = null
-        if(!activeProfile){
+        //added to allow for reuse of profile component when redux data is orginized by component    
+        if(!activeProfile.profile || activeProfile.profileType != settings.profileType){
             const backUpProfile = qs.parse(search).profile 
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
