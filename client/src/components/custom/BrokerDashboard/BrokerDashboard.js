@@ -125,7 +125,7 @@ export class brokerDashboard extends Component {
     handleClickRow(row) {
       console.log('runnning haddle click');
       //set records as slected record activeProfile 
-      this.props.setActiveProfile(row)
+      this.props.setActiveProfile({profile:row, profileType:'agentPros'})
       this.props.history.push(`/profile/agent/${row._id}`)
     }
 }
