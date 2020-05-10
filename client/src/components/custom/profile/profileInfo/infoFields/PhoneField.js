@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 
 //ToDO: for future. add dropdown arrow to show other phone numbers and checkbox to make primary
 
-const PhoneField = ({tglAddPhoneMod, data: {data}}) => {
+const PhoneField = ({tglAddPhoneMod, data}) => {
 
     const phoneInput = useRef();
 

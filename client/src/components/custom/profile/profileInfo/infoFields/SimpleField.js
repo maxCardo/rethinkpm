@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-const SimpleField = ({field, data:{data}}) => {
+const SimpleField = ({field, data}) => {
 
     return (
         <p>

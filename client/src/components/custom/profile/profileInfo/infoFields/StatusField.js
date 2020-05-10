@@ -2,7 +2,7 @@ import React, {Fragment, useState, useRef, useEffect} from 'react'
 import Select from 'react-select'
 import {Button, Form, Modal} from "react-bootstrap";
 
-const StatusField = ({data: {data}}) => {
+const StatusField = ({data}) => {
 
     const formatStatus = (status) => {
         return {value: status, label: status[0].toUpperCase() + status.substr(1)}
