@@ -50,7 +50,7 @@ export const loadProfileDefault = profileType => async dispatch => {
 
     dispatch({
       type: SET_ACTIVE_PROFILE,
-      payload: res,
+      payload: res.data,
     });
   } catch (err) {
     console.log(err);

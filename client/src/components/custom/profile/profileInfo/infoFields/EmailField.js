@@ -6,7 +6,7 @@ import {tglAddEmailMod, updateEmail} from "../../../../../actions/profile";
 import PropTypes from 'prop-types';
 
 
-const EmailField = ({updateEmail, tglAddEmailMod, field, data: {data}}) => {
+const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
 
     const emailInput = useRef();
 
