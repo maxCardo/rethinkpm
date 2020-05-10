@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL, EDIT_EMAIL } from './type';
+import {
+    SET_ACTIVE_PROFILE,
+    PROFILE_ERROR,
+    TOGGLE_ADD_PHONE,
+    TOGGLE_ADD_EMAIL,
+    EDIT_EMAIL,
+    CLEAR_PROFILE_ERROR, PROFILE_SUCCESS, CLEAR_PROFILE_SUCCESS
+} from './type';
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
 
@@ -157,13 +164,21 @@ export const updateEmail = (formData, id) => (dispatch) => {
     dispatch({ type: EDIT_EMAIL });
     axios.put(`/api/profile/agent/${id}`, formData, config)
         .then((res) => {
-            console.log(res);
+            console.log(res.body);
+            dispatch({
+                type: PROFILE_SUCCESS,
+                payload: { heading: 'Email Update', msg: 'Successfully updated email record' }
+            });
         })
         .catch(err => {
             dispatch({
                 type: PROFILE_ERROR,
-                payload: { msg: 'Could not update record' }
+                payload: { heading: 'Email Update', msg: 'Could not update record' }
             });
         });
 };
 
+export const clearAlerts = () => (dispatch) => {
+    dispatch({ type: CLEAR_PROFILE_ERROR });
+    dispatch({ type: CLEAR_PROFILE_SUCCESS });
+};

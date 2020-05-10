@@ -66,9 +66,9 @@ router.put("/agent/:id", async (req, res) => {
       ...agent,
       ...req.body
     })
-
+    var thereq = req.body;
     //var result = await agent.save();
-    res.send(agent);
+    res.status(200).json({thereq});
   } catch (err) {
     res.status(500).send(err);
   }

@@ -17,6 +17,7 @@ import SalesScreen from './screens/SalesHistory'
 
 import { AGENT_SELECTED, SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
+import UpdateAlert from "../../core/UpdateAlert";
 
 //ToDo: action.addPhoneNumSubmit : 
     // - remove toggle dispactch 
@@ -70,6 +71,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
                 <ProfileList settings={settings}/>
             </div>
         </div>
+        <UpdateAlert  />
     </Fragment>
 }
 

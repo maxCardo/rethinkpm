@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProfileIcon from '../../common/ProfileIcon';
-import { connect } from 'react-redux';
-import commonFormatters from "../../../../util/commonDataFormatters";
-import Select from "react-select";
-import { agentStatus, trueFalse } from "../../../../util/statusSchemas";
-import {Button,Modal,Alert,Form} from "react-bootstrap";
+
 
 import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
@@ -59,8 +55,9 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
             <i className='fas fa-cogs'></i>
           </button>
         </div>
+          {/* modals */}
         <AddPhoneModal/>
-         <AddEmailModal/>
+        <AddEmailModal/>
       </div>
     
     
