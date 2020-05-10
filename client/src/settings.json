@@ -47,12 +47,6 @@
             "editable": "emails"
           },
           {
-            "name": "Email",
-            "accessor": "emailAddress",
-            "col": 1,
-            "editable": "input"
-          },
-          {
             "name": "Sales Volume",
             "accessor": "sales",
             "col": 2,
