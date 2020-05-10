@@ -30,7 +30,8 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
 
     //run on load only
     useEffect(() => {
-        if(!activeProfile){
+        //added to allow for reuse of profile component when redux data is orginized by component    
+        if(!activeProfile.profile || activeProfile.profileType != settings.profileType){
             const backUpProfile = qs.parse(search).profile 
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
@@ -38,6 +39,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
     
     return loading ? <Loading/> :
     <Fragment>
+        {/* update conditional statment below to use setting.json*/}
         <div className={isAgent ? 'agentProfile profile__main-container left__sidebar-open' : 'profile__main-container'}>
             <div className='profile__left-container'>
                 <Resizable defaultSize={{height: '400'}}style={{height: '400', display: 'flex'}} minWidth='100%' maxHeight={window.innerHeight*(4/6)} minHeight='100'
