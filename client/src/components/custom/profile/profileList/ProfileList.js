@@ -5,38 +5,36 @@ import FilteredList from './filteredList/FilteredList'
 import FilterModal from './modals/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 
-const ProfileList = () => {
-    //refactor into settings.json
-    const statusSelectOptions = [
-        { label: 'All', value: 'all' },
-        { value: 'new', label: 'Lead' },
-        { value: 'prospect', label: 'Prospect' },
-        { value: 'pending', label: 'Pending' },
-        { value: 'agent', label: 'Agent' },
-        { value: 'notInterested', label: 'Not Interested' },
-    ];
-    const [selectStatus, setStatus] = useState({options: {statusSelectOptions}, default:{ label: 'All', value: 'all' }})
+const ProfileList = ({settings:{statusSelect:{options, selected }}}) => {
+    
+    const [selectStatus, setStatus] = useState({options, selected})
     const [list, setList] = useState()
     const [showFilterMod, tglFilterMod] = useState(false)
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
 
     useEffect(() => {
-        //get audiances/filters combine with select options (from settings.json)
-        var test = statusSelectOptions.slice()
-        console.log(test);
-        console.log(statusSelectOptions);
+        //see if data available for this populations if no call api via action (double check call from Profile and reference call from BrokerDash)
+        //grab audiances and filters and add to state.options, set as options in select Status 
+        
     }, [])
 
     const setSearch = (e) => {
         console.log('running search');
     }
+
+    const setListByStatus = (v) => {
+        console.log('calling setListByStatus')
+        setStatus({ ...selectStatus, selected: v })
+        //action to call API and refresh list with selected 
+    }
+    
     
 
     return (
         <Fragment>
             <Select
                 className="agentStatusFilter"
-                onChange={v => setStatus({value:v})}
+                onChange={v => setListByStatus(v) }
                 defaultValue="All"
                 options={selectStatus.options}
                 placeholder='Select Status'

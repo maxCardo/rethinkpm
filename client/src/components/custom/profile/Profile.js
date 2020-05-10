@@ -65,7 +65,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
                 <p>chat sidebar</p>
             </div>
             <div className="sidebar__left profile__agent-leads">
-                <ProfileList/>
+                <ProfileList settings={settings}/>
             </div>
         </div>
     </Fragment>
