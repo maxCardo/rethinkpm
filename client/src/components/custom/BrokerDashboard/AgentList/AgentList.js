@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {SET_AGENT_OPPORTUNITIES} from '../../../../actions/type';
 import axios from 'axios';
@@ -118,13 +118,13 @@ class AgentList extends Component {
     let data = this.state.data.slice()
     //this parses the state to filter. will need to update this to call action and parse DB
     if(this.state.statusSelected.value !== 'all') {
-      const foundInFilters = this.state.filters.find(elem => elem._id == this.state.statusSelected.value)
-      const foundInAudiences = this.state.audiences.find(elem => elem._id == this.state.statusSelected.value)
+      const foundInFilters = this.state.filters.find(elem => elem._id === this.state.statusSelected.value)
+      const foundInAudiences = this.state.audiences.find(elem => elem._id === this.state.statusSelected.value)
       if(foundInFilters) {
         filters = filters.concat(foundInFilters.filters)
       } else if(foundInAudiences) {
         data = foundInAudiences.leads.map((leadId) => {
-          return this.state.data.find((agent) => agent._id == leadId)
+          return this.state.data.find((agent) => agent._id === leadId)
         })
       } else {
         filters.push({

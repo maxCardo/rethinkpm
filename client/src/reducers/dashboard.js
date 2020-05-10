@@ -12,7 +12,7 @@ export default function (state = initialState, action) {
           }
         case UPDATE_INQUIRY:
           const allInquiries = state.inquiriesRaw.map((inquiry) => {
-            if(inquiry._id == payload._id) {
+            if(inquiry._id === payload._id) {
               return payload
             }
             return inquiry

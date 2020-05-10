@@ -108,7 +108,7 @@ export class AgentFiltersModal extends Component {
                     <Col xs={5}>
                       <Select options={numberFilters} value={this.state.salesFilterType} onChange={this.handleSelectChange.bind(this, 'salesFilterType')}/>
                     </Col>
-                    {this.state.salesFilterType && this.state.salesFilterType.value == 'range' ?
+                    {this.state.salesFilterType && this.state.salesFilterType.value === 'range' ?
                       <Fragment>
                         <Col xs={3}>
                           <Form.Control type="text" value={this.state.salesFilterFirstValue} onChange={this.handleChange.bind(this, 'salesFilterFirstValue')}/>
@@ -182,28 +182,28 @@ export class AgentFiltersModal extends Component {
   }
   async handleSubmit() {
     const filters = []
-    if(this.state.officeFilterType.value != 'noFilter') {
+    if(this.state.officeFilterType.value !== 'noFilter') {
       filters.push({
         field: 'office.name',
         filterType: this.state.officeFilterType.value,
         value: this.state.officeFilterValue.map((status) => status.value)
       })
     }
-    if(this.state.statusFilterType.value != 'noFilter') {
+    if(this.state.statusFilterType.value !== 'noFilter') {
       filters.push({
         field: 'status',
         filterType: this.state.statusFilterType.value,
         value: this.state.statusFilterValue.map((status) => status.value)
       })
     }
-    if(this.state.leadOwnerFilterType.value != 'noFilter') {
+    if(this.state.leadOwnerFilterType.value !== 'noFilter') {
       filters.push({
         field: 'leadOwner',
         filterType: this.state.leadOwnerFilterType.value,
         value: this.state.leadOwnerFilterValue
       })
     }
-    if(this.state.salesFilterType.value != 'noFilter') {
+    if(this.state.salesFilterType.value !== 'noFilter') {
       if(this.state.salesFilterType.value === 'range') {
         filters.push({
           field: 'sales',
@@ -218,8 +218,8 @@ export class AgentFiltersModal extends Component {
         })
       }
     }
-    if(this.state.zipcodesFilterType.value != 'noFilter') {
-      if(this.state.zipcodesFilterType.value == this.state.areasFilterType.value) {
+    if(this.state.zipcodesFilterType.value !== 'noFilter') {
+      if(this.state.zipcodesFilterType.value === this.state.areasFilterType.value) {
         const value = this.state.zipcodesFilterValue.map((status) => status.value).concat(this.state.areasFilterValue.map((status) => status.value))
         filters.push({
           field: 'areasAndZipCodesArray',
@@ -234,7 +234,7 @@ export class AgentFiltersModal extends Component {
         })
       }
     }
-    if(this.state.areasFilterType.value != 'noFilter' && this.state.zipcodesFilterType.value != this.state.areasFilterType.value) {
+    if(this.state.areasFilterType.value !== 'noFilter' && this.state.zipcodesFilterType.value !== this.state.areasFilterType.value) {
       filters.push({
         field: 'areasAndZipCodesArray',
         filterType: this.state.areasFilterType.value,

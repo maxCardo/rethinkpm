@@ -74,6 +74,8 @@ export class UpdateModal extends Component {
         return this.renderTourResultForm()
       case 'recordApplication':
         return this.renderApplicationForm()
+      default:
+        return ''
     }
   }
   renderAppointmentForm() {

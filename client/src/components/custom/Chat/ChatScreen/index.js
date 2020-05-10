@@ -64,7 +64,7 @@ export class ChatScreen extends Component {
           unread: chat.unread,
           messages: chat.messages.map((message) => ({
             date: new Date(message.date),
-            sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
+            sender: message.from === 'User-SMS' ? chat.inq.prospect.name : message.from,
             content: message.message,
             userMessage: message.from !== 'User-SMS'
           })),
@@ -84,7 +84,7 @@ export class ChatScreen extends Component {
     let activeChat = undefined
     if(this.props.inquiries && this.props.inquiries.length) {
       activeChat = this.props.chats[this.state.activeChat]
-      const inquiry = this.props.inquiries.find((inquiry) => inquiry._id == activeChat.inquiryId)
+      const inquiry = this.props.inquiries.find((inquiry) => inquiry._id === activeChat.inquiryId)
       notes = inquiry.notes
     }
     return (
