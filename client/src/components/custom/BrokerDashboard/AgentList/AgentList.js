@@ -40,6 +40,7 @@ class AgentList extends Component {
   }
 
   componentDidMount() {
+    //allagents is opraw from redux 
     if(this.props.allAgents) {
       const agentsProccessed = this.props.allAgents.map((agent) => {
         const agentCopy = Object.assign({}, agent)
@@ -57,7 +58,9 @@ class AgentList extends Component {
         return agentCopy
       })
       this.setState({data: agentsProccessed, loading:false});
+
     } else {
+      //same call and data aggr made in brokerdash
       axios.get('/api/sales/agents').then((res) => {
         let agentsWithSales = res.data.filter((agent) => agent.sales > 0);
         const data = {
@@ -71,6 +74,7 @@ class AgentList extends Component {
           data[agent.status].push(agent)
         })
         this.props.setAgents({agentOpportunities: data, agentOpportunitiesRaw: res.data});
+        
         const agentsProccessed = res.data.map((agent) => {
           const agentCopy = Object.assign({}, agent)
           if(agent.areas) {
@@ -89,12 +93,16 @@ class AgentList extends Component {
         this.setState({data: agentsProccessed, loading:false});
       })
     }
+
+    //refactor calls to be more universal. store on redux? part of above call?
     axios.get('/api/sales/audiences').then((res) => {
       this.setState({audiences: res.data})
     })
     axios.get('/api/sales/filters').then((res) => {
       this.setState({filters: res.data})
     })
+
+    //call spacific to agent implemntation... how to handle dybamicly
     axios.get('/api/sales/offices').then((res) => {
       const officeOptions = res.data.map((office) => ({value: office.name, label: office.name}))
       this.setState({officeOptions})
@@ -102,10 +110,13 @@ class AgentList extends Component {
   }
 
   render() {
+    //setting mutable state 
     let filters = this.state.defaultFilters.slice()
     let modalFilters = this.state.modalFilters.slice()
     filters = filters.concat(modalFilters)
+    //data is = to agentProcessed and loading
     let data = this.state.data.slice()
+    //this parses the state to filter. will need to update this to call action and parse DB
     if(this.state.statusSelected.value !== 'all') {
       const foundInFilters = this.state.filters.find(elem => elem._id == this.state.statusSelected.value)
       const foundInAudiences = this.state.audiences.find(elem => elem._id == this.state.statusSelected.value)
