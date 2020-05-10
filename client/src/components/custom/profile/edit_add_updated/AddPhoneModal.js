@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react'
+import React, {Fragment, useEffect, useRef, useState} from 'react'
 import {connect} from 'react-redux'
-import { Modal, Button, Form } from 'react-bootstrap'
+import {Modal, Button, Form} from 'react-bootstrap'
 import Select from "react-select";
 
 import {tglAddPhoneMod, addPhoneNumSubmit} from '../../../../actions/profile'
@@ -8,27 +8,26 @@ import {tglAddPhoneMod, addPhoneNumSubmit} from '../../../../actions/profile'
 
 //set action to change showAddPhoneMod as false on redux
 
-const AddPhoneModal = ({profile:{_id},addPhoneNumSubmit, tglAddPhoneMod, showMod}) => {
+const AddPhoneModal = ({profile: {_id}, addPhoneNumSubmit, tglAddPhoneMod, showMod}) => {
 
-    let form = { number: '', okToText: '', makePrimary: '' }
+    const phoneInput = useRef();
+
+    let form = {number: '', okToText: '', makePrimary: ''}
     const [valid, setValid] = useState(false)
     const [formData, setFormData] = useState(form)
 
     const onChange = e => {
-        console.log('running on change');
-        console.log('name:', e.target.name)
-        console.log('value:', e.target.value)    
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormData({...formData, [e.target.name]: e.target.value})
     };
 
     const validate = (e) => {
         var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         setValid(!!e.target.value.match(validPhone))
-        
+
     }
     const trueFalse = [
-        { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
+        {value: true, label: 'Yes'},
+        {value: false, label: 'No'}
     ];
 
     const checkBoxCheck = (
@@ -38,6 +37,11 @@ const AddPhoneModal = ({profile:{_id},addPhoneNumSubmit, tglAddPhoneMod, showMod
         </svg>
     );
 
+    useEffect(() => {
+        if (phoneInput.current && !valid){
+            phoneInput.current.focus()
+        }
+    });
 
     return (
         <Fragment>
@@ -50,22 +54,26 @@ const AddPhoneModal = ({profile:{_id},addPhoneNumSubmit, tglAddPhoneMod, showMod
                         <Form.Group>
                             <Form.Label>Number:</Form.Label>
                             <Form.Control type="text" name='number'
-                                className={valid ? 'valid' : 'invalid'}
-                                value={formData.number}
-                                onChange={(e) => { validate(e); onChange(e) }} />
+                                          className={valid ? 'valid' : 'invalid'}
+                                          value={formData.number}
+                                          onChange={(e) => {
+                                              validate(e);
+                                              onChange(e)
+                                          }}
+                                          ref={phoneInput}/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Ok to text:</Form.Label>
                             <Select name="okToText"
-                                defaultValue = {trueFalse[0]}
-                                onChange={(e) =>  onChange({target:{name:'okToText', value:e}})}
-                                options={trueFalse}
-                                isSearchable={false}
+                                    defaultValue={trueFalse[0]}
+                                    onChange={(e) => onChange({target: {name: 'okToText', value: e}})}
+                                    options={trueFalse}
+                                    isSearchable={false}
                             />
                         </Form.Group>
                         <Form.Group>
                             <div className="element-wrapper with--checkbox">
-                                <label className="checkbox path" checked={true}  >
+                                <label className="checkbox path" checked={true}>
                                     <input type="checkbox" name='makePrimary' value='true' onChange={e => onChange(e)}/>
                                     {checkBoxCheck} &nbsp; MakePrimary
                                 </label>
@@ -76,12 +84,19 @@ const AddPhoneModal = ({profile:{_id},addPhoneNumSubmit, tglAddPhoneMod, showMod
                 </Modal.Body>
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" disabled={!valid} variant="secondary"
-                        onClick={() => { tglAddPhoneMod(false); addPhoneNumSubmit({_id, formData})}}
+                            onClick={() => {
+                                tglAddPhoneMod(false);
+                                addPhoneNumSubmit({_id, formData});
+                                setFormData(form);
+                            }}
                     >
                         Submit
                     </Button>
                     <Button className="btn btn-danger" variant="secondary"
-                        onClick={() => { tglAddPhoneMod(false); setFormData(form); }}
+                            onClick={() => {
+                                tglAddPhoneMod(false);
+                                setFormData(form);
+                            }}
                     >
                         Cancel
                     </Button>
@@ -96,4 +111,4 @@ const mapStateToProps = state => ({
     showMod: state.profile.showAddPhoneMod
 })
 
-export default connect(mapStateToProps, { tglAddPhoneMod, addPhoneNumSubmit })(AddPhoneModal)
+export default connect(mapStateToProps, {tglAddPhoneMod, addPhoneNumSubmit})(AddPhoneModal)
