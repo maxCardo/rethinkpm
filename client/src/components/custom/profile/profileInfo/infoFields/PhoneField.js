@@ -11,8 +11,6 @@ import PropTypes from "prop-types";
 //ToDO: for future. add dropdown arrow to show other phone numbers and checkbox to make primary
 
 const PhoneField = ({tglAddPhoneMod, data: {data}}) => {
-  console.log(data);
-
 
     const phoneInput = useRef();
 
@@ -24,7 +22,7 @@ const PhoneField = ({tglAddPhoneMod, data: {data}}) => {
     const [phoneValid, setPhoneValid] = useState(true)
     const [showConfModal, setConfModal] = useState(false)
     const [editPhone, setEditPhone] = useState('4125138992')
-    
+
     const editPhonefunc = async (e) => {
         setEditPhone(e)
         var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -58,28 +56,33 @@ const PhoneField = ({tglAddPhoneMod, data: {data}}) => {
                 <b>Phone:&nbsp;</b>
                 <input
                     type='text'
-                    className= {phoneValid ? 'valid':'invalid'}
+                    className={phoneValid ? 'valid' : 'invalid'}
                     name='phonePrimary'
                     disabled={!edit}
                     value={edit ? editPhone : phone}
                     onChange={(e) => editPhonefunc(e.target.value)}
                     ref={phoneInput}
                 />
-                { !edit ? (
+                {!edit ? (
                     <button className='action-buttons__button singleFieldEdit' onClick={() => toggleEdit(true)}>
                         <i className='fas fa-pencil-alt'></i>
                     </button>
-                ):(
-                    <Fragment>    
+                ) : (
+                    <Fragment>
                         <button
                             className='action-buttons__button ab__confirm singleFieldEdit'
-                            disabled= {!phoneValid}
-                            onClick={() => {editPhone != phone ? setConfModal(true) : toggleEdit(false)}}
+                            disabled={!phoneValid}
+                            onClick={() => {
+                                editPhone != phone ? setConfModal(true) : toggleEdit(false)
+                            }}
                         >
                             <i className='fas fa-check'></i>
                         </button>
                         <button className='action-buttons__button ab__cancel singleFieldEdit'
-                            onClick={() => {toggleEdit(false); editPhonefunc(phone)}}
+                                onClick={() => {
+                                    toggleEdit(false);
+                                    editPhonefunc(phone)
+                                }}
                         >
                             <i className='fas fa-times'></i>
                         </button>
@@ -87,13 +90,20 @@ const PhoneField = ({tglAddPhoneMod, data: {data}}) => {
                 )}
                 <button
                     className='action-buttons__button addPhoneNumber'
-                    onClick={() => {toggleEdit(false); editPhonefunc(phone); tglAddPhoneMod(true)}}
+                    onClick={() => {
+                        toggleEdit(false);
+                        editPhonefunc(phone);
+                        tglAddPhoneMod(true)
+                    }}
                 >
                     <i className='fas fa-plus'></i>
                 </button>
             </div>
-                 
-            <Modal size='md' show={showConfModal} onHide={() => {editPhonefunc(phone); setConfModal(false)}}>
+
+            <Modal size='md' show={showConfModal} onHide={() => {
+                editPhonefunc(phone);
+                setConfModal(false)
+            }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Are you sure you want to change the primary phone number</Modal.Title>
                 </Modal.Header>
@@ -101,16 +111,20 @@ const PhoneField = ({tglAddPhoneMod, data: {data}}) => {
                     <Button className="btn btn-primary" variant="secondary" onClick={() => editPrimePhone()}>
                         Confirm
                     </Button>
-                    <Button className="btn btn-danger" variant="secondary" onClick={() => {toggleEdit(false); editPhonefunc(phone); setConfModal(false)}}>
+                    <Button className="btn btn-danger" variant="secondary" onClick={() => {
+                        toggleEdit(false);
+                        editPhonefunc(phone);
+                        setConfModal(false)
+                    }}>
                         Cancel
                     </Button>
                 </Modal.Footer>
-            </Modal>         
+            </Modal>
         </Fragment>
     )
 }
 
-PhoneField.propTypes ={
+PhoneField.propTypes = {
     tglAddPhoneMod: PropTypes.func.isRequired,
     //updatePhone: PropTypes.func.isRequired, NOT IMPLEMENTED
 }

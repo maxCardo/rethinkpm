@@ -1,6 +1,6 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useState, useRef, useEffect} from 'react'
 import Select from 'react-select'
-import {Button, Modal} from "react-bootstrap";
+import {Button, Form, Modal} from "react-bootstrap";
 
 const StatusField = ({data: {data}}) => {
 
@@ -12,6 +12,9 @@ const StatusField = ({data: {data}}) => {
     const [status, setStatus] = useState(formatedStatus);
     const [editable, toggleEditable] = useState(false);
     const [showConfModal, setConfModal] = useState(false);
+    const [lossReason, setLossReason] = useState('');
+    const lossInput = useRef();
+
 
     //ToDo: should we pull from common folder? utils? (utils.statusSchema currently was this data)
     const agentStatus = [
@@ -32,7 +35,13 @@ const StatusField = ({data: {data}}) => {
         //post to api
         console.log(status);
         console.log(data._id);
+        //if status === 'notInterested' add lossReason to post
+        //show success alert and get updated record on successful update
     };
+
+    useEffect( () => {
+        if (lossInput.current !== undefined && lossInput.current !== null) lossInput.current.focus()
+    });
 
     return (
         <Fragment>
@@ -75,7 +84,21 @@ const StatusField = ({data: {data}}) => {
                 <Modal.Header closeButton>
                     <Modal.Title>Are you sure you want to change the status to {status.label}</Modal.Title>
                 </Modal.Header>
-                { status.value === 'notInterested' && 'reason for loss here!'}
+                {status.value === 'notInterested' && (
+                    <Modal.Body>
+                        <Form.Group className="addLossReason">
+                            <Form.Label>Reason for Loss:</Form.Label>
+                            <Form.Control type="text" name='lossReason'
+                                          value={lossReason}
+                                          onChange={(e) => {
+                                              setLossReason(e.target.value)
+                                          }}
+                                          autoFocus={true}
+                                          ref={lossInput}/>
+                        </Form.Group>
+                    </Modal.Body>
+                )
+                }
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" variant="secondary" onClick={() => {
                         updateAgentStatus(status['value']);
@@ -87,7 +110,8 @@ const StatusField = ({data: {data}}) => {
                     <Button className="btn btn-danger" variant="secondary" onClick={() => {
                         toggleEditable(false);
                         setStatus(formatedStatus);
-                        setConfModal(false)
+                        setLossReason('');
+                        setConfModal(false);
                     }}>
                         Cancel
                     </Button>

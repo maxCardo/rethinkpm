@@ -26,7 +26,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data: {data}}) => {
     }
 
     const editPrimaryEmail = () => {
-        const postEmails = data.email.map((item) => {
+        const postEmails = data.email.forEach((item) => {
             if (item.isPrimary) {
                 item.address = editEmail;
                 return item
