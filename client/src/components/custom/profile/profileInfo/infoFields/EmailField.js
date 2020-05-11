@@ -45,7 +45,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
     }, [edit])
 
     return (
-        <Fragment>
+        <Fragment key="email">
             <div className={field.name}>
                 <b>{field.name}:</b>
                 <input type="text" name="emailPrimary"

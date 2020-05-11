@@ -35,8 +35,8 @@ const FilteredList = () => {
                 </div>
                 {showPills ?
                     <div className='filter-pills__pills-container'>
-                        {state.filters.map((filter) => (
-                            <Pill text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`} />
+                        {state.filters.map((filter, index) => (
+                            <Pill key={index} text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`} />
                         ))}
                     </div>
                     :

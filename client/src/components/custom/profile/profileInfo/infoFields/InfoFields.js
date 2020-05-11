@@ -6,6 +6,8 @@ import StatusField from './StatusField';
 import CollectionField from './CollectionField';
 
 const InfoFields = (props) => {
+  const keys = Object.keys(props).length;
+  console.log(keys);
   
   const {field:{accessor}} = props
     switch (accessor) {

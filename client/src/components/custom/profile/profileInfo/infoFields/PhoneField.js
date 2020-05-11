@@ -51,7 +51,7 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
     }, [edit])
 
     return (
-        <Fragment>
+        <Fragment key="phoneNumber">
             <div className='Phone'>
                 <b>Phone:&nbsp;</b>
                 <input

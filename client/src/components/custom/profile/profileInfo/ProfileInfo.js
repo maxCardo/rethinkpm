@@ -31,7 +31,7 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
             <div className='column' key={index}>
               <div className='column-content'>
                 <h2>{colHeader[col]}</h2>
-                {columns[col].map((field, index) => <InfoField key={index} field={field} data={profile} />)}
+                {columns[col].map((field, index) => <InfoField key={index} passIndex={index} field={field} data={profile} />)}
                 </div>
             </div>
           ))}
