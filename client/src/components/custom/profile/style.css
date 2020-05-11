@@ -224,6 +224,8 @@
 /*remove border in the last row*/
 .profile-info__data-container p:last-child,
 .profile-info__data-container .column-content > div:last-child:not(:only-child) {
+  display: flex;
+  flex-wrap: wrap;
   border-bottom: none;
   padding: 0;
 }

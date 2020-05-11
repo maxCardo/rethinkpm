@@ -1,10 +1,10 @@
-import React , {Fragment, useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import React , {Fragment, useState} from 'react'
+//import {Link} from 'react-router-dom'
 
 import Pill from './Pills'
 import InfList from './InfList'
 
-const FilteredList = () => {
+const FilteredList = ({data}) => {
 
 
     const initalState = {
@@ -15,12 +15,6 @@ const FilteredList = () => {
     const [showPills, setShowPills] = useState(true)
     const [state, setState] = useState(initalState)
 
-    useEffect(() => {
-        //infanite list
-
-
-    }, [])
-    
     var representValue = (params) => {
         return params
     }
@@ -35,8 +29,8 @@ const FilteredList = () => {
                 </div>
                 {showPills ?
                     <div className='filter-pills__pills-container'>
-                        {state.filters.map((filter) => (
-                            <Pill text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`} />
+                        {state.filters.map((filter, index) => (
+                            <Pill key={index} text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`} />
                         ))}
                     </div>
                     :
@@ -44,7 +38,7 @@ const FilteredList = () => {
                 }
             </div>
             {/* End Pills  Start Inf List*/}
-            <InfList data={state.filteredData} dataSetKey={state.dataSetKey}/>
+            <InfList data={data}/>
         </Fragment>
     )
 }

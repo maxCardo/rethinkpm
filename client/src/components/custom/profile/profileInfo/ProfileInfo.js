@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProfileIcon from '../../common/ProfileIcon';
-import { connect } from 'react-redux';
-import commonFormatters from "../../../../util/commonDataFormatters";
-import Select from "react-select";
-import { agentStatus, trueFalse } from "../../../../util/statusSchemas";
-import {Button,Modal,Alert,Form} from "react-bootstrap";
+
 
 import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
@@ -19,7 +15,7 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
       const columns = {1:[],2:[],3:[]}  
       profileInfo.map((attr) => columns[attr.col].push(attr))   
       setColumns({columns:columns, loading: false})
-    },[profile])
+    },[profile, profileInfo])
     
     //ToDo: refactor settings.json to incorperate below lines of code
     const colHeader = ['', 'Personal Info', 'Sales Info', 'Commumication Info']
@@ -35,7 +31,7 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
             <div className='column' key={index}>
               <div className='column-content'>
                 <h2>{colHeader[col]}</h2>
-                {columns[col].map((field, index) => <InfoField key={index} field={field} data={profile} />)}
+                {columns[col].map((field, index) => <InfoField key={index} passIndex={index} field={field} data={profile} />)}
                 </div>
             </div>
           ))}
@@ -59,8 +55,9 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
             <i className='fas fa-cogs'></i>
           </button>
         </div>
+          {/* modals */}
         <AddPhoneModal/>
-         <AddEmailModal/>
+        <AddEmailModal/>
       </div>
     
     
