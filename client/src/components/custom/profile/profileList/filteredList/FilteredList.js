@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import Pill from './Pills'
 import InfList from './InfList'
 
-const FilteredList = () => {
+const FilteredList = ({data}) => {
 
 
     const initalState = {
@@ -15,12 +15,6 @@ const FilteredList = () => {
     const [showPills, setShowPills] = useState(true)
     const [state, setState] = useState(initalState)
 
-    useEffect(() => {
-        //infanite list
-
-
-    }, [])
-    
     var representValue = (params) => {
         return params
     }
@@ -44,7 +38,7 @@ const FilteredList = () => {
                 }
             </div>
             {/* End Pills  Start Inf List*/}
-            <InfList data={state.filteredData} dataSetKey={state.dataSetKey}/>
+            <InfList data={data}/>
         </Fragment>
     )
 }

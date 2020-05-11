@@ -5,15 +5,16 @@
         "profileType": "agentPros",
         "statusSelect":{
           "options":[
-            {"value": "active", "label": "Active"},
-            {"value": "all", "label": "All"},
-            { "value": "new", "label": "Lead"},
-            { "value": "prospect", "label": "Prospect"},
-            { "value": "pending", "label": "Pending"},
-            { "value": "agent", "label": "Agent"},
-            { "value": "notInterested", "label": "Not Interested"}
+            {"value": "['prospect', 'pending','agent']", "label": "Active"},
+            {"value": "['prospect', 'pending','agent','new','notInterested]", "label": "All"},
+            { "value": "['new']", "label": "Lead"},
+            { "value": "['prospect']", "label": "Prospect"},
+            { "value": "['pending']", "label": "Pending"},
+            { "value": "['agent']", "label": "Agent"},
+            { "value": "['notInterested']", "label": "Not Interested"}
           ],
-          "selected": {"value": "all", "label": "All"}
+          "selected": {"value": "all", "label": "All"},
+          "selectedQuery": "['prospect', 'pending','agent']"
         },
         "profileInfo": [
           {

@@ -1,11 +1,15 @@
 import React, {Fragment, useState, useEffect} from 'react'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 import Select from 'react-select'
-
+import Loading from '../../../core/LoadingScreen/Loading'
 import FilteredList from './filteredList/FilteredList'
 import FilterModal from './modals/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 
-const ProfileList = ({settings:{statusSelect:{options, selected }}}) => {
+import {loadProfileList} from '../../../../actions/profile'
+
+const ProfileList = ({loadProfileList, profileList, settings:{profileType, statusSelect:{options, selected, selectedQuery }}}) => {
     
     const [selectStatus, setStatus] = useState({options, selected})
     const [list, setList] = useState()
@@ -13,10 +17,13 @@ const ProfileList = ({settings:{statusSelect:{options, selected }}}) => {
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
 
     useEffect(() => {
+        console.log('runnning profile list');
         //see if data available for this populations if no call api via action (double check call from Profile and reference call from BrokerDash)
-        //grab audiances and filters and add to state.options, set as options in select Status 
+        //grab audiances and filters and add to state.options, set as options in select Status
+        loadProfileList(profileType, selectedQuery) 
         
-    }, [])
+        
+    }, [loadProfileList])
 
     const setSearch = (e) => {
         console.log('running search');
@@ -30,7 +37,7 @@ const ProfileList = ({settings:{statusSelect:{options, selected }}}) => {
     
     
 
-    return (
+    return profileList.loading ? <Loading/> :
         <Fragment>
             <Select
                 className="agentStatusFilter"
@@ -56,7 +63,7 @@ const ProfileList = ({settings:{statusSelect:{options, selected }}}) => {
                 <button onClick={() => tglSaveFltrMod(true)}>Save filter</button>
             </div>
             <FilteredList
-                //data={data}
+                data={profileList.list}
                 //filters={filters}
                 //dataSetKey={this.state.statusSelected.value}
             />
@@ -75,9 +82,19 @@ const ProfileList = ({settings:{statusSelect:{options, selected }}}) => {
         </Fragment>
 
 
-    )
+    
+}
+
+ProfileList.propTypes = {
+    profileList: PropTypes.object.isRequired
 }
 
 
 
-export default ProfileList
+const mapStateToProps = state => ({
+    profileList: state.profile.profileList
+});
+
+
+
+export default connect(mapStateToProps, {loadProfileList})(ProfileList)
