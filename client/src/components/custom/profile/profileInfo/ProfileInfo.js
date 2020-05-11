@@ -15,7 +15,7 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
       const columns = {1:[],2:[],3:[]}  
       profileInfo.map((attr) => columns[attr.col].push(attr))   
       setColumns({columns:columns, loading: false})
-    },[profile])
+    },[profile, profileInfo])
     
     //ToDo: refactor settings.json to incorperate below lines of code
     const colHeader = ['', 'Personal Info', 'Sales Info', 'Commumication Info']

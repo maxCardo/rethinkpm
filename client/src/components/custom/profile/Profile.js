@@ -1,21 +1,17 @@
 import React, { Fragment, useEffect } from 'react';
-import axios from 'axios';
 import qs from 'query-string'
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux'
 
 import './style.css'
 import ProfileInfo from './profileInfo/ProfileInfo'
 import ProfileList from './profileList/ProfileList'
 import { Resizable } from 're-resizable'
-import ProfileChat from './ProfileChat';
-import BottomNavigation from '../service/BottomNavigation';
-import AgentList from "../BrokerDashboard/AgentList/AgentList";
 import Loading from '../../core/LoadingScreen/Loading'
-import NotesScreen from './screens/Notes'
-import SalesScreen from './screens/SalesHistory'
+//import NotesScreen from './screens/Notes'
+//import SalesScreen from './screens/SalesHistory'
 
-import { AGENT_SELECTED, SET_INQUIRIES } from '../../../actions/type'
+//removed AGENT_SELECTED
+import { SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
 import UpdateAlert from "../../core/UpdateAlert";
 
@@ -32,11 +28,11 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
     //run on load only
     useEffect(() => {
         //added to allow for reuse of profile component when redux data is orginized by component    
-        if(!activeProfile.profile || activeProfile.profileType != settings.profileType){
+        if(!activeProfile.profile || activeProfile.profileType !== settings.profileType){
             const backUpProfile = qs.parse(search).profile 
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
-    }, [])
+    }, [activeProfile.profile, activeProfile.profileType, loadBackUpProfile, loadProfileDefault, search, settings.profileType])
     
     return loading ? <Loading/> :
     <Fragment>
@@ -89,4 +85,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, {loadProfileDefault, loadBackUpProfile})(Profile)
+export default connect(mapStateToProps, {...mapDispatchToProps, loadProfileDefault, loadBackUpProfile})(Profile)

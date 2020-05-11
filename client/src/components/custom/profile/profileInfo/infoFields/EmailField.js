@@ -10,9 +10,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
 
     const emailInput = useRef();
 
-    let email = data.email.map((address) => {
-        if (address.isPrimary) return address.address
-    })[0];
+    let email = data.email.find((address) => address.isPrimary).address;
 
     const [edit, toggleEdit] = useState(false);
     const [emailValid, setEmailValid] = useState(true);
@@ -30,6 +28,8 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
             if (item.isPrimary) {
                 item.address = editEmail;
                 return item
+            } else {
+                return item;
             }
         })
         updateEmail({email: postEmails}, data._id);

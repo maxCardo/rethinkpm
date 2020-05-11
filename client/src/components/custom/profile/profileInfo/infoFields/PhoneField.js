@@ -14,9 +14,7 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
 
     const phoneInput = useRef();
 
-    let phone = data.phoneNumbers.map((phone) => {
-        if (phone.isPrimary) return phone.number
-    })[0];
+    let phone = data.phoneNumbers.find((phone) => phone.isPrimary).number;
 
     const [edit, toggleEdit] = useState(false)
     const [phoneValid, setPhoneValid] = useState(true)
@@ -29,10 +27,13 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
         setPhoneValid(!!e.match(validPhone))
     }
 
+    /*TODO: NEEDS AN ACTION*/
     const editPrimePhone = () => {
         const postPhones = data.phoneNumbers.map((item) => {
             if (item.isPrimary) {
                 item.number = editPhone;
+                return item
+            } else {
                 return item
             }
         })
@@ -73,7 +74,8 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
                             className='action-buttons__button ab__confirm singleFieldEdit'
                             disabled={!phoneValid}
                             onClick={() => {
-                                editPhone != phone ? setConfModal(true) : toggleEdit(false)
+                                /*TODO: Needs to be addressed when we consider formatting for entry*/
+                                editPhone !== phone ? setConfModal(true) : toggleEdit(false)
                             }}
                         >
                             <i className='fas fa-check'></i>
