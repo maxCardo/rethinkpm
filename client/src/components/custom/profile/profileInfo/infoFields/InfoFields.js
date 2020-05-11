@@ -3,6 +3,7 @@ import SimpleField from './SimpleField';
 import EmailField from './EmailField';
 import PhoneField from './PhoneField';
 import StatusField from './StatusField';
+import CollectionField from './CollectionField';
 
 const InfoFields = (props) => {
   
@@ -14,6 +15,8 @@ const InfoFields = (props) => {
         return <EmailField {...props} />;
       case 'status':
         return <StatusField {...props} />;
+      case 'collection':
+        return <CollectionField {...props} />;
       default:
         return <SimpleField {...props} />;
     }

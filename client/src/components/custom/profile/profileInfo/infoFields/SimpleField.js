@@ -4,7 +4,7 @@ import React from 'react'
 const SimpleField = ({field, data}) => {
 
     return (
-        <p>
+        <p key={field.accessor} >
             <b>{field.name}:</b>&nbsp;{eval(`data.${field.accessor}`) ? eval(`data.${field.accessor}`) :'n/a'}
         </p>
     )

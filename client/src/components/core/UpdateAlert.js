@@ -53,7 +53,6 @@ const mapStateToProps = state => ({
 });
 
 UpdateAlert.propTypes = {
-    alertType: PropTypes.string.isRequired,
     clearAlerts: PropTypes.func.isRequired
 };
 
