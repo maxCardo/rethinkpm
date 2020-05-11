@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL, EDIT_EMAIL } from './type';
+import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL, EDIT_EMAIL, SET_PROFILE_LIST} from './type';
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
 
@@ -40,16 +40,35 @@ export const loadBackUpProfile = (profileType, profile) => {
 };
 
 
-//grab first prospect record
+//grab first profile record
 export const loadProfileDefault = profileType => async dispatch => {
   console.log('running load default: ', profileType);
 
   try {
     const res = await axios.get(`/api/profile/${profileType}`);
-    console.log('res');
 
     dispatch({
       type: SET_ACTIVE_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: err,
+        status: err,
+      },
+    });
+  }
+};
+
+//grab profile list for default load and filter
+export const loadProfileList = (profileType, queryList) =>async dispatch => {
+  try {
+  const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
+    dispatch({
+      type: SET_PROFILE_LIST,
       payload: res.data,
     });
   } catch (err) {

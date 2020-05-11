@@ -124,12 +124,26 @@ function transformObjectIntoSortedArray(object) {
 router.get('/agentPros', async (req, res) => {
   try {
       const record = await  Agent.findOne().populate('prospect notes office');
-      console.log(record);
       res.status(200).send(record);
   } catch (error) {
       console.error(error);
       res.status(400).send('server error')
   }
 });
+
+
+// @route: GET /api/profile/list/agentPros/:query;
+// @desc: Get list of agentsPros to fill default profileList (agentPros) 
+// @ access: Public * ToDo: update to make private
+router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
+  try {
+      const record = await Agent.find({ status: { $in: eval(query) } })
+      res.status(200).send(record);
+  } catch (error) {
+      console.error(error);
+      res.status(400).send('server error')
+  }
+});
+
 
 module.exports = router;

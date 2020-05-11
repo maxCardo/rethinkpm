@@ -1,8 +1,9 @@
-import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL } from '../actions/type';
+import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL, SET_PROFILE_LIST } from '../actions/type';
 const initialState = {
     activeProfile:'',
     loading:true,
-    showAddPhoneMod: false
+    showAddPhoneMod: false,
+    profileList: {list:'', loading: true}
 }
 
 export default function (state = initialState, action) {
@@ -14,6 +15,14 @@ export default function (state = initialState, action) {
                 activeProfile: payload,
                 loading:false
             };
+        case SET_PROFILE_LIST:
+            return {
+                ...state,
+                profileList: {
+                    list: payload,
+                    loading: false
+                },
+            }
         case TOGGLE_ADD_PHONE:
             return {
                 ...state,
