@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL, EDIT_EMAIL, SET_PROFILE_LIST} from './type';
+import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL, EDIT_EMAIL, SET_PROFILE_LIST, LOAD_PROFILE_LIST} from './type';
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
 
@@ -66,7 +66,10 @@ export const loadProfileDefault = profileType => async dispatch => {
 //grab profile list for default load and filter
 export const loadProfileList = (profileType, queryList) =>async dispatch => {
   try {
-  const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
+    dispatch({
+      type: LOAD_PROFILE_LIST,
+    });
+    const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
     dispatch({
       type: SET_PROFILE_LIST,
       payload: res.data,

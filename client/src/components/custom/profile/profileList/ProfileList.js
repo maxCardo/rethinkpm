@@ -15,6 +15,7 @@ const ProfileList = ({loadProfileList, profileList, settings:{profileType, statu
     const [list, setList] = useState()
     const [showFilterMod, tglFilterMod] = useState(false)
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
+    const [searchString, setSearchString] = useState('')
 
     useEffect(() => {
         console.log('runnning profile list');
@@ -25,15 +26,15 @@ const ProfileList = ({loadProfileList, profileList, settings:{profileType, statu
         
     }, [loadProfileList])
 
-    const setSearch = (e) => {
-        console.log('running search');
+    const setListByStatus = (v) => {
+        loadProfileList(profileType, v.value) 
+        setStatus({ ...selectStatus, selected: v })
     }
 
-    const setListByStatus = (v) => {
-        console.log('calling setListByStatus')
-        setStatus({ ...selectStatus, selected: v })
-        //action to call API and refresh list with selected 
+    const setSearch = () => {
+        console.log('running set search')
     }
+    
     
     
 
@@ -50,7 +51,7 @@ const ProfileList = ({loadProfileList, profileList, settings:{profileType, statu
                 <input
                     className='form-control agent-list__search-input'
                     tabIndex={0}
-                    onChange={(e) => setSearch( e.target.value)}
+                    onChange={(e) => setSearchString( e.target.value)}
                     placeholder='Search'
                 />
                 <button className='agent-list__filter-icon' onClick={() => tglFilterMod(true)}>
@@ -64,7 +65,7 @@ const ProfileList = ({loadProfileList, profileList, settings:{profileType, statu
             </div>
             <FilteredList
                 data={profileList.list}
-                //filters={filters}
+                searchString={searchString}
                 //dataSetKey={this.state.statusSelected.value}
             />
             {/* <FilterModal
