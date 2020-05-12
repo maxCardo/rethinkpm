@@ -1,8 +1,8 @@
 import React, {Fragment, useState} from 'react'
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import Select from 'react-select'
-import zipcodes from './supportData/zipcodes'
-import areas from './supportData/areas'
+import zipcodes from '../../../../../util/supportData/zipcodes'
+import areas from '../../../../../util/supportData/areas'
 
 
 const FilterModal = ({show, handleClose}) => {
