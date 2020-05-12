@@ -8,8 +8,10 @@ import {
     SET_PROFILE_LIST,
     CLEAR_PROFILE_ERROR,
     PROFILE_SUCCESS,
-    CLEAR_PROFILE_SUCCESS
+    CLEAR_PROFILE_SUCCESS,
+    LOAD_PROFILE_LIST
 } from './type';
+
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
 
@@ -74,23 +76,27 @@ export const loadProfileDefault = profileType => async dispatch => {
 };
 
 //grab profile list for default load and filter
-export const loadProfileList = (profileType, queryList) => async dispatch => {
-    try {
-        const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
-        dispatch({
-            type: SET_PROFILE_LIST,
-            payload: res.data,
-        });
-    } catch (err) {
-        console.log(err);
-        dispatch({
-            type: PROFILE_ERROR,
-            payload: {
-                msg: err,
-                status: err,
-            },
-        });
-    }
+export const loadProfileList = (profileType, queryList) =>async dispatch => {
+  try {
+    dispatch({
+      type: LOAD_PROFILE_LIST,
+    });
+    const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
+    dispatch({
+      type: SET_PROFILE_LIST,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: err,
+        status: err,
+      },
+    });
+  }
+
 };
 
 //Toggle view control for show add phone modal

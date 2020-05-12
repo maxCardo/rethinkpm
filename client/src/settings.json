@@ -5,8 +5,8 @@
         "profileType": "agentPros",
         "statusSelect":{
           "options":[
-            {"value": "['prospect', 'pending','agent']", "label": "Active"},
-            {"value": "['prospect', 'pending','agent','new','notInterested]", "label": "All"},
+            {"value": "['prospect','pending','agent']", "label": "Active"},
+            {"value": "['prospect','pending','agent','new','notInterested']", "label": "All"},
             { "value": "['new']", "label": "Lead"},
             { "value": "['prospect']", "label": "Prospect"},
             { "value": "['pending']", "label": "Pending"},

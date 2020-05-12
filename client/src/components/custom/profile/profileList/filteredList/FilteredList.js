@@ -4,7 +4,7 @@ import React , {Fragment, useState} from 'react'
 import Pill from './Pills'
 import InfList from './InfList'
 
-const FilteredList = ({data}) => {
+const FilteredList = ({data, searchString}) => {
 
 
     const initalState = {
@@ -12,13 +12,16 @@ const FilteredList = ({data}) => {
         dataSetKey: '',
         filters : [{ field: 'testField', filterType: 'testType', value: 'testValue' }]
     }
+
     const [showPills, setShowPills] = useState(true)
     const [state, setState] = useState(initalState)
 
     var representValue = (params) => {
         return params
     }
-    
+
+    const searchData = data.filter(profile => profile.fullName.toLowerCase().includes(searchString.toLowerCase()) && profile) 
+
     return (
         <Fragment>
             {/* Pills */}
@@ -29,6 +32,7 @@ const FilteredList = ({data}) => {
                 </div>
                 {showPills ?
                     <div className='filter-pills__pills-container'>
+
                         {state.filters.map((filter, index) => (
                             <Pill key={index} text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`} />
                         ))}
@@ -38,7 +42,7 @@ const FilteredList = ({data}) => {
                 }
             </div>
             {/* End Pills  Start Inf List*/}
-            <InfList data={data}/>
+            <InfList data={searchData}/>
         </Fragment>
     )
 }
