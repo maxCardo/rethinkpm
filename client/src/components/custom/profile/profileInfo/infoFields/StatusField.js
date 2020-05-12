@@ -44,7 +44,7 @@ const StatusField = ({data}) => {
     });
 
     return (
-        <Fragment>
+        <Fragment key="status">
             <div className="statusField-container">
                 <b>Status: </b>
                 <Select

@@ -1,5 +1,17 @@
 import axios from 'axios';
-import { SET_ACTIVE_PROFILE, PROFILE_ERROR, TOGGLE_ADD_PHONE, TOGGLE_ADD_EMAIL, EDIT_EMAIL, SET_PROFILE_LIST, LOAD_PROFILE_LIST} from './type';
+import {
+    SET_ACTIVE_PROFILE,
+    PROFILE_ERROR,
+    TOGGLE_ADD_PHONE,
+    TOGGLE_ADD_EMAIL,
+    EDIT_EMAIL,
+    SET_PROFILE_LIST,
+    CLEAR_PROFILE_ERROR,
+    PROFILE_SUCCESS,
+    CLEAR_PROFILE_SUCCESS,
+    LOAD_PROFILE_LIST
+} from './type';
+
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
 
@@ -11,11 +23,11 @@ export const setActiveProfile = profile => async dispatch => {
             type: SET_ACTIVE_PROFILE,
             payload: profile
         })
-        
+
     } catch (err) {
         dispatch({
             type: PROFILE_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response.statusText, status: err.response.status}
         });
 
     }
@@ -23,7 +35,7 @@ export const setActiveProfile = profile => async dispatch => {
 
 //reload profile based on qs id
 export const loadBackUpProfile = (profileType, profile) => {
-    
+
     console.log('running load backup: ', profileType, profile);
 //   try {
 //     console.log('running set active profile');
@@ -42,25 +54,25 @@ export const loadBackUpProfile = (profileType, profile) => {
 
 //grab first profile record
 export const loadProfileDefault = profileType => async dispatch => {
-  console.log('running load default: ', profileType);
+    console.log('running load default: ', profileType);
 
-  try {
-    const res = await axios.get(`/api/profile/${profileType}`);
+    try {
+        const res = await axios.get(`/api/profile/${profileType}`);
 
-    dispatch({
-      type: SET_ACTIVE_PROFILE,
-      payload: res.data,
-    });
-  } catch (err) {
-    console.log(err);
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: {
-        msg: err,
-        status: err,
-      },
-    });
-  }
+        dispatch({
+            type: SET_ACTIVE_PROFILE,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err);
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err,
+                status: err,
+            },
+        });
+    }
 };
 
 //grab profile list for default load and filter
@@ -84,65 +96,66 @@ export const loadProfileList = (profileType, queryList) =>async dispatch => {
       },
     });
   }
+
 };
 
 //Toggle view control for show add phone modal
-export const tglAddPhoneMod = action => async dispatch =>{
-  try {
-    console.log('running tglAddPhoneMod');
-    dispatch({
-      type: TOGGLE_ADD_PHONE,
-      payload:action
-    })
-
-  } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: 'could not open this modal' }
-    });
-
-  }
-}
-
-//Toggle view control for show add phone modal
-//set params active profile _id and new phone nun object
-export const addPhoneNumSubmit = () => async dispatch => {
-  console.log('running add phone submit');
-
-  //set screen to loading
-  //api call to add number
-  //reset active profile in dom
-  
-  try {
-    console.log('running tglAddPhoneMod');
-    dispatch({
-      type: TOGGLE_ADD_PHONE,
-      //closing modal just for testing implemntation
-      payload: false
-    })
-
-  } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: 'could not open this modal' }
-    });
-
-  }
-}
-
-//Toggle view control for show add email modal
-export const tglAddEmailMod = action => async dispatch =>{
+export const tglAddPhoneMod = action => async dispatch => {
     try {
-        console.log('running tglAddEmailMod');
+        console.log('running tglAddPhoneMod');
         dispatch({
-            type: TOGGLE_ADD_EMAIL,
-            payload:action
+            type: TOGGLE_ADD_PHONE,
+            payload: action
         })
 
     } catch (err) {
         dispatch({
             type: PROFILE_ERROR,
-            payload: { msg: 'could not open this modal' }
+            payload: {msg: 'could not open this modal'}
+        });
+
+    }
+}
+
+//Toggle view control for show add phone modal
+//set params active profile _id and new phone nun object
+export const addPhoneNumSubmit = () => async dispatch => {
+    console.log('running add phone submit');
+
+    //set screen to loading
+    //api call to add number
+    //reset active profile in dom
+
+    try {
+        console.log('running tglAddPhoneMod');
+        dispatch({
+            type: TOGGLE_ADD_PHONE,
+            //closing modal just for testing implemntation
+            payload: false
+        })
+
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {msg: 'could not open this modal'}
+        });
+
+    }
+}
+
+//Toggle view control for show add email modal
+export const tglAddEmailMod = action => async dispatch => {
+    try {
+        console.log('running tglAddEmailMod');
+        dispatch({
+            type: TOGGLE_ADD_EMAIL,
+            payload: action
+        })
+
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {msg: 'could not open this modal'}
         });
 
     }
@@ -168,7 +181,7 @@ export const addEmailSubmit = () => async dispatch => {
     } catch (err) {
         dispatch({
             type: PROFILE_ERROR,
-            payload: { msg: 'could not open this modal' }
+            payload: {msg: 'could not open this modal'}
         });
 
     }
@@ -176,16 +189,24 @@ export const addEmailSubmit = () => async dispatch => {
 
 // update email
 export const updateEmail = (formData, id) => (dispatch) => {
-    dispatch({ type: EDIT_EMAIL });
+    dispatch({type: EDIT_EMAIL});
     axios.put(`/api/profile/agent/${id}`, formData, config)
         .then((res) => {
-            console.log(res);
+            console.log(res.body);
+            dispatch({
+                type: PROFILE_SUCCESS,
+                payload: {heading: 'Email Update', msg: 'Successfully updated email record'}
+            });
         })
         .catch(err => {
             dispatch({
                 type: PROFILE_ERROR,
-                payload: { msg: 'Could not update record' }
+                payload: {heading: 'Email Update', msg: 'Could not update record'}
             });
         });
 };
 
+export const clearAlerts = () => (dispatch) => {
+    dispatch({type: CLEAR_PROFILE_ERROR});
+    dispatch({type: CLEAR_PROFILE_SUCCESS});
+};

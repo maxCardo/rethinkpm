@@ -1,7 +1,7 @@
-import React, { Fragment, useState, useEffect, useCallback, useRef } from 'react'
+import React, { Fragment, useState, useEffect, useRef } from 'react'
 import {connect} from 'react-redux'
 import { Modal, Button, Form } from 'react-bootstrap'
-import {addPhoneNumSubmit, tglAddEmailMod, addEmailSubmit} from '../../../../actions/profile'
+import {tglAddEmailMod, addEmailSubmit} from '../../../../actions/profile'
 import {validateEmail} from "../../../../util/commonFunctions";
 
 //set action to change showAddPhoneMod as false on redux

@@ -54,14 +54,16 @@
             "formatter": "formatMoney"
           },
           {
-            "name": "Active Neighborhoods",
-            "accessor": "bestAreas",
+            "name": "Top Neighborhoods",
+            "accessor": "collection",
+            "datatype": "areas",
             "col": 2,
             "formatter": "formatLabels"
           },
           {
-            "name": "Active Zip Codes",
-            "accessor": "bestZipCodes", 
+            "name": "Top Zip Codes",
+            "accessor": "collection",
+            "datatype": "zipCodes",
             "col": 2,
             "formatter": "formatLabels"
           },

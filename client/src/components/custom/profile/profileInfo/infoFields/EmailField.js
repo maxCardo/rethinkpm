@@ -10,9 +10,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
 
     const emailInput = useRef();
 
-    let email = data.email.map((address) => {
-        if (address.isPrimary) return address.address
-    })[0];
+    let email = data.email.find((address) => address.isPrimary).address;
 
     const [edit, toggleEdit] = useState(false);
     const [emailValid, setEmailValid] = useState(true);
@@ -26,10 +24,12 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
     }
 
     const editPrimaryEmail = () => {
-        const postEmails = data.email.forEach((item) => {
+        const postEmails = data.email.map((item) => {
             if (item.isPrimary) {
                 item.address = editEmail;
                 return item
+            } else {
+                return item;
             }
         })
         updateEmail({email: postEmails}, data._id);
@@ -45,7 +45,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
     }, [edit])
 
     return (
-        <Fragment>
+        <Fragment key="email">
             <div className={field.name}>
                 <b>{field.name}:</b>
                 <input type="text" name="emailPrimary"

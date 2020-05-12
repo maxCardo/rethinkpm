@@ -1,5 +1,5 @@
-import React , {Fragment, useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import React , {Fragment, useState} from 'react'
+//import {Link} from 'react-router-dom'
 
 import Pill from './Pills'
 import InfList from './InfList'
@@ -32,8 +32,9 @@ const FilteredList = ({data, searchString}) => {
                 </div>
                 {showPills ?
                     <div className='filter-pills__pills-container'>
-                        {state.filters.map((filter) => (
-                            <Pill text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`}/>
+
+                        {state.filters.map((filter, index) => (
+                            <Pill key={index} text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`} />
                         ))}
                     </div>
                     :
