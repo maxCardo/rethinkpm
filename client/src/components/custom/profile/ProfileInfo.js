@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {Component, Fragment} from 'react'
 import ProfileIcon from '../common/ProfileIcon';
 import {connect} from 'react-redux';

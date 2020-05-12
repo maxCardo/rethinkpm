@@ -14,7 +14,7 @@ const FilteredList = ({data, searchString}) => {
     }
 
     const [showPills, setShowPills] = useState(true)
-    const [state, setState] = useState(initalState)
+    const [state] = useState(initalState)
 
     var representValue = (params) => {
         return params

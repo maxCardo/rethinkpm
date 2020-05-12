@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import Select from 'react-select'
 import Loading from '../../../core/LoadingScreen/Loading'
 import FilteredList from './filteredList/FilteredList'
-import FilterModal from './modals/FilterModal'
+//import FilterModal from './modals/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 
 import {loadProfileList} from '../../../../actions/profile'
@@ -12,7 +12,6 @@ import {loadProfileList} from '../../../../actions/profile'
 const ProfileList = ({loadProfileList, profileList, settings:{profileType, statusSelect:{options, selected, selectedQuery }}}) => {
     
     const [selectStatus, setStatus] = useState({options, selected})
-    const [list, setList] = useState()
     const [showFilterMod, tglFilterMod] = useState(false)
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
     const [searchString, setSearchString] = useState('')
@@ -21,10 +20,8 @@ const ProfileList = ({loadProfileList, profileList, settings:{profileType, statu
         console.log('runnning profile list');
         //see if data available for this populations if no call api via action (double check call from Profile and reference call from BrokerDash)
         //grab audiances and filters and add to state.options, set as options in select Status
-        loadProfileList(profileType, selectedQuery) 
-        
-        
-    }, [loadProfileList])
+        loadProfileList(profileType, selectedQuery)
+    }, [loadProfileList, profileType, selectedQuery])
 
     const setListByStatus = (v) => {
         loadProfileList(profileType, v.value) 
