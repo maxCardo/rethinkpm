@@ -56,6 +56,14 @@ const agentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ChatAgent',
   },
+  zipCodes:{
+    name: String,
+    value: Number
+  },
+    areas: {
+    name: String,
+    value: Number
+  }
 });
 
 

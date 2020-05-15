@@ -4,13 +4,14 @@ import {connect} from 'react-redux'
 import Select from 'react-select'
 import Loading from '../../../core/LoadingScreen/Loading'
 import FilteredList from './filteredList/FilteredList'
-//import FilterModal from './modals/FilterModal'
+import FilterModal from './modals/filterModel/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 
 import {loadProfileList} from '../../../../actions/profile'
 
-const ProfileList = ({loadProfileList, profileList, settings:{profileType, statusSelect:{options, selected, selectedQuery }}}) => {
-    
+const ProfileList = ({loadProfileList, profileList, settings}) => {
+
+    const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
     const [selectStatus, setStatus] = useState({options, selected})
     const [showFilterMod, tglFilterMod] = useState(false)
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
@@ -65,12 +66,11 @@ const ProfileList = ({loadProfileList, profileList, settings:{profileType, statu
                 searchString={searchString}
                 //dataSetKey={this.state.statusSelected.value}
             />
-            {/* <FilterModal
-                //show={this.state.showAgentFiltersModal}
-                //handleClose={() => this.setState({ showAgentFiltersModal: false })}
-                //handleSubmit={this.handleModalSubmit}
-                //officeOptions={this.state.officeOptions}
-            /> */}
+            <FilterModal
+                show={showFilterMod}
+                handleClose={() => tglFilterMod(false)}
+                settings={settings}
+            />
             <SaveFilterMod
                 show={showSaveFltrMod}
                 handleClose={() => tglSaveFltrMod(false)}

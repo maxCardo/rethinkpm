@@ -9,7 +9,8 @@ import {
     CLEAR_PROFILE_ERROR,
     PROFILE_SUCCESS,
     CLEAR_PROFILE_SUCCESS,
-    LOAD_PROFILE_LIST
+    LOAD_PROFILE_LIST,
+    PROFILE_FILTER_OPTIONS
 } from './type';
 
 
@@ -50,7 +51,6 @@ export const loadBackUpProfile = (profileType, profile) => {
 //     });
 //   }
 };
-
 
 //grab first profile record
 export const loadProfileDefault = profileType => async dispatch => {
@@ -205,6 +205,34 @@ export const updateEmail = (formData, id) => (dispatch) => {
             });
         });
 };
+
+//submit Filter query
+export const submitFilterModal = async (data) => {
+    //get from settings.json
+    const profileType = 'agentPros'
+    const config = {headers: {'Content-Type': 'application/json'}}
+    const res = await axios.post(`/api/profile/filter/${profileType}`, data, config);
+    console.log(res);
+}
+
+//get filter options for array fields
+export const getFilterOptions = (profileType) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/profile/filterOptions/${profileType}`);
+        console.log('running set active profile');
+        dispatch({
+            type: PROFILE_FILTER_OPTIONS,
+            payload: res.data
+        })
+
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        });
+
+    }
+}
 
 export const clearAlerts = () => (dispatch) => {
     dispatch({type: CLEAR_PROFILE_ERROR});
