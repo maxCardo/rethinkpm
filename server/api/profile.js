@@ -124,7 +124,7 @@ function transformObjectIntoSortedArray(object) {
 //---------------------------------- new api call from refactor 5-5-20 -----------------------------------------------------//
 
 // @route: GET /api/profile/agentPros;
-// @desc: Get one profile when loading profile screen (agentPros) 
+// @desc: Get single profile when loading profile screen (agentPros) 
 // @ access: Public * ToDo: update to make private
 router.get('/agentPros', async (req, res) => {
   try {
@@ -150,15 +150,15 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     }
   });
   
-  
   // @route: GET /api/profile/filter/agentPros;
-  // @desc: Get submit filter: new profile list based on filter 
+  // @desc: Get get new profile list based on filter submited
   // @ access: Public * ToDo: update to make private
   router.post('/filter/agentPros', async (req, res) => {
   try {
     const data = req.body
     const filterFields = Object.keys(req.body);
     const filters = []
+    console.log(data)
 
     //create filter object
     filterFields.map((x) => {
@@ -167,16 +167,19 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
         subField: data[x].subAccessor,
         filterType: data[x].type.value,
         operator:  data[x].type.operator, 
-        value: data[x].value.map((y) => y.value)
+        value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
+        secondValue: data[x].secondValue ? data[x].secondValue : '' 
       })})
     
     //create string query 
     const queryObj = {}
     filters.map((x) => {
       if (x.filterType === 'range') {
+        console.log('running range')
         Object.assign(queryObj, {
-          [x.field]: { [x.operator[0]]: x.value[0], [x.operator[1]]: x.value[1] }
+          [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
         })
+        console.log(queryObj)
       }else if (x.subField) {
         Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
       }else{ 
