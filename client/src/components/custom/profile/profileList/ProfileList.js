@@ -13,7 +13,6 @@ const ProfileList = ({loadProfileList, profileList, settings}) => {
 
     const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
     const [selectStatus, setStatus] = useState({options, selected})
-    const [list, setList] = useState()
     const [showFilterMod, tglFilterMod] = useState(false)
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
     const [searchString, setSearchString] = useState('')
@@ -22,10 +21,8 @@ const ProfileList = ({loadProfileList, profileList, settings}) => {
         console.log('runnning profile list');
         //see if data available for this populations if no call api via action (double check call from Profile and reference call from BrokerDash)
         //grab audiances and filters and add to state.options, set as options in select Status
-        loadProfileList(profileType, selectedQuery) 
-        
-        
-    }, [loadProfileList])
+        loadProfileList(profileType, selectedQuery)
+    }, [loadProfileList, profileType, selectedQuery])
 
     const setListByStatus = (v) => {
         loadProfileList(profileType, v.value) 

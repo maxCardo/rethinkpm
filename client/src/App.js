@@ -79,10 +79,10 @@ const App = ({loadUser, receiveMessage}) => {
 }
 
 const registerServiceWorker = async () => {
-  console.log('serviceWorker' in navigator)
+  //console.log('serviceWorker' in navigator)
   const swRegistration = await navigator.serviceWorker.register('/service-worker.js');
   window.serviceWorker = swRegistration
-  console.log(window.serviceWorker)
+  //console.log(window.serviceWorker)
   return swRegistration;
 }
 

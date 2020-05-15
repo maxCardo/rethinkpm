@@ -1,4 +1,3 @@
-
 import {
     SET_ACTIVE_PROFILE,
     PROFILE_ERROR,
