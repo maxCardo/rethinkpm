@@ -3185,4 +3185,4 @@ const areas = [
   },
 ];
 
-export default areas;
+module.exports = areas 

@@ -8,14 +8,16 @@ import {
     CLEAR_PROFILE_ERROR,
     PROFILE_SUCCESS,
     CLEAR_PROFILE_SUCCESS,
-    LOAD_PROFILE_LIST
+    LOAD_PROFILE_LIST,
+    PROFILE_FILTER_OPTIONS
 } from '../actions/type';
 
 const initialState = {
     activeProfile: '',
     loading: true,
     showAddPhoneMod: false,
-    profileList: {list: '', loading: true}
+    profileList: {list: '', loading: true},
+    filterOptions: {options:'', loading:true}
 }
 
 export default function (state = initialState, action) {
@@ -52,6 +54,14 @@ export default function (state = initialState, action) {
                 ...state,
                 showAddEmailMod: payload,
             };
+        case PROFILE_FILTER_OPTIONS:
+            return {
+                ...state,
+                filterOptions: {
+                    ...payload, 
+                    loading:false
+                }
+            };    
         case PROFILE_ERROR:
             return {
                 ...state,

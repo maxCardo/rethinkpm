@@ -4,13 +4,14 @@ import {connect} from 'react-redux'
 import Select from 'react-select'
 import Loading from '../../../core/LoadingScreen/Loading'
 import FilteredList from './filteredList/FilteredList'
-import FilterModal from './modals/FilterModal'
+import FilterModal from './modals/filterModel/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 
 import {loadProfileList} from '../../../../actions/profile'
 
-const ProfileList = ({loadProfileList, profileList, settings:{profileType, statusSelect:{options, selected, selectedQuery }}}) => {
-    
+const ProfileList = ({loadProfileList, profileList, settings}) => {
+
+    const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
     const [selectStatus, setStatus] = useState({options, selected})
     const [list, setList] = useState()
     const [showFilterMod, tglFilterMod] = useState(false)
@@ -71,6 +72,7 @@ const ProfileList = ({loadProfileList, profileList, settings:{profileType, statu
             <FilterModal
                 show={showFilterMod}
                 handleClose={() => tglFilterMod(false)}
+                settings={settings}
             />
             <SaveFilterMod
                 show={showSaveFltrMod}

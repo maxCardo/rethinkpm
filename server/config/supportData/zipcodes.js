@@ -1033,4 +1033,4 @@ const zipcodes = [
   },
 ];
 
-export default zipcodes;
+module.exports = zipcodes

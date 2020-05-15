@@ -3,7 +3,12 @@ const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const Agent = require('../db/models/sales/agent')
 const singleFamilySalesModel = require('../db/models/sales/singleFamilySales')
 const multiSalesModel = require('../db/models/sales/multiSales')
+const Office = require('../db/models/sales/office')
 const {validateNum} = require('../3ps/sms')
+
+//filter options: refactor to get these from api
+const zipcodeOptions = require('../config/supportData/zipcodes')
+const areaOptions = require('../config/supportData/areas')
 
 const router = express.Router();
 
@@ -142,8 +147,79 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
   } catch (error) {
       console.error(error);
       res.status(400).send('server error')
+    }
+  });
+  
+  
+  // @route: GET /api/profile/filter/agentPros;
+  // @desc: Get submit filter: new profile list based on filter 
+  // @ access: Public * ToDo: update to make private
+  router.post('/filter/agentPros', async (req, res) => {
+  try {
+    const data = req.body
+    const filterFields = Object.keys(req.body);
+    const filters = []
+
+    //create filter object
+    filterFields.map((x) => {
+      data[x].type.value !== 'noFilter' && filters.push({
+        field: data[x].accessor ,
+        subField: data[x].subAccessor,
+        filterType: data[x].type.value,
+        operator:  data[x].type.operator, 
+        value: data[x].value.map((y) => y.value)
+      })})
+    
+    //create string query 
+    const queryObj = {}
+    filters.map((x) => {
+      if (x.filterType === 'range') {
+        Object.assign(queryObj, {
+          [x.field]: { [x.operator[0]]: x.value[0], [x.operator[1]]: x.value[1] }
+        })
+      }else if (x.subField) {
+        Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
+      }else{ 
+        Object.assign(queryObj, {[x.field]: { [x.operator]: x.value } })
+      }
+    })
+
+    //query DB
+    const record = await Agent.find(queryObj)
+    res.status(200).send(record);
+
+  } catch (error) {
+    console.error(error);
+    res.status(400).send('server error')
   }
 });
 
+
+
+
+// @route: GET /api/profile/filterOptions/agentPros;
+// @desc: Get options for filter fields used by filter filtersModal comp (agentPros) 
+// @ access: Public * ToDo: update to make private
+router.get('/filterOptions/agentPros', async ({ params: { query } }, res) => {
+  const options = {}
+  try {
+    const record = await Office.find({})
+    office = record.map((office) => { return { value: office.officeId, label: office.name}})
+    options.office = office
+    options.status = [
+      { value: 'new', label: 'Lead' },
+      { value: 'prospect', label: 'Prospect' },
+      { value: 'pending', label: 'Pending' },
+      { value: 'agent', label: 'Agent' },
+      { value: 'notInterested', label: 'Not Interested' }
+    ];
+    options.zip = zipcodeOptions
+    options.area = areaOptions
+    res.status(200).send(options);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send('server error')
+  }
+});
 
 module.exports = router;
