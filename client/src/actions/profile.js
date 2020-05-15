@@ -10,7 +10,8 @@ import {
     PROFILE_SUCCESS,
     CLEAR_PROFILE_SUCCESS,
     LOAD_PROFILE_LIST,
-    PROFILE_FILTER_OPTIONS
+    PROFILE_FILTER_OPTIONS,
+    SET_FILTER
 } from './type';
 
 
@@ -213,9 +214,14 @@ export const submitFilterModal = (data, profileType) => async dispatch => {
             type: LOAD_PROFILE_LIST,
         });
         const res = await axios.post(`/api/profile/filter/${profileType}`, data, config);
+        console.log(res);
         dispatch({
             type: SET_PROFILE_LIST,
-            payload: res.data,
+            payload: res.data.record,
+        });
+        dispatch({
+            type: SET_FILTER,
+            payload: res.data.filters,
         });
     } catch (err) {
         console.log(err);

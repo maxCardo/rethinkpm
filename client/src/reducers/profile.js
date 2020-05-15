@@ -8,7 +8,8 @@ import {
     PROFILE_SUCCESS,
     CLEAR_PROFILE_SUCCESS,
     LOAD_PROFILE_LIST,
-    PROFILE_FILTER_OPTIONS
+    PROFILE_FILTER_OPTIONS,
+    SET_FILTER
 } from '../actions/type';
 
 const initialState = {
@@ -16,7 +17,8 @@ const initialState = {
     loading: true,
     showAddPhoneMod: false,
     profileList: {list: '', loading: true},
-    filterOptions: {options:'', loading:true}
+    filterOptions: {options:'', loading:true},
+    activeFilter:''
 }
 
 export default function (state = initialState, action) {
@@ -60,7 +62,13 @@ export default function (state = initialState, action) {
                     ...payload, 
                     loading:false
                 }
+            };
+        case SET_FILTER:
+            return {
+                ...state,
+                activeFilter: payload
             };    
+
         case PROFILE_ERROR:
             return {
                 ...state,

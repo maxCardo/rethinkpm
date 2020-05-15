@@ -189,7 +189,7 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
 
     //query DB
     const record = await Agent.find(queryObj)
-    res.status(200).send(record);
+    res.status(200).send({record,filters});
 
   } catch (error) {
     console.error(error);
