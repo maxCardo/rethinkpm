@@ -18,7 +18,7 @@ const initialState = {
     showAddPhoneMod: false,
     profileList: {list: '', loading: true},
     filterOptions: {options:'', loading:true},
-    activeFilter:''
+    activeFilter:[]
 }
 
 export default function (state = initialState, action) {

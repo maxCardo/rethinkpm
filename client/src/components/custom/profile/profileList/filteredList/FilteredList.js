@@ -1,23 +1,21 @@
 import React , {Fragment, useState} from 'react'
+import {connect} from 'react-redux'
 //import {Link} from 'react-router-dom'
 
 import Pill from './Pills'
 import InfList from './InfList'
 
-const FilteredList = ({data, searchString}) => {
+const FilteredList = ({data, searchString, filters}) => {
 
-
-    const initalState = {
-        filteredData: '',
-        dataSetKey: '',
-        filters : [{ field: 'testField', filterType: 'testType', value: 'testValue' }]
-    }
 
     const [showPills, setShowPills] = useState(true)
-    const [state] = useState(initalState)
+ 
 
-    var representValue = (params) => {
-        return params
+    var representValue = (value) => {
+        if (Array.isArray(value)) {
+            return `[${value.join(', ')}]`
+        }
+        return value
     }
 
     const searchData = data.filter(profile => profile.fullName.toLowerCase().includes(searchString.toLowerCase()) && profile) 
@@ -25,6 +23,7 @@ const FilteredList = ({data, searchString}) => {
     return (
         <Fragment>
             {/* Pills */}
+            {console.log(filters)}
             <div className='filter-pills__container'>
                 <div className='filter-pills__title-container'>
                     <p>Filters:</p> 
@@ -33,7 +32,7 @@ const FilteredList = ({data, searchString}) => {
                 {showPills ?
                     <div className='filter-pills__pills-container'>
 
-                        {state.filters.map((filter, index) => (
+                        {filters.map((filter, index) => (
                             <Pill key={index} text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`} />
                         ))}
                     </div>
@@ -47,5 +46,9 @@ const FilteredList = ({data, searchString}) => {
     )
 }
 
+const mapStateToProps = state => ({
+    filters: state.profile.activeFilter
+})
 
-export default FilteredList
+
+export default connect(mapStateToProps)(FilteredList)
