@@ -14,7 +14,7 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
 
     const phoneInput = useRef();
 
-    let phone = data.phoneNumbers.find((phone) => phone.isPrimary).number;
+    let phone = (data.phoneNumbers.length && data.phoneNumbers.find((phone) => phone.isPrimary)) ? data.phoneNumbers.find((phone) => phone.isPrimary).number : 'no phone on file';
 
     const [edit, toggleEdit] = useState(false)
     const [phoneValid, setPhoneValid] = useState(true)

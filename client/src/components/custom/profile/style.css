@@ -399,7 +399,7 @@
   background: #f7f7f7;
 }
 /*styling for the agent box elements in the AgentList*/
-.sidebar__left a {
+.sidebar__left div.list__picker {
   background: #fff;
   display: flex;
   /*allows 2 lines of items*/
@@ -410,9 +410,11 @@
   padding: 5px;
 }
 /*rows inside the agent boxes*/
-.sidebar__left a div {
+.sidebar__left .list__picker div {
   width: 100%;
   display: flex;
+  color: #2684ff;
+  cursor: pointer;
 }
 /*rTop row of agentList box*/
 .sidebar__left .list__picker-header {
