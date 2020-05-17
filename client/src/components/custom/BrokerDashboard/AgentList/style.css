@@ -100,3 +100,12 @@
   padding: 2px 20px;
   line-height: 16px;
 }
+
+.infinite-list__load-more {
+  background-color: white;
+  border-radius: 20px;
+}
+
+.infinite-list__load-more:focus {
+  outline: none
+}
