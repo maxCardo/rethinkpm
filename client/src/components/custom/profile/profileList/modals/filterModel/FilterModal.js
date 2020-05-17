@@ -13,7 +13,7 @@ const FilterModal = ({show, handleClose, settings:{filterFields, profileType},ge
       getFilterOptions(profileType)
     }, [])
     const onChange = (property,value ) => setState({ ...state, [property]: value})
-         
+
     return (
       <Modal size='xl' show={show} onHide={()=> {handleClose(); setState(filterFields)}}>
         <Modal.Header closeButton>
@@ -22,7 +22,7 @@ const FilterModal = ({show, handleClose, settings:{filterFields, profileType},ge
           {loading ? <Loading/> : <Fragment>
             <Modal.Body>
               <Form>
-                {Object.keys(filterFields).map((x, i) => (<FilterFields onChange={onChange} filterFields={state[x]} prop={x} />))}
+                {Object.keys(filterFields).map((x, i) => (<FilterFields key={i} className={(state[x.toString()].type.value)} onChange={onChange} filterFields={state[x]} prop={x} />))}
               </Form>
             </Modal.Body>
             <Modal.Footer>
