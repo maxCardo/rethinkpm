@@ -10,7 +10,8 @@ import {
     PROFILE_SUCCESS,
     CLEAR_PROFILE_SUCCESS,
     LOAD_PROFILE_LIST,
-    PROFILE_FILTER_OPTIONS
+    PROFILE_FILTER_OPTIONS,
+    SET_FILTER
 } from './type';
 
 
@@ -207,12 +208,31 @@ export const updateEmail = (formData, id) => (dispatch) => {
 };
 
 //submit Filter query
-export const submitFilterModal = async (data) => {
-    //get from settings.json
-    const profileType = 'agentPros'
-    const config = {headers: {'Content-Type': 'application/json'}}
-    const res = await axios.post(`/api/profile/filter/${profileType}`, data, config);
-    console.log(res);
+export const submitFilterModal = (data, profileType) => async dispatch => {
+    try {
+        dispatch({
+            type: LOAD_PROFILE_LIST,
+        });
+        const res = await axios.post(`/api/profile/filter/${profileType}`, data, config);
+        console.log(res);
+        dispatch({
+            type: SET_PROFILE_LIST,
+            payload: res.data.record,
+        });
+        dispatch({
+            type: SET_FILTER,
+            payload: res.data.filters,
+        });
+    } catch (err) {
+        console.log(err);
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err,
+                status: err,
+            },
+        });
+    }
 }
 
 //get filter options for array fields

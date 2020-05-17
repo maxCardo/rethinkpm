@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react'
+import {connect} from 'react-redux'
 import { Link } from 'react-router-dom';
 //import InfiniteScroll from "react-infinite-scroll-component";
+
+import {setActiveProfile} from '../../../../../actions/profile'
 
 export class InfiniteList extends Component {
 
@@ -55,6 +58,9 @@ export class InfiniteList extends Component {
         }
     }
 
+    onClick = (profile) => this.props.setActiveProfile(profile)
+    
+
     render() {
         return (
             <Fragment>
@@ -63,7 +69,7 @@ export class InfiniteList extends Component {
                         this.props.data.map((val) => {
                             return (
                                 <div key={val._id}>
-                                    <Link to={`/profile/agent/${val._id}`}>
+                                    <Link onClick={() => this.onClick(val)}>
                                         <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span> <span
                                             className="label__gray">{val.status}</span></div>
                                         <div className="list__picker-body">
@@ -82,4 +88,6 @@ export class InfiniteList extends Component {
     }
 }
 
-export default InfiniteList
+
+
+export default connect(null, {setActiveProfile})(InfiniteList)

@@ -10,7 +10,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
 
     const emailInput = useRef();
 
-    let email = data.email.find((address) => address.isPrimary).address;
+    let email = data.email.length ? data.email.find((address) => address.isPrimary).address : 'no email on file'
 
     const [edit, toggleEdit] = useState(false);
     const [emailValid, setEmailValid] = useState(true);
