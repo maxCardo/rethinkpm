@@ -49,7 +49,7 @@ const ArrayFields = ({filterFields, onChange, prop, options}) => {
         if (useFilter === true) {
             callChange('type', {label: "Don't filter", value: "noFilter"})
         } else {
-            callChange('type', {label: "In", value: 'in'})
+            callChange('type', {label: "In", value: "in", operator: "$in"})
         }
         console.log(useFilter);
     }
