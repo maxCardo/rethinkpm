@@ -2,12 +2,13 @@ import React, {Fragment, useState, useRef, useLayoutEffect} from 'react'
 import {connect} from 'react-redux'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap'
+import {checkBoxCheck} from '../../../../../../../util/commonFunctions';
 
 
 const ArrayFields = ({filterFields, onChange, prop, options}) => {
 
     const [state, setState] = useState(filterFields)
-    const [useFilter, setUseFilter] = useState(false);
+    const [useFilter, setUseFilter] = useState(false)
     const {name, type, value, dataType} = filterFields
     const selectInput = useRef(null);
 
@@ -19,42 +20,23 @@ const ArrayFields = ({filterFields, onChange, prop, options}) => {
         return newState
       })      
     }
-    
-
-    const arrayFilters = [
-        { label: "Don't filter", value: 'noFilter' },
-        { label: 'in', value: 'in', operator: '$in' },
-        { label: 'out', value: 'out', operator: '$nin' },
-    ];
-
-    const officeOptions = [
-        { value: '13401', label: 'testOffce' },
-        { value: '15155', label: 'testOffice2' },
-    ];
 
     useLayoutEffect(() => {
-        (state.type.value !== 'noFilter' && state.value.length === 0) && selectInput.current.focus();
-        console.log(selectInput);
+        console.log("shiet");
+        (state.type.value && state.type.value !== 'noFilter' && state.value.length === 0) && selectInput.current.focus();
+
     });
 
-    const checkBoxCheck = (
-        <svg viewBox="0 0 21 21">
-            <path
-                d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
-        </svg>
-    );
-
-    const onCheckSelect = (e) => {
+    const onCheck = (e) => {
         setUseFilter(!useFilter);
         if (useFilter === true) {
             callChange('type', {label: "Don't filter", value: "noFilter"})
+            callChange('value', [])
         } else {
             callChange('type', {label: "In", value: "in", operator: "$in"})
         }
-        console.log(useFilter);
     }
 
-    console.log(state);
     return (
         <Fragment>
             <Col xs={12} className="filter-row">
@@ -65,8 +47,8 @@ const ArrayFields = ({filterFields, onChange, prop, options}) => {
                             <Form.Group>
                                 <div className="element-wrapper with--checkbox">
                                     <label className="checkbox path" checked={true}  >
-                                        <input type="checkbox" name='useFilter' value={useFilter} onChange={e => onCheckSelect(e)}/>
-                                        {checkBoxCheck} &nbsp; Filter
+                                        <input type="checkbox" name='useFilter' value={useFilter} onChange={e => onCheck(e)}/>
+                                        {checkBoxCheck()} &nbsp; Use Filter
                                     </label>
                                 </div>
                             </Form.Group>
