@@ -11,7 +11,8 @@ import {
     CLEAR_PROFILE_SUCCESS,
     LOAD_PROFILE_LIST,
     PROFILE_FILTER_OPTIONS,
-    SET_FILTER
+    SET_FILTER,
+    SET_SAVED_FILTERS
 } from './type';
 
 
@@ -85,8 +86,12 @@ export const loadProfileList = (profileType, queryList) =>async dispatch => {
     const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
     dispatch({
       type: SET_PROFILE_LIST,
-      payload: res.data,
+      payload: res.data.list,
     });
+    dispatch({
+        type: SET_SAVED_FILTERS,
+        payload: res.data.SavedFilters
+    })
   } catch (err) {
     console.log(err);
     dispatch({
@@ -251,6 +256,17 @@ export const getFilterOptions = (profileType) => async dispatch => {
             payload: { msg: err.response.statusText, status: err.response.status }
         });
 
+    }
+}
+
+//save filter
+export const saveFilter = async (data) => {
+    try {
+        console.log('running saved filter')
+        const res = await axios.post(`/api/profile/filter/save`, data, config);
+        console.log(res)
+    } catch (err) {
+        console.log(err)
     }
 }
 

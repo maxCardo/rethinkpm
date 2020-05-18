@@ -1,9 +1,13 @@
 const express = require('express');
+
+//db models
 const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const Agent = require('../db/models/sales/agent')
 const singleFamilySalesModel = require('../db/models/sales/singleFamilySales')
 const multiSalesModel = require('../db/models/sales/multiSales')
 const Office = require('../db/models/sales/office')
+const SavedFilter = require('../db/models/prospects/SavedFilters')
+
 const {validateNum} = require('../3ps/sms')
 
 //filter options: refactor to get these from api
@@ -142,8 +146,9 @@ router.get('/agentPros', async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
   try {
-      const record = await Agent.find({ status: { $in: eval(query) } })
-      res.status(200).send(record);
+      const list = await Agent.find({ status: { $in: eval(query) } })
+      const SavedFilters = await SavedFilter.find({})
+      res.status(200).send({list, SavedFilters});
   } catch (error) {
       console.error(error);
       res.status(400).send('server error')
@@ -158,7 +163,6 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     const data = req.body
     const filterFields = Object.keys(req.body);
     const filters = []
-    console.log(data)
 
     //create filter object
     filterFields.map((x) => {
@@ -175,11 +179,9 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     const queryObj = {}
     filters.map((x) => {
       if (x.filterType === 'range') {
-        console.log('running range')
         Object.assign(queryObj, {
           [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
         })
-        console.log(queryObj)
       }else if (x.subField) {
         Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
       }else{ 
@@ -196,9 +198,6 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     res.status(400).send('server error')
   }
 });
-
-
-
 
 // @route: GET /api/profile/filterOptions/agentPros;
 // @desc: Get options for filter fields used by filter filtersModal comp (agentPros) 
@@ -221,6 +220,31 @@ router.get('/filterOptions/agentPros', async ({ params: { query } }, res) => {
     res.status(200).send(options);
   } catch (error) {
     console.error(error);
+    res.status(400).send('server error')
+  }
+});
+
+// @route: POST /api/profile/filter/save/:pop;
+// @desc: save filter section as filter or audiance   
+// @ access: Public * ToDo: update to make private
+router.post('/filter/save', async (req, res) => {
+  try {
+    const savedFilter = await new SavedFilter(req.body)
+    await savedFilter.save()
+    res.status(200).send(savedFilter);
+  } catch (err) {
+    res.status(400).send('server error')
+    console.log(err)
+  }
+});
+
+// @route: GET /api/profile/filterOptions/agentPros;
+// @desc: Get users saved Filters 
+// @ access: Public * ToDo: update to make private
+router.get('/filter/save/agentPros', async ({ params: { query } }, res) => {
+  try {
+    res.status(200).send('running');
+  } catch (error) {
     res.status(400).send('server error')
   }
 });

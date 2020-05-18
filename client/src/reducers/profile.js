@@ -9,7 +9,8 @@ import {
     CLEAR_PROFILE_SUCCESS,
     LOAD_PROFILE_LIST,
     PROFILE_FILTER_OPTIONS,
-    SET_FILTER
+    SET_FILTER,
+    SET_SAVED_FILTERS
 } from '../actions/type';
 
 const initialState = {
@@ -18,7 +19,8 @@ const initialState = {
     showAddPhoneMod: false,
     profileList: {list: '', loading: true},
     filterOptions: {options:'', loading:true},
-    activeFilter:[]
+    activeFilter:[],
+    savedFilters:''
 }
 
 export default function (state = initialState, action) {
@@ -44,6 +46,7 @@ export default function (state = initialState, action) {
                 profileList: {
                     loading: true
                 },
+                activeFilter:[]
             }
         case TOGGLE_ADD_PHONE:
             return {
@@ -67,7 +70,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 activeFilter: payload
-            };    
+            };
+        case SET_SAVED_FILTERS:
+            return {
+                ...state,
+                ...payload
+            }    
 
         case PROFILE_ERROR:
             return {
