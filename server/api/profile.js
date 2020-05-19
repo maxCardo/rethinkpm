@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../middleware/auth')
 
 //db models
 const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
@@ -132,7 +133,7 @@ function transformObjectIntoSortedArray(object) {
 // @ access: Public * ToDo: update to make private
 router.get('/agentPros', async (req, res) => {
   try {
-      const record = await  Agent.findOne().populate('prospect notes office');
+      const record = await  Agent.findOne().populate('notes.user')
       res.status(200).send(record);
   } catch (error) {
       console.error(error);
@@ -248,5 +249,50 @@ router.get('/filter/save/agentPros', async ({ params: { query } }, res) => {
     res.status(400).send('server error')
   }
 });
+
+// @route: GET /api/profile/agent/:id;
+// @desc: Get Inquiry Id info
+// @ access: Public * ToDo: update to make private
+router.get('/agentPros/pastSales/:agentId', async (req, res) => {
+  try {
+    console.log('profile sales history api call')
+    const agentId = req.params.agentId
+    const lead = {}
+    const agentSellsPromise = singleFamilySalesModel.find({ agentId: agentId })
+    const agentBuysPromise = singleFamilySalesModel.find({ sellingAgentId: agentId })
+    const agentMultiSalesPromise = multiSalesModel.find({ agentId: agentId })
+    const [agentSellsResult, agentBuysResult, agentMultiSalesResult] = await Promise.all([agentSellsPromise, agentBuysPromise, agentMultiSalesPromise])
+    lead.sellersAgent = agentSellsResult
+    lead.buyersAgent = agentBuysResult
+    lead.multiSales = agentMultiSalesResult
+    res.status(200).send(lead);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send('server error')
+  }
+});
+
+//add post new note
+// @route: POST /api/profile/addNotes/:profileType;
+// @desc: save filter section as filter or audiance   
+// @ access: Private
+router.post('/addNote/agentPros/:id', auth, async (req, res) => {
+  try {
+    id = req.params.id
+    const record = await Agent.findById(id).populate('notes.user')
+    const newNote = {
+      ...req.body,
+      user: req.user,
+      type: 'note'
+    }
+    record.notes.push(newNote)
+    await record.save()
+    res.status(200).send(record);
+  } catch (err) {
+    res.status(400).send('server error')
+    console.log(err)
+  }
+});
+
 
 module.exports = router;

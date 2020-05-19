@@ -12,7 +12,8 @@ import {
     LOAD_PROFILE_LIST,
     PROFILE_FILTER_OPTIONS,
     SET_FILTER,
-    SET_SAVED_FILTERS
+    SET_SAVED_FILTERS,
+    PROFILE_PAST_SALES
 } from './type';
 
 
@@ -79,6 +80,7 @@ export const loadProfileDefault = profileType => async dispatch => {
 
 //grab profile list for default load and filter
 export const loadProfileList = (profileType, queryList) =>async dispatch => {
+   console.log('running profile sales action') 
   try {
     dispatch({
       type: LOAD_PROFILE_LIST,
@@ -103,6 +105,26 @@ export const loadProfileList = (profileType, queryList) =>async dispatch => {
     });
   }
 
+};
+
+//grab activeProfiles past sales (agentPros)
+export const loadProfileSales = (profileType, id) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/profile/${profileType}/pastSales/${id}`);
+        dispatch({
+            type: PROFILE_PAST_SALES,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err);
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err,
+                status: err,
+            },
+        });
+    }
 };
 
 //Toggle view control for show add phone modal
@@ -269,6 +291,24 @@ export const saveFilter = async (data) => {
         console.log(err)
     }
 }
+
+//add note
+export const addNote = (data,id,profileType) => async dispatch =>{
+    try {
+        const res = await axios.post(`api/profile/addNote/${profileType}/${id}`, data, config)
+        dispatch({
+            type: SET_ACTIVE_PROFILE,
+            payload: res.data
+        })
+
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        });
+
+    }
+};
 
 export const clearAlerts = () => (dispatch) => {
     dispatch({type: CLEAR_PROFILE_ERROR});

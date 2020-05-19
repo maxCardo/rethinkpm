@@ -10,7 +10,8 @@ import {
     LOAD_PROFILE_LIST,
     PROFILE_FILTER_OPTIONS,
     SET_FILTER,
-    SET_SAVED_FILTERS
+    SET_SAVED_FILTERS,
+    PROFILE_PAST_SALES
 } from '../actions/type';
 
 const initialState = {
@@ -20,7 +21,10 @@ const initialState = {
     profileList: {list: '', loading: true},
     filterOptions: {options:'', loading:true},
     activeFilter:[],
-    savedFilters:''
+    savedFilters:'',
+    pastSales: {
+        loading: true
+    }
 }
 
 export default function (state = initialState, action) {
@@ -32,6 +36,14 @@ export default function (state = initialState, action) {
                 activeProfile: payload,
                 loading: false
             };
+        case PROFILE_PAST_SALES:
+            return {
+                ...state,
+                pastSales:{
+                    ...payload,
+                    loading:false
+                }
+            }
         case SET_PROFILE_LIST:
             return {
                 ...state,
