@@ -92,11 +92,19 @@
   outline: none;
 }
 .agent-list__search-input:focus,
-.agent-list__search-input:active {
+.agent-list__search-input:active,
+.numberField__group input:not([type="checkbox"]):focus,
+.numberField__group input:not([type="checkbox"]):active {
   border: 2px solid #007bff;
+}
+.numberField__group .col-1 {
+  display: flex;
+  align-items: center;
 }
 .pill__container {
   box-shadow: 1px 1px 3px rgba(0,0,0,.22);
   padding: 2px 20px;
   line-height: 16px;
+  background: #2684ff;
+  color: #FFFFFF;
 }

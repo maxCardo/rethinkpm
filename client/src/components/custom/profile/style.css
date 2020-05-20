@@ -633,4 +633,10 @@
   border: none;
 
 }
+
+.stringField__group input[disabled],
+.numberField__group input[disabled] {
+  background: rgb(242, 242, 242);
+  border-color: hsl(0,0%,90%);
+}
 /* END OF Bozidar CSS */
