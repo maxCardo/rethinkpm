@@ -1,9 +1,14 @@
 const express = require('express');
+const auth = require('../middleware/auth')
+
+//db models
 const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const Agent = require('../db/models/sales/agent')
 const singleFamilySalesModel = require('../db/models/sales/singleFamilySales')
 const multiSalesModel = require('../db/models/sales/multiSales')
 const Office = require('../db/models/sales/office')
+const SavedFilter = require('../db/models/prospects/SavedFilters')
+
 const {validateNum} = require('../3ps/sms')
 
 //filter options: refactor to get these from api
@@ -128,7 +133,7 @@ function transformObjectIntoSortedArray(object) {
 // @ access: Public * ToDo: update to make private
 router.get('/agentPros', async (req, res) => {
   try {
-      const record = await  Agent.findOne().populate('prospect notes office');
+      const record = await  Agent.findOne().populate('notes.user')
       res.status(200).send(record);
   } catch (error) {
       console.error(error);
@@ -142,8 +147,9 @@ router.get('/agentPros', async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
   try {
-      const record = await Agent.find({ status: { $in: eval(query) } })
-      res.status(200).send(record);
+      const list = await Agent.find({ status: { $in: eval(query) } })
+      const SavedFilters = await SavedFilter.find({})
+      res.status(200).send({list, SavedFilters});
   } catch (error) {
       console.error(error);
       res.status(400).send('server error')
@@ -158,7 +164,6 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     const data = req.body
     const filterFields = Object.keys(req.body);
     const filters = []
-    console.log(data)
 
     //create filter object
     filterFields.map((x) => {
@@ -175,11 +180,9 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     const queryObj = {}
     filters.map((x) => {
       if (x.filterType === 'range') {
-        console.log('running range')
         Object.assign(queryObj, {
           [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
         })
-        console.log(queryObj)
       }else if (x.subField) {
         Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
       }else{ 
@@ -196,9 +199,6 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     res.status(400).send('server error')
   }
 });
-
-
-
 
 // @route: GET /api/profile/filterOptions/agentPros;
 // @desc: Get options for filter fields used by filter filtersModal comp (agentPros) 
@@ -224,5 +224,104 @@ router.get('/filterOptions/agentPros', async ({ params: { query } }, res) => {
     res.status(400).send('server error')
   }
 });
+
+// @route: POST /api/profile/filter/save;
+// @desc: save filter selection as filter or audiance   
+// @ access: Public * ToDo: update to make private
+router.post('/filter/save', async (req, res) => {
+  try {
+    const savedFilter = await new SavedFilter(req.body)
+    await savedFilter.save()
+    res.status(200).send(savedFilter);
+  } catch (err) {
+    res.status(400).send('server error')
+    console.log(err)
+  }
+});
+
+// @route: GET /api/profile/agentPros/pastSales/:id;
+// @desc: Get past sales for record by id
+// @ access: Public * ToDo: update to make private
+router.get('/agentPros/pastSales/:agentId', async (req, res) => {
+  try {
+    const agentId = req.params.agentId
+    const lead = {}
+    const agentSellsPromise = singleFamilySalesModel.find({ agentId: agentId })
+    const agentBuysPromise = singleFamilySalesModel.find({ sellingAgentId: agentId })
+    const agentMultiSalesPromise = multiSalesModel.find({ agentId: agentId })
+    const [agentSellsResult, agentBuysResult, agentMultiSalesResult] = await Promise.all([agentSellsPromise, agentBuysPromise, agentMultiSalesPromise])
+    lead.sellersAgent = agentSellsResult
+    lead.buyersAgent = agentBuysResult
+    lead.multiSales = agentMultiSalesResult
+    res.status(200).send(lead);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send('server error')
+  }
+});
+
+//add post new note
+// @route: POST /api/profile/addNotes/:profileType;
+// @desc: save filter section as filter or audiance   
+// @ access: Private
+router.post('/addNote/agentPros/:id', auth, async (req, res) => {
+  try {
+    id = req.params.id
+    const record = await Agent.findById(id).populate('notes.user')
+    const newNote = {
+      ...req.body,
+      user: req.user,
+      type: 'note'
+    }
+    record.notes.push(newNote)
+    await record.save()
+    res.status(200).send(record);
+  } catch (err) {
+    res.status(400).send('server error')
+    console.log(err)
+  }
+});
+
+//add post new note
+// @route: POST /api/profile/addNotes/:profileType;
+// @desc: save filter section as filter or audiance   
+// @ access: Public
+router.get('/saved_filter/agentPros/:id', async (req, res) => {
+  try {
+    filterId = req.params.id
+    const savedFilter = await SavedFilter.findById(filterId)
+    
+    if (savedFilter.filterType == 'filter') {
+      //create string query 
+      const queryObj = {}
+      savedFilter.filters.map((x) => {
+        if (x.filterType === 'range') {
+          Object.assign(queryObj, {
+            [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
+          })
+        } else if (x.subField) {
+          Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
+        } else {
+          Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
+        }
+      })
+      //query DB
+      const record = await Agent.find(queryObj)
+      res.status(200).send(record);
+    } else if (savedFilter.filterType == 'audience'){
+      const audience = savedFilter.audience
+      const record = await Agent.find({_id:{$in: audience }})
+      res.status(200).send(record);
+    }else {
+      res.status(401).send('could not find record')
+    }
+
+  } catch (err) {
+    res.status(400).send('server error')
+    console.log(err)
+  }
+});
+
+
 
 module.exports = router;

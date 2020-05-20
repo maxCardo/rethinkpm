@@ -9,7 +9,9 @@ import {
     CLEAR_PROFILE_SUCCESS,
     LOAD_PROFILE_LIST,
     PROFILE_FILTER_OPTIONS,
-    SET_FILTER
+    SET_FILTER,
+    SET_SAVED_FILTERS,
+    PROFILE_PAST_SALES
 } from '../actions/type';
 
 const initialState = {
@@ -18,7 +20,11 @@ const initialState = {
     showAddPhoneMod: false,
     profileList: {list: '', loading: true},
     filterOptions: {options:'', loading:true},
-    activeFilter:[]
+    activeFilter:[],
+    savedFilters:[],
+    pastSales: {
+        loading: true
+    }
 }
 
 export default function (state = initialState, action) {
@@ -30,6 +36,14 @@ export default function (state = initialState, action) {
                 activeProfile: payload,
                 loading: false
             };
+        case PROFILE_PAST_SALES:
+            return {
+                ...state,
+                pastSales:{
+                    ...payload,
+                    loading:false
+                }
+            }
         case SET_PROFILE_LIST:
             return {
                 ...state,
@@ -44,6 +58,7 @@ export default function (state = initialState, action) {
                 profileList: {
                     loading: true
                 },
+                activeFilter:[]
             }
         case TOGGLE_ADD_PHONE:
             return {
@@ -67,7 +82,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 activeFilter: payload
-            };    
+            };
+        case SET_SAVED_FILTERS:
+            return {
+                ...state,
+                savedFilters: payload
+            }    
 
         case PROFILE_ERROR:
             return {

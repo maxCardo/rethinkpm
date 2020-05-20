@@ -23,7 +23,6 @@ const FilteredList = ({data, searchString, filters}) => {
     return (
         <Fragment>
             {/* Pills */}
-            {console.log(filters)}
             <div className='filter-pills__container'>
                 <div className='filter-pills__title-container'>
                     <p>Filters:</p> 

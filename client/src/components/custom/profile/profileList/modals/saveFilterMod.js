@@ -1,9 +1,29 @@
-import React, {useState, Fragment} from 'react'
+import React, {useEffect, useState, Fragment} from 'react'
 import {Modal, Form, Button} from 'react-bootstrap'
 
-const SaveFilterMod = ({show, handleClose}) => {
+import {saveFilter} from '../../../../../actions/profile'
+
+const SaveFilterMod = ({show, handleClose, activeFilter, profileList, profileType}) => {
     const [fltrName, setFltrName] = useState('')
-    const save = (e) => {console.log('running save func: ', e);}
+    const [audience] = useState(() => profileList.list.map((profile) => profile._id))
+
+
+    const onSubmit = (type) => {
+            const data = {
+                name: fltrName,
+                profileType: profileType, 
+                filterType: type,
+                filters: activeFilter,
+                audience: type === 'audience' ? audience : []
+            }
+            saveFilter(data)
+            onClose()
+        }
+
+    const onClose = () => {
+        setFltrName('')
+        handleClose()
+    } 
     
     
     return (
@@ -21,13 +41,13 @@ const SaveFilterMod = ({show, handleClose}) => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={() => onClose()}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => save('filter')}>
+                    <Button variant="primary" onClick={() => onSubmit('filter')}>
                         Save As Filter
                     </Button>
-                    <Button variant="primary" onClick={() => save('audience')}>
+                    <Button variant="primary" onClick={() => onSubmit('audience')}>
                         Save As Audience
                     </Button>
                 </Modal.Footer>
