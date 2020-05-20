@@ -15,6 +15,7 @@ import {
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES
 } from './type';
+import { Next } from 'react-bootstrap/PageItem';
 
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
@@ -284,11 +285,33 @@ export const getFilterOptions = (profileType) => async dispatch => {
 //save filter
 export const saveFilter = async (data) => {
     try {
-        console.log('running saved filter')
         const res = await axios.post(`/api/profile/filter/save`, data, config);
         console.log(res)
     } catch (err) {
         console.log(err)
+    }
+}
+
+//Load profile list based on selected saved filter
+export const loadSavedFilter = (id, profileType) => async dispatch => {
+    try {
+        dispatch({
+            type: LOAD_PROFILE_LIST,
+        });
+        const res = await axios.get(`/api/profile/saved_filter/${profileType}/${id}`)
+        dispatch({
+            type: SET_PROFILE_LIST,
+            payload: res.data
+        });
+    } catch (err) {
+        console.log(err);
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err,
+                status: err,
+            },
+        });
     }
 }
 

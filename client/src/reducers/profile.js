@@ -21,7 +21,7 @@ const initialState = {
     profileList: {list: '', loading: true},
     filterOptions: {options:'', loading:true},
     activeFilter:[],
-    savedFilters:'',
+    savedFilters:[],
     pastSales: {
         loading: true
     }
@@ -86,7 +86,7 @@ export default function (state = initialState, action) {
         case SET_SAVED_FILTERS:
             return {
                 ...state,
-                ...payload
+                savedFilters: payload
             }    
 
         case PROFILE_ERROR:

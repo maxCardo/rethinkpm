@@ -7,11 +7,15 @@ import FilteredList from './filteredList/FilteredList'
 import FilterModal from './modals/filterModel/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 
-import {loadProfileList} from '../../../../actions/profile'
+import {loadProfileList, loadSavedFilter} from '../../../../actions/profile'
 
-const ProfileList = ({loadProfileList, profileList, settings,activeFilter }) => {
 
+const ProfileList = ({loadProfileList,loadSavedFilter, profileList, settings,activeFilter,savedFilters }) => {
+    
     const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
+
+  
+
     const [selectStatus, setStatus] = useState({options, selected})
     const [showFilterMod, tglFilterMod] = useState(false)
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
@@ -21,10 +25,36 @@ const ProfileList = ({loadProfileList, profileList, settings,activeFilter }) => 
         loadProfileList(profileType, selectedQuery)
     }, [])
 
+    //load saved filters
+    useEffect(() => {
+        if (savedFilters.length){
+            const filterOptions = savedFilters.filter(x => x.filterType === 'filter')
+            const audienceOptions = savedFilters.filter(x => x.filterType === 'audience')
+            console.log(audienceOptions)
+            const optionsObj = [{
+                label: '',
+                options: options.slice()
+            }]
+            optionsObj.push({
+                label: 'Audience',
+                options: audienceOptions.map((filter) => ({ value: filter._id, label: filter.name, filter:true }))
+            })
+            optionsObj.push({
+                label: 'Filters',
+                options: filterOptions.map((filter) => ({ value: filter._id, label: filter.name, filter: true }))
+            })
+            setStatus({...selectStatus, options: optionsObj})  
+        }
+    }, [savedFilters])
+
     const setListByStatus = (v) => {
-        loadProfileList(profileType, v.value)  
+        if(v.filter){
+            loadSavedFilter(v.value, profileType)
+        }else{
+            loadProfileList(profileType, v.value)
+        }   
         setStatus({ ...selectStatus, selected: v })
-    }
+    } 
     
     return profileList.loading ? <Loading/> :
         <Fragment>
@@ -85,9 +115,10 @@ ProfileList.propTypes = {
 
 const mapStateToProps = state => ({
     profileList: state.profile.profileList,
-    activeFilter: state.profile.activeFilter
+    activeFilter: state.profile.activeFilter,
+    savedFilters: state.profile.savedFilters
 });
 
 
 
-export default connect(mapStateToProps, {loadProfileList})(ProfileList)
+export default connect(mapStateToProps, {loadProfileList, loadSavedFilter})(ProfileList)

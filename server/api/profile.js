@@ -225,8 +225,8 @@ router.get('/filterOptions/agentPros', async ({ params: { query } }, res) => {
   }
 });
 
-// @route: POST /api/profile/filter/save/:pop;
-// @desc: save filter section as filter or audiance   
+// @route: POST /api/profile/filter/save;
+// @desc: save filter selection as filter or audiance   
 // @ access: Public * ToDo: update to make private
 router.post('/filter/save', async (req, res) => {
   try {
@@ -239,23 +239,11 @@ router.post('/filter/save', async (req, res) => {
   }
 });
 
-// @route: GET /api/profile/filterOptions/agentPros;
-// @desc: Get users saved Filters 
-// @ access: Public * ToDo: update to make private
-router.get('/filter/save/agentPros', async ({ params: { query } }, res) => {
-  try {
-    res.status(200).send('running');
-  } catch (error) {
-    res.status(400).send('server error')
-  }
-});
-
-// @route: GET /api/profile/agent/:id;
-// @desc: Get Inquiry Id info
+// @route: GET /api/profile/agentPros/pastSales/:id;
+// @desc: Get past sales for record by id
 // @ access: Public * ToDo: update to make private
 router.get('/agentPros/pastSales/:agentId', async (req, res) => {
   try {
-    console.log('profile sales history api call')
     const agentId = req.params.agentId
     const lead = {}
     const agentSellsPromise = singleFamilySalesModel.find({ agentId: agentId })
@@ -293,6 +281,47 @@ router.post('/addNote/agentPros/:id', auth, async (req, res) => {
     console.log(err)
   }
 });
+
+//add post new note
+// @route: POST /api/profile/addNotes/:profileType;
+// @desc: save filter section as filter or audiance   
+// @ access: Public
+router.get('/saved_filter/agentPros/:id', async (req, res) => {
+  try {
+    filterId = req.params.id
+    const savedFilter = await SavedFilter.findById(filterId)
+    
+    if (savedFilter.filterType == 'filter') {
+      //create string query 
+      const queryObj = {}
+      savedFilter.filters.map((x) => {
+        if (x.filterType === 'range') {
+          Object.assign(queryObj, {
+            [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
+          })
+        } else if (x.subField) {
+          Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
+        } else {
+          Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
+        }
+      })
+      //query DB
+      const record = await Agent.find(queryObj)
+      res.status(200).send(record);
+    } else if (savedFilter.filterType == 'audience'){
+      const audience = savedFilter.audience
+      const record = await Agent.find({_id:{$in: audience }})
+      res.status(200).send(record);
+    }else {
+      res.status(401).send('could not find record')
+    }
+
+  } catch (err) {
+    res.status(400).send('server error')
+    console.log(err)
+  }
+});
+
 
 
 module.exports = router;
