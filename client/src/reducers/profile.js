@@ -15,7 +15,9 @@ import {
 } from '../actions/type';
 
 const initialState = {
-    activeProfile: '',
+    activeProfile: {
+        notes: []
+    },
     loading: true,
     showAddPhoneMod: false,
     profileList: {list: '', loading: true},
