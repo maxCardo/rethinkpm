@@ -86,19 +86,19 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
     dispatch({
       type: LOAD_PROFILE_LIST,
     });
-    let queryUrl = `/api/profile/list/${profileType}/${queryList}`
-    if(pageNumber) {
-      queryUrl = `${queryUrl}/${pageNumber}`
+    const filter = {
+      status: {
+        accessor: 'status',
+        dataType: 'array',
+        name: 'status',
+        type: {
+          value: 'in',
+          operator: '$in'
+        },
+        value: eval(queryList).map((status) => ({value: status}))
+      }
     }
-    const res = await axios.get(queryUrl);
-    dispatch({
-      type: SET_PROFILE_LIST,
-      payload: res.data.list,
-    });
-    dispatch({
-        type: SET_SAVED_FILTERS,
-        payload: res.data.SavedFilters
-    })
+    submitFilterModal(filter, profileType)(dispatch)
   } catch (err) {
     console.log(err);
     dispatch({
