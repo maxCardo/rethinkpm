@@ -9,7 +9,7 @@ const ArrayFields = ({orderKey, filterFields, onChange, prop, options}) => {
 
     const [state, setState] = useState(filterFields)
     const [useFilter, setUseFilter] = useState(false)
-    const {name, type, value, dataType} = filterFields
+    const {name, value} = filterFields
     const selectInput = useRef(null);
 
     const callChange = (property, value) => {

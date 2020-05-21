@@ -4,8 +4,6 @@ import {Button, Form, Modal} from "react-bootstrap";
 
 const StatusField = ({data}) => {
 
-    console.log(data);
-
     const formatStatus = (status) => {
         return {value: status, label: status[0].toUpperCase() + status.substr(1)}
     }
