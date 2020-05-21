@@ -7,35 +7,55 @@ import FilteredList from './filteredList/FilteredList'
 import FilterModal from './modals/filterModel/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 
-import {loadProfileList} from '../../../../actions/profile'
+import {loadProfileList, loadSavedFilter} from '../../../../actions/profile'
 
-const ProfileList = ({loadProfileList, profileList, settings}) => {
 
+const ProfileList = ({loadProfileList,loadSavedFilter, profileList, settings,activeFilter,savedFilters }) => {
+    
     const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
+
+  
+
     const [selectStatus, setStatus] = useState({options, selected})
     const [showFilterMod, tglFilterMod] = useState(false)
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
     const [searchString, setSearchString] = useState('')
 
     useEffect(() => {
-        console.log('runnning profile list');
-        //see if data available for this populations if no call api via action (double check call from Profile and reference call from BrokerDash)
-        //grab audiances and filters and add to state.options, set as options in select Status
         loadProfileList(profileType, selectedQuery)
-    }, [loadProfileList, profileType, selectedQuery])
+    }, [])
+
+    //load saved filters
+    useEffect(() => {
+        if (savedFilters.length){
+            const filterOptions = savedFilters.filter(x => x.filterType === 'filter')
+            const audienceOptions = savedFilters.filter(x => x.filterType === 'audience')
+            console.log(audienceOptions)
+            const optionsObj = [{
+                label: '',
+                options: options.slice()
+            }]
+            optionsObj.push({
+                label: 'Audience',
+                options: audienceOptions.map((filter) => ({ value: filter._id, label: filter.name, filter:true }))
+            })
+            optionsObj.push({
+                label: 'Filters',
+                options: filterOptions.map((filter) => ({ value: filter._id, label: filter.name, filter: true }))
+            })
+            setStatus({...selectStatus, options: optionsObj})  
+        }
+    }, [savedFilters])
 
     const setListByStatus = (v) => {
-        loadProfileList(profileType, v.value) 
+        if(v.filter){
+            loadSavedFilter(v.value, profileType)
+        }else{
+            loadProfileList(profileType, v.value)
+        }   
         setStatus({ ...selectStatus, selected: v })
-    }
-
-    const setSearch = () => {
-        console.log('running set search')
-    }
+    } 
     
-    
-    
-
     return profileList.loading ? <Loading/> :
         <Fragment>
             <Select
@@ -56,16 +76,19 @@ const ProfileList = ({loadProfileList, profileList, settings}) => {
                     <i className="fas fa-filter"></i>
                 </button>
             </div>
-            {/* show below conditionaly if filters are active */}
-            <div className='agent-list__filtering-options-container'>
-                <button onClick={() => setSearch('')}>Clear filter</button>
-                <button onClick={() => tglSaveFltrMod(true)}>Save filter</button>
-            </div>
+            {activeFilter.length ? (
+                <div className='agent-list__filtering-options-container'>
+                    <button onClick={() => loadProfileList(profileType, selectedQuery)}>Clear filter</button>
+                    <button onClick={() => tglSaveFltrMod(true)}>Save filter</button>
+                </div>
+            ):null}
             <FilteredList
                 data={profileList.list}
                 searchString={searchString}
                 //dataSetKey={this.state.statusSelected.value}
             />
+            {searchString && (<a onClick={() => console.log('clcick')}> do not see the record you are </a>)}
+            
             <FilterModal
                 show={showFilterMod}
                 handleClose={() => tglFilterMod(false)}
@@ -74,8 +97,9 @@ const ProfileList = ({loadProfileList, profileList, settings}) => {
             <SaveFilterMod
                 show={showSaveFltrMod}
                 handleClose={() => tglSaveFltrMod(false)}
-                //saveAudience={this.saveAudience}
-                //saveFilter={this.saveFilter}
+                activeFilter={activeFilter}
+                profileList={profileList}
+                profileType= {profileType}
             />
         </Fragment>
 
@@ -90,9 +114,11 @@ ProfileList.propTypes = {
 
 
 const mapStateToProps = state => ({
-    profileList: state.profile.profileList
+    profileList: state.profile.profileList,
+    activeFilter: state.profile.activeFilter,
+    savedFilters: state.profile.savedFilters
 });
 
 
 
-export default connect(mapStateToProps, {loadProfileList})(ProfileList)
+export default connect(mapStateToProps, {loadProfileList, loadSavedFilter})(ProfileList)

@@ -1,10 +1,12 @@
 import React , {Fragment, useState} from 'react'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap';
+import {checkBoxCheck} from '../../../../../../../util/commonFunctions';
+
 
 const NumberFields = ({ filterFields, onChange, prop }) => {
-
     const [state, setState] = useState(filterFields)
+    const [useFilter, setUseFilter] = useState(false)
     const { name, type, value, secondValue } = filterFields
 
     const callChange = (property, value) => {
@@ -27,22 +29,38 @@ const NumberFields = ({ filterFields, onChange, prop }) => {
         { label: '<=', value: '<=', operator: '$lte' },
     ];
 
+    const onCheck = (e) => {
+        setUseFilter(!useFilter);
+    }
+
     return (
         <Fragment>
             <Col xs={12}>
-                <Form.Group>
+                <Form.Group className='numberField__group'>
                     <Form.Label>{name}</Form.Label>
                     <Row>
                         <Col xs={3}>
+                            <Form.Group>
+                                <div className="element-wrapper with--checkbox">
+                                    <label className="checkbox path">
+                                        <input type="checkbox" name='useFilter' value={useFilter} onChange={e => onCheck(e)}/>
+                                        {checkBoxCheck()} &nbsp; Use Filter
+                                    </label>
+                                </div>
+                            </Form.Group>
+                        </Col>
+                        {useFilter &&
+                        <Col xs={type && type.value === 'range' ? 2 : 3}>
                             <Select
+                                isSearchable={false}
                                 options={numberFilters}
                                 value={type}
                                 onChange={value => callChange('type', value)}
                             />
-                        </Col>
-                        {type && type.value === 'range' ? (
+                        </Col>}
+                        {useFilter && type && type.value === 'range' ? (
                             <Fragment>
-                                <Col xs={4}>
+                                <Col xs={3}>
                                     <Form.Control
                                         type='text'
                                         value={value}
@@ -50,7 +68,7 @@ const NumberFields = ({ filterFields, onChange, prop }) => {
                                     />
                                 </Col>
                                 <Col xs={1}>TO</Col>
-                                <Col xs={4}>
+                                <Col xs={3}>
                                     <Form.Control
                                         type='text'
                                         value={secondValue}
@@ -59,10 +77,11 @@ const NumberFields = ({ filterFields, onChange, prop }) => {
                                 </Col>
                             </Fragment>
                         ) : (
-                                <Col xs={9}>
+                                <Col xs={useFilter ? 6 : 9} >
                                     <Form.Control
                                         type='text'
                                         value={value}
+                                        disabled={!useFilter}
                                         onChange={e => callChange('value', e.target.value)}
                                     />
                                 </Col>

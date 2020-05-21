@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import './style.css'
 import ProfileInfo from './profileInfo/ProfileInfo'
 import ProfileList from './profileList/ProfileList'
+import ProfileDetails from './profileDetails/ProfileDetails'
 import { Resizable } from 're-resizable'
 import Loading from '../../core/LoadingScreen/Loading'
 //import NotesScreen from './screens/Notes'
@@ -56,7 +57,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
                     </div>
                 </Resizable>
                 <div className='profile__logs-container'>
-                    <p>logs container</p>
+                    <ProfileDetails settings={settings}/>
                 </div>
 
             </div>

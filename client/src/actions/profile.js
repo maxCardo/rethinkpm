@@ -11,8 +11,11 @@ import {
     CLEAR_PROFILE_SUCCESS,
     LOAD_PROFILE_LIST,
     PROFILE_FILTER_OPTIONS,
-    SET_FILTER
+    SET_FILTER,
+    SET_SAVED_FILTERS,
+    PROFILE_PAST_SALES
 } from './type';
+import { Next } from 'react-bootstrap/PageItem';
 
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
@@ -78,6 +81,7 @@ export const loadProfileDefault = profileType => async dispatch => {
 
 //grab profile list for default load and filter
 export const loadProfileList = (profileType, queryList) =>async dispatch => {
+   console.log('running profile sales action') 
   try {
     dispatch({
       type: LOAD_PROFILE_LIST,
@@ -85,8 +89,12 @@ export const loadProfileList = (profileType, queryList) =>async dispatch => {
     const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
     dispatch({
       type: SET_PROFILE_LIST,
-      payload: res.data,
+      payload: res.data.list,
     });
+    dispatch({
+        type: SET_SAVED_FILTERS,
+        payload: res.data.SavedFilters
+    })
   } catch (err) {
     console.log(err);
     dispatch({
@@ -98,6 +106,26 @@ export const loadProfileList = (profileType, queryList) =>async dispatch => {
     });
   }
 
+};
+
+//grab activeProfiles past sales (agentPros)
+export const loadProfileSales = (profileType, id) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/profile/${profileType}/pastSales/${id}`);
+        dispatch({
+            type: PROFILE_PAST_SALES,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err);
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err,
+                status: err,
+            },
+        });
+    }
 };
 
 //Toggle view control for show add phone modal
@@ -253,6 +281,57 @@ export const getFilterOptions = (profileType) => async dispatch => {
 
     }
 }
+
+//save filter
+export const saveFilter = async (data) => {
+    try {
+        const res = await axios.post(`/api/profile/filter/save`, data, config);
+        console.log(res)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+//Load profile list based on selected saved filter
+export const loadSavedFilter = (id, profileType) => async dispatch => {
+    try {
+        dispatch({
+            type: LOAD_PROFILE_LIST,
+        });
+        const res = await axios.get(`/api/profile/saved_filter/${profileType}/${id}`)
+        dispatch({
+            type: SET_PROFILE_LIST,
+            payload: res.data
+        });
+    } catch (err) {
+        console.log(err);
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err,
+                status: err,
+            },
+        });
+    }
+}
+
+//add note
+export const addNote = (data,id,profileType) => async dispatch =>{
+    try {
+        const res = await axios.post(`api/profile/addNote/${profileType}/${id}`, data, config)
+        dispatch({
+            type: SET_ACTIVE_PROFILE,
+            payload: res.data
+        })
+
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        });
+
+    }
+};
 
 export const clearAlerts = () => (dispatch) => {
     dispatch({type: CLEAR_PROFILE_ERROR});
