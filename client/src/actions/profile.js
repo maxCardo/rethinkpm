@@ -171,7 +171,7 @@ export const addPhoneNumSubmit = () => async dispatch => {
     }
 }
 
-// update email
+// update phone
 export const updatePhone = (formData, id) => (dispatch) => {
     axios.put(`/api/profile/agent/${id}`, formData, config)
         .then((res) => {
@@ -185,6 +185,24 @@ export const updatePhone = (formData, id) => (dispatch) => {
             dispatch({
                 type: PROFILE_ERROR,
                 payload: {heading: 'Primary Phone Update', msg: 'Could not update record'}
+            });
+        });
+};
+
+// update status
+export const updateStatus = (formData, id) => (dispatch) => {
+    axios.put(`/api/profile/agent/${id}`, formData, config)
+        .then((res) => {
+            console.log(res.body);
+            dispatch({
+                type: PROFILE_SUCCESS,
+                payload: {heading: 'Status Update', msg: 'Successfully updated profile status'}
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: PROFILE_ERROR,
+                payload: {heading: 'Status Update', msg: 'Could not update profile status'}
             });
         });
 };

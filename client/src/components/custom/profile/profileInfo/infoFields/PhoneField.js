@@ -29,7 +29,6 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
         setPhoneValid(!!e.match(validPhone))
     }
 
-    /*TODO: NEEDS AN ACTION*/
     const editPrimePhone = () => {
         const postPhones = data.phoneNumbers.map((item) => {
             if (item.isPrimary) {
@@ -43,7 +42,6 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
         toggleEdit(false);
         setConfModal(false);
     }
-
 
     useEffect(() => {
         //get primary number
