@@ -9,11 +9,11 @@ const FilterFields = (props) => {
 
     switch (dataType) {
         case 'array':
-            return <ArrayField {...props} />;
+            return <ArrayField orderKey={props.orderKey} {...props} />;
         case 'string':
-            return <StringField {...props} />;
+            return <StringField orderKey={props.orderKey} {...props} />;
         case 'number':
-            return <NumberField {...props} />;
+            return <NumberField orderKey={props.orderKey} {...props} />;
         default:
             console.log('errror, default caled')
     }

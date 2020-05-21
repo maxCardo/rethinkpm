@@ -100,12 +100,12 @@
           "sales"
         ],
         "filterFields":{
-          "office": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Office", "dataType":"array", "accessor":"officeId", "subAccessor":"" },
-          "status": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Status", "dataType":"array", "accessor":"status", "subAccessor":""},
-          "leadOwner": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Lead Owner", "dataType":"string", "accessor":"leadOwner", "subAccessor":""},
-          "sales": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"","secondValue": "" , "name":"Sales", "dataType":"number", "accessor":"sales", "subAccessor":""},
+          "area": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"" , "name":"Area", "dataType":"array", "accessor":"areas", "subAccessor":"name"},
           "zip": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"" , "name":"Zip", "dataType":"array", "accessor":"zipCodes", "subAccessor":"name"},
-          "area": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"" , "name":"Area", "dataType":"array", "accessor":"areas", "subAccessor":"name"}
+          "sales": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"","secondValue": "" , "name":"Sales", "dataType":"number", "accessor":"sales", "subAccessor":""},
+          "leadOwner": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Lead Owner", "dataType":"string", "accessor":"leadOwner", "subAccessor":""},
+          "status": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Status", "dataType":"array", "accessor":"status", "subAccessor":""},
+          "office": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Office", "dataType":"array", "accessor":"officeId", "subAccessor":"" }
         }
       },
       "leasingPros": {

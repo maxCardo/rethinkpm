@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Modal, Button} from 'react-bootstrap'
 
 import {tglAddPhoneMod} from '../../../../../actions/profile'
+import {formatPhone} from '../../../../../util/commonFunctions'
 import PropTypes from "prop-types";
 
 //crate useEffect on load  to find primary number and set var
@@ -60,7 +61,7 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
                     className={phoneValid ? 'valid' : 'invalid'}
                     name='phonePrimary'
                     disabled={!edit}
-                    value={edit ? editPhone : phone}
+                    value={edit ? editPhone : (phone !== 'no phone on file') ? formatPhone(phone) : phone}
                     onChange={(e) => editPhonefunc(e.target.value)}
                     ref={phoneInput}
                 />

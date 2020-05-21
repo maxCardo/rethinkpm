@@ -631,12 +631,14 @@
   -1px 1px 7px rgba(0,0,0,.15),
   0px 0px 25px 10px rgba(0,0,0,.142);
   border: none;
-
 }
-
 .stringField__group input[disabled],
 .numberField__group input[disabled] {
   background: rgb(242, 242, 242);
   border-color: hsl(0,0%,90%);
+}
+.filter-modal__body form {
+  display: flex;
+  flex-direction: column;
 }
 /* END OF Bozidar CSS */

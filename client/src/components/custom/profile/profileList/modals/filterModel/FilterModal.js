@@ -20,9 +20,9 @@ const FilterModal = ({show, handleClose, settings:{filterFields, profileType},ge
           <Modal.Title>Create filter</Modal.Title>
         </Modal.Header>
           {loading ? <Loading/> : <Fragment>
-            <Modal.Body>
+            <Modal.Body className='filter-modal__body'>
               <Form>
-                {Object.keys(filterFields).map((x, i) => (<FilterFields key={i} className={(state[x.toString()].type.value)} onChange={onChange} filterFields={state[x]} prop={x} />))}
+                {Object.keys(filterFields).map((x, i) => (<FilterFields orderKey={i} key={i} className={(state[x.toString()].type.value)} onChange={onChange} filterFields={state[x]} prop={x} />))}
               </Form>
             </Modal.Body>
             <Modal.Footer>

@@ -3,7 +3,7 @@ import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap';
 import {checkBoxCheck} from '../../../../../../../util/commonFunctions';
 
-const StringFields = ({ filterFields, onChange, prop }) => {
+const StringFields = ({ filterFields, onChange, prop, orderKey }) => {
 
 
     const [state, setState] = useState(filterFields)
@@ -41,7 +41,7 @@ const StringFields = ({ filterFields, onChange, prop }) => {
 
     return (
         <Fragment>
-            <Col xs={12}>
+            <Col xs={12} style={{order: `${100 - orderKey}`}}>
                 <Form.Group className="stringField__group">
                     <Form.Label>{name}</Form.Label>
                     <Row>
