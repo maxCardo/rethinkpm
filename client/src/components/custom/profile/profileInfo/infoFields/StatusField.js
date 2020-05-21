@@ -4,6 +4,8 @@ import {Button, Form, Modal} from "react-bootstrap";
 
 const StatusField = ({data}) => {
 
+    console.log(data);
+
     const formatStatus = (status) => {
         return {value: status, label: status[0].toUpperCase() + status.substr(1)}
     }
@@ -40,8 +42,13 @@ const StatusField = ({data}) => {
     };
 
     useEffect( () => {
+        if (status !== formatStatus(data.status)) {
+            setStatus(formatStatus(data.status));
+        }
         if (lossInput.current !== undefined && lossInput.current !== null) lossInput.current.focus()
     });
+
+
 
     return (
         <Fragment key="status">
