@@ -9,6 +9,7 @@ const StatusField = ({data}) => {
     }
 
     const formatedStatus = formatStatus(data.status);
+    const [agent, setAgent] = useState(data._id);
     const [status, setStatus] = useState(formatedStatus);
     const [editable, toggleEditable] = useState(false);
     const [showConfModal, setConfModal] = useState(false);
@@ -40,8 +41,9 @@ const StatusField = ({data}) => {
     };
 
     useEffect( () => {
-        if (status === {value: 'notInterested', label: 'Not Interested'}) {
+        if (status !== formatStatus(data.status) && agent !== data._id) {
             setStatus(formatStatus(data.status));
+            setAgent(data._id);
         }
         if (lossInput.current !== undefined && lossInput.current !== null) lossInput.current.focus()
     }, [status, data.status]);
