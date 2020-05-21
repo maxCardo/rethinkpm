@@ -80,13 +80,17 @@ export const loadProfileDefault = profileType => async dispatch => {
 };
 
 //grab profile list for default load and filter
-export const loadProfileList = (profileType, queryList) =>async dispatch => {
+export const loadProfileList = (profileType, queryList, pageNumber) =>async dispatch => {
    console.log('running profile sales action') 
   try {
     dispatch({
       type: LOAD_PROFILE_LIST,
     });
-    const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
+    let queryUrl = `/api/profile/list/${profileType}/${queryList}`
+    if(pageNumber) {
+      queryUrl = `${queryUrl}/${pageNumber}`
+    }
+    const res = await axios.get(queryUrl);
     dispatch({
       type: SET_PROFILE_LIST,
       payload: res.data.list,
