@@ -40,11 +40,11 @@ const StatusField = ({data}) => {
     };
 
     useEffect( () => {
-        if (status !== formatStatus(data.status)) {
+        if (status === {value: 'notInterested', label: 'Not Interested'}) {
             setStatus(formatStatus(data.status));
         }
         if (lossInput.current !== undefined && lossInput.current !== null) lossInput.current.focus()
-    });
+    }, [status, data.status]);
 
 
 

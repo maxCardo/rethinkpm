@@ -4,7 +4,6 @@ import {
     PROFILE_ERROR,
     TOGGLE_ADD_PHONE,
     TOGGLE_ADD_EMAIL,
-    EDIT_EMAIL,
     SET_PROFILE_LIST,
     CLEAR_PROFILE_ERROR,
     PROFILE_SUCCESS,
@@ -13,7 +12,7 @@ import {
     PROFILE_FILTER_OPTIONS,
     SET_FILTER,
     SET_SAVED_FILTERS,
-    PROFILE_PAST_SALES
+    PROFILE_PAST_SALES,
 } from './type';
 import { Next } from 'react-bootstrap/PageItem';
 
@@ -172,6 +171,24 @@ export const addPhoneNumSubmit = () => async dispatch => {
     }
 }
 
+// update email
+export const updatePhone = (formData, id) => (dispatch) => {
+    axios.put(`/api/profile/agent/${id}`, formData, config)
+        .then((res) => {
+            console.log(res.body);
+            dispatch({
+                type: PROFILE_SUCCESS,
+                payload: {heading: 'Primary Phone Update', msg: 'Successfully updated primary phone record'}
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: PROFILE_ERROR,
+                payload: {heading: 'Primary Phone Update', msg: 'Could not update record'}
+            });
+        });
+};
+
 //Toggle view control for show add email modal
 export const tglAddEmailMod = action => async dispatch => {
     try {
@@ -218,7 +235,6 @@ export const addEmailSubmit = () => async dispatch => {
 
 // update email
 export const updateEmail = (formData, id) => (dispatch) => {
-    dispatch({type: EDIT_EMAIL});
     axios.put(`/api/profile/agent/${id}`, formData, config)
         .then((res) => {
             console.log(res.body);

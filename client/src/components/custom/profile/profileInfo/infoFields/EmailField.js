@@ -43,7 +43,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
         if (emailInput.current && edit) {
             emailInput.current.focus();
         }
-    }, [edit])
+    }, [edit, email]);
 
     return (
         <Fragment key="email">
