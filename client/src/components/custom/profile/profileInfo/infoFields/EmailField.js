@@ -39,6 +39,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
 
 
     useEffect(() => {
+        setEditEmail(email);
         if (emailInput.current && edit) {
             emailInput.current.focus();
         }

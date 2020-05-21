@@ -22,7 +22,7 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
     const [showConfModal, setConfModal] = useState(false)
     const [editPhone, setEditPhone] = useState('4125138992')
 
-    const editPhonefunc = async (e) => {
+    const editPhonefunc = (e) => {
         setEditPhone(e)
         var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         setPhoneValid(!!e.match(validPhone))
@@ -47,6 +47,7 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
     useEffect(() => {
         //get primary number
         //format for dom
+        setEditPhone(phone);
         if (phoneInput.current && edit) {
             phoneInput.current.focus();
         }
