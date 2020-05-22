@@ -3,14 +3,16 @@ import {connect} from 'react-redux'
 import {Modal, Button} from 'react-bootstrap'
 
 import {tglAddPhoneMod} from '../../../../../actions/profile'
+import {formatPhone} from '../../../../../util/commonFunctions'
 import PropTypes from "prop-types";
+import {updatePhone} from "../../../../../actions/profile";
 
 //crate useEffect on load  to find primary number and set var
 //action/reducer/api EP for handling add and editPrime phone num
 
 //ToDO: for future. add dropdown arrow to show other phone numbers and checkbox to make primary
 
-const PhoneField = ({tglAddPhoneMod, data}) => {
+const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
 
     const phoneInput = useRef();
 
@@ -21,13 +23,12 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
     const [showConfModal, setConfModal] = useState(false)
     const [editPhone, setEditPhone] = useState('4125138992')
 
-    const editPhonefunc = async (e) => {
+    const editPhonefunc = (e) => {
         setEditPhone(e)
         var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         setPhoneValid(!!e.match(validPhone))
     }
 
-    /*TODO: NEEDS AN ACTION*/
     const editPrimePhone = () => {
         const postPhones = data.phoneNumbers.map((item) => {
             if (item.isPrimary) {
@@ -37,19 +38,19 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
                 return item
             }
         })
-        //updatePhone({phoneNumbers: postPhones}, data._id);
+        updatePhone({phoneNumbers: postPhones}, data._id);
         toggleEdit(false);
         setConfModal(false);
     }
 
-
     useEffect(() => {
         //get primary number
         //format for dom
+        setEditPhone(phone);
         if (phoneInput.current && edit) {
             phoneInput.current.focus();
         }
-    }, [edit])
+    }, [edit, phone]);
 
     return (
         <Fragment key="phoneNumber">
@@ -60,7 +61,7 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
                     className={phoneValid ? 'valid' : 'invalid'}
                     name='phonePrimary'
                     disabled={!edit}
-                    value={edit ? editPhone : phone}
+                    value={edit ? editPhone : (phone !== 'no phone on file') ? formatPhone(phone) : phone}
                     onChange={(e) => editPhonefunc(e.target.value)}
                     ref={phoneInput}
                 />
@@ -128,7 +129,7 @@ const PhoneField = ({tglAddPhoneMod, data}) => {
 
 PhoneField.propTypes = {
     tglAddPhoneMod: PropTypes.func.isRequired,
-    //updatePhone: PropTypes.func.isRequired, NOT IMPLEMENTED
+    updatePhone: PropTypes.func.isRequired,
 }
 
-export default connect(null, {tglAddPhoneMod})(PhoneField)
+export default connect(null, {tglAddPhoneMod, updatePhone})(PhoneField)

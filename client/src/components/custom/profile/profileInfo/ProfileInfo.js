@@ -8,7 +8,7 @@ import AddPhoneModal from '../edit_add_updated/AddPhoneModal'
 import AddEmailModal from "../edit_add_updated/AddEmailModal";
 
 
-const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
+const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
     const [{columns, loading}, setColumns] =useState({data: null, loading: true}) 
 
     useEffect(() => {
@@ -39,10 +39,10 @@ const ProfileInfo = ({settings:{profileInfo}, profile, testFunc}) => {
 
         {/* calls to action */}
         <div className='profile-info__actions-container'>
-          <a className='action-buttons__button' href='#'>
+          <a className='action-buttons__button' href='#' onClick={() => tglList()}>
             <i className='fas fa-user-tag'></i>
           </a>
-          <a className='action-buttons__button' href='#'>
+          <a className='action-buttons__button' href='#' onClick={()=> tglChat()}>
             <i className='fas fa-comments'></i>
           </a>
           <a className='action-buttons__button' href={`tel:`}>

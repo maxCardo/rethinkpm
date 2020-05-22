@@ -1,44 +1,37 @@
-import React, { Fragment, useEffect } from 'react';
-import qs from 'query-string'
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux'
-
+import qs from 'query-string'
 import './style.css'
+import { Resizable } from 're-resizable'
 import ProfileInfo from './profileInfo/ProfileInfo'
 import ProfileList from './profileList/ProfileList'
 import ProfileDetails from './profileDetails/ProfileDetails'
-import { Resizable } from 're-resizable'
+import Chat from './Chat'
 import Loading from '../../core/LoadingScreen/Loading'
-//import NotesScreen from './screens/Notes'
-//import SalesScreen from './screens/SalesHistory'
-
-//removed AGENT_SELECTED
+import UpdateAlert from "../../core/UpdateAlert";
 import { SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
-import UpdateAlert from "../../core/UpdateAlert";
-
-//ToDo: action.addPhoneNumSubmit : 
-    // - remove toggle dispactch 
-    // - check that phone num is not already included in record, if in send msg 
-    // - send put call to API to add phoneNum
 
 
 const Profile = ({profile:{activeProfile, loading }, location:{search}, settings, loadBackUpProfile, loadProfileDefault}) => {
 
-    var isAgent = true
-
-    //run on load only
     useEffect(() => {
         //added to allow for reuse of profile component when redux data is orginized by component    
         if(!activeProfile.profile || activeProfile.profileType !== settings.profileType){
             const backUpProfile = qs.parse(search).profile 
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
-    }, [activeProfile.profile, activeProfile.profileType, loadBackUpProfile, loadProfileDefault, search, settings.profileType])
+    }, [])
+    const [chatWindow, tglChatWindow] = useState(true)
+    const [listWindow, tglListWindow] = useState(false)
+    const tglList = () => tglListWindow(!listWindow)
+    const tglChat = () => tglChatWindow(!chatWindow)
+
+
     
     return loading ? <Loading/> :
     <Fragment>
-        {/* update conditional statment below to use setting.json*/}
-        <div className={isAgent ? 'agentProfile profile__main-container left__sidebar-open' : 'profile__main-container'}>
+            <div className={`agentProfile profile__main-container ${listWindow ? 'left__sidebar-open' : null} ${chatWindow ? 'chat__sidebar-open' : null}`}>
             <div className='profile__left-container'>
                 <Resizable defaultSize={{height: '400'}}style={{height: '400', display: 'flex'}} minWidth='100%' maxHeight={window.innerHeight*(4/6)} minHeight='100'
                     enable={{
@@ -53,7 +46,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
                     }}
                 >
                     <div className='profile__info-container'>
-                        <ProfileInfo profile={activeProfile} settings={settings}/>
+                        <ProfileInfo profile={activeProfile} settings={settings} tglChat={tglChat} tglList={tglList}/>
                     </div>
                 </Resizable>
                 <div className='profile__logs-container'>
@@ -62,7 +55,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
 
             </div>
             <div className='profile__chat-container chat__sidebar'>
-                <p>chat sidebar</p>
+                <Chat/>
             </div>
             <div className="sidebar__left profile__agent-leads">
                 <ProfileList settings={settings}/>

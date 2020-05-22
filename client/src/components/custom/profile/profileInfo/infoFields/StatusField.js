@@ -1,14 +1,18 @@
 import React, {Fragment, useState, useRef, useEffect} from 'react'
 import Select from 'react-select'
 import {Button, Form, Modal} from "react-bootstrap";
+import {connect} from "react-redux";
+import {updateStatus} from "../../../../../actions/profile";
+import PropTypes from "prop-types";
 
-const StatusField = ({data}) => {
+const StatusField = ({updateStatus, data}) => {
 
     const formatStatus = (status) => {
         return {value: status, label: status[0].toUpperCase() + status.substr(1)}
     }
 
     const formatedStatus = formatStatus(data.status);
+    const [agent, setAgent] = useState(data._id);
     const [status, setStatus] = useState(formatedStatus);
     const [editable, toggleEditable] = useState(false);
     const [showConfModal, setConfModal] = useState(false);
@@ -31,17 +35,26 @@ const StatusField = ({data}) => {
         // reasonForLoss: (selectedOption.value !== 'notInterested') ? '' : this.state.reasonForLoss,
     };
 
-    const updateAgentStatus = (status) => {
-        //post to api
-        console.log(status);
-        console.log(data._id);
+    const updateAgentStatus = (status, lossReason) => {
+
+        if (!lossReason) {
+            updateStatus({status: status}, data._id);
+        } else {
+            /*TODO: LossReason doesn't get added to the record*/
+            updateStatus({status: status, lossReason: lossReason}, data._id);
+        }
         //if status === 'notInterested' add lossReason to post
-        //show success alert and get updated record on successful update
     };
 
     useEffect( () => {
+        if (status !== formatStatus(data.status) && agent !== data._id) {
+            setStatus(formatStatus(data.status));
+            setAgent(data._id);
+        }
         if (lossInput.current !== undefined && lossInput.current !== null) lossInput.current.focus()
-    });
+    }, [status, data.status, agent, data._id]);
+
+
 
     return (
         <Fragment key="status">
@@ -101,7 +114,8 @@ const StatusField = ({data}) => {
                 }
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" variant="secondary" onClick={() => {
-                        updateAgentStatus(status['value']);
+                        (lossReason) ? updateAgentStatus(status['value'], lossReason) : updateAgentStatus(status['value'], null);
+
                         toggleEditable(false);
                         setConfModal(false);
                     }}>
@@ -121,4 +135,8 @@ const StatusField = ({data}) => {
     )
 }
 
-export default StatusField
+StatusField.propTypes = {
+    updateStatus: PropTypes.func.isRequired,
+}
+
+export default connect(null, {updateStatus})(StatusField)
