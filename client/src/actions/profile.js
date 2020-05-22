@@ -13,7 +13,8 @@ import {
     PROFILE_FILTER_OPTIONS,
     SET_FILTER,
     SET_SAVED_FILTERS,
-    PROFILE_PAST_SALES
+    PROFILE_PAST_SALES,
+    SET_ACTIVE_PROFILE_CHAT
 } from './type';
 import { Next } from 'react-bootstrap/PageItem';
 
@@ -332,6 +333,23 @@ export const addNote = (data,id,profileType) => async dispatch =>{
 
     }
 };
+
+//get active profile chat
+export const getActiveChat = (chatOwner) => async dispatch =>{
+    try {
+        const res = await axios.get(`/api/comms/chat/${chatOwner}`)
+        dispatch ({
+            type: SET_ACTIVE_PROFILE_CHAT,
+            payload: res.data
+        })
+        
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err, status: err }
+        })
+    }
+}
 
 export const clearAlerts = () => (dispatch) => {
     dispatch({type: CLEAR_PROFILE_ERROR});
