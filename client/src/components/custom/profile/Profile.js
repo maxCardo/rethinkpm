@@ -22,8 +22,8 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
     }, [])
-    const [chatWindow, tglChatWindow] = useState(true)
-    const [listWindow, tglListWindow] = useState(false)
+    const [chatWindow, tglChatWindow] = useState(false)
+    const [listWindow, tglListWindow] = useState(true)
     const tglList = () => tglListWindow(!listWindow)
     const tglChat = () => tglChatWindow(!chatWindow)
 
