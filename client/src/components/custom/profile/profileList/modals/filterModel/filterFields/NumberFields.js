@@ -4,8 +4,8 @@ import { Form, Row, Col } from 'react-bootstrap';
 import {checkBoxCheck} from '../../../../../../../util/commonFunctions';
 
 
-const NumberFields = ({ filterFields, onChange, prop }) => {
-    const [state, setState] = useState(filterFields)
+const NumberFields = ({ filterFields, onChange, prop, orderKey }) => {
+    const [setState] = useState(filterFields)
     const [useFilter, setUseFilter] = useState(false)
     const { name, type, value, secondValue } = filterFields
 
@@ -35,7 +35,7 @@ const NumberFields = ({ filterFields, onChange, prop }) => {
 
     return (
         <Fragment>
-            <Col xs={12}>
+            <Col xs={12} style={{order: `${100 - orderKey}`}}>
                 <Form.Group className='numberField__group'>
                     <Form.Label>{name}</Form.Label>
                     <Row>

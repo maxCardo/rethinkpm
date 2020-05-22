@@ -808,6 +808,7 @@ input[type=number]:focus,
   justify-content: center;
   align-items: center;
   background: rgba(0,0,0,.19);
+  z-index: 20;
 }
 .alert-container .alert {
   min-width: 290px;

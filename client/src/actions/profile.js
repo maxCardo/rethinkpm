@@ -4,7 +4,6 @@ import {
     PROFILE_ERROR,
     TOGGLE_ADD_PHONE,
     TOGGLE_ADD_EMAIL,
-    EDIT_EMAIL,
     SET_PROFILE_LIST,
     CLEAR_PROFILE_ERROR,
     PROFILE_SUCCESS,
@@ -15,6 +14,7 @@ import {
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
     SET_ACTIVE_PROFILE_CHAT
+
 } from './type';
 import { Next } from 'react-bootstrap/PageItem';
 
@@ -173,6 +173,42 @@ export const addPhoneNumSubmit = () => async dispatch => {
     }
 }
 
+// update phone
+export const updatePhone = (formData, id) => (dispatch) => {
+    axios.put(`/api/profile/agent/${id}`, formData, config)
+        .then((res) => {
+            console.log(res.body);
+            dispatch({
+                type: PROFILE_SUCCESS,
+                payload: {heading: 'Primary Phone Update', msg: 'Successfully updated primary phone record'}
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: PROFILE_ERROR,
+                payload: {heading: 'Primary Phone Update', msg: 'Could not update record'}
+            });
+        });
+};
+
+// update status
+export const updateStatus = (formData, id) => (dispatch) => {
+    axios.put(`/api/profile/agent/${id}`, formData, config)
+        .then((res) => {
+            console.log(res.body);
+            dispatch({
+                type: PROFILE_SUCCESS,
+                payload: {heading: 'Status Update', msg: 'Successfully updated profile status'}
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: PROFILE_ERROR,
+                payload: {heading: 'Status Update', msg: 'Could not update profile status'}
+            });
+        });
+};
+
 //Toggle view control for show add email modal
 export const tglAddEmailMod = action => async dispatch => {
     try {
@@ -219,7 +255,6 @@ export const addEmailSubmit = () => async dispatch => {
 
 // update email
 export const updateEmail = (formData, id) => (dispatch) => {
-    dispatch({type: EDIT_EMAIL});
     axios.put(`/api/profile/agent/${id}`, formData, config)
         .then((res) => {
             console.log(res.body);

@@ -1,14 +1,13 @@
 import React, {Fragment, useLayoutEffect, useRef, useState} from 'react'
-import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap';
 import {checkBoxCheck} from '../../../../../../../util/commonFunctions';
 
-const StringFields = ({ filterFields, onChange, prop }) => {
+const StringFields = ({ filterFields, onChange, prop, orderKey }) => {
 
 
     const [state, setState] = useState(filterFields)
     const [useFilter, setUseFilter] = useState(false)
-    const { name, type, value } = filterFields
+    const { name, value } = filterFields
     const input = useRef(null);
 
     const callChange = (property, value) => {
@@ -19,12 +18,6 @@ const StringFields = ({ filterFields, onChange, prop }) => {
             return newState
         })
     }
-
-    const stringFilters = [
-        { label: "Don't filter", value: 'noFilter' },
-        { label: '==', value: '==', operator: '$eq' },
-        { label: 'includes', value: 'includes' },
-    ];
 
     useLayoutEffect(() => {
         (state.type.value !== 'noFilter' && state.value.length === 0) && input.current.focus();
@@ -41,7 +34,7 @@ const StringFields = ({ filterFields, onChange, prop }) => {
 
     return (
         <Fragment>
-            <Col xs={12}>
+            <Col xs={12} style={{order: `${100 - orderKey}`}}>
                 <Form.Group className="stringField__group">
                     <Form.Label>{name}</Form.Label>
                     <Row>
