@@ -7,10 +7,10 @@ import FilteredList from './filteredList/FilteredList'
 import FilterModal from './modals/filterModel/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 
-import {loadProfileList, loadSavedFilter} from '../../../../actions/profile'
+import {loadProfileList, loadSavedFilter, loadMoreDataProfileList} from '../../../../actions/profile'
 
 
-const ProfileList = ({loadProfileList,loadSavedFilter, profileList, settings,activeFilter,savedFilters }) => {
+const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter,savedFilters }) => {
     
     const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
 
@@ -20,10 +20,16 @@ const ProfileList = ({loadProfileList,loadSavedFilter, profileList, settings,act
     const [showFilterMod, tglFilterMod] = useState(false)
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
     const [searchString, setSearchString] = useState('')
+    const [listPage, setListPage] = useState(0)
 
     useEffect(() => {
         loadProfileList(profileType, selectedQuery)
     }, [])
+
+    const loadNextPage = () => {
+      loadMoreDataProfileList(profileType, selectStatus.selected.value, listPage + 1)
+      setListPage(listPage + 1)
+    }
 
     //load saved filters
     useEffect(() => {
@@ -86,6 +92,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, profileList, settings,act
                 data={profileList.list}
                 searchString={searchString}
                 //dataSetKey={this.state.statusSelected.value}
+                loadNextPage={loadNextPage}
             />
             {searchString && (<a onClick={() => console.log('clcick')}> do not see the record you are </a>)}
             
@@ -121,4 +128,4 @@ const mapStateToProps = state => ({
 
 
 
-export default connect(mapStateToProps, {loadProfileList, loadSavedFilter})(ProfileList)
+export default connect(mapStateToProps, {loadProfileList, loadSavedFilter, loadMoreDataProfileList})(ProfileList)

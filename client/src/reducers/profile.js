@@ -4,6 +4,7 @@ import {
     TOGGLE_ADD_PHONE,
     TOGGLE_ADD_EMAIL,
     SET_PROFILE_LIST,
+    ADD_DATA_PROFILE_LIST,
     CLEAR_PROFILE_ERROR,
     PROFILE_SUCCESS,
     CLEAR_PROFILE_SUCCESS,
@@ -59,10 +60,20 @@ export default function (state = initialState, action) {
                     loading: false
                 },
             }
+        case ADD_DATA_PROFILE_LIST:
+        console.log(state)
+            return {
+                ...state,
+                profileList: {
+                    list: state.profileList.list.concat(payload),
+                    loading: false
+                },
+            }
         case LOAD_PROFILE_LIST:
             return {
                 ...state,
                 profileList: {
+                    ...state.profileList,
                     loading: true
                 },
                 activeFilter:[]

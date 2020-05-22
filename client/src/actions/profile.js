@@ -13,7 +13,8 @@ import {
     SET_FILTER,
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
-    SET_ACTIVE_PROFILE_CHAT
+    SET_ACTIVE_PROFILE_CHAT,
+    ADD_DATA_PROFILE_LIST
 
 } from './type';
 import { Next } from 'react-bootstrap/PageItem';
@@ -99,7 +100,15 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
         value: eval(queryList).map((status) => ({value: status}))
       }
     }
-    submitFilterModal(filter, profileType)(dispatch)
+    const res = await axios.post(`/api/profile/filter/${profileType}`, filter, config);
+    dispatch({
+        type: SET_PROFILE_LIST,
+        payload: res.data.record,
+    });
+    dispatch({
+        type: SET_FILTER,
+        payload: res.data.filters,
+    });
   } catch (err) {
     console.log(err);
     dispatch({
@@ -110,8 +119,54 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
       },
     });
   }
-
 };
+
+export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => async dispatch => {
+  try {
+    console.log(profileType)
+    console.log(queryList)
+    console.log(pageNumber)
+    dispatch({
+      type: LOAD_PROFILE_LIST,
+    });
+    const filter = {
+      status: {
+        accessor: 'status',
+        dataType: 'array',
+        name: 'status',
+        type: {
+          value: 'in',
+          operator: '$in'
+        },
+        value: eval(queryList).map((status) => ({value: status}))
+      }
+    }
+    let res
+    if(pageNumber) {
+      res = await axios.post(`/api/profile/filter/${profileType}/${pageNumber}`, filter, config);
+    } else {
+      res = await axios.post(`/api/profile/filter/${profileType}`, filter, config);
+    }
+    dispatch({
+        type: ADD_DATA_PROFILE_LIST,
+        payload: res.data.record,
+    });
+    dispatch({
+        type: SET_FILTER,
+        payload: res.data.filters,
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: err,
+        status: err,
+      },
+    });
+  }
+}
+
 
 //grab activeProfiles past sales (agentPros)
 export const loadProfileSales = (profileType, id) => async dispatch => {
