@@ -1,19 +1,25 @@
 import React, { useEffect,useRef, Fragment } from 'react'
 import { connect } from 'react-redux';
-import Loading from '../../core/LoadingScreen/Loading'
-import ChatUI from '../Chat/common/ChatUI'
-import {getActiveChat} from '../../../actions/profile'
+import Loading from '../../../core/LoadingScreen/Loading'
+import ChatUI from '../../Chat/common/ChatUI'
+import {getActiveChat, sendChat} from '../../../../actions/profile'
 
 
 
-const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat}) => {
+const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat, sendChat}) => {
     const chatRef = useRef()
     useEffect(() => {
         getActiveChat(activeProfile._id)
     }, [activeProfile])
 
-    const onSend = () => {
+    const onSend = (data) => {
         console.log('running on send');
+        const message = {
+            sender:'Admin', 
+            content: data,
+            userMessage:true
+        }
+        sendChat(chat.owner,message)
     }
 
     const scrollToBottom = () => {
@@ -38,7 +44,7 @@ const mapStateToProps = state => ({
     activeProfile: state.profile.activeProfile 
 })
 
-export default connect(mapStateToProps, {getActiveChat})(Chat)
+export default connect(mapStateToProps, {getActiveChat, sendChat})(Chat)
 
 
 

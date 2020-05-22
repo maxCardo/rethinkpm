@@ -6,7 +6,7 @@ import { Resizable } from 're-resizable'
 import ProfileInfo from './profileInfo/ProfileInfo'
 import ProfileList from './profileList/ProfileList'
 import ProfileDetails from './profileDetails/ProfileDetails'
-import Chat from './Chat'
+import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
 import UpdateAlert from "../../core/UpdateAlert";
 import { SET_INQUIRIES } from '../../../actions/type'

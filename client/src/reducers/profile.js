@@ -12,7 +12,8 @@ import {
     SET_FILTER,
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
-    SET_ACTIVE_PROFILE_CHAT
+    SET_ACTIVE_PROFILE_CHAT,
+    UPDATE_ACTIVE_PROFILE_CHAT
 } from '../actions/type';
 
 const initialState = {
@@ -95,7 +96,8 @@ export default function (state = initialState, action) {
                 ...state,
                 savedFilters: payload
             }
-            
+        
+        case UPDATE_ACTIVE_PROFILE_CHAT:
         case SET_ACTIVE_PROFILE_CHAT:
             return{
                 ...state,
@@ -103,7 +105,7 @@ export default function (state = initialState, action) {
                     chat: payload, 
                     loading: false
                 }
-            }    
+            }
 
         case PROFILE_ERROR:
             return {

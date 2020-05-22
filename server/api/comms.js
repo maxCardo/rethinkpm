@@ -3,6 +3,7 @@ const { sendEmail } = require('../3ps/email')
 const Agent = require('../db/models/sales/agent')
 const Chat = require('../db/models/comms/chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
+const {outgoingSMS} = require('../3ps/sms')
 
 
 const router = express.Router();
@@ -31,14 +32,15 @@ const activeNumber = [
 router.post('/chat', async (req, res) => {
     try {
         let { To, From, Body } = req.body;
-        From = From.slice(2)
+
         //get the chat
         let chat = await Chat.findOne({from:From, to:To})
         //if no active chat see if there is an active contact for that number and start a chat
         if (!chat) { 
             const activeNum = activeNumber.find((number) => number.number === To)
             const model = activeNum.model
-            const record = await model.findOne({'phoneNumbers.number': From})
+            const fromNumber = From.slice(2)
+            const record = await model.findOne({'phoneNumbers.number': fromNumber })
             //if no record save a record.... in future trigger bot to gather more info or save as unknown contact
              chat = await new Chat({
                 owner: record ? record._id: null,
@@ -52,7 +54,11 @@ router.post('/chat', async (req, res) => {
                 messages:[],
             })
         }
-        chat.messages.push({message: Body})
+        chat.messages.push({
+            sender: 'user',
+            content: Body,
+            userMessage: false
+        })
         await chat.save()
         res.status(200).send(chat);
 
@@ -67,14 +73,31 @@ router.post('/chat', async (req, res) => {
 // @ access: Public *ToDo: update to make private
 router.get('/chat/:ownerId', async (req, res) => {
     try {
-        console.log(req.params.ownerId);
         const chat = await Chat.findOne({owner: req.params.ownerId})
-        console.log(chat);
         res.status(200).send(chat)
     } catch (err) {
         res.status(400).send('server error')
     }
 })
+
+// @route: Post /api/comms/chat/:ownerId;
+// @desc: Receive chat msg via api (use for testing )
+// @ access: Public *ToDo: update to make private
+//Note: migrated call to server page in order to include socket call
+router.post('/chat/:ownerId', async (req, res) => {
+    try {
+        const chat = await Chat.findOne({ owner: req.params.ownerId })
+        chat.messages.push(req.body)
+        await chat.save()
+        //ToDo: check if "To" phone is still active and if not send from default
+        outgoingSMS(chat.to, chat.from, req.body.content)
+        res.status(200).send(chat);
+
+    } catch (error) {
+        console.error(error);
+        res.send('server Error')
+    }
+});
 
 
   
