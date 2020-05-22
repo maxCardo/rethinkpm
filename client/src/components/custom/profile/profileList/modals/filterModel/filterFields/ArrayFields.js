@@ -5,11 +5,11 @@ import { Form, Row, Col } from 'react-bootstrap'
 import {checkBoxCheck} from '../../../../../../../util/commonFunctions';
 
 
-const ArrayFields = ({filterFields, onChange, prop, options}) => {
+const ArrayFields = ({orderKey, filterFields, onChange, prop, options}) => {
 
     const [state, setState] = useState(filterFields)
     const [useFilter, setUseFilter] = useState(false)
-    const {name, type, value, dataType} = filterFields
+    const {name, value} = filterFields
     const selectInput = useRef(null);
 
     const callChange = (property, value) => {
@@ -22,9 +22,8 @@ const ArrayFields = ({filterFields, onChange, prop, options}) => {
     }
 
     useLayoutEffect(() => {
-        console.log("shiet");
-        (state.type.value && state.type.value !== 'noFilter' && state.value.length === 0) && selectInput.current.focus();
-
+        console.log(state.value);
+        (state.type.value && (state.type.value !== 'noFilter') && (state.value === '' || state.value === null)) && selectInput.current.focus();
     });
 
     const onCheck = (e) => {
@@ -39,7 +38,8 @@ const ArrayFields = ({filterFields, onChange, prop, options}) => {
 
     return (
         <Fragment>
-            <Col xs={12} className="filter-row">
+            <Col xs={12} className="filter-row" style={{order: `${100 - orderKey}`}}
+            >
                 <Form.Group>
                     <Form.Label>{name}</Form.Label>
                     <Row>
