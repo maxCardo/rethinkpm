@@ -11,11 +11,14 @@ import {
     PROFILE_FILTER_OPTIONS,
     SET_FILTER,
     SET_SAVED_FILTERS,
-    PROFILE_PAST_SALES
+    PROFILE_PAST_SALES,
+    SET_ACTIVE_PROFILE_CHAT
 } from '../actions/type';
 
 const initialState = {
-    activeProfile: '',
+    activeProfile: {
+        notes: []
+    },
     loading: true,
     showAddPhoneMod: false,
     profileList: {list: '', loading: true},
@@ -24,6 +27,10 @@ const initialState = {
     savedFilters:[],
     pastSales: {
         loading: true
+    },
+    activeChat:{
+        chat: {},
+        loading: true,
     }
 }
 
@@ -87,6 +94,15 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 savedFilters: payload
+            }
+            
+        case SET_ACTIVE_PROFILE_CHAT:
+            return{
+                ...state,
+                activeChat: {
+                    chat: payload, 
+                    loading: false
+                }
             }    
 
         case PROFILE_ERROR:
