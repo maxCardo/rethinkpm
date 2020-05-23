@@ -17,6 +17,7 @@ import {
     ADD_DATA_PROFILE_LIST,
     LOAD_MORE_PROFILE_LIST,
     SET_HAS_MORE_DATA,
+    UPDATE_ACTIVE_PROFILE_CHAT
 
 } from './type';
 import { Next } from 'react-bootstrap/PageItem';
@@ -443,6 +444,24 @@ export const getActiveChat = (chatOwner) => async dispatch =>{
             payload: res.data
         })
         
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err, status: err }
+        })
+    }
+}
+
+//send chat from UI
+export const sendChat = (chatOwner, data) => async dispatch => {
+    try {
+        console.log('running sendChat');
+        const res = await axios.post(`/api/comms/chat/${chatOwner}`, data, config)
+        dispatch({
+            type: UPDATE_ACTIVE_PROFILE_CHAT,
+            payload: res.data
+        })
+
     } catch (err) {
         dispatch({
             type: PROFILE_ERROR,

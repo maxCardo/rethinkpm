@@ -1,9 +1,9 @@
 import React , {Fragment, useState} from 'react'
 import {connect} from 'react-redux'
-//import {Link} from 'react-router-dom'
 
 import Pill from './Pills'
 import InfList from './InfList'
+import './filterList.css'
 
 const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, hasMore}) => {
 

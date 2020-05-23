@@ -15,10 +15,11 @@ const Navbar = ({auth:{isAuthenticated, loginInProgress}, logout}) => {
     }
     const authLinks = (
         <ul>
-            <li><Link to='/brokerLeads'>Broker Leads</Link></li>
-            <li><Link to='/crm'>Dashboard</Link></li>
-            <li><Link to='/chat'>Chat</Link></li>
+            <li><Link to='/profile/agentPros'>Agents</Link></li>
+            <li><Link to='/'>Buyers</Link></li>
+            <li><Link to='/crm'>Renters</Link></li>
             <li><Link to='/services'>Service</Link></li>
+            <li><Link to='/chat'>Communication</Link></li>
             {/* <li><Link to="/rentroll">Current Rentals</Link></li>
             <li><Link to="/acquisition">New Acquisition</Link></li> */}
             <li><a onClick = {handleLogout} href='/' >Logout</a></li>
