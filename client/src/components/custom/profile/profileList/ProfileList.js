@@ -61,7 +61,6 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
         }   
         setStatus({ ...selectStatus, selected: v })
     } 
-    
     return profileList.loading ? <Loading/> :
         <Fragment>
             <Select
@@ -93,6 +92,8 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
                 searchString={searchString}
                 //dataSetKey={this.state.statusSelected.value}
                 loadNextPage={loadNextPage}
+                loadingMore= {profileList.loadingMore}
+                hasMore={profileList.hasMore}
             />
             {searchString && (<a onClick={() => console.log('clcick')}> do not see the record you are </a>)}
             

@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import {connect} from 'react-redux'
+import ClipLoader from "react-spinners/ClipLoader";
 
 import {setActiveProfile} from '../../../../../actions/profile'
 
@@ -40,8 +41,18 @@ export class InfiniteList extends Component {
                                 </div>
                             )
                         })) : ''}
-                  {this.state.hasMore ?
-                    <button className='infinite-list__load-more' onClick={this.props.loadNextPage}>Load More</button>
+                  {this.props.hasMore ?
+                    <button className='infinite-list__load-more' disabled={this.props.loadingMore} onClick={this.props.loadNextPage}>
+                      {this.props.loadingMore ? 
+                        <ClipLoader 
+                          size={10}
+                          color={"#4285F4"}
+                          loading={true}
+                        />
+                        :
+                        'Load More'
+                      }
+                    </button>
                     :
                     ''
                   }

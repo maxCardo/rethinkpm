@@ -195,12 +195,18 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     //query DB
     let record;
     if(req.params.page) {
-      record = await Agent.find(queryObj).skip(PAGESIZE*(+req.params.page)).limit(PAGESIZE)
+      record = await Agent.find(queryObj).skip(PAGESIZE*(+req.params.page)).limit(PAGESIZE+1)
       console.log(record)
     } else {
-      record = await Agent.find(queryObj).limit(PAGESIZE)
+      record = await Agent.find(queryObj).limit(PAGESIZE+1)
     }
-    res.status(200).send({record,filters});
+    let hasMore = false;
+    if(record.length > PAGESIZE) {
+      hasMore = true;
+      record.pop()
+    }
+    
+    res.status(200).send({record,filters, hasMore});
 
   } catch (error) {
     console.error(error);

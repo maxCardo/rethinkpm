@@ -13,7 +13,9 @@ import {
     SET_FILTER,
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
-    SET_ACTIVE_PROFILE_CHAT
+    SET_ACTIVE_PROFILE_CHAT,
+    LOAD_MORE_PROFILE_LIST,
+    SET_HAS_MORE_DATA,
 } from '../actions/type';
 
 const initialState = {
@@ -60,14 +62,30 @@ export default function (state = initialState, action) {
                     loading: false
                 },
             }
+        case SET_HAS_MORE_DATA:
+            return {
+              ...state,
+              profileList: {
+                ...state.profileList,
+                hasMore: payload
+              }
+            }
         case ADD_DATA_PROFILE_LIST:
         console.log(state)
             return {
                 ...state,
                 profileList: {
                     list: state.profileList.list.concat(payload),
-                    loading: false
+                    loadingMore: false
                 },
+            }
+        case LOAD_MORE_PROFILE_LIST:
+            return {
+              ...state,
+              profileList: {
+                ...state.profileList,
+                loadingMore: true
+              },
             }
         case LOAD_PROFILE_LIST:
             return {

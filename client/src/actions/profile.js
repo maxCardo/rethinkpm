@@ -14,7 +14,9 @@ import {
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
     SET_ACTIVE_PROFILE_CHAT,
-    ADD_DATA_PROFILE_LIST
+    ADD_DATA_PROFILE_LIST,
+    LOAD_MORE_PROFILE_LIST,
+    SET_HAS_MORE_DATA,
 
 } from './type';
 import { Next } from 'react-bootstrap/PageItem';
@@ -106,6 +108,10 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
         payload: res.data.record,
     });
     dispatch({
+      type: SET_HAS_MORE_DATA,
+      payload: res.data.hasMore
+    })
+    dispatch({
         type: SET_FILTER,
         payload: res.data.filters,
     });
@@ -127,7 +133,7 @@ export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => a
     console.log(queryList)
     console.log(pageNumber)
     dispatch({
-      type: LOAD_PROFILE_LIST,
+      type: LOAD_MORE_PROFILE_LIST,
     });
     const filter = {
       status: {
@@ -152,9 +158,9 @@ export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => a
         payload: res.data.record,
     });
     dispatch({
-        type: SET_FILTER,
-        payload: res.data.filters,
-    });
+      type: SET_HAS_MORE_DATA,
+      payload: res.data.hasMore
+    })
   } catch (err) {
     console.log(err);
     dispatch({

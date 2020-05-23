@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import Pill from './Pills'
 import InfList from './InfList'
 
-const FilteredList = ({data, searchString, filters, loadNextPage}) => {
+const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, hasMore}) => {
 
 
     const [showPills, setShowPills] = useState(true)
@@ -40,7 +40,7 @@ const FilteredList = ({data, searchString, filters, loadNextPage}) => {
                 }
             </div>
             {/* End Pills  Start Inf List*/}
-            <InfList data={searchData} loadNextPage={loadNextPage}/>
+            <InfList data={searchData} loadNextPage={loadNextPage} loadingMore={loadingMore} hasMore={hasMore} />
         </Fragment>
     )
 }
