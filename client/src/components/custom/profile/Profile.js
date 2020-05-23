@@ -8,7 +8,6 @@ import ProfileList from './profileList/ProfileList'
 import ProfileDetails from './profileDetails/ProfileDetails'
 import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
-import UpdateAlert from "../../core/UpdateAlert";
 import { SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
 
@@ -21,7 +20,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
             const backUpProfile = qs.parse(search).profile 
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
-    }, [])
+    }, [activeProfile.profile, activeProfile.profileType, loadBackUpProfile, loadProfileDefault, search, settings.profileType])
     const [chatWindow, tglChatWindow] = useState(false)
     const [listWindow, tglListWindow] = useState(true)
     const tglList = () => tglListWindow(!listWindow)
@@ -61,7 +60,6 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
                 <ProfileList settings={settings}/>
             </div>
         </div>
-        <UpdateAlert  />
     </Fragment>
 }
 
