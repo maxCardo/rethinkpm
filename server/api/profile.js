@@ -161,7 +161,7 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
   // @ access: Public * ToDo: update to make private
   router.post('/filter/agentPros/:page?', async (req, res) => {
   try {
-    const PAGESIZE = 20;
+    const PAGESIZE = 500;
     const data = req.body
     const filterFields = Object.keys(req.body);
     const filters = []
@@ -196,7 +196,6 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     let record;
     if(req.params.page) {
       record = await Agent.find(queryObj).skip(PAGESIZE*(+req.params.page)).limit(PAGESIZE+1)
-      console.log(record)
     } else {
       record = await Agent.find(queryObj).limit(PAGESIZE+1)
     }
