@@ -20,8 +20,7 @@ import ServiceDetail from './components/custom/service/ServiceDetail';
 import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
 import AddProperty from './components/custom/assets/AddProperty';
-import Profile from './components/custom/profile'
-import Profile_ii from './components/custom/profile/Profile'
+import Profile from './components/custom/profile/Profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 import {loadUser} from './actions/auth';
@@ -65,11 +64,7 @@ const App = ({loadUser, receiveMessage}) => {
             <Route exact path='/serviceReq' component={ServiceReq} />
             <Route exact path='/serviceTicket' component={ServiceTicket} />
             <Route exact path='/addProperty' component={AddProperty} />
-            <PrivateRoute exact path='/profile/inquiry/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
-            <PrivateRoute exact path='/profile/inquiry/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.leasingPros.profileInfo, screens: routeSettings.profile.leasingPros.screens, endpoint: '/api/profile/inquiry'}} />
-            <PrivateRoute exact path='/profile/agent/:id' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true}} />
-            <PrivateRoute exact path='/profile/agent/:id/:screen' component={Profile} additionalProps={{attributes: routeSettings.profile.agentPros.profileInfo, screens: routeSettings.profile.agentPros.screens, endpoint: '/api/profile/agent', isAgent: true}} />
-            <PrivateRoute exact path='/profile_ii' component={Profile_ii} additionalProps={{settings: routeSettings.profile.agentPros }} />
+            <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
         </section>

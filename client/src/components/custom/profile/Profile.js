@@ -6,7 +6,7 @@ import { Resizable } from 're-resizable'
 import ProfileInfo from './profileInfo/ProfileInfo'
 import ProfileList from './profileList/ProfileList'
 import ProfileDetails from './profileDetails/ProfileDetails'
-import Chat from './Chat'
+import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
 import UpdateAlert from "../../core/UpdateAlert";
 import { SET_INQUIRIES } from '../../../actions/type'
@@ -22,8 +22,8 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
     }, [])
-    const [chatWindow, tglChatWindow] = useState(true)
-    const [listWindow, tglListWindow] = useState(false)
+    const [chatWindow, tglChatWindow] = useState(false)
+    const [listWindow, tglListWindow] = useState(true)
     const tglList = () => tglListWindow(!listWindow)
     const tglChat = () => tglChatWindow(!chatWindow)
 

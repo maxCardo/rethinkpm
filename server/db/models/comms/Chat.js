@@ -21,14 +21,22 @@ const chatSchema = new mongoose.Schema({
     to: String,
     
     messages: [{
-        message: {
-            type: String,
-        },
         date: {
             type: Date,
             default: Date.now
         },
-
+        sender: {
+            type: String,
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        },
+        userMessage: {
+            type: Boolean,
+            required: true
+        }
     }],
 
 });

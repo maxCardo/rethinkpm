@@ -22,7 +22,7 @@ export class Message extends Component {
         <div className={messageContentClass}>
           {this.props.message}
           <div className='message__date'>
-            {this.props.date}
+            {new Intl.DateTimeFormat(undefined, options).format(new Date(this.props.date))}
           </div>
         </div>
       </div>
