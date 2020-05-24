@@ -159,8 +159,9 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
   // @route: GET /api/profile/filter/agentPros;
   // @desc: Get get new profile list based on filter submited
   // @ access: Public * ToDo: update to make private
-  router.post('/filter/agentPros', async (req, res) => {
+  router.post('/filter/agentPros/:page?', async (req, res) => {
   try {
+    const PAGESIZE = 500;
     const data = req.body
     const filterFields = Object.keys(req.body);
     const filters = []
@@ -190,9 +191,21 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
       }
     })
 
+
     //query DB
-    const record = await Agent.find(queryObj)
-    res.status(200).send({record,filters});
+    let record;
+    if(req.params.page) {
+      record = await Agent.find(queryObj).skip(PAGESIZE*(+req.params.page)).limit(PAGESIZE+1)
+    } else {
+      record = await Agent.find(queryObj).limit(PAGESIZE+1)
+    }
+    let hasMore = false;
+    if(record.length > PAGESIZE) {
+      hasMore = true;
+      record.pop()
+    }
+    
+    res.status(200).send({record,filters, hasMore});
 
   } catch (error) {
     console.error(error);

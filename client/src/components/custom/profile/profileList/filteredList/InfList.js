@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import {connect} from 'react-redux'
+import ClipLoader from "react-spinners/ClipLoader";
 
 import {setActiveProfile} from '../../../../../actions/profile'
 
@@ -11,49 +12,13 @@ export class InfiniteList extends Component {
             items: [],
             hasMore: true
         }
-        this.fetchMoreData = this.fetchMoreData.bind(this)
     }
 
-    static getDerivedStateFromProps(props, state) {
-        if (state.rawData === props.data) return
-        return {
-            items: InfiniteList.getItemsFromData(props.data),
-            rawData: props.data,
-            hasMore: true
-        }
-    }
 
     moneyFormat(sum) {
         return (new Intl.NumberFormat('en-US',
             {style: 'currency', currency: 'USD'}
         ).format(sum))
-    }
-
-    fetchMoreData() {
-        if (this.state.items.length >= this.props.data.length) {
-            this.setState({hasMore: false});
-            return;
-        }
-        let theNewItems = [];
-        this.props.data.forEach((dataItem) => {
-            if ((this.state.items.indexOf(dataItem) === -1) && theNewItems.length < 20) {
-                theNewItems.push(dataItem);
-            }
-        });
-        this.setState({
-            items: this.state.items.concat(theNewItems),
-            hasMore: true
-        });
-    }
-
-    static getItemsFromData(data) {
-        if (data.length >= 20) {
-            return data.slice(0, 20);
-        } else if (data.length > 0) {
-            return data.slice(0, data.length);
-        } else {
-            return [];
-        }
     }
 
     onClick = (profile) => this.props.setActiveProfile(profile)
@@ -76,6 +41,21 @@ export class InfiniteList extends Component {
                                 </div>
                             )
                         })) : ''}
+                  {this.props.hasMore ?
+                    <button className='infinite-list__load-more' disabled={this.props.loadingMore} onClick={this.props.loadNextPage}>
+                      {this.props.loadingMore ? 
+                        <ClipLoader 
+                          size={10}
+                          color={"#4285F4"}
+                          loading={true}
+                        />
+                        :
+                        'Load More'
+                      }
+                    </button>
+                    :
+                    ''
+                  }
                 </div>
                 <div className='infinite-list__length-info'>
                     <p>Total of Agents: {this.props.data.length}</p>
