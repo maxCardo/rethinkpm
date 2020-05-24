@@ -405,6 +405,21 @@ export const sendChat = (chatOwner, data) => async dispatch => {
     }
 }
 
+export const receiveSMS = (chat) => async dispatch =>{
+    try {
+        dispatch({
+            type: UPDATE_ACTIVE_PROFILE_CHAT,
+            payload: chat
+        })
+
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err, status: err }
+        })
+    }
+}
+
 export const clearAlerts = () => (dispatch) => {
     dispatch({type: CLEAR_PROFILE_ERROR});
     dispatch({type: CLEAR_PROFILE_SUCCESS});

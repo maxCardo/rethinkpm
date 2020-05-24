@@ -24,6 +24,7 @@ import Profile from './components/custom/profile/Profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 import {loadUser} from './actions/auth';
+import {receiveSMS} from './actions/profile'
 import { connect } from 'react-redux';
 import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
@@ -31,18 +32,26 @@ import { showNotification } from './notifications'
 import settings from './settings.json'
 
 
-const App = ({loadUser, receiveMessage}) => {
+
+const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
   console.log(Notification.permission)
   if(Notification.permission === 'default') {
     Notification.requestPermission();
   }
   registerServiceWorker()
+
   useEffect(() => {loadUser();}, [loadUser]);
+
   const socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
-  socket.on('sms', ({chat_id, message, uuid}) => {
-    receiveMessage({chat_id, message, uuid})
-    showNotification(`New message from ${chat_id}`, message)
-  } )
+  socket.on('sms', (chat) => {
+    if (chat._id === activeChat.chat._id) {
+      receiveSMS(chat)
+    }
+
+    //receiveMessage({chat_id, message, uuid})
+    //showNotification(`New message from ${chat_id}`, message)
+  })
+
   const routeSettings = settings.routes
   return (
     <Router>
@@ -82,14 +91,15 @@ const registerServiceWorker = async () => {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  activeChat: state.profile.activeChat
 })
 
-const mapDispatchToProps = dispatch => {
-  return {
-    loadUser: loadUser().bind(this,dispatch),
-    receiveMessage:({chat_id, message, uuid}) => dispatch({type: RECEIVE_MESSAGE, payload: {chat_id, message, uuid}})
-  }
-}
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     loadUser: loadUser().bind(this,dispatch),
+//     receiveMessage:({chat_id, message, uuid}) => dispatch({type: RECEIVE_MESSAGE, payload: {chat_id, message, uuid}})
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, {loadUser, receiveSMS})(App)

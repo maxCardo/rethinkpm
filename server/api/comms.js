@@ -1,10 +1,9 @@
 const express = require('express');
 const { sendEmail } = require('../3ps/email')
 const Agent = require('../db/models/sales/agent')
-const Chat = require('../db/models/comms/chat')
+const Chat = require('../db/models/comms/Chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
 const {outgoingSMS} = require('../3ps/sms')
-
 
 const router = express.Router();
 
@@ -98,8 +97,5 @@ router.post('/chat/:ownerId', async (req, res) => {
         res.send('server Error')
     }
 });
-
-
-  
 
 module.exports = router;
