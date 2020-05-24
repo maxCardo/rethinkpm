@@ -1,10 +1,11 @@
 /* eslint-disable */
 import React from 'react'
+import {accessData} from '../../../../../util/commonFunctions'
 
 
 const CollectionField = ({field, data}) => {
-
-    const theFields =  (eval(`data.${field.datatype}`) && eval(`data.${field.datatype}`).length) ? eval(`data.${field.datatype}`).sort((a, b) => {
+  const value = accessData(data, field.datatype)
+    const theFields =  (value && value.length) ? value.sort((a, b) => {
         return b.value - a.value;
     }).slice(0, 3) : 'no entries';
 

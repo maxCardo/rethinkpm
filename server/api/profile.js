@@ -147,7 +147,8 @@ router.get('/agentPros', async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
   try {
-      const list = await Agent.find({ status: { $in: eval(query) } })
+      // WARNING: DON'T USE EVAL IN THE SERVER, IF YOU WANT TO USE THIS ENDPOINT REWRITE THE FUNCTIONALITY
+      // const list = await Agent.find({ status: { $in: eval(query) } })
       const SavedFilters = await SavedFilter.find({})
       res.status(200).send({list, SavedFilters});
   } catch (error) {
