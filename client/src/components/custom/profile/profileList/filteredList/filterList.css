@@ -71,6 +71,15 @@
   border: none
 }
 
+.infinite-list__load-more {
+  background-color: white;
+  border-radius: 20px;
+}
+
+.infinite-list__load-more:focus {
+  outline: none
+}
+
 /*TODO: NEEDS REVIEW*/
 .agent-list__filter-icon,
 .agent-list__filtering-options-container button {

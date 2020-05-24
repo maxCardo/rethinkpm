@@ -59,7 +59,7 @@ export class InfiniteList extends Component {
       <Fragment>
         <div className="inf-scroll">
           {this.props.data ? (
-            this.props.data.map((val) => {
+            this.state.items.map((val) => {
               return (
                 <div key={val._id}>
                   <Link to={`/profile/agent/${val._id}`}>
@@ -72,6 +72,11 @@ export class InfiniteList extends Component {
                 </div>
               )
             })) : ''}
+            {this.state.hasMore ?
+              <button className='infinite-list__load-more' onClick={this.fetchMoreData}>Load More</button>
+              :
+              ''
+            }
           </div>
           <div className='infinite-list__length-info'>
             <p>Total of Agents: {this.props.data.length}</p>

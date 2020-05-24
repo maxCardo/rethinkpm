@@ -1,15 +1,21 @@
 /* eslint-disable */
 import React from 'react';
-import {formatMoney} from '../../../../../util/commonFunctions'
+import {formatMoney, filterData, accessData} from '../../../../../util/commonFunctions'
 
 
 const SimpleField = ({field, data}) => {
-
-    let fieldValue = eval(`data.${field.accessor}`) ? eval(`data.${field.accessor}`) :'n/a';
+    
+    let fieldValue = accessData(data, field.accessor)
 
     if (field.formatter === 'formatMoney') {
-        fieldValue = eval(`data.${field.accessor}`) ? formatMoney(eval(`data.${field.accessor}`)) :'n/a';
+      fieldValue = formatMoney(fieldValue)
     }
+
+    if(!fieldValue) {
+      fieldValue = 'n/a'
+    }
+
+   
 
     return (
         <p>
@@ -17,5 +23,6 @@ const SimpleField = ({field, data}) => {
         </p>
     )
 }
+
 
 export default SimpleField
