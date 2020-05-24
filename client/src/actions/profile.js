@@ -76,10 +76,7 @@ export const loadProfileDefault = profileType => async dispatch => {
         console.log(err);
         dispatch({
             type: PROFILE_ERROR,
-            payload: {
-                msg: err,
-                status: err,
-            },
+            payload: {heading: 'Server Error', msg: 'Something Went Wrong'},
         });
     }
 };
@@ -120,10 +117,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
     console.log(err);
     dispatch({
       type: PROFILE_ERROR,
-      payload: {
-        msg: err,
-        status: err,
-      },
+      payload: {heading: 'Server Error', msg: 'Could not get list at the moment'},
     });
   }
 };
@@ -385,12 +379,16 @@ export const getFilterOptions = (profileType) => async dispatch => {
 }
 
 //save filter
-export const saveFilter = async (data) => {
+export const saveFilter = async (data) => async dispatch => {
     try {
         const res = await axios.post(`/api/profile/filter/save`, data, config);
         console.log(res)
     } catch (err) {
-        console.log(err)
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'Saving filter/audience unsuccessful', status: err.response.status }
+        });
+
     }
 }
 
