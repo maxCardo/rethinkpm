@@ -26,6 +26,7 @@ const SalesScreen = ({pastSales, activeProfile, profileType, loadProfileSales}) 
         fetchData()
     }, [activeProfile])
 
+    console.log(propertiesSold);
 
     return (
         loading ? <Loading/> : <Fragment>
@@ -35,9 +36,10 @@ const SalesScreen = ({pastSales, activeProfile, profileType, loadProfileSales}) 
                     <ul>
                         {propertiesSold.map((val, idx) => {
                             return <li key={idx}>
-                                <div className="zip"><b>Zip:</b> {val.zipcode}</div>
                                 <div className="county"><b>County:</b> {val.county}</div>
                                 <div className="area"><b>Area:</b> {val.area}</div>
+                                <div className="address"><b>Address:</b> {val.address}</div>
+                                <div className="zip"><b>Zip:</b> {val.zipcode}</div>
                                 <div className="listPrice"><b>Listing price:</b> {moneyFormat(val.listPrice)}</div>
                                 <div className="listPrice"><b>Price Sold:</b> {moneyFormat(val.soldPrice)}</div>
                             </li>
@@ -49,11 +51,12 @@ const SalesScreen = ({pastSales, activeProfile, profileType, loadProfileSales}) 
                     <ul>
                         {propertiesBought.map((val, idx) => {
                             return <li key={idx}>
-                                <div className="zip">Zip: {val.zipcode}</div>
-                                <div className="county">County: {val.county}</div>
-                                <div className="area">Area: {val.area}</div>
-                                <div className="listPrice">Listing price: {moneyFormat(val.listPrice)}</div>
-                                <div className="listPrice">Price sold: {moneyFormat(val.soldPrice)}</div>
+                                <div className="county"><b>County:</b> {val.county}</div>
+                                <div className="area"><b>Area:</b> {val.area}</div>
+                                <div className="address"><b>Address:</b> {val.address}</div>
+                                <div className="zip"><b>Zip:</b> {val.zipcode}</div>
+                                <div className="listPrice"><b>Listing price: </b>{moneyFormat(val.listPrice)}</div>
+                                <div className="listPrice"><b>Price sold:</b> {moneyFormat(val.soldPrice)}</div>
                             </li>
                         })}
                     </ul>
@@ -63,9 +66,10 @@ const SalesScreen = ({pastSales, activeProfile, profileType, loadProfileSales}) 
                     <ul>
                         {multiSalesMade.map((val, idx) => {
                             return <li key={idx}>
-                                <div className="zip">Zip: {val.zipcode}</div>
                                 <div className="county">County: {val.county}</div>
                                 <div className="area">Area: {val.area}</div>
+                                <div className="address"><b>Address:</b> {val.address}</div>
+                                <div className="zip">Zip: {val.zipcode}</div>
                                 <div className="listPrice">Listing price: {moneyFormat(val.listPrice)}</div>
                                 <div className="listPrice">Price sold: {moneyFormat(val.soldPrice)}</div>
                             </li>

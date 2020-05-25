@@ -30,6 +30,7 @@ import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
 import { showNotification } from './notifications'
 import settings from './settings.json'
+import UpdateAlert from "./components/core/UpdateAlert";
 
 
 
@@ -77,6 +78,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
+          <UpdateAlert  />
         </section>
       </Fragment>
     </Router>

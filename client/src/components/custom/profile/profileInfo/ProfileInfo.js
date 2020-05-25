@@ -11,6 +11,15 @@ import AddEmailModal from "../edit_add_updated/AddEmailModal";
 const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
     const [{columns, loading}, setColumns] =useState({data: null, loading: true}) 
 
+    const getPrimaryPhone = profile.phoneNumbers && profile.phoneNumbers.find(item => item.isPrimary)
+    const getPrimaryEmail = profile.email && profile.email.find(item => item.isPrimary)
+
+    const primaryPhone = getPrimaryPhone && getPrimaryPhone.number;
+    const primaryEmail = getPrimaryEmail && getPrimaryEmail.address;
+
+    console.log(primaryPhone);
+
+
     useEffect(() => {
       const columns = {1:[],2:[],3:[]}  
       profileInfo.map((attr) => columns[attr.col].push(attr))   
@@ -45,10 +54,10 @@ const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
           <a className='action-buttons__button' href='#' onClick={()=> tglChat()}>
             <i className='fas fa-comments'></i>
           </a>
-          <a className='action-buttons__button' href={`tel:`}>
+          <a className='action-buttons__button' href={`tel:${primaryPhone}`}>
             <i className='fas fa-phone'></i>
           </a>
-          <a className='action-buttons__button' href={`mailto:`}>
+          <a className='action-buttons__button' href={`mailto:${primaryEmail}`}>
             <i className='fas fa-envelope'></i>
           </a>
           <button className='action-buttons__button edit-profile__button'>

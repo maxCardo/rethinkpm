@@ -5,7 +5,7 @@ import {checkBoxCheck} from '../../../../../../../util/commonFunctions';
 
 
 const NumberFields = ({ filterFields, onChange, prop, orderKey }) => {
-    const [setState] = useState(filterFields)
+    const [state, setState] = useState(filterFields)
     const [useFilter, setUseFilter] = useState(false)
     const { name, type, value, secondValue } = filterFields
 
