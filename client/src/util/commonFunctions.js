@@ -15,6 +15,7 @@ export const filterData = function (data, filterString, headers, level = 0) {
 };
 
 export const getData = function (dataItem, header) {
+  if(!dataItem || ! header) return null
   if (header.reactComponent) {
     return header.render(dataItem)
   } else {
@@ -33,6 +34,21 @@ export const getData = function (dataItem, header) {
     }
   }
 };
+
+export const accessData = function(data, accessor) {
+  if (accessor.includes('.')) {
+    const accessorsArray = accessor.split('.')
+    let item = data;
+    accessorsArray.forEach((accessor) => {
+      if (item) {
+        item = item[accessor]
+      }
+    })
+    return item
+  } else {
+    return data[accessor]
+  }
+}
 
 export const formatPhone = function (data) {
   if (!data) return '';

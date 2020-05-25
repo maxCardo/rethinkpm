@@ -14,6 +14,9 @@ import {
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
     SET_ACTIVE_PROFILE_CHAT,
+    ADD_DATA_PROFILE_LIST,
+    LOAD_MORE_PROFILE_LIST,
+    SET_HAS_MORE_DATA,
     UPDATE_ACTIVE_PROFILE_CHAT
 
 } from './type';
@@ -82,20 +85,82 @@ export const loadProfileDefault = profileType => async dispatch => {
 };
 
 //grab profile list for default load and filter
-export const loadProfileList = (profileType, queryList) =>async dispatch => {
+export const loadProfileList = (profileType, queryList, pageNumber) =>async dispatch => {
    console.log('running profile sales action') 
   try {
     dispatch({
       type: LOAD_PROFILE_LIST,
     });
-    const res = await axios.get(`/api/profile/list/${profileType}/${queryList}`);
+    const filter = {
+      status: {
+        accessor: 'status',
+        dataType: 'array',
+        name: 'status',
+        type: {
+          value: 'in',
+          operator: '$in'
+        },
+        value: eval(queryList).map((status) => ({value: status}))
+      }
+    }
+    const res = await axios.post(`/api/profile/filter/${profileType}`, filter, config);
     dispatch({
-      type: SET_PROFILE_LIST,
-      payload: res.data.list,
+        type: SET_PROFILE_LIST,
+        payload: res.data.record,
     });
     dispatch({
-        type: SET_SAVED_FILTERS,
-        payload: res.data.SavedFilters
+      type: SET_HAS_MORE_DATA,
+      payload: res.data.hasMore
+    })
+    dispatch({
+        type: SET_FILTER,
+        payload: res.data.filters,
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: err,
+        status: err,
+      },
+    });
+  }
+};
+
+export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => async dispatch => {
+  try {
+    console.log(profileType)
+    console.log(queryList)
+    console.log(pageNumber)
+    dispatch({
+      type: LOAD_MORE_PROFILE_LIST,
+    });
+    const filter = {
+      status: {
+        accessor: 'status',
+        dataType: 'array',
+        name: 'status',
+        type: {
+          value: 'in',
+          operator: '$in'
+        },
+        value: eval(queryList).map((status) => ({value: status}))
+      }
+    }
+    let res
+    if(pageNumber) {
+      res = await axios.post(`/api/profile/filter/${profileType}/${pageNumber}`, filter, config);
+    } else {
+      res = await axios.post(`/api/profile/filter/${profileType}`, filter, config);
+    }
+    dispatch({
+        type: ADD_DATA_PROFILE_LIST,
+        payload: res.data.record,
+    });
+    dispatch({
+      type: SET_HAS_MORE_DATA,
+      payload: res.data.hasMore
     })
   } catch (err) {
     console.log(err);
@@ -107,8 +172,8 @@ export const loadProfileList = (profileType, queryList) =>async dispatch => {
       },
     });
   }
+}
 
-};
 
 //grab activeProfiles past sales (agentPros)
 export const loadProfileSales = (profileType, id) => async dispatch => {

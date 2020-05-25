@@ -4,6 +4,7 @@ import {
     TOGGLE_ADD_PHONE,
     TOGGLE_ADD_EMAIL,
     SET_PROFILE_LIST,
+    ADD_DATA_PROFILE_LIST,
     CLEAR_PROFILE_ERROR,
     PROFILE_SUCCESS,
     CLEAR_PROFILE_SUCCESS,
@@ -13,6 +14,8 @@ import {
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
     SET_ACTIVE_PROFILE_CHAT,
+    LOAD_MORE_PROFILE_LIST,
+    SET_HAS_MORE_DATA,
     UPDATE_ACTIVE_PROFILE_CHAT
 } from '../actions/type';
 
@@ -60,10 +63,36 @@ export default function (state = initialState, action) {
                     loading: false
                 },
             }
+        case SET_HAS_MORE_DATA:
+            return {
+              ...state,
+              profileList: {
+                ...state.profileList,
+                hasMore: payload
+              }
+            }
+        case ADD_DATA_PROFILE_LIST:
+        console.log(state)
+            return {
+                ...state,
+                profileList: {
+                    list: state.profileList.list.concat(payload),
+                    loadingMore: false
+                },
+            }
+        case LOAD_MORE_PROFILE_LIST:
+            return {
+              ...state,
+              profileList: {
+                ...state.profileList,
+                loadingMore: true
+              },
+            }
         case LOAD_PROFILE_LIST:
             return {
                 ...state,
                 profileList: {
+                    ...state.profileList,
                     loading: true
                 },
                 activeFilter:[]
