@@ -32,13 +32,13 @@ app.use(express.json({extended:false}));
 
 //api routes
 app.use('/api/users', require('./api/users'));
-app.use('/api/rent_lead', require('./api/rentLead'));
 app.use('/api/tasks', require('./api/tasks'));
 app.use('/api/3ps',(req,res,next) => {req.io = {io:io}, next()}, require('./api/3ps'));
 app.use('/api/sales', require('./api/salesLeads'));
-app.use('/api/profile', require('./api/profile'));
 app.use('/api/agent_lead', require('./api/agentLead'));
+app.use('/api/rent_lead', require('./api/rentLead'));
 app.use('/api/comms', require('./api/comms'));
+app.use('/api/profile', require('./api/profile/profile'));
 
 //Socket.io socket and API calls
 require('./socket/chat')(io);

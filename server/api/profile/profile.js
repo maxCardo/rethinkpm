@@ -1,21 +1,25 @@
 const express = require('express');
-const auth = require('../middleware/auth')
+const auth = require('../../middleware/auth')
 
 //db models
-const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
-const Agent = require('../db/models/sales/agent')
-const singleFamilySalesModel = require('../db/models/sales/singleFamilySales')
-const multiSalesModel = require('../db/models/sales/multiSales')
-const Office = require('../db/models/sales/office')
-const SavedFilter = require('../db/models/prospects/SavedFilters')
+const RentLeadInq = require('../../db/models/prospects/RentLeads/RentLeadInq');
+const Agent = require('../../db/models/sales/agent')
+const singleFamilySalesModel = require('../../db/models/sales/singleFamilySales')
+const multiSalesModel = require('../../db/models/sales/multiSales')
+const Office = require('../../db/models/sales/office')
+const SavedFilter = require('../../db/models/prospects/SavedFilters')
 
-const {validateNum} = require('../3ps/sms')
+const {validateNum} = require('../../3ps/sms')
 
 //filter options: refactor to get these from api
-const zipcodeOptions = require('../config/supportData/zipcodes')
-const areaOptions = require('../config/supportData/areas')
+const zipcodeOptions = require('../../config/supportData/zipcodes')
+const areaOptions = require('../../config/supportData/areas')
 
 const router = express.Router();
+
+//api routes
+router.use('/rentPros', require('./rentPros'));
+
 
 // @route: GET /api/profile/inquiry/:id;
 // @desc: Get Inquiry Id info
