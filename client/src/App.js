@@ -60,7 +60,6 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
         <Navbar/>
         <Route exact path ='/' component = {Landing}/>
         <section className ='container-b' style={{position: 'relative', overflow: 'hidden'}}>
-          <Alert/>
           <Switch>
             <Route exact path = '/login' component = {Login}/>
             <Route exact path='/register' component={Register} />
