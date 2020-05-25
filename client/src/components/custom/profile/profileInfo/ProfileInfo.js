@@ -13,12 +13,8 @@ const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
 
     const getPrimaryPhone = profile.phoneNumbers && profile.phoneNumbers.find(item => item.isPrimary)
     const getPrimaryEmail = profile.email && profile.email.find(item => item.isPrimary)
-
     const primaryPhone = getPrimaryPhone && getPrimaryPhone.number;
     const primaryEmail = getPrimaryEmail && getPrimaryEmail.address;
-
-    console.log(primaryPhone);
-
 
     useEffect(() => {
       const columns = {1:[],2:[],3:[]}  

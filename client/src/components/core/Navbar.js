@@ -16,7 +16,7 @@ const Navbar = ({auth:{isAuthenticated, loginInProgress}, logout}) => {
     const authLinks = (
         <ul>
             <li><Link to='/profile/agentPros'>Agents</Link></li>
-            <li><Link to='/crm'>Buyers</Link></li>
+            <li><Link to='/profile/buyerPros'>Buyers</Link></li>
             <li><Link to='/profile/rentPros'>Renters</Link></li>
             <li><Link to='/services'>Service</Link></li>
             <li><Link to='/chat'>Communication</Link></li>

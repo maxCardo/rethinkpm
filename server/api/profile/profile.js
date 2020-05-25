@@ -18,8 +18,9 @@ const areaOptions = require('../../config/supportData/areas')
 const router = express.Router();
 
 //api routes
-router.use('/rentPros', require('./rentPros'));
-
+router.use('/rentPros', require('./rentPros'))
+router.use('/buyerPros', require('./buyerPros'))
+router.use('/agentPros', require('./agentPros'))
 
 // @route: GET /api/profile/inquiry/:id;
 // @desc: Get Inquiry Id info
@@ -132,19 +133,6 @@ function transformObjectIntoSortedArray(object) {
 
 //---------------------------------- new api call from refactor 5-5-20 -----------------------------------------------------//
 
-// @route: GET /api/profile/agentPros;
-// @desc: Get single profile when loading profile screen (agentPros) 
-// @ access: Public * ToDo: update to make private
-router.get('/agentPros', async (req, res) => {
-  try {
-      const record = await  Agent.findOne().populate('notes.user')
-      res.status(200).send(record);
-  } catch (error) {
-      console.error(error);
-      res.status(400).send('server error')
-  }
-});
-
 
 // @route: GET /api/profile/list/agentPros/:query;
 // @desc: Get list of agentsPros to fill default profileList (agentPros) 
@@ -161,87 +149,6 @@ router.get('/list/agentPros/:query', async ({params:{query}}, res) => {
     }
   });
   
-  // @route: GET /api/profile/filter/agentPros;
-  // @desc: Get get new profile list based on filter submited
-  // @ access: Public * ToDo: update to make private
-  router.post('/filter/agentPros/:page?', async (req, res) => {
-  try {
-    const PAGESIZE = 500;
-    const data = req.body
-    const filterFields = Object.keys(req.body);
-    const filters = []
-
-    //create filter object
-    filterFields.map((x) => {
-      data[x].type.value !== 'noFilter' && filters.push({
-        field: data[x].accessor ,
-        subField: data[x].subAccessor,
-        filterType: data[x].type.value,
-        operator:  data[x].type.operator, 
-        value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
-        secondValue: data[x].secondValue ? data[x].secondValue : '' 
-      })})
-    
-    //create string query 
-    const queryObj = {}
-    filters.map((x) => {
-      if (x.filterType === 'range') {
-        Object.assign(queryObj, {
-          [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
-        })
-      }else if (x.subField) {
-        Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
-      }else{ 
-        Object.assign(queryObj, {[x.field]: { [x.operator]: x.value } })
-      }
-    })
-
-
-    //query DB
-    let record;
-    if(req.params.page) {
-      record = await Agent.find(queryObj).skip(PAGESIZE*(+req.params.page)).limit(PAGESIZE+1)
-    } else {
-      record = await Agent.find(queryObj).limit(PAGESIZE+1)
-    }
-    let hasMore = false;
-    if(record.length > PAGESIZE) {
-      hasMore = true;
-      record.pop()
-    }
-    
-    res.status(200).send({record,filters, hasMore});
-
-  } catch (error) {
-    console.error(error);
-    res.status(400).send('server error')
-  }
-});
-
-// @route: GET /api/profile/filterOptions/agentPros;
-// @desc: Get options for filter fields used by filter filtersModal comp (agentPros) 
-// @ access: Public * ToDo: update to make private
-router.get('/filterOptions/agentPros', async ({ params: { query } }, res) => {
-  const options = {}
-  try {
-    const record = await Office.find({})
-    office = record.map((office) => { return { value: office.officeId, label: office.name}})
-    options.office = office
-    options.status = [
-      { value: 'new', label: 'Lead' },
-      { value: 'prospect', label: 'Prospect' },
-      { value: 'pending', label: 'Pending' },
-      { value: 'agent', label: 'Agent' },
-      { value: 'notInterested', label: 'Not Interested' }
-    ];
-    options.zip = zipcodeOptions
-    options.area = areaOptions
-    res.status(200).send(options);
-  } catch (error) {
-    console.error(error);
-    res.status(400).send('server error')
-  }
-});
 
 // @route: POST /api/profile/filter/save;
 // @desc: save filter selection as filter or audiance   

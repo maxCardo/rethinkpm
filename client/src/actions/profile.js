@@ -28,7 +28,6 @@ const config = {headers: {'Content-Type': 'application/json', 'Accept': 'applica
 //Set Active profile for selected lead record. 
 export const setActiveProfile = profile => async dispatch => {
     try {
-        console.log('running set active profile');
         dispatch({
             type: SET_ACTIVE_PROFILE,
             payload: profile
@@ -63,8 +62,6 @@ export const loadBackUpProfile = (profileType, profile) => {
 
 //grab first profile record
 export const loadProfileDefault = profileType => async dispatch => {
-    console.log('running load default: ', profileType);
-
     try {
         const res = await axios.get(`/api/profile/${profileType}`);
 
@@ -83,7 +80,6 @@ export const loadProfileDefault = profileType => async dispatch => {
 
 //grab profile list for default load and filter
 export const loadProfileList = (profileType, queryList, pageNumber) =>async dispatch => {
-   console.log('running profile sales action') 
   try {
     dispatch({
       type: LOAD_PROFILE_LIST,
@@ -100,7 +96,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
         value: eval(queryList).map((status) => ({value: status}))
       }
     }
-    const res = await axios.post(`/api/profile/filter/${profileType}`, filter, config);
+      const res = await axios.post(`/api/profile/${profileType}/filter`, filter, config);
     dispatch({
         type: SET_PROFILE_LIST,
         payload: res.data.record,
@@ -144,9 +140,9 @@ export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => a
     }
     let res
     if(pageNumber) {
-      res = await axios.post(`/api/profile/filter/${profileType}/${pageNumber}`, filter, config);
+      res = await axios.post(`/api/profile/${profileType}/filter/${pageNumber}`, filter, config);
     } else {
-      res = await axios.post(`/api/profile/filter/${profileType}`, filter, config);
+      res = await axios.post(`/api/profile/${profileType}/filter`, filter, config);
     }
     dispatch({
         type: ADD_DATA_PROFILE_LIST,
@@ -362,8 +358,7 @@ export const submitFilterModal = (data, profileType) => async dispatch => {
 //get filter options for array fields
 export const getFilterOptions = (profileType) => async dispatch => {
     try {
-        const res = await axios.get(`/api/profile/filterOptions/${profileType}`);
-        console.log('running set active profile');
+        const res = await axios.get(`/api/profile/${profileType}/filterOptions`);
         dispatch({
             type: PROFILE_FILTER_OPTIONS,
             payload: res.data

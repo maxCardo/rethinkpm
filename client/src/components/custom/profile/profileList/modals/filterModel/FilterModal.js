@@ -11,7 +11,7 @@ const FilterModal = ({show, handleClose, settings:{filterFields, profileType},ge
     const [state, setState] = useState(filterFields);
     useEffect(() => {
       getFilterOptions(profileType)
-    });
+    },[]);
     const onChange = (property,value ) => setState({ ...state, [property]: value})
 
     const onSubmit = (data, type) => {
