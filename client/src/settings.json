@@ -108,6 +108,158 @@
           "office": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Office", "dataType":"array", "accessor":"officeId", "subAccessor":"" }
         }
       },
+      "rentPros": {
+        "profileType": "rentPros",
+        "statusSelect": {
+          "options": [
+            {
+              "value": "['prospect','pending','agent']",
+              "label": "Active"
+            },
+            {
+              "value": "['prospect','pending','agent','new','notInterested']",
+              "label": "All"
+            },
+            {
+              "value": "['new']",
+              "label": "Lead"
+            },
+            {
+              "value": "['prospect']",
+              "label": "Prospect"
+            },
+            {
+              "value": "['pending']",
+              "label": "Pending"
+            },
+            {
+              "value": "['applicant']",
+              "label": "Applicant"
+            },
+            {
+              "value": "['notInterested']",
+              "label": "Not Interested"
+            }
+          ],
+          "selected": {
+            "value": "active",
+            "label": "Active"
+          },
+          "selectedQuery": "['new','prospect', 'pending','applicant']"
+        },
+        "profileInfo": [
+          {
+            "name": "First Name",
+            "accessor": "prospect.firstName",
+            "col": 1,
+            "editable": "input"
+          },
+          {
+            "name": "Last Name",
+            "accessor": "prospect.lastName",
+            "col": 1,
+            "editable": "input"
+          },
+          {
+            "name": "Phone",
+            "accessor": "phoneNumbers",
+            "col": 1,
+            "formatter": "formatPhoneNumbers",
+            "editable": "phoneNumbers"
+          },
+          {
+            "name": "Email",
+            "accessor": "email",
+            "col": 1,
+            "editable": "emails"
+          },
+          {
+            "name": "Sales Volume",
+            "accessor": "sales",
+            "col": 2,
+            "formatter": "formatMoney"
+          },
+          {
+            "name": "Top Neighborhoods",
+            "accessor": "collection",
+            "datatype": "areas",
+            "col": 2,
+            "formatter": "formatLabels"
+          },
+          {
+            "name": "Top Zip Codes",
+            "accessor": "collection",
+            "datatype": "zipCodes",
+            "col": 2,
+            "formatter": "formatLabels"
+          },
+          {
+            "name": "Target Offer",
+            "accessor": "targetOffer",
+            "col": 2
+          },
+          {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
+            "name": "Lead Owner",
+            "accessor": "leadOwner",
+            "col": 3
+          },
+          {
+            "name": "Reason for loss",
+            "accessor": "reasonForLoss",
+            "col": 3
+          },
+          {
+            "name": "Last Contact",
+            "accessor": "lastContact",
+            "col": 3
+          }
+        ],
+        "screens": [
+          "notes"
+        ],
+        "filterFields": {
+          "property": {
+            "type": {
+              "label": "Don't filter",
+              "value": "noFilter"
+            },
+            "value": "",
+            "name": "Property",
+            "dataType": "array",
+            "accessor": "listing",
+            "subAccessor": ""
+          },
+
+          "leadOwner": {
+            "type": {
+              "label": "Don't filter",
+              "value": "noFilter"
+            },
+            "value": "",
+            "name": "Lead Owner",
+            "dataType": "string",
+            "accessor": "leadOwner",
+            "subAccessor": ""
+          },
+          "status": {
+            "type": {
+              "label": "Don't filter",
+              "value": "noFilter"
+            },
+            "value": "",
+            "name": "Status",
+            "dataType": "array",
+            "accessor": "status",
+            "subAccessor": ""
+          }
+        }
+      },
       "leasingPros": {
         "profileInfo": [
           {
