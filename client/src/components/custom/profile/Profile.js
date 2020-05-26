@@ -15,7 +15,6 @@ import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
 const Profile = ({profile:{activeProfile, loading }, location:{search}, settings, loadBackUpProfile, loadProfileDefault}) => {
 
     useEffect(() => {
-        console.log('enter profile use effect');
         //added to allow for reuse of profile component when redux data is orginized by component    
         if(!activeProfile.profile || activeProfile.profileType !== settings.profileType){
             const backUpProfile = qs.parse(search).profile 
