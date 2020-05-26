@@ -73,7 +73,6 @@ router.put("/agent/:id", async (req, res) => {
   try {
 
     if (req.body.phoneNumbers) {
-      console.log('validate number functined not running in dev');
       //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
     }
     const agent = await Agent.findById(req.params.id)
@@ -160,7 +159,7 @@ router.post('/filter/save', async (req, res) => {
     res.status(200).send(savedFilter);
   } catch (err) {
     res.status(400).send('server error')
-    console.log(err)
+    console.error(err)
   }
 });
 
@@ -201,7 +200,7 @@ router.get('/saved_filter/agentPros/:id', async (req, res) => {
 
   } catch (err) {
     res.status(400).send('server error')
-    console.log(err)
+    console.error(err)
   }
 });
 

@@ -88,7 +88,6 @@ router.post('/filter/:page?', async (req, res) => {
 // @desc: Get options for filter fields used by filter filtersModal comp (agentPros) 
 // @ access: Public * ToDo: update to make private
 router.get('/filterOptions', async ({ params: { query } }, res) => {
-    console.log('running filterOptions');
     const options = {}
     try {
         const record = await Office.find({})

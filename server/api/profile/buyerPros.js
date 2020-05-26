@@ -42,7 +42,6 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const record = await model.findOne()
-        console.log(record);
         res.status(200).send(record);
     } catch (error) {
         console.error(error);
@@ -148,7 +147,7 @@ router.post('/addNote/:id', auth, async (req, res) => {
         res.status(200).send(record);
     } catch (err) {
         res.status(400).send('server error')
-        console.log(err)
+        console.error(err)
     }
 });
 
