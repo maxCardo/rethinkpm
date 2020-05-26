@@ -164,7 +164,6 @@ export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => a
   }
 }
 
-
 //grab activeProfiles past sales (agentPros)
 export const loadProfileSales = (profileType, id) => async dispatch => {
     try {
@@ -410,10 +409,10 @@ export const loadSavedFilter = (id, profileType) => async dispatch => {
     }
 }
 
-//add note
+//add note *agentPros, buyerPros
 export const addNote = (data,id,profileType) => async dispatch =>{
     try {
-        const res = await axios.post(`api/profile/addNote/${profileType}/${id}`, data, config)
+        const res = await axios.post(`/api/profile/${profileType}/addNote/${id}`, data, config)
         dispatch({
             type: SET_ACTIVE_PROFILE,
             payload: res.data
@@ -424,7 +423,6 @@ export const addNote = (data,id,profileType) => async dispatch =>{
             type: PROFILE_ERROR,
             payload: { msg: err.response.statusText, status: err.response.status }
         });
-
     }
 };
 

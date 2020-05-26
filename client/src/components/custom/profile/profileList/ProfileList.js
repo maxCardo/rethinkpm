@@ -24,7 +24,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
 
     useEffect(() => {
         loadProfileList(profileType, selectedQuery)
-    }, [])
+    }, [profileType])
 
     const loadNextPage = () => {
       loadMoreDataProfileList(profileType, selectStatus.selected.value, listPage + 1)
@@ -61,6 +61,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
         }   
         setStatus({ ...selectStatus, selected: v })
     } 
+    
     return profileList.loading ? <Loading/> :
         <Fragment>
             <Select

@@ -164,48 +164,6 @@ router.post('/filter/save', async (req, res) => {
   }
 });
 
-// @route: GET /api/profile/agentPros/pastSales/:id;
-// @desc: Get past sales for record by id
-// @ access: Public * ToDo: update to make private
-router.get('/agentPros/pastSales/:agentId', async (req, res) => {
-  try {
-    const agentId = req.params.agentId
-    const lead = {}
-    const agentSellsPromise = singleFamilySalesModel.find({ agentId: agentId })
-    const agentBuysPromise = singleFamilySalesModel.find({ sellingAgentId: agentId })
-    const agentMultiSalesPromise = multiSalesModel.find({ agentId: agentId })
-    const [agentSellsResult, agentBuysResult, agentMultiSalesResult] = await Promise.all([agentSellsPromise, agentBuysPromise, agentMultiSalesPromise])
-    lead.sellersAgent = agentSellsResult
-    lead.buyersAgent = agentBuysResult
-    lead.multiSales = agentMultiSalesResult
-    res.status(200).send(lead);
-  } catch (error) {
-    console.error(error);
-    res.status(400).send('server error')
-  }
-});
-
-//add post new note
-// @route: POST /api/profile/addNotes/:profileType;
-// @desc: save filter section as filter or audiance   
-// @ access: Private
-router.post('/addNote/agentPros/:id', auth, async (req, res) => {
-  try {
-    id = req.params.id
-    const record = await Agent.findById(id).populate('notes.user')
-    const newNote = {
-      ...req.body,
-      user: req.user,
-      type: 'note'
-    }
-    record.notes.push(newNote)
-    await record.save()
-    res.status(200).send(record);
-  } catch (err) {
-    res.status(400).send('server error')
-    console.log(err)
-  }
-});
 
 //add post new note
 // @route: POST /api/profile/addNotes/:profileType;

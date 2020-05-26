@@ -130,5 +130,28 @@ router.get('/filterOptions', async ({ params: { query } }, res) => {
 });
 
 
+//add post new note
+// @route: POST /api/profile/profileType/addNote/:id;
+// @desc: save filter section as filter or audiance   
+// @ access: Private
+router.post('/addNote/:id', auth, async (req, res) => {
+    try {
+        id = req.params.id
+        const record = await model.findById(id).populate('notes.user')
+        const newNote = {
+            ...req.body,
+            user: req.user,
+            type: 'note'
+        }
+        record.notes.push(newNote)
+        await record.save()
+        res.status(200).send(record);
+    } catch (err) {
+        res.status(400).send('server error')
+        console.log(err)
+    }
+});
+
+
 
 module.exports = router;  

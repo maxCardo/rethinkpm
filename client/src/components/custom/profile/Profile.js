@@ -15,12 +15,13 @@ import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
 const Profile = ({profile:{activeProfile, loading }, location:{search}, settings, loadBackUpProfile, loadProfileDefault}) => {
 
     useEffect(() => {
+        console.log('enter profile use effect');
         //added to allow for reuse of profile component when redux data is orginized by component    
         if(!activeProfile.profile || activeProfile.profileType !== settings.profileType){
             const backUpProfile = qs.parse(search).profile 
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
-    }, [activeProfile.profile, activeProfile.profileType, loadBackUpProfile, loadProfileDefault, search, settings.profileType])
+    }, [settings])
     
     const [chatWindow, tglChatWindow] = useState(false)
     const [listWindow, tglListWindow] = useState(true)
@@ -55,7 +56,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
 
             </div>
             <div className='profile__chat-container chat__sidebar'>
-                {/* <Chat/> */}
+                <Chat/>
             </div>
             <div className="sidebar__left profile__agent-leads">
                 <ProfileList settings={settings}/>
