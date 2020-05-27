@@ -7,7 +7,7 @@ const rentProsSchema = new mongoose.Schema({
     fullName: String,
     email:[
         {
-            adresss: String, 
+            address: String, 
             isPrimary: Boolean
         }
     ],

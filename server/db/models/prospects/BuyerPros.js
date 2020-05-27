@@ -7,7 +7,7 @@ const buyerProsSchema = new mongoose.Schema({
     fullName: String,
     email:[
         {
-            adresss: String, 
+            address: String, 
             isPrimary: Boolean
         }
     ],
