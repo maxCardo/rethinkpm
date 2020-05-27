@@ -21,6 +21,13 @@ const activeNumber = [
         campaign: '1500 Fallowfield',
         model: RentPros
     },
+    {
+        number: "+14124447505",
+        profile: 'buyerPros',
+        campaign: '',
+        model: ''
+    },
+
 
 ]
 
@@ -29,6 +36,7 @@ const activeNumber = [
 // @ access: Public *ToDo: update to make private
 //Note: migrated call to server page in order to include socket call
 router.post('/chat', async (req, res) => {
+    console.log('running post/chat');
     try {
         let { To, From, Body } = req.body;
 
@@ -48,8 +56,8 @@ router.post('/chat', async (req, res) => {
                 subTitle: activeNum.campaign,
                 botOn:  true,
                 unread: true,
-                from: From,
-                to: To,
+                clientNum: From,
+                routingNum: To,
                 messages:[],
             })
         }
@@ -63,14 +71,14 @@ router.post('/chat', async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.send('server Error')
+        res.status(400).send('server Error')
     }
 });
 
 // @route: get /api/comms/chat/:owner;
 // @desc: get single chat by owner 
 // @ access: Public *ToDo: update to make private
-router.get('/chat/:ownerId', async (req, res) => {
+router.get('/profile/chat/:ownerId', async (req, res) => {
     try {
         const chat = await Chat.findOne({owner: req.params.ownerId})
         res.status(200).send(chat)
@@ -80,21 +88,39 @@ router.get('/chat/:ownerId', async (req, res) => {
 })
 
 // @route: Post /api/comms/chat/:ownerId;
-// @desc: Receive chat msg via api (use for testing )
+// @desc: Receive chat msg from profile comp in front end
 // @ access: Public *ToDo: update to make private
 //Note: migrated call to server page in order to include socket call
-router.post('/chat/:ownerId', async (req, res) => {
+router.post('/profile/chat/:ownerId', async (req, res) => {
+    const {activeProfile:{profileType, campaign = '', fullName, phoneNumbers}, message} = req.body
+    let phone = (phoneNumbers.length && phoneNumbers.find((phone) => phone.isPrimary)) ? phoneNumbers.find((phone) => phone.isPrimary).number : '';
     try {
-        const chat = await Chat.findOne({ owner: req.params.ownerId })
-        chat.messages.push(req.body)
+        let chat = await Chat.findOne({ owner: req.params.ownerId })
+        if (!chat) {
+            const activeNum = activeNumber.find((number) => number.profile === profileType && number.campaign === campaign )
+            chat = await new Chat({
+                owner: req.params.ownerId,
+                ownerType: profileType,
+                title: fullName,
+                subTitle: campaign,
+                botOn: false,
+                unread: true,
+                clientNum: phone,
+                routingNum: activeNum.number && activeNum.number,
+                messages: [],
+            })
+
+        }
+
+        chat.messages.push(message)
         await chat.save()
         //ToDo: check if "To" phone is still active and if not send from default
-        outgoingSMS(chat.to, chat.from, req.body.content)
+        outgoingSMS(chat.routingNum, chat.clientNum, message.content)
         res.status(200).send(chat);
 
     } catch (error) {
         console.error(error);
-        res.send('server Error')
+        res.status(400).send('server Error')
     }
 });
 

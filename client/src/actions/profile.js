@@ -62,12 +62,11 @@ export const loadBackUpProfile = (profileType, profile) => {
 export const loadProfileDefault = profileType => async dispatch => {
     try {
         const res = await axios.get(`/api/profile/${profileType}`);
-
+        const data = {...res.data, profileType}
         dispatch({
             type: SET_ACTIVE_PROFILE,
-            payload: res.data,
+            payload: data,
         });
-
     } catch (err) {
         console.log(err);
         dispatch({
@@ -486,7 +485,8 @@ export const addNote = (data,id,profileType) => async dispatch =>{
 //get active profile chat
 export const getActiveChat = (chatOwner) => async dispatch =>{
     try {
-        const res = await axios.get(`/api/comms/chat/${chatOwner}`)
+        console.log(chatOwner);
+        const res = await axios.get(`/api/comms/profile/chat/${chatOwner}`)
         dispatch ({
             type: SET_ACTIVE_PROFILE_CHAT,
             payload: res.data
@@ -508,8 +508,9 @@ export const getActiveChat = (chatOwner) => async dispatch =>{
 //send chat from UI
 export const sendChat = (chatOwner, data) => async dispatch => {
     try {
-        console.log('running sendChat');
-        const res = await axios.post(`/api/comms/chat/${chatOwner}`, data, config)
+        console.log(chatOwner)
+        const res = await axios.post(`/api/comms/profile/chat/${chatOwner}`, data, config)
+        console.log('res: ', res);
         dispatch({
             type: UPDATE_ACTIVE_PROFILE_CHAT,
             payload: res.data

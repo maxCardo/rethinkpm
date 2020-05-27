@@ -36,7 +36,7 @@ const rentInqSchema = new mongoose.Schema({
         default: new Date()
     },
     lastContact: Date,
-    listing: {
+    campaign: {
         type: String
     },
 

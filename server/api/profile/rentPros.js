@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
                     isPrimary: true
                 },
                 phoneNumbers:{
-                    number: phoneNumber,
+                    number: phoneNumber.slice(2),
                     isPrimary: true,
                     okToText: true
                 }
@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
         if (!inq) {
             inq = await new RentInq({
                 prospect: pros._id,
-                listing: property,
+                campaign: property,
 
             })
         };

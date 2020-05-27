@@ -132,8 +132,8 @@ const receiveSMS = async (data) => {
           title: record? record.fullName: null,
           subTitle: activeNum.campaign,
           unread: true,
-          from: From,
-          to: To,
+          clientNum: From,
+          routingNum: To,
           messages:[],
       })
   }

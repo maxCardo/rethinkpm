@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
         lastName,
         fullName: `${firstName} ${lastName}`,
         phoneNumbers: [{
-            number: phoneNumber,
+            number: phoneNumber.slice(2),
             isPrimary: true,
             okToText: true
         }],

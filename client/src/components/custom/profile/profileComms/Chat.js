@@ -8,18 +8,18 @@ import {getActiveChat, sendChat} from '../../../../actions/profile'
 
 const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat, sendChat}) => {
     const chatRef = useRef()
+    let phone
     useEffect(() => {
-        getActiveChat(activeProfile._id)
+        getActiveChat(activeProfile._id)    
     }, [activeProfile])
 
     const onSend = (data) => {
-        console.log('running on send');
         const message = {
             sender:'Admin', 
             content: data,
             userMessage:true
         }
-        sendChat(chat.owner,message)
+        sendChat(activeProfile._id, {message, activeProfile})
     }
 
     const scrollToBottom = () => {
