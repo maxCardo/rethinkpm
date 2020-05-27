@@ -96,6 +96,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
         value: eval(queryList).map((status) => ({value: status}))
       }
     }
+        
       const res = await axios.post(`/api/profile/${profileType}/filter`, filter, config);
     dispatch({
         type: SET_PROFILE_LIST,
@@ -392,7 +393,7 @@ export const loadSavedFilter = (id, profileType) => async dispatch => {
         dispatch({
             type: LOAD_PROFILE_LIST,
         });
-        const res = await axios.get(`/api/profile/saved_filter/${profileType}/${id}`)
+        const res = await axios.get(`/api/profile/${profileType}/saved_filter/${id}`)
         dispatch({
             type: SET_PROFILE_LIST,
             payload: res.data

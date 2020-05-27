@@ -11,7 +11,7 @@ const rentProsSchema = new mongoose.Schema({
             isPrimary: Boolean
         }
     ],
-    phone:[
+    phoneNumbers:[
         {
             number: String, 
             isPrimary: Boolean,
@@ -21,7 +21,5 @@ const rentProsSchema = new mongoose.Schema({
 
 })
 
-//notes, leadOwner, createData, lastContact, status, reason for loss,  implmented on rentInq
 
-
-module.exports = mongoose.model('rentPros', rentProsSchema)
+module.exports = rentPros =  mongoose.model('rentPros', rentProsSchema)
