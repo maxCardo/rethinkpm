@@ -70,7 +70,7 @@ router.post('/', async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
-        const inq = await model.findOne().populate('prospect')
+        const inq = await model.findOne().populate('prospect notes.user')
         const clone = { ...inq.prospect._doc, ...inq._doc }
         delete clone.prospect
         res.status(200).send(clone);
@@ -120,9 +120,9 @@ router.post('/filter/:page?', async (req, res) => {
         //query DB
         let record;
         if (req.params.page) {
-            record = await model.find(queryObj).populate('prospect').skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
+            record = await model.find(queryObj).populate('prospect notes.user').skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
         } else {
-            record = await model.find(queryObj).populate('prospect').limit(PAGESIZE + 1)
+            record = await model.find(queryObj).populate('prospect notes.user').limit(PAGESIZE + 1)
         }
         let hasMore = false;
         if (record.length > PAGESIZE) {
@@ -172,15 +172,17 @@ router.get('/filterOptions', async ({ params: { query } }, res) => {
 router.post('/addNote/:id', auth, async (req, res) => {
     try {
         id = req.params.id
-        const record = await model.findById(id).populate('notes.user')
+        const inq = await model.findById(id).populate('prospect notes.user')
         const newNote = {
             ...req.body,
             user: req.user,
             type: 'note'
         }
-        record.notes.push(newNote)
-        await record.save()
-        res.status(200).send(record);
+        inq.notes.push(newNote)
+        await inq.save()
+        const clone = { ...inq.prospect._doc, ...inq._doc }
+        delete clone.prospect
+        res.status(200).send(clone);
     } catch (err) {
         res.status(400).send('server error')
         console.error(err)
