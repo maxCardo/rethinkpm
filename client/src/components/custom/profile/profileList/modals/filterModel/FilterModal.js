@@ -22,7 +22,7 @@ const FilterModal = ({show, handleClose, settings:{filterFields, profileType},ge
 
     const onSubmit = (data, type) => {
         Object.keys(data).forEach((item) => {
-            if(`${data[item]['type']['value']}` === "in" && data[item]['value'].length === 0) {
+            if(`${data[item]['type']['value']}` === "in" && data[item]['value'] === "" || data[item]['value'].length === 0) {
                 data[item]['type'] = {label: "Don't filter", value: 'noFilter'};
             }
 
