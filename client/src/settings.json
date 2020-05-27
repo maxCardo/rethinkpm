@@ -150,13 +150,13 @@
         "profileInfo": [
           {
             "name": "First Name",
-            "accessor": "prospect.firstName",
+            "accessor": "firstName",
             "col": 1,
             "editable": "input"
           },
           {
             "name": "Last Name",
-            "accessor": "prospect.lastName",
+            "accessor": "lastName",
             "col": 1,
             "editable": "input"
           },

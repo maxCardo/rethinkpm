@@ -17,7 +17,7 @@ const router = express.Router();
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
-        const record = await Agent.findOne().populate('notes.user')
+        const record = await Agent.findOne().populate('notes.user, office')
         res.status(200).send(record);
     } catch (error) {
         console.error(error);
@@ -65,9 +65,9 @@ router.post('/filter/:page?', async (req, res) => {
         //query DB
         let record;
         if (req.params.page) {
-            record = await Agent.find(queryObj).skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
+            record = await Agent.find(queryObj).populate('notes.user, office').skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
         } else {
-            record = await Agent.find(queryObj).limit(PAGESIZE + 1)
+            record = await Agent.find(queryObj).populate('notes.user, office').limit(PAGESIZE + 1)
         }
         let hasMore = false;
         if (record.length > PAGESIZE) {
