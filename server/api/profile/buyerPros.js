@@ -1,89 +1,59 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
 
-const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
-const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
-
+const BuyerPros = require('../../db/models/prospects/BuyerPros')
 
 const router = express.Router();
 
-const model = RentInq
-const prosModel = RentPros
+const model = BuyerPros
 
-// @route: Post /api/profile/rentPros;
-// @desc: create new prospect from postman for testing
-// @ access: Public
+
+
+// @route: POST /api/profile/buyerPros;
+// @desc: POST new BuyerPros from postman
+// @ access: Public 
 router.post('/', async (req, res) => {
-    try {
-        const {firstName,lastName, phoneNumber, email, property} = req.body
-
-        // check if user exist and get user or create new if user does not exist
-        let pros;
-        phoneNumber ? pros = await prosModel.findOne({ 'phone.number': phoneNumber }) : pros = await prosModel.findOne({ email: email.address })
-
-        // validate phone number
-        //if (phoneNumber) pros.phone.phoneType = await validateNum(phoneNumber);
-
-        console.log(phoneNumber);
-
-        if (!pros) {
-            pros = await new prosModel({
-                firstName,
-                lastName,
-                fullName: `${firstName} ${lastName}`,
-                email: {
-                    address: email,
-                    isPrimary: true
-                },
-                phoneNumbers:{
-                    number: phoneNumber,
-                    isPrimary: true,
-                    okToText: true
-                }
-            });
-        };
-        
-        //check if lead for this asset exist or create new
-        let inq = await model.findOne({ prospect: pros._id, listing: property });
-
-        if (!inq) {
-            inq = await new RentInq({
-                prospect: pros._id,
-                listing: property,
-
-            })
-        };
-
-        console.log(inq);
-        await inq.save();
-        await pros.save();
-        res.status(200).send(inq);
-    } catch (e) {
-        console.error(e);
-        res.status(400).json({ errors: [{ msg: 'somthing went wrong' }] });
-    }
-});
+    const {firstName, lastName, phoneNumber, email, listing} = req.body
+    const record = await new model({
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}`,
+        phoneNumbers: [{
+            number: phoneNumber,
+            isPrimary: true,
+            okToText: true
+        }],
+        email:[{
+            address: email, 
+            isPrimary: true
+        }],  
+        inqListing :[{
+            listing
+        }]
+    })
+    await record.save()
+    res.status(200).send('hell ya')
+})
 
 
-// @route: GET /api/profile/rentPros;
+// @route: GET /api/profile/buyerPros;
 // @desc: Get single profile when loading profile screen
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
-        const inq = await model.findOne().populate('prospect')
-        const clone = { ...inq.prospect._doc, ...inq._doc }
-        delete clone.prospect
-        res.status(200).send(clone);
+        const record = await model.findOne()
+        res.status(200).send(record);
     } catch (error) {
         console.error(error);
         res.status(400).send('server error')
     }
 });
 
+
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
 // @ access: Public * ToDo: update to make private
-router.post('/filter/:page?', async (req, res) => {  
+router.post('/filter/:page?', async (req, res) => {
     try {
         const PAGESIZE = 500;
         const data = req.body
@@ -120,21 +90,15 @@ router.post('/filter/:page?', async (req, res) => {
         //query DB
         let record;
         if (req.params.page) {
-            record = await model.find(queryObj).populate('prospect').skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
+            record = await model.find(queryObj).skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
         } else {
-            record = await model.find(queryObj).populate('prospect').limit(PAGESIZE + 1)
+            record = await model.find(queryObj).limit(PAGESIZE + 1)
         }
         let hasMore = false;
         if (record.length > PAGESIZE) {
             hasMore = true;
             record.pop()
         }
-
-        record = await record.map((inq) => {
-            const clone = { ...inq.prospect._doc, ...inq._doc }
-            delete clone.prospect
-            return clone
-        })
 
         res.status(200).send({ record, filters, hasMore });
 
@@ -189,7 +153,4 @@ router.post('/addNote/:id', auth, async (req, res) => {
 
 
 
-
-
-
-module.exports = router;
+module.exports = router;  

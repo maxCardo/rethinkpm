@@ -75,6 +75,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <Route exact path='/addProperty' component={AddProperty} />
             <PrivateRoute exact path='/profile/rentPros' component={Profile} additionalProps={{ settings: routeSettings.profile.rentPros }} />
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
+            <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
           <UpdateAlert  />

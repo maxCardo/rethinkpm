@@ -20,7 +20,8 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
             const backUpProfile = qs.parse(search).profile 
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
-    }, [activeProfile.profile, activeProfile.profileType, loadBackUpProfile, loadProfileDefault, search, settings.profileType])
+    }, [settings])
+    
     const [chatWindow, tglChatWindow] = useState(false)
     const [listWindow, tglListWindow] = useState(true)
     const tglList = () => tglListWindow(!listWindow)
@@ -54,7 +55,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
 
             </div>
             <div className='profile__chat-container chat__sidebar'>
-                {/* <Chat/> */}
+                <Chat/>
             </div>
             <div className="sidebar__left profile__agent-leads">
                 <ProfileList settings={settings}/>
