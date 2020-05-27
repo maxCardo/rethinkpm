@@ -260,27 +260,120 @@
           }
         }
       },
-      "leasingPros": {
+      "buyerPros": {
+        "profileType": "buyerPros",
+        "statusSelect": {
+          "options": [
+            {
+              "value": "['new', 'prospect','pending','agent']",
+              "label": "Active"
+            },
+            {
+              "value": "['prospect','pending','agent','new','notInterested']",
+              "label": "All"
+            },
+            {
+              "value": "['new']",
+              "label": "Lead"
+            },
+            {
+              "value": "['prospect']",
+              "label": "Prospect"
+            },
+            {
+              "value": "['pending']",
+              "label": "Pending"
+            },
+            {
+              "value": "['applicant']",
+              "label": "Applicant"
+            },
+            {
+              "value": "['notInterested']",
+              "label": "Not Interested"
+            }
+          ],
+          "selected": {
+            "value": "active",
+            "label": "Active"
+          },
+          "selectedQuery": "['new','prospect', 'pending','applicant']"
+        },
         "profileInfo": [
           {
-            "name": "Name",
-            "accessor": "prospect.name",
-            "col": 1
+            "name": "First Name",
+            "accessor": "firstName",
+            "col": 1,
+            "editable": "input"
+          },
+          {
+            "name": "Last Name",
+            "accessor": "lastName",
+            "col": 1,
+            "editable": "input"
           },
           {
             "name": "Phone",
-            "accessor": "prospect.phone.phoneNumber",
-            "col": 1
+            "accessor": "phoneNumbers",
+            "col": 1,
+            "formatter": "formatPhoneNumbers",
+            "editable": "phoneNumbers"
           },
           {
             "name": "Email",
-            "accessor": "prospect.email",
-            "col": 1
+            "accessor": "email",
+            "col": 1,
+            "editable": "emails"
+          },
+          {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
+            "name": "Lead Owner",
+            "accessor": "leadOwner",
+            "col": 3
+          },
+          {
+            "name": "Reason for loss",
+            "accessor": "reasonForLoss",
+            "col": 3
+          },
+          {
+            "name": "Last Contact",
+            "accessor": "lastContact",
+            "col": 3
           }
         ],
         "screens": [
           "notes"
-        ]
+        ],
+        "filterFields": {
+          "leadOwner": {
+            "type": {
+              "label": "Don't filter",
+              "value": "noFilter"
+            },
+            "value": "",
+            "name": "Lead Owner",
+            "dataType": "string",
+            "accessor": "leadOwner",
+            "subAccessor": ""
+          },
+          "status": {
+            "type": {
+              "label": "Don't filter",
+              "value": "noFilter"
+            },
+            "value": "",
+            "name": "Status",
+            "dataType": "array",
+            "accessor": "status",
+            "subAccessor": ""
+          }
+        }
       }
     }
   }
