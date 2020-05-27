@@ -48,8 +48,8 @@ const UpdateAlert = ({error, success, clearAlerts}) => {
 };
 
 const mapStateToProps = state => ({
-    error: state.profile.error,
-    success: state.profile.success
+    error: state.alert.error,
+    success: state.alert.success
 });
 
 UpdateAlert.propTypes = {
