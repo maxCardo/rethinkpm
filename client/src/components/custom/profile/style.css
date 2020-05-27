@@ -641,4 +641,23 @@
   display: flex;
   flex-direction: column;
 }
-/* END OF Bozidar CSS */
+
+/*Profile subnav*/
+.profile__tabs.nav {
+  background:#2684ff;
+  border: none;
+}
+.profile__tabs,
+.profile__tabs a.nav-item.nav-link {
+  color: #fff;
+  border-radius: 0;
+  font-size: .75em;
+}
+.profile__tabs a.nav-item.nav-link.active {
+  background-color: #7bafed;
+  color: #fff;
+  border-radius: 0;
+}
+#profile__tabs-tab-table {
+  margin-left: auto;
+}

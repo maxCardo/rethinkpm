@@ -10,7 +10,6 @@ import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
 import { SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
-import BrokerDashboard from "../../../reducers/brokerDashboard";
 
 import {Tab, Tabs} from 'react-bootstrap';
 
@@ -37,7 +36,7 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
     <Fragment>
         <div className={`agentProfile profile__main-container ${listWindow ? 'left__sidebar-open' : null} ${chatWindow ? 'chat__sidebar-open' : null}`}>
             <div className='profile__left-container'>
-                <Tabs defaultActiveKey="details" id="profile__tabs">
+                <Tabs defaultActiveKey="details" id="profile__tabs" className='profile__tabs'>
                     <Tab eventKey="details" title="Details">
                         <Resizable defaultSize={{height: '400'}}style={{height: '400', display: 'flex'}} minWidth='100%' maxHeight={window.innerHeight*(4/6)} minHeight='100'
                                    enable={{
@@ -58,12 +57,11 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
                             <ProfileDetails settings={settings}/>
                         </div>
                     </Tab>
-                    <Tab eventKey="table" title="Table">
-                        Maybe a view of the old BrokerDashboard
-                        {/*<BrokerDashboard  settings={settings} />*/}
-                    </Tab>
                     <Tab eventKey="filters" title="Filters">
-                        <div>Filters</div>
+                        <div>Manage Filters</div>
+                    </Tab>
+                    <Tab eventKey="table" title="Table View" style={{marginLeft: 'auto'}}>
+                        Maybe a view of the old BrokerDashboard
                     </Tab>
                 </Tabs>
 
