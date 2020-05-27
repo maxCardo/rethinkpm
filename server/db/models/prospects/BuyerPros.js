@@ -36,12 +36,22 @@ const buyerProsSchema = new mongoose.Schema({
             },
         },
     ],
+    targetArea: Array,
+    targetZip: Array,
+    priceRange: Array,
+    preApproved:{
+        status:Boolean,
+        docType: String, //pre Approval or prrof of funds
+        amount:Number
+    },
+    otherPref:Array,
     status: {
         type: String,
         default: 'prospect'
     }, 
     reasonForLoss: String,
-    leadOwner: String, 
+    leadOwner: String,
+    leadSource:String, 
     createData: {
         type: Date,
         default: new Date()

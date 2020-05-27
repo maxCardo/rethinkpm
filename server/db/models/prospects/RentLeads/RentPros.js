@@ -17,9 +17,13 @@ const rentProsSchema = new mongoose.Schema({
             isPrimary: Boolean,
             okToText: Boolean
         }
-    ]
+    ],
+    targetArea: Array,
+    targetZip: Array,
+    pets: Array,
+    otherPref: Array,
+    income: Number,
 
 })
-
 
 module.exports = rentPros =  mongoose.model('rentPros', rentProsSchema)

@@ -31,6 +31,7 @@ const rentInqSchema = new mongoose.Schema({
     },
     reasonForLoss: String,
     leadOwner: String,
+    leadSource:String,  
     createData: {
         type: Date,
         default: new Date()
