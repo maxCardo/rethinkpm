@@ -10,6 +10,7 @@ import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
 import { SET_INQUIRIES } from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
+import BrokerDashboard from "../../../reducers/brokerDashboard";
 
 import {Tab, Tabs} from 'react-bootstrap';
 
@@ -58,7 +59,8 @@ const Profile = ({profile:{activeProfile, loading }, location:{search}, settings
                         </div>
                     </Tab>
                     <Tab eventKey="table" title="Table">
-                        <div>Table</div>
+                        Maybe a view of the old BrokerDashboard
+                        {/*<BrokerDashboard  settings={settings} />*/}
                     </Tab>
                     <Tab eventKey="filters" title="Filters">
                         <div>Filters</div>

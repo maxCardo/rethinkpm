@@ -373,7 +373,7 @@ export const submitFilterModal = (data, profileType) => async dispatch => {
         dispatch({
             type: LOAD_PROFILE_LIST,
         });
-        const res = await axios.post(`/api/profile/filter/${profileType}`, data, config);
+        const res = await axios.post(`/api/profile/${profileType}/filter`, data, config);
         console.log(res);
         dispatch({
             type: SET_PROFILE_LIST,
