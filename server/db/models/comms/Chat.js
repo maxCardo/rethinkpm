@@ -17,8 +17,11 @@ const chatSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    from: String, 
-    to: String,
+    clientNum: String, 
+    routingNum:{
+        type:String,
+        default: '+14124447505'
+    },
     
     messages: [{
         date: {

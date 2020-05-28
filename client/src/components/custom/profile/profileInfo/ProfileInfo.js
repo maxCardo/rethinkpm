@@ -23,7 +23,7 @@ const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
     },[profile, profileInfo])
     
     //ToDo: refactor settings.json to incorperate below lines of code
-    const colHeader = ['', 'Personal Info', 'Sales Info', 'Commumication Info']
+    const colHeader = ['', 'Personal Info', 'Profile Info', 'Commumication Info']
 
 
     return loading ? <Loading/> :

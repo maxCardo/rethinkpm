@@ -150,13 +150,13 @@
         "profileInfo": [
           {
             "name": "First Name",
-            "accessor": "prospect.firstName",
+            "accessor": "firstName",
             "col": 1,
             "editable": "input"
           },
           {
             "name": "Last Name",
-            "accessor": "prospect.lastName",
+            "accessor": "lastName",
             "col": 1,
             "editable": "input"
           },
@@ -174,28 +174,32 @@
             "editable": "emails"
           },
           {
-            "name": "Sales Volume",
-            "accessor": "sales",
-            "col": 2,
-            "formatter": "formatMoney"
+            "name": "Property",
+            "accessor": "campaign",
+            "col": 2
           },
           {
-            "name": "Top Neighborhoods",
-            "accessor": "collection",
-            "datatype": "areas",
+            "name": "Desired Neighborhoods",
+            "accessor": "targetAreas",
+            "datatype": "targetAreas",
             "col": 2,
-            "formatter": "formatLabels"
+            "formatter": ""
           },
           {
-            "name": "Top Zip Codes",
-            "accessor": "collection",
-            "datatype": "zipCodes",
+            "name": "Desired Zip Codes",
+            "accessor": "targetZipCodes",
+            "datatype": "targetZipCodes",
             "col": 2,
-            "formatter": "formatLabels"
+            "formatter": ""
           },
           {
-            "name": "Target Offer",
-            "accessor": "targetOffer",
+            "name": "Pets",
+            "accessor": "pets",
+            "col": 2
+          },
+          {
+            "name": "Other Preferences",
+            "accessor": "otherPref",
             "col": 2
           },
           {
@@ -207,6 +211,11 @@
           {
             "name": "Lead Owner",
             "accessor": "leadOwner",
+            "col": 3
+          },
+          {
+            "name": "Lead Source",
+            "accessor": "leadSource",
             "col": 3
           },
           {
@@ -326,6 +335,41 @@
             "editable": "emails"
           },
           {
+            "name": "Buyer Type",
+            "accessor": "buyerType",
+            "col": 2
+          },
+          {
+            "name": "Desired Neighborhoods",
+            "accessor": "targetAreas",
+            "datatype": "targetAreas",
+            "col": 2,
+            "formatter": ""
+          },
+          {
+            "name": "Desired Zip Codes",
+            "accessor": "targetZipCodes",
+            "datatype": "targetZipCodes",
+            "col": 2,
+            "formatter": ""
+          },
+          {
+            "name": "Target Price Range",
+            "accessor": "targetPrice",
+            "col": 2
+          },
+          {
+            "name": "Pre Approved",
+            "accessor": "preApproved.status",
+            "col": 2
+          },
+          {
+            "name": "Other Preferences",
+            "accessor": "otherPref",
+            "col": 2
+          },
+
+          {
             "name": "Status",
             "accessor": "status",
             "col": 3,
@@ -334,6 +378,11 @@
           {
             "name": "Lead Owner",
             "accessor": "leadOwner",
+            "col": 3
+          },
+          {
+            "name": "Lead Source",
+            "accessor": "leadSource",
             "col": 3
           },
           {

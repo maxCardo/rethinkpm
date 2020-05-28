@@ -7,21 +7,23 @@ const rentProsSchema = new mongoose.Schema({
     fullName: String,
     email:[
         {
-            adresss: String, 
+            address: String, 
             isPrimary: Boolean
         }
     ],
-    phone:[
+    phoneNumbers:[
         {
             number: String, 
             isPrimary: Boolean,
             okToText: Boolean
         }
-    ]
+    ],
+    targetArea: Array,
+    targetZip: Array,
+    pets: Array,
+    otherPref: Array,
+    income: Number,
 
 })
 
-//notes, leadOwner, createData, lastContact, status, reason for loss,  implmented on rentInq
-
-
-module.exports = mongoose.model('rentPros', rentProsSchema)
+module.exports = rentPros =  mongoose.model('rentPros', rentProsSchema)
