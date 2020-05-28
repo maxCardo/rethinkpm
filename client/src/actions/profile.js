@@ -248,8 +248,8 @@ export const addPhoneNumSubmit = () => async dispatch => {
 }
 
 // update primary phone record
-export const updatePhone = (formData, id) => (dispatch) => {
-    axios.put(`/api/profile/agent/${id}`, formData, config)
+export const updatePhone = (formData, id, profileType) => (dispatch) => {
+    axios.put(`/api/profile/${profileType}/${id}`, formData, config)
         .then((res) => {
             console.log(res.body);
             dispatch({

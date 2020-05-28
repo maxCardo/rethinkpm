@@ -80,6 +80,28 @@ router.get('/', async (req, res) => {
     }
 });
 
+// @route: PUT /api/profile/rentPros/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/:id", async (req, res) => {
+    try {
+
+        if (req.body.phoneNumbers) {
+            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+        }
+        const renter = await model.findById(req.params.id)
+        await renter.set({
+            ...renter,
+            ...req.body
+        })
+        var thereq = req.body;
+        //var result = await renter.save();
+        res.status(200).json({thereq});
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
 // @ access: Public * ToDo: update to make private

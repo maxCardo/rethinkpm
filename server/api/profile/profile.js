@@ -69,7 +69,7 @@ router.get('/agent/:id', async (req, res) => {
 // @route: PUT /api/profile/agent/:id;
 // @desc: Update profile info, should work with any filed in schema
 // @ access: Public * ToDo: update to make private
-router.put("/agent/:id", async (req, res) => {
+router.put("/agentPros/:id", async (req, res) => {
   try {
 
     if (req.body.phoneNumbers) {

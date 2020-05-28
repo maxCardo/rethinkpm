@@ -14,6 +14,8 @@ import {updatePhone} from "../../../../../actions/profile";
 
 const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
 
+    let profileType = data.profileType && data.profileType;
+
     const phoneInput = useRef();
 
     let phone = (data.phoneNumbers.length && data.phoneNumbers.find((phone) => phone.isPrimary)) ? data.phoneNumbers.find((phone) => phone.isPrimary).number : 'no phone on file';
@@ -38,7 +40,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                 return item
             }
         })
-        updatePhone({phoneNumbers: postPhones}, data._id);
+        updatePhone({phoneNumbers: postPhones}, data._id, profileType);
         toggleEdit(false);
         setConfModal(false);
     }
@@ -49,6 +51,9 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
         setEditPhone(phone);
         if (phoneInput.current && edit) {
             phoneInput.current.focus();
+        }
+        if (data.profileType && (profileType !== data.profileType)) {
+            profileType = data.profileType;
         }
     }, [edit, phone]);
 
