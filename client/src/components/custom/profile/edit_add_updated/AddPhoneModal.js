@@ -8,8 +8,8 @@ import {tglAddPhoneMod, addPhoneNumSubmit} from '../../../../actions/profile'
 
 //set action to change showAddPhoneMod as false on redux
 
-const AddPhoneModal = ({profile: {_id}, addPhoneNumSubmit, tglAddPhoneMod, showMod}) => {
-
+const AddPhoneModal = ({profile: {_id, profileType}, addPhoneNumSubmit, tglAddPhoneMod, showMod}) => {
+console.log(profileType);
     const phoneInput = useRef();
 
     let form = {number: '', okToText: '', makePrimary: ''}

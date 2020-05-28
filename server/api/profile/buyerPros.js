@@ -167,7 +167,7 @@ router.put("/:id", async (req, res) => {
         })
         var thereq = req.body;
         //var result = await buyer.save();
-        res.status(200).json({thereq});
+        res.status(200).json({buyer});
     } catch (err) {
         res.status(500).send(err);
     }

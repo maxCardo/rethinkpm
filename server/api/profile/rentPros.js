@@ -90,13 +90,14 @@ router.put("/:id", async (req, res) => {
             //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
         }
         const renter = await model.findById(req.params.id)
-        await renter.set({
+        let rentPro = await prosModel.findById(renter.prospect);
+        await rentPro.set({
             ...renter,
             ...req.body
         })
         var thereq = req.body;
         //var result = await renter.save();
-        res.status(200).json({thereq});
+        res.status(200).json({rentPro});
     } catch (err) {
         res.status(500).send(err);
     }
