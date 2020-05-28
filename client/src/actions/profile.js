@@ -273,8 +273,8 @@ export const updatePhone = (formData, id, profileType) => (dispatch) => {
 };
 
 // update agent status
-export const updateStatus = (formData, id) => (dispatch) => {
-    axios.put(`/api/profile/agent/${id}`, formData, config)
+export const updateStatus = (formData, id, profileType) => (dispatch) => {
+    axios.put(`/api/profile/${profileType}/${id}`, formData, config)
         .then((res) => {
             console.log(res.body);
             dispatch({
@@ -317,8 +317,6 @@ export const tglAddEmailMod = action => async dispatch => {
 //Toggle view control for show add email modal
 //set params active profile _id and new email nun object
 export const addEmailSubmit = () => async dispatch => {
-    console.log('running add email submit');
-
     //set screen to loading
     //api call to add email
     //reset active profile in dom
@@ -347,10 +345,10 @@ export const addEmailSubmit = () => async dispatch => {
 }
 
 // update email
-export const updateEmail = (formData, id) => (dispatch) => {
-    axios.put(`/api/profile/agent/${id}`, formData, config)
+export const updateEmail = (formData, id, profileType) => (dispatch) => {
+    axios.put(`/api/profile/${profileType}/${id}`, formData, config)
         .then((res) => {
-            console.log(res.body);
+
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {

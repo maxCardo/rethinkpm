@@ -55,7 +55,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
         if (data.profileType && (profileType !== data.profileType)) {
             profileType = data.profileType;
         }
-    }, [edit, phone]);
+    }, [edit, phone, data.profileType]);
 
     return (
         <Fragment key="phoneNumber">

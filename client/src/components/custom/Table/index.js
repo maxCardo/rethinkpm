@@ -117,7 +117,7 @@ export class Table extends Component {
   render() {
     return (
       <div>
-        <table className={this.props.className + ' table table-striped'} style={{tableLayout: 'fixed', fontSize: this.props.fontSize}}>
+        <table className={this.props.className + ' table table-striped'} style={{fontSize: this.props.fontSize}}>
           <thead>
             <tr>
               {this.state.headers.map((header, index) => (

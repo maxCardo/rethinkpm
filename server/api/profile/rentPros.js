@@ -72,6 +72,10 @@ router.get('/', async (req, res) => {
     try {
         const inq = await model.findOne().populate('prospect notes.user')
         const clone = { ...inq.prospect._doc, ...inq._doc }
+        const test = {
+            inq,
+            clone
+        }
         delete clone.prospect
         res.status(200).send(clone);
     } catch (error) {
@@ -96,7 +100,7 @@ router.put("/:id", async (req, res) => {
             ...req.body
         })
         var thereq = req.body;
-        //var result = await renter.save();
+        var result = await rentPro.save();
         res.status(200).json({rentPro});
     } catch (err) {
         res.status(500).send(err);

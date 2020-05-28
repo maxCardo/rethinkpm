@@ -643,21 +643,43 @@
 }
 
 /*Profile subnav*/
-.profile__tabs.nav {
+.profile__tabs.nav, .profile__main-container .bottom-navigation__tabs  {
   background:#2684ff;
   border: none;
 }
 .profile__tabs,
-.profile__tabs a.nav-item.nav-link {
+.profile__tabs a.nav-item.nav-link,
+.profile__main-container .bottom-navigation__tabs,
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
   color: #fff;
   border-radius: 0;
   font-size: .75em;
 }
-.profile__tabs a.nav-item.nav-link.active {
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
+  font-size: 1.15em;
+}
+.profile__tabs a.nav-item.nav-link.active,
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab.active {
   background-color: #7bafed;
   color: #fff;
   border-radius: 0;
+  border-color: #fff;
 }
 #profile__tabs-tab-table {
   margin-left: auto;
+}
+/*Profile sub sub nav :)*/
+.profile__logs-container .bottom-navigation__container {
+  display: flex;
+  flex-direction: column;
+}
+.profile__logs-container .bottom-navigation__container .bottom-navigation__screen {
+  order: 2;
+}
+.profile-tables__container, .bottom-navigation__screen, .bottom-navigation__container {
+  border: none;
+  box-shadow: unset;
+}
+.profile-tables__container .table-with-search__table {
+  max-height: 336px;
 }

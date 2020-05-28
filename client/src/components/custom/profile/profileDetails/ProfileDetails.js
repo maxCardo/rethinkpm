@@ -13,7 +13,7 @@ const ProfileDetails = ({settings: {screens, profileType}}) => {
             </div>
             <div className='bottom-navigation__tabs'>
                 {screens.map((screen, index) => (
-                    <button key={index} className='bottom-navigation__tab' active={activeScreen} onClick={() => selectScreen(screen)}>
+                    <button key={index} className={((activeScreen === screen) ? 'active' : '') + ' bottom-navigation__tab'} active={activeScreen} onClick={() => selectScreen(screen)}>
                         {screen}
                     </button>
                 ))}

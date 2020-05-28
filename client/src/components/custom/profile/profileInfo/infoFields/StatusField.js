@@ -4,8 +4,15 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {updateStatus} from "../../../../../actions/profile";
 import PropTypes from "prop-types";
+import settings from '../../../../../settings';
 
 const StatusField = ({updateStatus, data}) => {
+    console.log(data);
+    const theProfiles = settings.routes.profile;
+
+    console.log(theProfiles);
+
+    let profileType = data.profileType && data.profileType;
 
     const formatStatus = (status) => {
         return {value: status, label: status[0].toUpperCase() + status.substr(1)}
@@ -19,15 +26,14 @@ const StatusField = ({updateStatus, data}) => {
     const [lossReason, setLossReason] = useState('');
     const lossInput = useRef();
 
-
     //ToDo: should we pull from common folder? utils? (utils.statusSchema currently was this data)
-    const agentStatus = [
-        {value: 'new', label: 'Lead'},
-        {value: 'prospect', label: 'Prospect'},
-        {value: 'pending', label: 'Pending'},
-        {value: 'agent', label: 'Agent'},
-        {value: 'notInterested', label: 'Not Interested'}
-    ];
+     const agentStatus = theProfiles[profileType]['statusOptions'];
+    //     {value: 'new', label: 'Lead'},
+    //     {value: 'prospect', label: 'Prospect'},
+    //     {value: 'pending', label: 'Pending'},
+    //     {value: 'agent', label: 'Agent'},
+    //     {value: 'notInterested', label: 'Not Interested'}
+    // ];
 
     const handleStatusChange = selectedOption => {
         setStatus(selectedOption);
@@ -35,13 +41,13 @@ const StatusField = ({updateStatus, data}) => {
         // reasonForLoss: (selectedOption.value !== 'notInterested') ? '' : this.state.reasonForLoss,
     };
 
-    const updateAgentStatus = (status, lossReason) => {
+    const updateAgentStatus = (status, lossReason, profileType) => {
 
         if (!lossReason) {
             updateStatus({status: status}, data._id);
         } else {
             /*TODO: LossReason doesn't get added to the record*/
-            updateStatus({status: status, lossReason: lossReason}, data._id);
+            updateStatus({status: status, lossReason: lossReason}, data._id, profileType);
         }
         //if status === 'notInterested' add lossReason to post
     };
@@ -51,8 +57,13 @@ const StatusField = ({updateStatus, data}) => {
             setStatus(formatStatus(data.status));
             setAgent(data._id);
         }
-        if (lossInput.current !== undefined && lossInput.current !== null) lossInput.current.focus()
-    }, [status, data.status, agent, data._id]);
+        if (lossInput.current !== undefined && lossInput.current !== null) {
+            lossInput.current.focus();
+        }
+        if (data.profileType && (profileType !== data.profileType)) {
+            profileType = data.profileType;
+        }
+    }, [status, data.status, agent, data._id, data.profileType]);
 
 
 
@@ -91,7 +102,7 @@ const StatusField = ({updateStatus, data}) => {
                 )}
             </div>
             <Modal size='md' show={showConfModal} onHide={() => {
-                updateAgentStatus(status);
+                updateAgentStatus(status, profileType);
                 setConfModal(false)
             }}>
                 <Modal.Header closeButton>
@@ -114,7 +125,7 @@ const StatusField = ({updateStatus, data}) => {
                 }
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" variant="secondary" onClick={() => {
-                        (lossReason) ? updateAgentStatus(status['value'], lossReason) : updateAgentStatus(status['value'], null);
+                        (lossReason) ? updateAgentStatus(status['value'], lossReason, profileType) : updateAgentStatus(status['value'], null, profileType);
 
                         toggleEditable(false);
                         setConfModal(false);
