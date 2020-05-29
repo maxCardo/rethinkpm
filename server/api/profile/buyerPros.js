@@ -156,6 +156,24 @@ router.post('/addNote/:id', auth, async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/:id", async (req, res) => {
     try {
+        const buyer = await model.findById(req.params.id)
+        await buyer.set({
+            ...buyer,
+            ...req.body
+        })
+        var thereq = req.body;
+        //var result = await buyer.save();
+        res.status(200).json({buyer});
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/buyer/editPhone/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/editPhone/:id", async (req, res) => {
+    try {
 
         if (req.body.phoneNumbers) {
             //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
@@ -167,7 +185,7 @@ router.put("/:id", async (req, res) => {
         })
         var thereq = req.body;
         //var result = await buyer.save();
-        res.status(200).json({buyer});
+        res.status(200).send({buyer});
     } catch (err) {
         res.status(500).send(err);
     }

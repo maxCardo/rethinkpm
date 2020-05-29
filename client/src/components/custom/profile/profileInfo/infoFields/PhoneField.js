@@ -14,8 +14,7 @@ import {updatePhone} from "../../../../../actions/profile";
 
 const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
 
-    let profileType = data.profileType && data.profileType;
-
+    const profileType = useRef(data.profileType);
     const phoneInput = useRef();
 
     let phone = (data.phoneNumbers.length && data.phoneNumbers.find((phone) => phone.isPrimary)) ? data.phoneNumbers.find((phone) => phone.isPrimary).number : 'no phone on file';
@@ -31,7 +30,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
         setPhoneValid(!!e.match(validPhone))
     }
 
-    const editPrimePhone = () => {
+    const editPrimePhone = (proType) => {
         const postPhones = data.phoneNumbers.map((item) => {
             if (item.isPrimary) {
                 item.number = editPhone;
@@ -40,7 +39,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                 return item
             }
         })
-        updatePhone({phoneNumbers: postPhones}, data._id, profileType);
+        updatePhone({phoneNumbers: postPhones}, data._id, proType);
         toggleEdit(false);
         setConfModal(false);
     }
@@ -53,7 +52,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
             phoneInput.current.focus();
         }
         if (data.profileType && (profileType !== data.profileType)) {
-            profileType = data.profileType;
+            profileType.current = data.profileType;
         }
     }, [edit, phone, data.profileType]);
 
@@ -116,7 +115,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                     <Modal.Title>Are you sure you want to change the primary phone number</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer className="modalFooterBtns">
-                    <Button className="btn btn-primary" variant="secondary" onClick={() => editPrimePhone()}>
+                    <Button className="btn btn-primary" variant="secondary" onClick={() => editPrimePhone(profileType.current)}>
                         Confirm
                     </Button>
                     <Button className="btn btn-danger" variant="secondary" onClick={() => {

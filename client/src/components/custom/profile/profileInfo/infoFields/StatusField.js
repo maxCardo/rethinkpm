@@ -27,7 +27,7 @@ const StatusField = ({updateStatus, data}) => {
     const lossInput = useRef();
 
     //ToDo: should we pull from common folder? utils? (utils.statusSchema currently was this data)
-     const agentStatus = theProfiles[profileType]['statusOptions'];
+     const agentStatus = theProfiles && theProfiles[profileType] && theProfiles[profileType]['statusOptions'];
     //     {value: 'new', label: 'Lead'},
     //     {value: 'prospect', label: 'Prospect'},
     //     {value: 'pending', label: 'Pending'},
@@ -44,7 +44,7 @@ const StatusField = ({updateStatus, data}) => {
     const updateAgentStatus = (status, lossReason, profileType) => {
 
         if (!lossReason) {
-            updateStatus({status: status}, data._id);
+            updateStatus({status: status}, data._id, profileType);
         } else {
             /*TODO: LossReason doesn't get added to the record*/
             updateStatus({status: status, lossReason: lossReason}, data._id, profileType);

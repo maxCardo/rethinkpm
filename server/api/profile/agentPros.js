@@ -30,10 +30,6 @@ router.get('/', async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/:id", async (req, res) => {
     try {
-
-        if (req.body.phoneNumbers) {
-            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
-        }
         const agent = await Agent.findById(req.params.id)
         await agent.set({
             ...agent,
@@ -46,6 +42,30 @@ router.put("/:id", async (req, res) => {
         res.status(500).send(err);
     }
 });
+
+// @route: PUT /api/profile/agentPros/editPhone/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/editPhone/:id", async (req, res) => {
+    try {
+
+        if (req.body.phoneNumbers) {
+            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+        }
+        let agent = await Agent.findById(req.params.id)
+        await agent.set({
+            ...agent,
+            ...req.body
+        })
+        var thereq = req.body;
+        //var result = await agent.save();
+        res.status(200).json({agent});
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+
 
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
