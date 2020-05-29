@@ -274,7 +274,7 @@ export const updatePhone = (formData, id, profileType) => (dispatch) => {
 
 // update agent status
 export const updateStatus = (formData, id, profileType) => (dispatch) => {
-    axios.put(`/api/profile/${profileType}/${id}`, formData, config)
+    axios.put(`/api/profile/${profileType}/editStatus/${id}`, formData, config)
         .then((res) => {
             console.log(res.body);
             dispatch({

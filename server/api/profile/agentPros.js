@@ -59,7 +59,25 @@ router.put("/editPhone/:id", async (req, res) => {
         })
         var thereq = req.body;
         //var result = await agent.save();
-        res.status(200).json({agent});
+        res.status(200).send(agent);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/agentPros/editStatus/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/editStatus/:id", async (req, res) => {
+    try {
+        let agent = await Agent.findById(req.params.id)
+        await agent.set({
+            ...agent,
+            status: req.body.status
+        })
+        var thereq = req.body;
+        //var result = await agent.save();
+        res.status(200).send(agent);
     } catch (err) {
         res.status(500).send(err);
     }

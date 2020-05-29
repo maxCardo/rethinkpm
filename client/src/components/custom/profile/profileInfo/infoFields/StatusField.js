@@ -12,7 +12,7 @@ const StatusField = ({updateStatus, data}) => {
 
     console.log(theProfiles);
 
-    let profileType = data.profileType && data.profileType;
+    let profileType = useRef(data.profileType);
 
     const formatStatus = (status) => {
         return {value: status, label: status[0].toUpperCase() + status.substr(1)}
@@ -27,7 +27,7 @@ const StatusField = ({updateStatus, data}) => {
     const lossInput = useRef();
 
     //ToDo: should we pull from common folder? utils? (utils.statusSchema currently was this data)
-     const agentStatus = theProfiles && theProfiles[profileType] && theProfiles[profileType]['statusOptions'];
+     const agentStatus = theProfiles && theProfiles[profileType.current] && theProfiles[profileType.current]['statusOptions'];
     //     {value: 'new', label: 'Lead'},
     //     {value: 'prospect', label: 'Prospect'},
     //     {value: 'pending', label: 'Pending'},
@@ -60,8 +60,8 @@ const StatusField = ({updateStatus, data}) => {
         if (lossInput.current !== undefined && lossInput.current !== null) {
             lossInput.current.focus();
         }
-        if (data.profileType && (profileType !== data.profileType)) {
-            profileType = data.profileType;
+        if (data.profileType && (profileType.current !== data.profileType)) {
+            profileType.current = data.profileType;
         }
     }, [status, data.status, agent, data._id, data.profileType]);
 

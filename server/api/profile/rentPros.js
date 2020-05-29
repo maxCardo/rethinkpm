@@ -107,7 +107,7 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-// @route: PUT /api/profile/rentPros/:id;
+// @route: PUT /api/profile/rentPros/editPhone/:id;
 // @desc: Update profile info, should work with any filed in schema
 // @ access: Public * ToDo: update to make private
 router.put("/editPhone/:id", async (req, res) => {
@@ -120,11 +120,30 @@ router.put("/editPhone/:id", async (req, res) => {
         let rentPro = await prosModel.findById(renter.prospect);
         await rentPro.set({
             ...rentPro,
-            ...req.body
+            phoneNumbers: req.body.phoneNumbers
         })
         var thereq = req.body;
         //var result = await rentPro.save();
         res.status(200).send({rentPro});
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/rentPros/editStatus/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/editStatus/:id", async (req, res) => {
+    try {
+
+        const rentLead = await model.findById(req.params.id)
+        await rentLead.set({
+            ...rentLead,
+            status: req.body.status
+        })
+        var thereq = req.body;
+        //var result = await rentPro.save();
+        res.status(200).send(rentLead);
     } catch (err) {
         res.status(500).send(err);
     }

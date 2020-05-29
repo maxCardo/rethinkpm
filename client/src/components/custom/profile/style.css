@@ -680,6 +680,9 @@
   border: none;
   box-shadow: unset;
 }
-.profile-tables__container .table-with-search__table {
-  max-height: 336px;
+.profile-tables__container .table-with-search__table > div {
+  max-height: 30vh;
+}
+.profile-tables__container .table-with-search__container {
+  padding-top: 10px;
 }
