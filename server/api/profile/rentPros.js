@@ -124,7 +124,26 @@ router.put("/editPhone/:id", async (req, res) => {
         })
         var thereq = req.body;
         //var result = await rentPro.save();
-        res.status(200).send({rentPro});
+        res.status(200).send(rentPro);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/rentPros/editEmail/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/editEmail/:id", async (req, res) => {
+    try {
+        const renter = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(renter.prospect);
+        await rentPro.set({
+            ...rentPro,
+            email: req.body.email
+        })
+        var thereq = req.body;
+        //var result = await rentPro.save();
+        res.status(200).send(rentPro);
     } catch (err) {
         res.status(500).send(err);
     }

@@ -346,7 +346,7 @@ export const addEmailSubmit = () => async dispatch => {
 
 // update email
 export const updateEmail = (formData, id, profileType) => (dispatch) => {
-    axios.put(`/api/profile/${profileType}/${id}`, formData, config)
+    axios.put(`/api/profile/${profileType}/editEmail/${id}`, formData, config)
         .then((res) => {
 
             dispatch({

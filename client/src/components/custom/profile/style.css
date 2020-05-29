@@ -75,6 +75,9 @@
 .profile-info__data-container .column:not(:only-child) {
   max-width: 33.3333%;
 }
+.profile-info__data-container .column:first-child {
+  min-width: 386px;
+}
 /*Headers in the columns*/
 .profile-info__data-container .column h2 {
  font-size: 1.65em;
@@ -89,7 +92,6 @@
   flex-grow: 1;
 }
 /*rows in gray boxes, some are <p> and some are <div> because div in p is invalid - all have same styling*/
-.profile-info__data-container .column-content p,
 .profile-info__data-container .column-content > div {
   display: flex;
   /*centers content vertically*/

@@ -8,8 +8,7 @@ import PropTypes from 'prop-types';
 
 const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
 
-    let profileType = data.profileType && data.profileType;
-
+    let profileType = useRef(data.profileType);
     const emailInput = useRef();
 
     let email = data.email.length ? data.email.find((address) => address.isPrimary).address : 'no email on file'
@@ -34,7 +33,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                 return item;
             }
         })
-        updateEmail({email: postEmails}, data._id, profileType);
+        updateEmail({email: postEmails}, data._id, profileType.current);
         toggleEdit(false);
         setConfModal(false);
     }
@@ -45,8 +44,8 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
         if (emailInput.current && edit) {
             emailInput.current.focus();
         }
-        if (data.profileType && (profileType !== data.profileType)) {
-            profileType = data.profileType;
+        if (data.profileType && (profileType.current !== data.profileType)) {
+            profileType.current = data.profileType;
         }
     }, [edit, email, data.profileType]);
 

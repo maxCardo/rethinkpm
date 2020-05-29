@@ -7,10 +7,7 @@ import PropTypes from "prop-types";
 import settings from '../../../../../settings';
 
 const StatusField = ({updateStatus, data}) => {
-    console.log(data);
     const theProfiles = settings.routes.profile;
-
-    console.log(theProfiles);
 
     let profileType = useRef(data.profileType);
 
@@ -44,10 +41,10 @@ const StatusField = ({updateStatus, data}) => {
     const updateAgentStatus = (status, lossReason, profileType) => {
 
         if (!lossReason) {
-            updateStatus({status: status}, data._id, profileType);
+            updateStatus({status: status}, data._id, profileType.current);
         } else {
             /*TODO: LossReason doesn't get added to the record*/
-            updateStatus({status: status, lossReason: lossReason}, data._id, profileType);
+            updateStatus({status: status, lossReason: lossReason}, data._id, profileType.current);
         }
         //if status === 'notInterested' add lossReason to post
     };
@@ -102,7 +99,7 @@ const StatusField = ({updateStatus, data}) => {
                 )}
             </div>
             <Modal size='md' show={showConfModal} onHide={() => {
-                updateAgentStatus(status, profileType);
+                updateAgentStatus(status, profileType.current);
                 setConfModal(false)
             }}>
                 <Modal.Header closeButton>
