@@ -9,7 +9,8 @@ const audienceSchema = new mongoose.Schema({
       value: mongoose.Schema.Types.Mixed
     }
   ],
-  leads: [mongoose.Schema.Types.ObjectId]
+  audience: [mongoose.Schema.Types.ObjectId],
+  profileType: String,
 });
 
 

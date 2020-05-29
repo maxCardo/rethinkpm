@@ -1,8 +1,11 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
+const mongoose = require('mongoose')
 
 const Agent = require('../../db/models/sales/agent')
 const Office = require('../../db/models/sales/office')
+const FilterModel = require('../../db/models/sales/filters')
+const AudienceModel = require('../../db/models/sales/audience')
 
 
 //filter options: refactor to get these from api
@@ -153,6 +156,45 @@ router.post('/addNote/:id', auth, async (req, res) => {
   }
 });
 
+router.get('/audiences', async (req,res) => {
+  const audiences = await AudienceModel.find({profileType: 'agentPros'})
+  res.json(audiences)
+})
+
+router.get('/audiences/:id', async (req,res) => {
+  const {id} = req.params
+  const audience = await AudienceModel.findById(id)
+  const agents = await Agent.find({'_id': {$in: audience.audience.map((id) => mongoose.Types.ObjectId(id))}})
+  console.log(agents)
+  res.json({record: agents, filters: audience.filters})
+})
+
+router.post('/audiences', async (req,res) => {
+  const {name, filters, audience} = req.body
+  const audienceData = new AudienceModel({name, filters, audience, profileType: 'agentPros'});
+  await audienceData.save()
+  console.log('Audience saved')
+  res.json({result: 'ok'})
+})
+
+router.get('/filters', async (req,res) => {
+  const filters = await FilterModel.find({profileType: 'agentPros'})
+  res.json(filters)
+})
+
+router.get('/filters/:id', async (req,res) => {
+  const {id} = req.params
+  const filter = await FilterModel.findById(id)
+  res.json({filter})
+})
+
+router.post('/filters', async (req,res) => {
+  const {name, filters} = req.body
+  const filter = new FilterModel({name, filters,  profileType: 'agentPros'});
+  await filter.save()
+  console.log('Filter saved')
+  res.json({result: 'ok'})
+})
 
 
 

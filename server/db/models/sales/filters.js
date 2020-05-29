@@ -8,7 +8,8 @@ const filtersSchema = new mongoose.Schema({
       filterType: String,
       value: mongoose.Schema.Types.Mixed
     }
-  ]
+  ],
+  profileType: String,
 });
 
 

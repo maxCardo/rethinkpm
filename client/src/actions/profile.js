@@ -421,10 +421,15 @@ export const getFilterOptions = (profileType) => async dispatch => {
 }
 
 //save filter
-export const saveFilter = async (data) => async dispatch => {
+export const saveFilter = (data, type, profileType) => async dispatch => {
     try {
-        const res = await axios.post(`/api/profile/filter/save`, data, config);
-        console.log(res)
+        console.log('save filter called')
+        if(type === 'audience') {
+          const res = await axios.post(`/api/profile/${profileType}/audiences`, data, config);
+        } else {
+          const res = await axios.post(`/api/profile/${profileType}/filters`, data, config);
+          console.log(res)
+        }
     } catch (err) {
         dispatch({
             type: ALERT_FAILURE,
@@ -438,16 +443,29 @@ export const saveFilter = async (data) => async dispatch => {
 }
 
 //Load profile list based on selected saved filter
-export const loadSavedFilter = (id, profileType) => async dispatch => {
+export const loadSavedFilter = (id, profileType, filterType) => async dispatch => {
     try {
         dispatch({
             type: LOAD_PROFILE_LIST,
         });
-        const res = await axios.get(`/api/profile/${profileType}/saved_filter/${id}`)
-        dispatch({
+        if(filterType === 'audience') {
+          const res = await axios.get(`/api/profile/${profileType}/audiences/${id}`)
+          console.log(res.data)
+          dispatch({
             type: SET_PROFILE_LIST,
-            payload: res.data
-        });
+            payload: res.data.record,
+          });
+          dispatch({
+            type: SET_FILTER,
+            payload: res.data.filters,
+          });
+        } else {
+          const res = await axios.get(`/api/profile/${profileType}/filters/${id}`)
+          dispatch({
+              type: SET_PROFILE_LIST,
+              payload: res.data
+          }); 
+        }
 
     } catch (err) {
         console.log(err);
