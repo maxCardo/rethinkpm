@@ -72,7 +72,6 @@ export default function (state = initialState, action) {
               }
             }
         case ADD_DATA_PROFILE_LIST:
-        console.log(state)
             return {
                 ...state,
                 profileList: {

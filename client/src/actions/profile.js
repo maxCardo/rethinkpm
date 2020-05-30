@@ -196,12 +196,11 @@ export const loadProfileSales = (profileType, id) => async dispatch => {
 };
 
 //Toggle view control for show add phone modal
-export const tglAddPhoneMod = action => async dispatch => {
+export const tglAddPhoneMod = meh => async dispatch => {
     try {
-        console.log('running tglAddPhoneMod');
         dispatch({
             type: TOGGLE_ADD_PHONE,
-            payload: action
+            payload: meh
         })
 
     } catch (err) {
@@ -215,37 +214,29 @@ export const tglAddPhoneMod = action => async dispatch => {
 
 //Toggle view control for show add phone modal
 //set params active profile _id and new phone nun object
-export const addPhoneNumSubmit = () => async dispatch => {
-    console.log('running add phone submit');
+export const addPhoneNumSubmit = (formData, id, profileType) => async dispatch => {
 
-
-    //set screen to loading
-    //api call to add number
-    //reset active profile in dom
-    try {
-        console.log('running tglAddPhoneMod');
-        dispatch({
-            type: TOGGLE_ADD_PHONE,
-            payload: false
+    axios.put(`/api/profile/${profileType}/addPhone/${id}`, formData, config)
+        .then((res) => {
+            console.log(res.body);
+            dispatch({
+                type: ALERT_SUCCESS,
+                payload: {
+                    heading: 'Phone number added',
+                    msg: 'Successfully added phone record'
+                }
+            });
         })
-        dispatch({
-            type: ALERT_SUCCESS,
-            payload: {
-                heading: 'Phone Addition',
-                msg: 'Successfully added a phone record',
-            }
-        });
-    } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: 'Phone addition',
-                msg: 'Could not add record',
-                location: 'addPhoneNumSubmit malfunction'
-            }
+        .catch(err => {
+            dispatch({
+                type: ALERT_FAILURE,
+                payload: {
+                    heading: 'Server error',
+                    msg: 'Could not update record'
+                }
+            });
         });
 
-    }
 }
 
 // update primary phone record

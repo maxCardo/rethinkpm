@@ -49,6 +49,99 @@ router.get('/', async (req, res) => {
     }
 });
 
+//TODO: add general edit route for update profile modal
+
+// @route: PUT /api/profile/agentPros/addPhone/:id;
+// @desc: Add phone number to profile
+// @ access: Public * ToDo: update to make private
+router.put("/addPhone/:id", async (req, res) => {
+    try {
+
+        //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+
+        let buyer = await model.findById(req.params.id)
+        let newPhoneNumbers;
+
+        if (req.body.isPrimary) {
+            newPhoneNumbers = buyer.phoneNumbers && buyer.phoneNumbers.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newPhoneNumbers.push(req.body);
+        } else {
+            newPhoneNumbers = buyer.phoneNumbers && buyer.phoneNumbers
+            newPhoneNumbers.push(req.body);
+        }
+
+        await buyer.set({
+            ...buyer,
+            phoneNumbers: newPhoneNumbers
+        })
+        //var result = await agent.save();
+        res.status(200).send(buyer);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/buyerPros/editPhone/:id;
+// @desc: Update buyerPros phone
+// @ access: Public * ToDo: update to make private
+router.put("/editPhone/:id", async (req, res) => {
+    try {
+
+        if (req.body.phoneNumbers) {
+            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+        }
+        const buyer = await model.findById(req.params.id)
+        await buyer.set({
+            ...buyer,
+            ...req.body
+        })
+        //var result = await buyer.save();
+        res.status(200).send({buyer});
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/buyerPros/editEmail/:id;
+// @desc: Update buyerPros email
+// @ access: Public * ToDo: update to make private
+router.put("/editEmail/:id", async (req, res) => {
+    try {
+        const buyer = await model.findById(req.params.id)
+        await buyer.set({
+            ...buyer,
+            email: req.body.email
+        })
+        //var result = await buyer.save();
+        res.status(200).send(buyer);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/buyerPros/editStatus/:id;
+// @desc: Update buyerPros status
+// @ access: Public * ToDo: update to make private
+router.put("/editStatus/:id", async (req, res) => {
+    try {
+        const buyer = await model.findById(req.params.id)
+        await buyer.set({
+            ...buyer,
+            status: req.body.status
+        })
+
+        //var result = await buyer.save();
+        res.status(200).send(buyer);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
 
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
@@ -164,62 +257,6 @@ router.put("/:id", async (req, res) => {
         var thereq = req.body;
         //var result = await buyer.save();
         res.status(200).json({buyer});
-    } catch (err) {
-        res.status(500).send(err);
-    }
-});
-
-// @route: PUT /api/profile/buyerPros/editPhone/:id;
-// @desc: Update buyerPros phone
-// @ access: Public * ToDo: update to make private
-router.put("/editPhone/:id", async (req, res) => {
-    try {
-
-        if (req.body.phoneNumbers) {
-            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
-        }
-        const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            ...req.body
-        })
-        //var result = await buyer.save();
-        res.status(200).send({buyer});
-    } catch (err) {
-        res.status(500).send(err);
-    }
-});
-
-// @route: PUT /api/profile/buyerPros/editEmail/:id;
-// @desc: Update buyerPros email
-// @ access: Public * ToDo: update to make private
-router.put("/editEmail/:id", async (req, res) => {
-    try {
-        const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            email: req.body.email
-        })
-        //var result = await buyer.save();
-        res.status(200).send(buyer);
-    } catch (err) {
-        res.status(500).send(err);
-    }
-});
-
-// @route: PUT /api/profile/buyerPros/editStatus/:id;
-// @desc: Update buyerPros status
-// @ access: Public * ToDo: update to make private
-router.put("/editStatus/:id", async (req, res) => {
-    try {
-        const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            status: req.body.status
-        })
-
-        //var result = await buyer.save();
-        res.status(200).send(buyer);
     } catch (err) {
         res.status(500).send(err);
     }

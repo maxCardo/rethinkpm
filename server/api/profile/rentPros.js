@@ -107,6 +107,42 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+// @route: PUT /api/profile/rentPros/addPhone/:id;
+// @desc: Add a new phone number to rentPro
+// @ access: Public * ToDo: update to make private
+router.put("/addPhone/:id", async (req, res) => {
+    try {
+         //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+
+        const renter = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(renter.prospect);
+
+        let newPhoneNumbers;
+        if (req.body.isPrimary) {
+            newPhoneNumbers = rentPro.phoneNumbers.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newPhoneNumbers.push(req.body);
+        } else {
+            newPhoneNumbers = rentPro.phoneNumbers
+            newPhoneNumbers.push(req.body);
+        }
+
+        await rentPro.set({
+            ...renter,
+            phoneNumbers: newPhoneNumbers
+        })
+        var thereq = req.body;
+        //var result = await rentPro.save();
+        res.status(200).send(rentPro);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
 // @route: PUT /api/profile/rentPros/editPhone/:id;
 // @desc: Update profile info, should work with any filed in schema
 // @ access: Public * ToDo: update to make private

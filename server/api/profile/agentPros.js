@@ -42,19 +42,40 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-// @route: PUT /api/profile/agentPros/editEmail/:id;
-// @desc: Update profile email
+// @route: PUT /api/profile/agentPros/addPhone/:id;
+// @desc: Add phone number to profile
 // @ access: Public * ToDo: update to make private
-router.put("/editEmail/:id", async (req, res) => {
+router.put("/addPhone/:id", async (req, res) => {
     try {
-        const agent = await Agent.findById(req.params.id)
+
+        //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+
+        let agent = await Agent.findById(req.params.id)
+        let newPhoneNumbers;
+
+        if (req.body.isPrimary) {
+            newPhoneNumbers = agent.phoneNumbers && agent.phoneNumbers.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newPhoneNumbers.push(req.body);
+        } else {
+            newPhoneNumbers = agent.phoneNumbers && agent.phoneNumbers
+            newPhoneNumbers.push(req.body);
+        }
+
+
+
         await agent.set({
             ...agent,
-            email: req.body.email
+            phoneNumbers: newPhoneNumbers
         })
         //var result = await agent.save();
         res.status(200).send(agent);
     } catch (err) {
+        console.error(err)
         res.status(500).send(err);
     }
 });
@@ -77,6 +98,25 @@ router.put("/editPhone/:id", async (req, res) => {
         //var result = await agent.save();
         res.status(200).send(agent);
     } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/agentPros/editEmail/:id;
+// @desc: Update profile email
+// @ access: Public * ToDo: update to make private
+router.put("/editEmail/:id", async (req, res) => {
+    try {
+        const agent = await Agent.findById(req.params.id)
+        await agent.set({
+            ...agent,
+            email: req.body.email
+        })
+        //var result = await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err)
         res.status(500).send(err);
     }
 });
@@ -94,6 +134,7 @@ router.put("/editStatus/:id", async (req, res) => {
         //var result = await agent.save();
         res.status(200).send(agent);
     } catch (err) {
+        console.error(err)
         res.status(500).send(err);
     }
 });
