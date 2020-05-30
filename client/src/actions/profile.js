@@ -218,7 +218,6 @@ export const addPhoneNumSubmit = (formData, id, profileType) => async dispatch =
 
     axios.put(`/api/profile/${profileType}/addPhone/${id}`, formData, config)
         .then((res) => {
-            console.log(res.body);
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {
@@ -243,7 +242,6 @@ export const addPhoneNumSubmit = (formData, id, profileType) => async dispatch =
 export const updatePhone = (formData, id, profileType) => (dispatch) => {
     axios.put(`/api/profile/${profileType}/editPhone/${id}`, formData, config)
         .then((res) => {
-            console.log(res.body);
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {
@@ -267,7 +265,6 @@ export const updatePhone = (formData, id, profileType) => (dispatch) => {
 export const updateStatus = (formData, id, profileType) => (dispatch) => {
     axios.put(`/api/profile/${profileType}/editStatus/${id}`, formData, config)
         .then((res) => {
-            console.log(res.body);
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {
@@ -290,7 +287,6 @@ export const updateStatus = (formData, id, profileType) => (dispatch) => {
 //Toggle view control for show add email modal
 export const tglAddEmailMod = action => async dispatch => {
     try {
-        console.log('running tglAddEmailMod');
         dispatch({
             type: TOGGLE_ADD_EMAIL,
             payload: action

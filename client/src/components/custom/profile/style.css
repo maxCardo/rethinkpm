@@ -688,3 +688,8 @@
 .profile-tables__container .table-with-search__container {
   padding-top: 10px;
 }
+
+/*TODO: find a place for this*/
+.tab-pane .section {
+  padding: 15px 0;
+}
