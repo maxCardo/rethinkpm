@@ -16,7 +16,8 @@ import {
     SET_ACTIVE_PROFILE_CHAT,
     LOAD_MORE_PROFILE_LIST,
     SET_HAS_MORE_DATA,
-    UPDATE_ACTIVE_PROFILE_CHAT
+    UPDATE_ACTIVE_PROFILE_CHAT,
+    START_LOADING_PROFILE_CHAT
 } from '../actions/type';
 
 const initialState = {
@@ -126,6 +127,14 @@ export default function (state = initialState, action) {
                 savedFilters: payload
             }
         
+        case START_LOADING_PROFILE_CHAT:
+            return {
+              ...state,
+              activeChat: {
+                chat: undefined, 
+                loading: true
+            }
+            }
         case UPDATE_ACTIVE_PROFILE_CHAT:
         case SET_ACTIVE_PROFILE_CHAT:
             return{
