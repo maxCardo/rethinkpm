@@ -423,12 +423,10 @@ export const getFilterOptions = (profileType) => async dispatch => {
 //save filter
 export const saveFilter = (data, type, profileType) => async dispatch => {
     try {
-        console.log('save filter called')
         if(type === 'audience') {
           const res = await axios.post(`/api/profile/${profileType}/audiences`, data, config);
         } else {
           const res = await axios.post(`/api/profile/${profileType}/filters`, data, config);
-          console.log(res)
         }
     } catch (err) {
         dispatch({
@@ -450,7 +448,6 @@ export const loadSavedFilter = (id, profileType, filterType) => async dispatch =
         });
         if(filterType === 'audience') {
           const res = await axios.get(`/api/profile/${profileType}/audiences/${id}`)
-          console.log(res.data)
           dispatch({
             type: SET_PROFILE_LIST,
             payload: res.data.record,
@@ -462,9 +459,13 @@ export const loadSavedFilter = (id, profileType, filterType) => async dispatch =
         } else {
           const res = await axios.get(`/api/profile/${profileType}/filters/${id}`)
           dispatch({
-              type: SET_PROFILE_LIST,
-              payload: res.data
-          }); 
+            type: SET_PROFILE_LIST,
+            payload: res.data.record,
+          });
+          dispatch({
+            type: SET_FILTER,
+            payload: res.data.filters,
+          });
         }
 
     } catch (err) {

@@ -56,7 +56,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
         })
         optionsObj.push({
             label: 'Filters',
-            options: savedFilters.map((filter) => ({ value: filter._id, label: filter.name, filter: true, filterType: 'audience' }))
+            options: savedFilters.map((filter) => ({ value: filter._id, label: filter.name, filter: true, filterType: 'filter' }))
         })
         setStatus({...selectStatus, options: optionsObj})  
       }

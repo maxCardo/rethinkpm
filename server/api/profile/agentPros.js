@@ -51,19 +51,7 @@ router.post('/filter/:page?', async (req, res) => {
         })
 
         //create string query 
-        const queryObj = {}
-        filters.map((x) => {
-            if (x.filterType === 'range') {
-                Object.assign(queryObj, {
-                    [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
-                })
-            } else if (x.subField) {
-                Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
-            } else {
-                Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
-            }
-        })
-
+        const queryObj = convertFiltersToQuery(filters)
 
         //query DB
         let record;
@@ -85,6 +73,24 @@ router.post('/filter/:page?', async (req, res) => {
         res.status(400).send('server error')
     }
 });
+
+function convertFiltersToQuery(filters) {
+
+  //create string query 
+  const queryObj = {}
+  filters.map((x) => {
+      if (x.filterType === 'range') {
+          Object.assign(queryObj, {
+              [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
+          })
+      } else if (x.subField) {
+          Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
+      } else {
+          Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
+      }
+  })
+  return queryObj
+}
 
 
 // @route: GET /api/profile/filterOptions/agentPros;
@@ -165,7 +171,6 @@ router.get('/audiences/:id', async (req,res) => {
   const {id} = req.params
   const audience = await AudienceModel.findById(id)
   const agents = await Agent.find({'_id': {$in: audience.audience.map((id) => mongoose.Types.ObjectId(id))}})
-  console.log(agents)
   res.json({record: agents, filters: audience.filters})
 })
 
@@ -185,7 +190,9 @@ router.get('/filters', async (req,res) => {
 router.get('/filters/:id', async (req,res) => {
   const {id} = req.params
   const filter = await FilterModel.findById(id)
-  res.json({filter})
+  const queryObject = convertFiltersToQuery(filter.filters)
+  const agents = await Agent.find(queryObject)
+  res.json({record: agents, filters: filter.filters})
 })
 
 router.post('/filters', async (req,res) => {

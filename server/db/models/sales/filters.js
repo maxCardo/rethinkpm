@@ -5,8 +5,11 @@ const filtersSchema = new mongoose.Schema({
   filters: [
     {
       field: String,
+      subField: String,
       filterType: String,
-      value: mongoose.Schema.Types.Mixed
+      operator: String,
+      value: mongoose.Schema.Types.Mixed,
+      secondValue: mongoose.Schema.Types.Mixed
     }
   ],
   profileType: String,
