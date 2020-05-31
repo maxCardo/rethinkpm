@@ -79,6 +79,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
                 defaultValue="All"
                 options={selectStatus.options}
                 placeholder='Select Status'
+                value={selectStatus.selected}
             />
             <div className="agent-list__search-container">
                 <input
