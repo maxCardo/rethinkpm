@@ -6,9 +6,9 @@ import TableWithSearch from './TableWithSearch'
 
 const NotesScreen = ({profileType, activeProfile:{notes}}) => {
 
-    var all = notes.length ? notes  : []
-    var notes = notes.length ? notes.filter((note) => note.type === 'note' ) : []
-    var logs = notes.length ? notes.filter((note) => note.type === 'log') : []
+    var all = notes && notes.length ? notes  : []
+    var notes = notes && notes.length ? notes.filter((note) => note.type === 'note' ) : []
+    var logs = notes && notes.length ? notes.filter((note) => note.type === 'log') : []
 
     var headers = [
         {
