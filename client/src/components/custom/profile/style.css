@@ -366,20 +366,24 @@
 .profile__left-container {
   transition: width 200ms, margin 200ms;
 }
+
 /*width of 80% and margin left when only left sidebar is open, removed agentProfile class*/
 .left__sidebar-open .profile__left-container {
   width: 80%;
   margin: 0 0 0 20%;
+  transition: width 200ms, margin-left 200ms;
 }
 /*width of 80% and margin right when only left sidebar is open, removed agentProfile class*/
 .chat__sidebar-open .profile__left-container {
   width: 80%;
   margin: 0 20% 0 0;
+  /*transition: width 200ms, margin-right 200ms;*/
 }
 /*width of 60% and margin on both sides when both sidebars are open, removed agentProfile class*/
 .left__sidebar-open.chat__sidebar-open .profile__left-container {
   width: 60%;
-  margin: 0 auto;
+  margin: 0 20% 0 20%;
+  transition: width 200ms, margin 200ms;
 }
 /*padding and bg for infinite scroll container*/
 .sidebar__left .inf-scroll {
