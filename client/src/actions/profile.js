@@ -301,34 +301,30 @@ export const tglAddEmailMod = action => async dispatch => {
     }
 }
 
-//Toggle view control for show add email modal
-//set params active profile _id and new email nun object
-export const addEmailSubmit = () => async dispatch => {
-    //set screen to loading
-    //api call to add email
-    //reset active profile in dom
-    try {
-        dispatch({
-            type: TOGGLE_ADD_EMAIL,
-            payload: false
+//Toggle view control for show add phone modal
+//set params active profile _id and new phone nun object
+export const addEmailSubmit = (formData, id, profileType) => async dispatch => {
+
+    axios.put(`/api/profile/${profileType}/addEmail/${id}`, formData, config)
+        .then((res) => {
+            dispatch({
+                type: ALERT_SUCCESS,
+                payload: {
+                    heading: 'Email Added',
+                    msg: 'Successfully added email address!'
+                }
+            });
         })
-        dispatch({
-            type: ALERT_SUCCESS,
-            payload: {
-                heading: 'Email Added',
-                msg: 'Successfully added email address!'
-            }
-        });
-    } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: 'Email addition',
-                msg: 'Could not add email address!'
-            }
+        .catch(err => {
+            dispatch({
+                type: ALERT_FAILURE,
+                payload: {
+                    heading: 'Email addition',
+                    msg: 'Could not add email address!'
+                }
+            });
         });
 
-    }
 }
 
 // update email

@@ -108,6 +108,40 @@ router.put("/editPhone/:id", async (req, res) => {
     }
 });
 
+// @route: PUT /api/profile/buyerPros/addEmail/:id;
+// @desc: Add email address to profile
+// @ access: Public * ToDo: update to make private
+router.put("/addEmail/:id", async (req, res) => {
+    try {
+        let buyer = await model.findById(req.params.id)
+        let newEmails;
+
+        if (req.body.isPrimary) {
+            newEmails = buyer.email && buyer.email.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newEmails.push(req.body);
+        } else {
+            newEmails = buyer.email && buyer.email
+            newEmails.push(req.body);
+        }
+
+        await buyer.set({
+            ...buyer,
+            email: newEmails
+        })
+        //var result = await buyer.save();
+        res.status(200).send(buyer);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+
 // @route: PUT /api/profile/buyerPros/editEmail/:id;
 // @desc: Update buyerPros email
 // @ access: Public * ToDo: update to make private

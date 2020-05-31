@@ -44,12 +44,12 @@ const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
 
         {/* calls to action */}
         <div className='profile-info__actions-container'>
-          <a className='action-buttons__button' href='#' onClick={() => tglList()}>
+          <button className='action-buttons__button' onClick={() => tglList()}>
             <i className='fas fa-user-tag'></i>
-          </a>
-          <a className='action-buttons__button' href='#' onClick={()=> tglChat()}>
+          </button>
+          <button className='action-buttons__button' onClick={()=> tglChat()}>
             <i className='fas fa-comments'></i>
-          </a>
+          </button>
           <a className='action-buttons__button' href={`tel:${primaryPhone}`}>
             <i className='fas fa-phone'></i>
           </a>

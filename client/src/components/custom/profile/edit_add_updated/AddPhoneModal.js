@@ -27,16 +27,16 @@ const AddPhoneModal = ({profile: {_id, profileType}, addPhoneNumSubmit, tglAddPh
         setFormData({...formData, [e.target.name]: e.target.value})
     }
 
-    const onHide = e => {
-        tglAddPhoneMod(false);
-        setFormData(form);
-        setValid(false);
-    }
-
     const onSubmit = () => {
         formData.okToText = formData.okToText.value;
         tglAddPhoneMod(false);
         addPhoneNumSubmit( formData, _id, theProfileType.current);
+        setFormData(form);
+        setValid(false);
+    }
+
+    const onHide = e => {
+        tglAddPhoneMod(false);
         setFormData(form);
         setValid(false);
     }

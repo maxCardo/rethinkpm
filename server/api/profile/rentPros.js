@@ -114,8 +114,8 @@ router.put("/addPhone/:id", async (req, res) => {
     try {
          //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
 
-        const renter = await model.findById(req.params.id)
-        let rentPro = await prosModel.findById(renter.prospect);
+        const inq = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(inq.prospect);
 
         let newPhoneNumbers;
         if (req.body.isPrimary) {
@@ -132,10 +132,9 @@ router.put("/addPhone/:id", async (req, res) => {
         }
 
         await rentPro.set({
-            ...renter,
+            ...inq,
             phoneNumbers: newPhoneNumbers
         })
-        var thereq = req.body;
         //var result = await rentPro.save();
         res.status(200).send(rentPro);
     } catch (err) {
@@ -162,6 +161,40 @@ router.put("/editPhone/:id", async (req, res) => {
         //var result = await rentPro.save();
         res.status(200).send(rentPro);
     } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/rentPros/addEmail/:id;
+// @desc: Add email address to profile
+// @ access: Public * ToDo: update to make private
+router.put("/addEmail/:id", async (req, res) => {
+    try {
+        let inq = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(inq.prospect);
+        let newEmails;
+
+        if (req.body.isPrimary) {
+            newEmails = rentPro.email && rentPro.email.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newEmails.push(req.body);
+        } else {
+            newEmails = rentPro.email && rentPro.email
+            newEmails.push(req.body);
+        }
+
+        await rentPro.set({
+            ...inq,
+            email: newEmails
+        })
+        //var result = await buyer.save();
+        res.status(200).send(rentPro);
+    } catch (err) {
+        console.error(err)
         res.status(500).send(err);
     }
 });
