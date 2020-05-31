@@ -2,19 +2,21 @@ import React, { Fragment, useState, useEffect, useRef } from 'react'
 import {connect} from 'react-redux'
 import { Modal, Button, Form } from 'react-bootstrap'
 import {tglAddEmailMod, addEmailSubmit} from '../../../../actions/profile'
-import {validateEmail} from "../../../../util/commonFunctions";
+import {checkBoxCheck, validateEmail} from "../../../../util/commonFunctions";
 
 //set action to change showAddPhoneMod as false on redux
 
-const AddEmailModal = ({ profile:{_id},addEmailSubmit, tglAddEmailMod, showMod}) => {
+const AddEmailModal = ({ profile:{_id, profileType},addEmailSubmit, tglAddEmailMod, showMod}) => {
+    const theProfileType = useRef(profileType);
 
     const emailInput = useRef();
 
-    useEffect(() => {
-        if (emailInput.current !== undefined && !valid) emailInput.current.focus()
-    });
+    const trueFalse = [
+        {value: "true", label: 'Yes'},
+        {value: "false", label: 'No'}
+    ]
 
-    let form = { emailAddress: '', makePrimary: '' }
+    let form = { address: '', isPrimary: false }
     const [valid, setValid] = useState(false)
     const [formData, setFormData] = useState(form)
 
@@ -22,16 +24,24 @@ const AddEmailModal = ({ profile:{_id},addEmailSubmit, tglAddEmailMod, showMod})
         setFormData({ ...formData, [e.target.name]: e.target.value })
     };
 
+    const onSubmit = () => {
+        tglAddEmailMod(false);
+        addEmailSubmit( formData, _id, theProfileType.current )
+        setFormData(form)
+    }
+
     const validate = (e) => {
         setValid(validateEmail(e.target.value))
     }
 
-    const checkBoxCheck = (
-        <svg viewBox="0 0 21 21">
-            <path
-                d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
-        </svg>
-    );
+    const checkBox = checkBoxCheck();
+
+    useEffect(() => {
+        if (emailInput.current && !valid) emailInput.current.focus()
+        if (profileType && (theProfileType.current !== profileType)) {
+            theProfileType.current = profileType;
+        }
+    }, [valid, profileType]);
 
 
     return (
@@ -44,18 +54,21 @@ const AddEmailModal = ({ profile:{_id},addEmailSubmit, tglAddEmailMod, showMod})
                     <Form.Group className="addPhoneGroup">
                         <Form.Group>
                             <Form.Label>Address:</Form.Label>
-                            <Form.Control type="text" name='emailAddress'
+                            <Form.Control type="text" name='address'
                                           className={valid ? 'valid' : 'invalid'}
-                                          value={formData.emailAddress}
-                                          onChange={(e) => { validate(e); onChange(e) }}
+                                          value={formData.address}
+                                          onChange={(e) => {
+                                              validate(e);
+                                              onChange(e)
+                                          }}
                                           autoFocus={true}
                                           ref={emailInput}/>
                         </Form.Group>
                         <Form.Group>
                             <div className="element-wrapper with--checkbox">
                                 <label className="checkbox path" checked={true}  >
-                                    <input type="checkbox" name='makePrimary' value='true' onChange={e => onChange(e)}/>
-                                    {checkBoxCheck} &nbsp; MakePrimary
+                                    <input type="checkbox" name='isPrimary' defaultValue={trueFalse[0].value} onChange={e => onChange(e)}/>
+                                    {checkBox} &nbsp; MakePrimary
                                 </label>
                             </div>
                         </Form.Group>
@@ -64,7 +77,7 @@ const AddEmailModal = ({ profile:{_id},addEmailSubmit, tglAddEmailMod, showMod})
                 </Modal.Body>
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" disabled={!valid} variant="secondary"
-                            onClick={() => { tglAddEmailMod(false); addEmailSubmit({_id, formData}); setFormData(form)}}
+                            onClick={onSubmit}
                     >
                         Submit
                     </Button>

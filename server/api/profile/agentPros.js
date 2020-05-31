@@ -28,6 +28,156 @@ router.get('/', async (req, res) => {
     }
 });
 
+// @route: PUT /api/profile/agentPros/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/:id", async (req, res) => {
+    try {
+        const agent = await Agent.findById(req.params.id)
+        await agent.set({
+            ...agent,
+            ...req.body
+        })
+        //var result = await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/agentPros/addPhone/:id;
+// @desc: Add phone number to profile
+// @ access: Public * ToDo: update to make private
+router.put("/addPhone/:id", async (req, res) => {
+    try {
+
+        //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+
+        let agent = await Agent.findById(req.params.id)
+        let newPhoneNumbers;
+
+        if (req.body.isPrimary) {
+            newPhoneNumbers = agent.phoneNumbers && agent.phoneNumbers.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newPhoneNumbers.push(req.body);
+        } else {
+            newPhoneNumbers = agent.phoneNumbers && agent.phoneNumbers
+            newPhoneNumbers.push(req.body);
+        }
+
+
+
+        await agent.set({
+            ...agent,
+            phoneNumbers: newPhoneNumbers
+        })
+        //var result = await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/agentPros/editPhone/:id;
+// @desc: Update profile phone
+// @ access: Public * ToDo: update to make private
+router.put("/editPhone/:id", async (req, res) => {
+    try {
+
+        if (req.body.phoneNumbers) {
+            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+        }
+        let agent = await Agent.findById(req.params.id)
+        await agent.set({
+            ...agent,
+            ...req.body
+        })
+        var thereq = req.body;
+        //var result = await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/agentPros/addEmail/:id;
+// @desc: Add email address to profile
+// @ access: Public * ToDo: update to make private
+router.put("/addEmail/:id", async (req, res) => {
+    try {
+        let agent = await Agent.findById(req.params.id)
+        let newEmails;
+
+        if (req.body.isPrimary) {
+            newEmails = agent.email && agent.email.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newEmails.push(req.body);
+        } else {
+            newEmails = agent.email && agent.email
+            newEmails.push(req.body);
+        }
+
+        await agent.set({
+            ...agent,
+            email: newEmails
+        })
+        //var result = await buyer.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+
+// @route: PUT /api/profile/agentPros/editEmail/:id;
+// @desc: Update profile email
+// @ access: Public * ToDo: update to make private
+router.put("/editEmail/:id", async (req, res) => {
+    try {
+        const agent = await Agent.findById(req.params.id)
+        await agent.set({
+            ...agent,
+            email: req.body.email
+        })
+        //var result = await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/agentPros/editStatus/:id;
+// @desc: Update profile status
+// @ access: Public * ToDo: update to make private
+router.put("/editStatus/:id", async (req, res) => {
+    try {
+        let agent = await Agent.findById(req.params.id)
+        await agent.set({
+            ...agent,
+            status: req.body.status
+        })
+        //var result = await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+
+
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
 // @ access: Public * ToDo: update to make private

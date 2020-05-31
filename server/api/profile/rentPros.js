@@ -72,11 +72,168 @@ router.get('/', async (req, res) => {
     try {
         const inq = await model.findOne().populate('prospect notes.user')
         const clone = { ...inq.prospect._doc, ...inq._doc }
+        const test = {
+            inq,
+            clone
+        }
         delete clone.prospect
         res.status(200).send(clone);
     } catch (error) {
         console.error(error);
         res.status(400).send('server error')
+    }
+});
+
+// @route: PUT /api/profile/rentPros/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/:id", async (req, res) => {
+    try {
+
+        if (req.body.phoneNumbers) {
+            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+        }
+        const renter = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(renter.prospect);
+        await rentPro.set({
+            ...renter,
+            ...req.body
+        })
+        var thereq = req.body;
+        var result = await rentPro.save();
+        res.status(200).json({rentPro});
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/rentPros/addPhone/:id;
+// @desc: Add a new phone number to rentPro
+// @ access: Public * ToDo: update to make private
+router.put("/addPhone/:id", async (req, res) => {
+    try {
+         //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+
+        const inq = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(inq.prospect);
+
+        let newPhoneNumbers;
+        if (req.body.isPrimary) {
+            newPhoneNumbers = rentPro.phoneNumbers.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newPhoneNumbers.push(req.body);
+        } else {
+            newPhoneNumbers = rentPro.phoneNumbers
+            newPhoneNumbers.push(req.body);
+        }
+
+        await rentPro.set({
+            ...inq,
+            phoneNumbers: newPhoneNumbers
+        })
+        //var result = await rentPro.save();
+        res.status(200).send(rentPro);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/rentPros/editPhone/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/editPhone/:id", async (req, res) => {
+    try {
+
+        if (req.body.phoneNumbers) {
+            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
+        }
+        const renter = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(renter.prospect);
+        await rentPro.set({
+            ...rentPro,
+            phoneNumbers: req.body.phoneNumbers
+        })
+        var thereq = req.body;
+        //var result = await rentPro.save();
+        res.status(200).send(rentPro);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/rentPros/addEmail/:id;
+// @desc: Add email address to profile
+// @ access: Public * ToDo: update to make private
+router.put("/addEmail/:id", async (req, res) => {
+    try {
+        let inq = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(inq.prospect);
+        let newEmails;
+
+        if (req.body.isPrimary) {
+            newEmails = rentPro.email && rentPro.email.map((item) => {
+                if (item.isPrimary) {
+                    item.isPrimary = false
+                }
+                return item;
+            });
+            newEmails.push(req.body);
+        } else {
+            newEmails = rentPro.email && rentPro.email
+            newEmails.push(req.body);
+        }
+
+        await rentPro.set({
+            ...inq,
+            email: newEmails
+        })
+        //var result = await buyer.save();
+        res.status(200).send(rentPro);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/rentPros/editEmail/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/editEmail/:id", async (req, res) => {
+    try {
+        const renter = await model.findById(req.params.id)
+        let rentPro = await prosModel.findById(renter.prospect);
+        await rentPro.set({
+            ...rentPro,
+            email: req.body.email
+        })
+        var thereq = req.body;
+        //var result = await rentPro.save();
+        res.status(200).send(rentPro);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: PUT /api/profile/rentPros/editStatus/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.put("/editStatus/:id", async (req, res) => {
+    try {
+
+        const rentLead = await model.findById(req.params.id)
+        await rentLead.set({
+            ...rentLead,
+            status: req.body.status
+        })
+        var thereq = req.body;
+        //var result = await rentPro.save();
+        res.status(200).send(rentLead);
+    } catch (err) {
+        res.status(500).send(err);
     }
 });
 

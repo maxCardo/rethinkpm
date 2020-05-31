@@ -4,6 +4,13 @@
       "agentPros": {
         "profileType": "agentPros",
         "profileNamePlural": "Agents",
+        "statusOptions": [
+          {"value": "new", "label": "Lead"},
+          {"value": "prospect", "label": "Prospect"},
+          {"value": "pending", "label": "Pending"},
+          {"value": "agent", "label": "Agent"},
+          {"value": "notInterested", "label": "Not Interested"}
+        ],
         "statusSelect":{
           "options":[
             {"value": "['prospect','pending','agent']", "label": "Active"},
@@ -112,6 +119,11 @@
       "rentPros": {
         "profileType": "rentPros",
         "profileNamePlural": "Renters",
+        "statusOptions": [
+          {"value": "new", "label": "Renting Lead"},
+          {"value": "prospect", "label": "Renting Prospect"},
+          {"value": "pending", "label": "Renter Pending"}
+        ],
         "statusSelect": {
           "options": [
             {
@@ -274,6 +286,11 @@
       "buyerPros": {
         "profileType": "buyerPros",
         "profileNamePlural": "Buyers",
+        "statusOptions": [
+          {"value": "new", "label": "Buyer Lead"},
+          {"value": "prospect", "label": "Buyer Prospect"},
+          {"value": "pending", "label": "Buyer Pending"}
+        ],
         "statusSelect": {
           "options": [
             {

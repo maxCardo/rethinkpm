@@ -197,12 +197,11 @@ export const loadProfileSales = (profileType, id) => async dispatch => {
 };
 
 //Toggle view control for show add phone modal
-export const tglAddPhoneMod = action => async dispatch => {
+export const tglAddPhoneMod = meh => async dispatch => {
     try {
-        console.log('running tglAddPhoneMod');
         dispatch({
             type: TOGGLE_ADD_PHONE,
-            payload: action
+            payload: meh
         })
 
     } catch (err) {
@@ -216,43 +215,34 @@ export const tglAddPhoneMod = action => async dispatch => {
 
 //Toggle view control for show add phone modal
 //set params active profile _id and new phone nun object
-export const addPhoneNumSubmit = () => async dispatch => {
-    console.log('running add phone submit');
+export const addPhoneNumSubmit = (formData, id, profileType) => async dispatch => {
 
-    //set screen to loading
-    //api call to add number
-    //reset active profile in dom
-    try {
-        console.log('running tglAddPhoneMod');
-        dispatch({
-            type: TOGGLE_ADD_PHONE,
-            payload: false
+    axios.put(`/api/profile/${profileType}/addPhone/${id}`, formData, config)
+        .then((res) => {
+            dispatch({
+                type: ALERT_SUCCESS,
+                payload: {
+                    heading: 'Phone number added',
+                    msg: 'Successfully added phone record'
+                }
+            });
         })
-        dispatch({
-            type: ALERT_SUCCESS,
-            payload: {
-                heading: 'Phone Addition',
-                msg: 'Successfully added a phone record',
-            }
-        });
-    } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: 'Phone addition',
-                msg: 'Could not add record',
-                location: 'addPhoneNumSubmit malfunction'
-            }
+        .catch(err => {
+            dispatch({
+                type: ALERT_FAILURE,
+                payload: {
+                    heading: 'Server error',
+                    msg: 'Could not update record'
+                }
+            });
         });
 
-    }
 }
 
 // update primary phone record
-export const updatePhone = (formData, id) => (dispatch) => {
-    axios.put(`/api/profile/agent/${id}`, formData, config)
+export const updatePhone = (formData, id, profileType) => (dispatch) => {
+    axios.put(`/api/profile/${profileType}/editPhone/${id}`, formData, config)
         .then((res) => {
-            console.log(res.body);
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {
@@ -273,10 +263,9 @@ export const updatePhone = (formData, id) => (dispatch) => {
 };
 
 // update agent status
-export const updateStatus = (formData, id) => (dispatch) => {
-    axios.put(`/api/profile/agent/${id}`, formData, config)
+export const updateStatus = (formData, id, profileType) => (dispatch) => {
+    axios.put(`/api/profile/${profileType}/editStatus/${id}`, formData, config)
         .then((res) => {
-            console.log(res.body);
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {
@@ -299,7 +288,6 @@ export const updateStatus = (formData, id) => (dispatch) => {
 //Toggle view control for show add email modal
 export const tglAddEmailMod = action => async dispatch => {
     try {
-        console.log('running tglAddEmailMod');
         dispatch({
             type: TOGGLE_ADD_EMAIL,
             payload: action
@@ -314,43 +302,37 @@ export const tglAddEmailMod = action => async dispatch => {
     }
 }
 
-//Toggle view control for show add email modal
-//set params active profile _id and new email nun object
-export const addEmailSubmit = () => async dispatch => {
-    console.log('running add email submit');
+//Toggle view control for show add phone modal
+//set params active profile _id and new phone nun object
+export const addEmailSubmit = (formData, id, profileType) => async dispatch => {
 
-    //set screen to loading
-    //api call to add email
-    //reset active profile in dom
-    try {
-        dispatch({
-            type: TOGGLE_ADD_EMAIL,
-            payload: false
+    axios.put(`/api/profile/${profileType}/addEmail/${id}`, formData, config)
+        .then((res) => {
+            dispatch({
+                type: ALERT_SUCCESS,
+                payload: {
+                    heading: 'Email Added',
+                    msg: 'Successfully added email address!'
+                }
+            });
         })
-        dispatch({
-            type: ALERT_SUCCESS,
-            payload: {
-                heading: 'Email Added',
-                msg: 'Successfully added email address!'
-            }
-        });
-    } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: 'Email addition',
-                msg: 'Could not add email address!'
-            }
+        .catch(err => {
+            dispatch({
+                type: ALERT_FAILURE,
+                payload: {
+                    heading: 'Email addition',
+                    msg: 'Could not add email address!'
+                }
+            });
         });
 
-    }
 }
 
 // update email
-export const updateEmail = (formData, id) => (dispatch) => {
-    axios.put(`/api/profile/agent/${id}`, formData, config)
+export const updateEmail = (formData, id, profileType) => (dispatch) => {
+    axios.put(`/api/profile/${profileType}/editEmail/${id}`, formData, config)
         .then((res) => {
-            console.log(res.body);
+
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {

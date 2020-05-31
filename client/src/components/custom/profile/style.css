@@ -75,6 +75,9 @@
 .profile-info__data-container .column:not(:only-child) {
   max-width: 33.3333%;
 }
+.profile-info__data-container .column:first-child {
+  min-width: 386px;
+}
 /*Headers in the columns*/
 .profile-info__data-container .column h2 {
  font-size: 1.65em;
@@ -89,7 +92,6 @@
   flex-grow: 1;
 }
 /*rows in gray boxes, some are <p> and some are <div> because div in p is invalid - all have same styling*/
-.profile-info__data-container .column-content p,
 .profile-info__data-container .column-content > div {
   display: flex;
   /*centers content vertically*/
@@ -364,20 +366,24 @@
 .profile__left-container {
   transition: width 200ms, margin 200ms;
 }
+
 /*width of 80% and margin left when only left sidebar is open, removed agentProfile class*/
 .left__sidebar-open .profile__left-container {
   width: 80%;
   margin: 0 0 0 20%;
+  transition: width 200ms, margin-left 200ms;
 }
 /*width of 80% and margin right when only left sidebar is open, removed agentProfile class*/
 .chat__sidebar-open .profile__left-container {
   width: 80%;
   margin: 0 20% 0 0;
+  /*transition: width 200ms, margin-right 200ms;*/
 }
 /*width of 60% and margin on both sides when both sidebars are open, removed agentProfile class*/
 .left__sidebar-open.chat__sidebar-open .profile__left-container {
   width: 60%;
-  margin: 0 auto;
+  margin: 0 20% 0 20%;
+  transition: width 200ms, margin 200ms;
 }
 /*padding and bg for infinite scroll container*/
 .sidebar__left .inf-scroll {
@@ -643,23 +649,53 @@
 }
 
 /*Profile subnav*/
-.profile__tabs.nav {
+.profile__tabs.nav, .profile__main-container .bottom-navigation__tabs  {
   background:#2684ff;
   border: none;
 }
 .profile__tabs,
-.profile__tabs a.nav-item.nav-link {
+.profile__tabs a.nav-item.nav-link,
+.profile__main-container .bottom-navigation__tabs,
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
   color: #fff;
   border-radius: 0;
   font-size: .75em;
 }
-.profile__tabs a.nav-item.nav-link.active {
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
+  font-size: 1.15em;
+}
+.profile__tabs a.nav-item.nav-link.active,
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab.active {
   background-color: #7bafed;
   color: #fff;
   border-radius: 0;
+  border-color: #fff;
 }
 #profile__tabs-tab-table {
   margin-left: auto;
+}
+/*Profile sub sub nav :)*/
+.profile__logs-container .bottom-navigation__container {
+  display: flex;
+  flex-direction: column;
+}
+.profile__logs-container .bottom-navigation__container .bottom-navigation__screen {
+  order: 2;
+}
+.profile-tables__container, .bottom-navigation__screen, .bottom-navigation__container {
+  border: none;
+  box-shadow: unset;
+}
+.profile-tables__container .table-with-search__table > div {
+  max-height: 30vh;
+}
+.profile-tables__container .table-with-search__container {
+  padding-top: 10px;
+}
+
+/*TODO: find a place for this*/
+.tab-pane .section {
+  padding: 15px 0;
 }
 
 .profile__tabs + .tab-content {

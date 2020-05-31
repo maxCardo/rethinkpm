@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React , {Fragment, useState} from 'react'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap';

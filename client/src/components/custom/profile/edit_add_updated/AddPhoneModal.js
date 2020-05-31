@@ -4,48 +4,64 @@ import {Modal, Button, Form} from 'react-bootstrap'
 import Select from "react-select";
 
 import {tglAddPhoneMod, addPhoneNumSubmit} from '../../../../actions/profile'
+import {checkBoxCheck} from "../../../../util/commonFunctions";
 
 
 //set action to change showAddPhoneMod as false on redux
 
-const AddPhoneModal = ({profile: {_id}, addPhoneNumSubmit, tglAddPhoneMod, showMod}) => {
+const AddPhoneModal = ({profile: {_id, profileType}, addPhoneNumSubmit, tglAddPhoneMod, showMod}) => {
 
+    const theProfileType = useRef(profileType);
     const phoneInput = useRef();
 
-    let form = {number: '', okToText: '', makePrimary: ''}
+    const trueFalse = [
+        {value: "true", label: 'Yes'},
+        {value: "false", label: 'No'}
+    ]
+
+    let form = {number: '', okToText: trueFalse[0], isPrimary: false}
     const [valid, setValid] = useState(false)
     const [formData, setFormData] = useState(form)
 
     const onChange = e => {
         setFormData({...formData, [e.target.name]: e.target.value})
-    };
+    }
+
+    const onSubmit = () => {
+        formData.okToText = formData.okToText.value;
+        tglAddPhoneMod(false);
+        addPhoneNumSubmit( formData, _id, theProfileType.current);
+        setFormData(form);
+        setValid(false);
+    }
+
+    const onHide = e => {
+        tglAddPhoneMod(false);
+        setFormData(form);
+        setValid(false);
+    }
 
     const validate = (e) => {
         var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         setValid(!!e.target.value.match(validPhone))
 
     }
-    const trueFalse = [
-        {value: true, label: 'Yes'},
-        {value: false, label: 'No'}
-    ];
 
-    const checkBoxCheck = (
-        <svg viewBox="0 0 21 21">
-            <path
-                d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
-        </svg>
-    );
+
+    let checkBox = checkBoxCheck();
 
     useEffect(() => {
         if (phoneInput.current && !valid){
             phoneInput.current.focus()
         }
-    });
+        if (profileType && (theProfileType.current !== profileType)) {
+            theProfileType.current = profileType;
+        }
+    }, [valid, profileType]);
 
     return (
         <Fragment>
-            <Modal size='xl' show={showMod} onHide={() => tglAddPhoneMod(false)}>
+            <Modal size='xl' show={showMod} onHide={onHide}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add a phone number</Modal.Title>
                 </Modal.Header>
@@ -74,8 +90,8 @@ const AddPhoneModal = ({profile: {_id}, addPhoneNumSubmit, tglAddPhoneMod, showM
                         <Form.Group>
                             <div className="element-wrapper with--checkbox">
                                 <label className="checkbox path" checked={true}>
-                                    <input type="checkbox" name='makePrimary' value='true' onChange={e => onChange(e)}/>
-                                    {checkBoxCheck} &nbsp; MakePrimary
+                                    <input type="checkbox" name='isPrimary' defaultValue={trueFalse[0].value} onChange={e => onChange(e)}/>
+                                    {checkBox} &nbsp; Make Primary
                                 </label>
                             </div>
                         </Form.Group>
@@ -84,19 +100,11 @@ const AddPhoneModal = ({profile: {_id}, addPhoneNumSubmit, tglAddPhoneMod, showM
                 </Modal.Body>
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" disabled={!valid} variant="secondary"
-                            onClick={() => {
-                                tglAddPhoneMod(false);
-                                addPhoneNumSubmit({_id, formData});
-                                setFormData(form);
-                            }}
-                    >
+                            onClick={onSubmit}>
                         Submit
                     </Button>
                     <Button className="btn btn-danger" variant="secondary"
-                            onClick={() => {
-                                tglAddPhoneMod(false);
-                                setFormData(form);
-                            }}
+                            onClick={onHide}
                     >
                         Cancel
                     </Button>

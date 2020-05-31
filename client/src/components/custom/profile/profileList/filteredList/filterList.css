@@ -81,6 +81,10 @@
 }
 
 /*TODO: NEEDS REVIEW*/
+/*Some weird bug fixed in addphonemodal*/
+.modal input[type="text"] {
+  margin: 2px;
+}
 .agent-list__filter-icon,
 .agent-list__filtering-options-container button {
    background: #fff;
@@ -107,6 +111,7 @@
 .modal input[type="text"]:focus,
 .modal input[type="text"]:active {
   border: 2px solid #007bff;
+  margin-right: 0;
 }
 .numberField__group .col-1 {
   display: flex;

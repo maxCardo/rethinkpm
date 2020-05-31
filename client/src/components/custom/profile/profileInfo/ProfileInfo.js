@@ -36,7 +36,7 @@ const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
             <div className='column' key={index}>
               <div className='column-content'>
                 <h2>{colHeader[col]}</h2>
-                {columns[col].map((field, index) => <InfoField key={index} passIndex={index} field={field} data={profile} />)}
+                {columns[col].map((field, index) => <InfoField key={index} passIndex={index} field={field} data={profile} settings={profileInfo} />)}
                 </div>
             </div>
           ))}
@@ -44,12 +44,12 @@ const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
 
         {/* calls to action */}
         <div className='profile-info__actions-container'>
-          <a className='action-buttons__button' href='#' onClick={() => tglList()}>
+          <button className='action-buttons__button' onClick={() => tglList()}>
             <i className='fas fa-user-tag'></i>
-          </a>
-          <a className='action-buttons__button' href='#' onClick={()=> tglChat()}>
+          </button>
+          <button className='action-buttons__button' onClick={()=> tglChat()}>
             <i className='fas fa-comments'></i>
-          </a>
+          </button>
           <a className='action-buttons__button' href={`tel:${primaryPhone}`}>
             <i className='fas fa-phone'></i>
           </a>

@@ -757,9 +757,6 @@ table th {
   padding: 5px;
   vertical-align: middle;
 }
-.tab-content {
-  padding: 10px 0;
-}
 .agentsSearchContainer {
   justify-content: space-between !important;
 }
