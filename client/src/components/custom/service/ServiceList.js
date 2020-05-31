@@ -10,8 +10,9 @@ export class ServiceList extends Component {
     super(props)
     this.headers = [
       {
-        accessor: 'type',
+        accessor: 'parent',
         label: 'Type',
+        mapper: (data) => data ? 'Task' : 'Service'
       },
       {
         accessor: 'opened',
