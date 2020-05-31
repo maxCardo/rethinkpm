@@ -5,7 +5,7 @@ import Pill from './Pills'
 import InfList from './InfList'
 import './filterList.css'
 
-const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, hasMore}) => {
+const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, hasMore, settings}) => {
 
 
     const [showPills, setShowPills] = useState(true)
@@ -42,7 +42,7 @@ const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, h
                 }
             </div>
             {/* End Pills  Start Inf List*/}
-            <InfList data={searchData} loadNextPage={loadNextPage} loadingMore={loadingMore} hasMore={hasMore} />
+            <InfList data={searchData} loadNextPage={loadNextPage} loadingMore={loadingMore} hasMore={hasMore} settings={settings} />
         </Fragment>
     )
 }
