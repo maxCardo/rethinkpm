@@ -661,3 +661,7 @@
 #profile__tabs-tab-table {
   margin-left: auto;
 }
+
+.profile__tabs + .tab-content {
+  padding: 0
+}
