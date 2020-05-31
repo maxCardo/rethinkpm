@@ -71,31 +71,7 @@ router.get('/agents', async (req,res) => {
   res.json(agents)
 })
 
-router.get('/audiences', async (req,res) => {
-  const audiences = await AudienceModel.find({})
-  res.json(audiences)
-})
 
-router.post('/audiences', async (req,res) => {
-  const {name, filters, leads} = req.body
-  const audience = new AudienceModel({name, filters, leads});
-  await audience.save()
-  console.log('Audience saved')
-  res.json({result: 'ok'})
-})
-
-router.get('/filters', async (req,res) => {
-  const filters = await FilterModel.find({})
-  res.json(filters)
-})
-
-router.post('/filters', async (req,res) => {
-  const {name, filters} = req.body
-  const filter = new FilterModel({name, filters});
-  await filter.save()
-  console.log('Filter saved')
-  res.json({result: 'ok'})
-})
 
 router.get('/offices', async(req,res) => {
   const offices = await OfficeModel.find({})

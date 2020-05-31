@@ -48,8 +48,26 @@
   right: 0;
   left: 66.6666666%;
 }
-.agent__stats li div {
-  min-width: 25%;
+.agent__stats li > div,
+.left__sidebar-open.chat__sidebar-open .agent__stats li > div.listPrice:nth-last-child(2) {
+  min-width: 50%;
+  border-bottom: 1px solid lightgray;
+}
+.agent__stats li > div:nth-child(2n) {
+  text-align: right;
+}
+.agent__stats li > div.listPrice {
+  border-bottom: none;
+}
+.left__sidebar-open.chat__sidebar-open .agent__stats li > div {
+  width: 100%;
+}
+.left__sidebar-open.chat__sidebar-open .agent__stats li > div:nth-child(2n) {
+  text-align: left;
+
+}
+.left__sidebar-open.chat__sidebar-open .agent__stats li > div:last-child {
+  border-bottom: none;
 }
 .agent__stats ul {
   padding-top: 20px;

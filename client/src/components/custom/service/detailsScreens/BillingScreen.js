@@ -8,7 +8,7 @@ export class BillingScreen extends Component {
     super(props)
     this.data = [
       {
-        date: new Date,
+        date: new Date(),
         type: 'charge',
         account: 'services',
         no: '',
@@ -17,7 +17,7 @@ export class BillingScreen extends Component {
         balance: '$100'
       },
       {
-        date: new Date,
+        date: new Date(),
         type: 'payment',
         account: 'services',
         no: '',
@@ -26,7 +26,7 @@ export class BillingScreen extends Component {
         balance: '$600'
       },
       {
-        date: new Date,
+        date: new Date(),
         type: 'charge',
         account: 'services',
         no: '',
@@ -72,7 +72,7 @@ export class BillingScreen extends Component {
         render: (row) =>
         <div>
           <div>
-            <Link className='service__action-button'>
+            <Link className='service__action-button' to='#'>
               <i class="fas fa-ellipsis-h"></i>
             </Link>
           </div>
@@ -94,7 +94,7 @@ export class BillingScreen extends Component {
     )
   }
   increaseDecreaseMapper(data) {
-    return data && data != 'undefined' ? data : '-'
+    return data && data !== 'undefined' ? data : '-'
   }
 }
 

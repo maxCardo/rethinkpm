@@ -3,16 +3,19 @@
   display: flex;
 }
 
+/*Main container setup when sidebars are closed*/
 .profile__left-container {
   height: 100%;
   width: 100%;
   border-right: 1px solid #EEE;
+  /*column layout for block level elements*/
   display: flex;
   flex-direction: column;
-
 }
 
+/*Element containing ProfileInfo component*/
 .profile__info-container {
+  /*Height and width set to 100% in order to grow and shrink with resizing with the */
   height: 100%;
   width: 100%;
   overflow: auto;
@@ -20,13 +23,16 @@
 }
 
 .profile__logs-container {
+  /*Dragable line, needed when shadow is removed */
   border-top: 1px solid #EEE;
   height: 100%;
+  /*Probably? redundant*/
   min-height: 1px;
   align-items: center;
   justify-content: center;
 }
 
+/*Container for the chat component, initial positioning when isClosed*/
 .profile__chat-container {
   height: 100%;
   width: 20%;
@@ -34,47 +40,73 @@
   right: -20%;
 }
 
+/*main container in ProfileInfo component*/
 .profile-info__main-container {
+  /*children in row*/
   display: flex;
   flex-direction: row;
-  padding: 20px;
+  /*padding 10 top, 20 sides, 40 bottom to allow space for buttons */
+  padding: 10px 20px 40px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background-color: #FFF;
+  margin:  0;
+  width: 100%;
 }
 
+/*container for columns with data*/
 .profile-info__data-container {
   display: flex;
+  /*share available width*/
   justify-content: space-evenly;
   flex-direction: row;
+  /*span available width*/
   width: 100%;
   margin-left: 15px;
 }
+
+/*boxes with data*/
 .profile-info__data-container .column {
+  /*span full available width*/
    flex-grow: 1;
    display: flex;
    padding: 10px;
  }
+/*sets width for the columns, but doesn't apply if only one column (inquiry profile)*/
 .profile-info__data-container .column:not(:only-child) {
   max-width: 33.3333%;
 }
+.profile-info__data-container .column:first-child {
+  min-width: 386px;
+}
+/*Headers in the columns*/
 .profile-info__data-container .column h2 {
  font-size: 1.65em;
 }
+/*styling for the gray boxes*/
 .profile-info__data-container .column-content {
   background: #f7f7f7;
   padding: 20px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.22);
   overflow: auto;
+  /*span full container width*/
   flex-grow: 1;
 }
-.profile-info__data-container .column-content p,
+/*rows in gray boxes, some are <p> and some are <div> because div in p is invalid - all have same styling*/
 .profile-info__data-container .column-content > div {
   display: flex;
+  /*centers content vertically*/
   align-items: baseline;
+  /*alows to span multiple lines*/
   word-wrap: normal;
 }
+/*STYLING FOR THE react-select SELECT*/
+/*it was colapsing in width, i made it grow then limmited max width*/
 .agentStatusEdit {
   flex-grow: 1;
   max-width: 200px;
 }
+/*Complex css selectors to style inner structure of react-select, done mostly in dev-tools then pasted here*/
+/*> - direct child, + direct sibling, :first-child - first element inside, */
 .agentStatusEdit > div:first-child,
 .agentStatusEdit > span:first-child + div:nth-child(2) {
   min-height: 26px;
@@ -86,31 +118,40 @@
   min-height: 26px;
   font-size: 14px;
 }
+/*limiting line-height in input, vertical reposition to make it symmetrical*/
 .agentStatusEdit input {
   line-height: 14px;
   top: -2px;
   position: relative;
 }
+/*dropdown content in react-select, smaller font, smaller padding*/
 .agentStatusEdit .css-4ljt47-MenuList div {
   padding: 2px 10px;
   font-size: 12px;
 }
+/*no idea what it is, probably the search input i disabled later*/
 .agentStatusEdit .css-b8ldur-Input {
   padding-top: 1px;
   line-height: 12px;
 }
+/*making disabled state look like it's not an input*/
 .agentStatusEdit.editable-false > div {
   border: none;
   background: #f7f7f7;
 }
+/*selected option in dropdown*/
 .css-9gakcf-option {
   background-color: #6f9dd4 !important;
 }
+/*END OF STYLING FOR THE react-select SELECT*/
+
+/*Container for the Logs, Notes, Requests area*/
 .profile-tables__container {
   padding: 20px;
+  /*probably? redundant*/
   height: 100%;
 }
-
+/*Table styling in logs notes requests*/
 .profile-tables__table-container {
   padding-top: 10px;
   height: 100%;
@@ -149,9 +190,11 @@
 .tab-pane.active {
   height: 90%;
 }
+/*END OF Table styling in logs notes requests */
 
 /* Bozidar CSS */
 
+/*FROM OLD profile layout, totally redundant*/
 .agentProfilePage > div:first-child {
   width:  100% !important;
   position: relative;
@@ -162,19 +205,16 @@
 .agentProfilePage > div > div:first-child {
   width: 100% !important;
 }
+/*FROM OLD profile layout, totally redundant*/
+
 .profile-info__icon-container {
   display: flex;
 }
+/*centering blue circle*/
 .profile-icon__container {
   align-self: center;
 }
-.profile-info__main-container {
-  padding: 10px 20px 40px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  background-color: #FFF;
-  margin:  0;
-  width: 100%;
-}
+/*rows in gray boxes, some are <p> and some are <div> because div in p is invalid - all have same styling*/
 .profile-info__data-container p,
 .profile-info__data-container .column-content > div {
   margin: 0;
@@ -183,206 +223,180 @@
   font-size: 14px;
   width: 100%;
 }
+/*remove border in the last row*/
 .profile-info__data-container p:last-child,
 .profile-info__data-container .column-content > div:last-child:not(:only-child) {
+  display: flex;
+  flex-wrap: wrap;
   border-bottom: none;
   padding: 0;
 }
+/*Initial width for profile__left-container when sidebars closed*/
 .agentProfile .profile__left-container {
   width: 100%;
 }
+/*probably redundant css*/
 .agentProfile h4 {
   padding: 40px 0 0 0;
   text-align: center;
 }
-
+/*Container for sales boxes*/
 .agentProfile .agent__stats-container {
   display: flex;
+  /*span all available height i think because of the resizable element we have*/
   height: 100%;
+  /*positioned relative so that the absolute positioned headers are always visible*/
   position: relative;
   margin: 0 15px;
   width: auto;
 }
+/*redundant, written before the third column came in play*/
 .agent__stats-container > div {
   width: 50%;
 }
+/*spliting layout to 3 columns for type of sale*/
 .agent__stats {
   width: 33.3333333%;
   overflow: auto;
   background: #f7f7f7;
+  /*bigger padding on top to make up for absolute positioned headers*/
   padding: 20px 10px 15px 10px;
 }
+/*boxes filled with sales data*/
 .agent__stats li {
   display: flex;
   flex-direction: row;
+  /*allows multiline rows*/
   flex-wrap: wrap;
   background: white;
   padding: 15px;
   margin: 15px 0;
+  /*2 part box shadow small darker , large lighter*/
   box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
   justify-content: space-between;
 }
+/*clear margin on first sales box*/
 .agent__stats li:first-child {
   margin-top: 0;
 }
+/*clear margin on last sales box*/
 .agent__stats li:last-child {
   margin-bottom: 0;
 }
+/*sales column header and styles*/
 .agent__stats h6 {
   padding: 5px;
   background: #fff;
   text-align: center;
+  /*position absolute in relative container and let and top 0 so it always shows on top of content*/
   position: absolute;
   left: 0;
   top: 0;
   box-shadow: 0 1px 1px rgba(0,0,0,.25);
 }
+/*width of first header*/
 .agent__stats.agent__stats-sold h6 {
   width: 33.3333333%;
 }
+/*width of middle header and offset from both sides*/
 .agent__stats.agent__stats-bought h6 {
   width: 33.3333333%;
   right: 33.3333333%;
   left: 33.3333333%;
 }
+/*width of right header and offset from left*/
 .agent__stats.agent__stats-multi h6 {
   width: 33.3333333%;
   right: 0;
   left: 66.6666666%;
 }
+/*max 4 elements in line*/
 .agent__stats li div {
   min-width: 25%;
 }
+/*sales boxes container*/
 .agent__stats ul {
   padding-top: 20px;
   margin-bottom: 0;
 }
-.agent__notes {
-  background: green;
-}
-.service-detail__service-container.agentProfilePage {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-.agentProfilePage .service-detail__action-bar {
-  width: 100%;
-}
 
+/*ProfileChat container element, position absolutely in relative container, offset ro right for it's full width outside of the screen*/
 .chat__sidebar {
   position: absolute;
   width: 20%;
   right: -20%;
+  /*height set to 100% - the height of the header*/
   height: calc(100% - 64px);
+  /*taken above the middle content so the shadow shows*/
   z-index: 2;
   background: white;
+  /*transition right property to slide and not pop in place*/
   transition: right 250ms;
+  /*box shadow with negative values so it shows on the left side of it*/
   box-shadow: -2px -2px 5px rgba(0,0,0,.217);
 }
+/*class chat__sidebar-open added to container element to show the chat__sidebar content */
 .chat__sidebar-open .chat__sidebar {
   right: 0;
 }
+/*AgentList container element, position absolutely in relative container, offset ro left for it's full width outside of the screen*/
 .profile__agent-leads {
   position: absolute;
   width: 20%;
   left: -20%;
+  /*height set to 100% - the height of the header*/
   height: calc(100% - 64px);
+  /*taken above the middle content so the shadow shows*/
   z-index: 2;
   background: white;
   transition: left 200ms;
+  /*box shadow with positive x and y values so it shows on the right side of it*/
   box-shadow: 2px 2px 5px rgba(0,0,0,.217);
   display: flex;
+  /*same as flex-direction but broader browser implementation*/
   flex-flow: column;
 }
+/*class left__sidebar-open added to container element to show the profile__agent-leads content */
 .left__sidebar-open .profile__agent-leads {
   left: 0;
 }
-.agentProfile .profile__left-container {
+/*deleted containing class in order to make it apply to inquiry component too*/
+/*set transitions to properties that mutate with the added classes to slide and not pop in place*/
+/*BOZIDAR TODO: fix margin transition when you have idea how*/
+.profile__left-container {
   transition: width 200ms, margin 200ms;
 }
-.left__sidebar-open.agentProfile .profile__left-container {
+
+/*width of 80% and margin left when only left sidebar is open, removed agentProfile class*/
+.left__sidebar-open .profile__left-container {
   width: 80%;
   margin: 0 0 0 20%;
+  transition: width 200ms, margin-left 200ms;
 }
-.chat__sidebar-open.agentProfile .profile__left-container {
+/*width of 80% and margin right when only left sidebar is open, removed agentProfile class*/
+.chat__sidebar-open .profile__left-container {
   width: 80%;
   margin: 0 20% 0 0;
+  /*transition: width 200ms, margin-right 200ms;*/
 }
-.left__sidebar-open.agentProfile.chat__sidebar-open .profile__left-container {
+/*width of 60% and margin on both sides when both sidebars are open, removed agentProfile class*/
+.left__sidebar-open.chat__sidebar-open .profile__left-container {
   width: 60%;
-  margin: 0 auto;
+  margin: 0 20% 0 20%;
+  transition: width 200ms, margin 200ms;
 }
-.agentProfilePage .bottom-navigation__screen {
-  background-color: #f7f7f7;
-  height:82%;
-}
-.agentProfilePage .bottom-navigation__tabs {
-  height: 8%;
-}
-.agentProfilePage .profile-tables__container {
-  height: 70%;
-  width: 100%;
-  align-self: flex-start;
-}
-.agentProfilePage .profile-info__data-container {
-  width: calc(100% - 186px);
-  align-items: center;
-  flex-wrap: wrap;
-}
-.agentProfilePage .profile-info__data-container p {
-  margin-bottom: 0;
-}
-.agentProfilePage .profile-info__main-container {
-  margin: 0;
-  width: 100%;
-  border-radius: 0;
-  flex-wrap: wrap;
-  padding: 20px;
-  align-items: flex-start;
-}
-.agentProfilePage .agentInfo {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 100%;
-  margin-bottom: 15px;
-}
-.agentProfilePage .agentInfo p {
-  margin-right: 15px;
-}
-.agentProfilePage h5 {
-  width: 100%;
-  font-size: 20px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 10px;
-}
-.agentProfilePage h6 {
-  width: 100%;
-  font-size: 16px;
-  font-weight: 600;
-  text-align:center;
-}
-.agentProfilePage .agentPerformance {
-  width: 65%;
-  align-self: flex-start;
-}
-.agentProfilePage .agentContact {
-  width: 30%;
-  align-self: flex-start;
-}
-
+/*padding and bg for infinite scroll container*/
 .sidebar__left .inf-scroll {
   background: #f7f7f7;
   border-radius: 0;
-  padding: 10px 15px;
+  padding: 10px 10px;
   display: flex;
   flex-flow: column;
   flex: 1 1 auto;
   overflow: auto;
   background: #f7f7f7;
 }
-
+/*Scroling agent list inf-scroll container*/
 .sidebar__left .infinite-scroll-component__outerdiv{
   display: flex;
   flex-flow: column;
@@ -390,102 +404,76 @@
   overflow: auto;
   background: #f7f7f7;
 }
-.sidebar__left a {
+/*styling for the agent box elements in the AgentList*/
+.sidebar__left div.list__picker {
   background: #fff;
   display: flex;
+  /*allows 2 lines of items*/
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 10px;
   box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
   padding: 5px;
 }
-.sidebar__left a div {
+/*rows inside the agent boxes*/
+.sidebar__left .list__picker div {
   width: 100%;
   display: flex;
+  color: #2684ff;
+  cursor: pointer;
 }
+/*rTop row of agentList box*/
 .sidebar__left .list__picker-header {
   text-align: center;
   display: flex;
+  /*makes the 2 eleements on oposites sides of box*/
   justify-content: space-between;
 }
+/*Bottom row of agentList box*/
 .sidebar__left .list__picker-body {
+  /*makes the 2 eleements on oposites sides of box*/
   justify-content: space-between;
   font-size: 12px;
   margin-top: 5px;
 }
+/*Icon buttons container in ProfileInfo*/
 .profile-info__actions-container {
   width: 100%;
   display: flex;
+  /*aligns all elements on the left of the element*/
   justify-content: flex-start;
+  /*positions element in bottom of relative parent, so they move with Resizable*/
   position: absolute;
   bottom: 10px;
 }
+/*Icon button styling*/
 .action-buttons__button {
   background: #fff;
   color: #6f9dd4;
   width: 30px;
   height: 30px;
+  /*Icon button transition for hover and focus mutations*/
   transition: color 225ms, box-shadow 225ms;
 }
+/*box shadow on hover and focus*/
 .action-buttons__button:hover,
 .action-buttons__button:focus {
   box-shadow: 1px 1px 8px rgba(0,0,0,.227);
 }
-
+/*buttons farther from eachother*/
 .profile-info__actions-container .action-buttons__button {
   margin-right: 15px;
 
 }
+/*first button closer to edge of container*/
 .action-buttons__button:first-child {
   margin-left: 0;
 }
-
-.agentProfilePage .tab-content {
-  background: #fff;
-}
-
-.ut__flex-row-wrap-between {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.agent__neighborhoods,
-.agent__zipcode {
-  margin-right: 10px;
-  padding: 3px 6px;
-  background:#dee2e6;
-  color: #343a40;
-  box-shadow: 0 0 5px rgba(0,0,0,.175);
-  font-size: 12px;
-  white-space: nowrap;
-}
-.agent__neighborhoods {
-  margin-bottom: 10px;
-}
-.agentInfo.agentPerformance h6 {
-  font-size: 18px;
-}
-.agentInfo.agentPerformance > p {
-  width: 100%;
-  text-align: center;
-  font-size: 16px;
-}
-.agentInfo.agentPerformance div.flex-row-wrap {
-  width: 100%;
-  display: flex;
-  font-size: 14px;
-  margin-bottom: 0;
-  justify-content: space-between;
-}
-.agentInfo .salesInfo {
-  margin-bottom: 10px;
-}
-.agentProfilePage .profile__info-container {
-  background: #fff;
-}
+/*AgentList react-select*/
 .agentStatusFilter {
   margin: 10px;
 }
+/*padding for search input AgentList*/
 .list__search-container {
   padding: 0 10px 10px 10px;
 }
@@ -493,15 +481,19 @@
   width: 100%;
   margin: 0;
 }
+/*remove radius from tabs in the bottom, cant remove agentProfile class so it looks the same on inquiry, because it breaks on service ticket*/
 .agentProfile .bottom-navigation__tab:first-child,
 .agentProfile .bottom-navigation__container {
   border-radius: 0;
 }
+/*blue border when focused or active on search input so it looks awesome like status select*/
 .form-control.searchInput:focus,
-.form-control.searchInput:active {
-  border: 2px solid #2684ff;
+.form-control.searchInput:active,
+.addLossReason input:focus,
+.addLossReason input:active {
+  box-shadow: 0px 0px 0 2px #2684ff !important;
 }
-
+/*width height and place icon in middle of button, buttons in ProfileInfo editable fields*/
 .singleFieldEdit,
 .addPhoneNumber,
 .addEmail {
@@ -510,12 +502,11 @@
   display: flex;
   justify-content: center;
 }
-.singleFieldEdit i {
-  margin-left: 2px;
-}
+/*hiding the arrow when edit is disabled - status select*/
 .editable-false > div > div:last-child {
   opacity: 0;
 }
+/*style for the edit profile button and placement in bottom right corner of PrifileInfo */
 .edit-profile__button {
   position: absolute;
   right: 20px;
@@ -524,6 +515,82 @@
   align-items: center;
   color: #343a40;
 }
+/* Phone and Email edit and add buttons and inputs */
+.Phone input + button,
+.Email input + button {
+  margin-left: auto;
+}
+/*Style inputs to  blend in background and setup transitions for differnet states  */
+.Phone input,
+.Email input{
+  color: #333;
+  border: 1px solid rgb(204,204,204);
+  border-radius: 4px;
+  padding: 0px 5px;
+  transition: box-shadow 200ms, border-color 200ms;
+}
+/*focus state to look like other inputs, react-select is the blueprint*/
+.Phone input[type="text"]:focus,
+.addPhoneGroup input[type="text"]:focus,
+.Email input[type="text"]:focus,
+.addEmailGroup input[type="text"]:focus {
+  border-color: #2684ff;
+  outline-color: #2684ff;
+  box-shadow: 0 0 0 1px rgba(38, 132, 255, 0.75);
+}
+/*input invalid state border*/
+.Phone input.invalid:not([disabled]):focus,
+.addPhoneGroup input.invalid:not([disabled]):focus,
+.Email input.invalid:not([disabled]):focus,
+.addEmailGroup input.invalid:not([disabled]):focus {
+  border-color: #F44336;
+  outline-color: #F44336;
+  box-shadow: 0 0 0 1px #F44336;
+}
+/*input valid state border*/
+.Phone input.valid:not([disabled]):focus,
+.addPhoneGroup input.valid:not([disabled]):focus,
+.Email input.valid:not([disabled]):focus,
+.addEmailGroup input.valid:not([disabled]):focus {
+  border-color: #4CAF50;
+  outline-color: #4CAF50;
+  box-shadow: 0 0 0 1px #4CAF50;
+}
+/*disabled specific styles*/
+.Phone input[disabled],
+.Email input[disabled] {
+  border-color: transparent;
+  background: transparent;
+}
+/*allow email to show full width, basically a bug fix*/
+.Email input[type="text"] {
+  flex-grow: 1;
+  margin: 0 10px 0 0;
+}
+/* color of icon in confirm change and cancel edit buttons*/
+.action-buttons__button.ab__cancel,
+.action-buttons__button.ab__confirm {
+  color: #fff;
+}
+/*background of cancel edit*/
+.action-buttons__button.ab__cancel {
+  background: #F44336;
+}
+/*background of confirm edit*/
+.action-buttons__button.ab__confirm {
+  background: #4CAF50;
+}
+/*darker when disabled*/
+.action-buttons__button.ab__confirm[disabled] {
+  background: #448947;
+  color: #ededed;
+}
+/*move imediate sibling button to right*/
+.agentStatusEdit + .singleFieldEdit {
+  margin-left: auto;
+}
+/*END OF Phone and Email edit and add buttons and inputs*/
+
 /*EDIT MODAL CSS*/
 .modalFooterBtns {
   display: flex;
@@ -534,71 +601,6 @@
   margin: 0;
 }
 
-.Phone input + button,
-.Email input + button {
-  margin-left: auto;
-}
-.Phone input,
-.Email input{
-  color: #333;
-  border: 1px solid rgb(204,204,204);
-  border-radius: 4px;
-  padding: 0px 5px;
-  transition: box-shadow 200ms, border-color 200ms;
-}
-.Phone input[type="text"]:focus,
-.addPhoneGroup input[type="text"]:focus,
-.Email input[type="text"]:focus,
-.addEmailGroup input[type="text"]:focus {
-  border-color: #2684ff;
-  outline-color: #2684ff;
-  box-shadow: 0 0 0 1px rgba(38, 132, 255, 0.75);
-}
-.Phone input.invalid:not([disabled]):focus,
-.addPhoneGroup input.invalid:not([disabled]):focus,
-.Email input.invalid:not([disabled]):focus,
-.addEmailGroup input.invalid:not([disabled]):focus {
-  border-color: #F44336;
-  outline-color: #F44336;
-  box-shadow: 0 0 0 1px #F44336;
-}
-.Phone input.valid:not([disabled]):focus,
-.addPhoneGroup input.valid:not([disabled]):focus,
-.Email input.valid:not([disabled]):focus,
-.addEmailGroup input.valid:not([disabled]):focus {
-  border-color: #4CAF50;
-  outline-color: #4CAF50;
-  box-shadow: 0 0 0 1px #4CAF50;
-}
-.Phone input[disabled],
-.Email input[disabled] {
-  border-color: transparent;
-  background: transparent;
-}
-.Email input[type="text"] {
-  flex-grow: 1;
-  margin: 0 10px 0 0;
-}
-.action-buttons__button.ab__cancel,
-.action-buttons__button.ab__confirm {
-  color: #fff;
-}
-.action-buttons__button.ab__cancel {
-  background: #F44336;
-}
-.action-buttons__button.ab__confirm {
-  background: #4CAF50;
-}
-.action-buttons__button.ab__confirm[disabled] {
-  background: #448947;
-  color: #ededed;
-}
-.agentStatusEdit + .singleFieldEdit {
-  margin-left: auto;
-}
-.action-buttons__button i {
-  margin-left: 0;
-}
 
 .addPhoneGroup,
 .addEmailGroup {
@@ -624,6 +626,7 @@
 .addEmailGroup .form-group:first-child {
   flex-grow: 1;
 }
+/*Could probably be reworked later to use fixed positioning if we want to use it anywhere as it's own component, I didn't give this much thought it was done in last minute*/
 .invalidAlert,
 .validAlert {
   top: 50%;
@@ -634,6 +637,67 @@
   -1px 1px 7px rgba(0,0,0,.15),
   0px 0px 25px 10px rgba(0,0,0,.142);
   border: none;
-
 }
-/* END OF Bozidar CSS */
+.stringField__group input[disabled],
+.numberField__group input[disabled] {
+  background: rgb(242, 242, 242);
+  border-color: hsl(0,0%,90%);
+}
+.filter-modal__body form {
+  display: flex;
+  flex-direction: column;
+}
+
+/*Profile subnav*/
+.profile__tabs.nav, .profile__main-container .bottom-navigation__tabs  {
+  background:#2684ff;
+  border: none;
+}
+.profile__tabs,
+.profile__tabs a.nav-item.nav-link,
+.profile__main-container .bottom-navigation__tabs,
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
+  color: #fff;
+  border-radius: 0;
+  font-size: .75em;
+}
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
+  font-size: 1.15em;
+}
+.profile__tabs a.nav-item.nav-link.active,
+.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab.active {
+  background-color: #7bafed;
+  color: #fff;
+  border-radius: 0;
+  border-color: #fff;
+}
+#profile__tabs-tab-table {
+  margin-left: auto;
+}
+/*Profile sub sub nav :)*/
+.profile__logs-container .bottom-navigation__container {
+  display: flex;
+  flex-direction: column;
+}
+.profile__logs-container .bottom-navigation__container .bottom-navigation__screen {
+  order: 2;
+}
+.profile-tables__container, .bottom-navigation__screen, .bottom-navigation__container {
+  border: none;
+  box-shadow: unset;
+}
+.profile-tables__container .table-with-search__table > div {
+  max-height: 30vh;
+}
+.profile-tables__container .table-with-search__container {
+  padding-top: 10px;
+}
+
+/*TODO: find a place for this*/
+.tab-pane .section {
+  padding: 15px 0;
+}
+
+.profile__tabs + .tab-content {
+  padding: 0
+}

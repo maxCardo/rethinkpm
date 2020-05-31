@@ -49,14 +49,13 @@ export class Table extends Component {
     this.changePage = this.changePage.bind(this)
   }
   static compareArrays(arr1, arr2) {
-    if(arr1.length != arr2.length) return false
+    if(arr1.length !== arr2.length) return false
     for(let i = 0; i < arr1.length; i++) {
-      if(arr1[i]._id != arr2[i]._id) return false
+      if(arr1[i]._id !== arr2[i]._id) return false
     }
     return true;
   }
   static getDerivedStateFromProps(props, state) {
-    let data = props.data
 
     const pageSize = props.pageSize ? props.pageSize : Infinity;
     const headers = props.headers.map((header) => {
@@ -73,7 +72,7 @@ export class Table extends Component {
     let sortedData = state.data.length && Table.compareArrays(state.rawData, props.data) ? state.data.slice() : props.data.slice();
 
     let newSortDirections = state.sortDirections.slice()
-    if(!Table.compareArrays(state.rawData,props.data) || props.sortBy && !state.alreadySorted) {
+    if(!Table.compareArrays(state.rawData,props.data) || (props.sortBy && !state.alreadySorted)) {
       const sortBy = props.sortBy
       newSortDirections = newSortDirections.map((sortDirection, index) => {
         if(headers[index].accessor === sortBy) {
@@ -118,7 +117,7 @@ export class Table extends Component {
   render() {
     return (
       <div>
-        <table className={this.props.className + ' table table-striped'} style={{tableLayout: 'fixed', fontSize: this.props.fontSize}}>
+        <table className={this.props.className + ' table table-striped'} style={{fontSize: this.props.fontSize}}>
           <thead>
             <tr>
               {this.state.headers.map((header, index) => (
@@ -148,7 +147,7 @@ export class Table extends Component {
                   </td>
                 ))}
               </tr>
-            ))) : (<tr><td colspan={this.state.headers.length}>No results!</td></tr>)}
+            ))) : (<tr><td colSpan={this.state.headers.length}>No results!</td></tr>)}
           </tbody>
         </table>
         {this.props.data.length > this.pageSize && 

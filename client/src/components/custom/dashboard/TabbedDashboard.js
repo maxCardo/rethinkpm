@@ -3,7 +3,7 @@ import Table from '../Table'
 import {Tabs, Tab} from 'react-bootstrap'
 import '../CrmDashboard/CrmDashboard.css'
 
-export class SeparatedDashboard extends Component {
+export class TabbedDashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -19,7 +19,7 @@ export class SeparatedDashboard extends Component {
         <div style={{overflow: 'auto', maxHeight: '80vh'}}>
           <Tabs>
             {this.props.states.map(({label, key}, index) => (
-              <Tab eventKey={key} title={`Status ${index+1}: ${label}`}>
+              <Tab key={key} eventKey={key} title={`Status ${index+1}: ${label}`}>
                 <div className='section'>
                   <h2 className='sectionTitle'>Status {index+1}: {label}</h2>
                   <Table
@@ -42,5 +42,5 @@ export class SeparatedDashboard extends Component {
 }
 
 
-export default SeparatedDashboard
+export default TabbedDashboard
 

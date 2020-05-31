@@ -1,12 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 const Modal = props => {
     return (
 
         <div className='popup-modal'>
             <div className='modal-content'>
-                <span id="closeBtn" className="closeX closeBtn " onClick={closeMod}>&times;</span>
+                <span id="closeBtn" className="closeX closeBtn ">&times;</span>
                 <form className='modal-form'>
                     <div className="form-group col-md-6">
                         <h4>Set Appointment Date & Time</h4>
@@ -27,8 +26,5 @@ const Modal = props => {
     )
 }
 
-Modal.propTypes = {
-
-}
 
 export default Modal

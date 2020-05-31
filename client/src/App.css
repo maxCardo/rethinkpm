@@ -446,7 +446,6 @@ button {
   width: 100%;
   height: 8%;
   top: 0;
-  border-bottom: solid 1px var(--primary);
   opacity: 0.9;
 }
 
@@ -758,9 +757,6 @@ table th {
   padding: 5px;
   vertical-align: middle;
 }
-.tab-content {
-  padding: 10px 0;
-}
 .agentsSearchContainer {
   justify-content: space-between !important;
 }
@@ -796,3 +792,27 @@ input[type=number]:focus,
   box-shadow: inset 0 -1px 0 #ddd;
 }
 /*REMOVE FOCUS OUTLINE*/
+
+/*alert css*/
+.alert-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,.19);
+  z-index: 20;
+}
+.alert-container .alert {
+  min-width: 290px;
+}
+.alert p {
+  text-align: center;
+  margin: 10px 0 0 0;
+}
+.alert-container .invalidAlert {
+  background: rgba(200, 0, 0, .8335 );
+}

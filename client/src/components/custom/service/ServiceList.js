@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import {Link, withRouter} from 'react-router-dom';
-import PropTypes from 'prop-types'
 import Table from '../Table'
-import {ButtonGroup, Button} from 'react-bootstrap'
+import {ButtonGroup} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import './style.css'
 
@@ -11,8 +10,9 @@ export class ServiceList extends Component {
     super(props)
     this.headers = [
       {
-        accessor: 'type',
+        accessor: 'parent',
         label: 'Type',
+        mapper: (data) => data ? 'Task' : 'Service'
       },
       {
         accessor: 'opened',
@@ -49,7 +49,7 @@ export class ServiceList extends Component {
         <div>
           <div>
             <Link className='service__action-button' to={`/services/${row._id}`}>
-              <i class="fas fa-ellipsis-h"></i>
+              <i className="fas fa-ellipsis-h"></i>
             </Link>
           </div>
         </div>
@@ -89,9 +89,9 @@ export class ServiceList extends Component {
   }
   changeActiveData(activeData) {
     let data = this.props.services
-    if(activeData == 'jobs') {
+    if(activeData === 'jobs') {
       data = data.filter((service) => !service.parent)
-    } else if(activeData == 'tasks') {
+    } else if(activeData === 'tasks') {
       data = data.filter((service) => service.parent)
     }
     this.setState({

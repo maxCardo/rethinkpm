@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {Component, Fragment} from 'react'
 import ProfileIcon from '../common/ProfileIcon';
 import {connect} from 'react-redux';
@@ -626,7 +627,7 @@ export class ProfileInfo extends Component {
                 />
                 {(!this.state.UI.phoneEditable) ? (
                   <button className='action-buttons__button singleFieldEdit'
-                          onClick={() => this.editPrimaryPhone()}>
+                          onClick={() => this.editPrimaryPhone()}>  
                     <i className="fas fa-pencil-alt"></i>
                   </button>
                 ) : (

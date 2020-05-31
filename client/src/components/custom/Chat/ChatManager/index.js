@@ -28,7 +28,7 @@ export class ChatManager extends Component {
           unread: chat.unread,
           messages: chat.messages.map((message) => ({
             date: new Date(message.date),
-            sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
+            sender: message.from === 'User-SMS' ? chat.inq.prospect.name : message.from,
             content: message.message,
             userMessage: message.from !== 'User-SMS'
           })),
@@ -52,11 +52,9 @@ export class ChatManager extends Component {
   handleAddChat(chatToAdd) {
     const openChats = this.props.openChats
     let chatAlreadyAdded = false;
-    let index = -1;
     openChats.forEach((chatId, i) => {
       if(chatId === chatToAdd.id) {
         chatAlreadyAdded = true
-        index = i
       }
     })
     if(!chatAlreadyAdded) {

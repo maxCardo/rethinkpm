@@ -70,3 +70,50 @@
   height: fit-content;
   border: none
 }
+
+/*TODO: NEEDS REVIEW*/
+.agent-list__filter-icon,
+.agent-list__filtering-options-container button {
+   background: #fff;
+   color: #6f9dd4;
+   border-color: #fff;
+   box-shadow: 1px 1px 3px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24);
+   border-style: solid;
+   outline: none;
+  transition: color 250ms, box-shadow 250ms;
+ }
+.agent-list__filter-icon:focus,
+.agent-list__filter-icon:hover,
+.agent-list__filtering-options-container button:focus,
+.agent-list__filtering-options-container button:hover {
+  color: #333;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.12), 1px 1px 4px rgba(0,0,0,0.24);
+  border-style: solid;
+  outline: none;
+}
+.agent-list__search-input:focus,
+.agent-list__search-input:active,
+.numberField__group input:not([type="checkbox"]):focus,
+.numberField__group input:not([type="checkbox"]):active {
+  border: 2px solid #007bff;
+}
+.numberField__group .col-1 {
+  display: flex;
+  align-items: center;
+}
+.pill__container {
+  box-shadow: 1px 1px 3px rgba(0,0,0,.22);
+  padding: 2px 20px;
+  line-height: 16px;
+  background: #2684ff;
+  color: #FFFFFF;
+}
+
+.infinite-list__load-more {
+  background-color: white;
+  border-radius: 20px;
+}
+
+.infinite-list__load-more:focus {
+  outline: none
+}

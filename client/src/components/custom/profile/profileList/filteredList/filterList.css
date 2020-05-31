@@ -1,0 +1,126 @@
+.agent-list__search-container {
+  display: flex;
+  margin: 10px;
+  position: relative;
+  align-items: stretch;
+}
+
+.agent-list__search-input {
+  width: 80%;
+}
+
+.agent-list__filter-icon {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.agent-list__filtering-options-container {
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.agent-list__filtering-options-container button {
+  padding: 0 20px
+}
+
+.infinite-list__length-info {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.infinite-list__length-info p {
+  margin: none;
+}
+
+.filter-pills__pills-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pill__container {
+  font-size: 12px;
+  border-radius: 10px;
+  background-color: #DDD;
+  padding: 0 20px;
+  margin: 5px;
+}
+
+.filter-pills__title-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 5px;
+}
+
+.filter-pills__title-container p {
+  margin: 0;
+  padding: 0;
+}
+
+.filter-pills__title-container button {
+  border: none;
+  background: none;
+  text-decoration: underline;
+  padding: 0;
+  margin: 0;
+  height: fit-content;
+  border: none
+}
+
+.infinite-list__load-more {
+  background-color: white;
+  border-radius: 20px;
+}
+
+.infinite-list__load-more:focus {
+  outline: none
+}
+
+/*TODO: NEEDS REVIEW*/
+/*Some weird bug fixed in addphonemodal*/
+.modal input[type="text"] {
+  margin: 2px;
+}
+.agent-list__filter-icon,
+.agent-list__filtering-options-container button {
+   background: #fff;
+   color: #6f9dd4;
+   border-color: #fff;
+   box-shadow: 1px 1px 3px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24);
+   border-style: solid;
+   outline: none;
+  transition: color 250ms, box-shadow 250ms;
+ }
+.agent-list__filter-icon:focus,
+.agent-list__filter-icon:hover,
+.agent-list__filtering-options-container button:focus,
+.agent-list__filtering-options-container button:hover {
+  color: #333;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.12), 1px 1px 4px rgba(0,0,0,0.24);
+  border-style: solid;
+  outline: none;
+}
+.agent-list__search-input:focus,
+.agent-list__search-input:active,
+.numberField__group input:not([type="checkbox"]):focus,
+.numberField__group input:not([type="checkbox"]):active,
+.modal input[type="text"]:focus,
+.modal input[type="text"]:active {
+  border: 2px solid #007bff;
+  margin-right: 0;
+}
+.numberField__group .col-1 {
+  display: flex;
+  align-items: center;
+}
+.pill__container {
+  box-shadow: 1px 1px 3px rgba(0,0,0,.22);
+  padding: 2px 20px;
+  line-height: 16px;
+  background: #2684ff;
+  color: #FFFFFF;
+}

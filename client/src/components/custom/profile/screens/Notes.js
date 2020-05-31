@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Table from '../../Table'
 import {Tabs, Tab} from 'react-bootstrap'
 import TableWithSearch from '../TableWithSearch'
 import {connect} from 'react-redux'

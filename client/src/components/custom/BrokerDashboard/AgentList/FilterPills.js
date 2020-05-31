@@ -16,8 +16,8 @@ export class FilterPills extends Component {
         </div>
         {this.state.showPills ? 
           <div className='filter-pills__pills-container'>
-            {this.props.filters.map((filter) => (
-                <Pill text={`${filter.field} ${filter.filterType} ${this.representValue(filter.value)}`} />
+            {this.props.filters.map((filter, index) => (
+                <Pill key={index} text={`${filter.field} ${filter.filterType} ${this.representValue(filter.value)}`} />
             ))}
           </div>
           :

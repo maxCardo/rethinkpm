@@ -4,7 +4,10 @@ const agentSchema = new mongoose.Schema({
   agentId: String,
   lastName: String,
   firstName: String,
-  fullName: String,
+  fullName: {
+    type: String, 
+    default: 'unknown'
+  },
   emailAddress: String,
   email: [
     {
@@ -29,7 +32,10 @@ const agentSchema = new mongoose.Schema({
       okToText: Boolean,
     },
   ],
-  status: String,
+  status:{
+    type:String,
+    default: 'prospect'
+  }, 
   notes: [
     {
       type: {
@@ -56,6 +62,14 @@ const agentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ChatAgent',
   },
+  zipCodes:{
+    name: String,
+    value: Number
+  },
+    areas: {
+    name: String,
+    value: Number
+  }
 });
 
 
