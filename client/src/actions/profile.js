@@ -9,6 +9,7 @@ import {
     SET_FILTER,
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
+    START_LOADING_PROFILE_CHAT,
     SET_ACTIVE_PROFILE_CHAT,
     ADD_DATA_PROFILE_LIST,
     LOAD_MORE_PROFILE_LIST,
@@ -504,6 +505,9 @@ export const addNote = (data,id,profileType) => async dispatch =>{
 //get active profile chat
 export const getActiveChat = (chatOwner) => async dispatch =>{
     try {
+        dispatch({
+          type: START_LOADING_PROFILE_CHAT
+        })
         console.log(chatOwner);
         const res = await axios.get(`/api/comms/profile/chat/${chatOwner}`)
         dispatch ({
