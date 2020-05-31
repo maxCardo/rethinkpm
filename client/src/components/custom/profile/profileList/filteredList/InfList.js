@@ -58,7 +58,7 @@ export class InfiniteList extends Component {
                   }
                 </div>
                 <div className='infinite-list__length-info'>
-                    <p>Total of Agents: {this.props.data.length}</p>
+                    <p>Total of {this.props.settings.profileNamePlural}: {this.props.data.length}</p>
                 </div>
             </Fragment>
         )

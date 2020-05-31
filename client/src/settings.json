@@ -3,6 +3,7 @@
     "profile": {
       "agentPros": {
         "profileType": "agentPros",
+        "profileNamePlural": "Agents",
         "statusSelect":{
           "options":[
             {"value": "['prospect','pending','agent']", "label": "Active"},
@@ -110,6 +111,7 @@
       },
       "rentPros": {
         "profileType": "rentPros",
+        "profileNamePlural": "Renters",
         "statusSelect": {
           "options": [
             {
@@ -271,6 +273,7 @@
       },
       "buyerPros": {
         "profileType": "buyerPros",
+        "profileNamePlural": "Buyers",
         "statusSelect": {
           "options": [
             {
