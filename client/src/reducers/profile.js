@@ -17,7 +17,9 @@ import {
     LOAD_MORE_PROFILE_LIST,
     SET_HAS_MORE_DATA,
     UPDATE_ACTIVE_PROFILE_CHAT,
-    START_LOADING_PROFILE_CHAT
+    START_LOADING_PROFILE_CHAT,
+    START_LOADING_PROFILE,
+    RESET_PROFILE_INFO
 } from '../actions/type';
 
 const initialState = {
@@ -42,6 +44,18 @@ const initialState = {
 export default function (state = initialState, action) {
     const {type, payload} = action;
     switch (type) {
+        case RESET_PROFILE_INFO:
+          return {
+            ...initialState,
+            profileList: state.profileList,
+            filterOptions: state.filterOptions,
+            activeFilter:state.activeFilter,
+          };
+        case START_LOADING_PROFILE:
+          return {
+            ...state,
+            loading: true
+          }
         case SET_ACTIVE_PROFILE:
             return {
                 ...state,
