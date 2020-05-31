@@ -6,11 +6,12 @@ import Loading from '../../../core/LoadingScreen/Loading'
 import FilteredList from './filteredList/FilteredList'
 import FilterModal from './modals/filterModel/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
+import axios from 'axios'
 
 import {loadProfileList, loadSavedFilter, loadMoreDataProfileList} from '../../../../actions/profile'
 
 
-const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter,savedFilters }) => {
+const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter }) => {
     
     const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
 
@@ -21,6 +22,17 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
     const [showSaveFltrMod, tglSaveFltrMod] = useState(false)
     const [searchString, setSearchString] = useState('')
     const [listPage, setListPage] = useState(0)
+    const [audiences, setAudiences] = useState([])
+    const [savedFilters, setSavedFilters] = useState([])
+
+    useEffect(() => {
+      axios.get(`/api/profile/${profileType}/audiences`).then((res) => {
+        setAudiences(res.data)
+      })
+      axios.get(`/api/profile/${profileType}/filters`).then((res) => {
+        setSavedFilters(res.data)
+      })
+    }, [])
 
     useEffect(() => {
         loadProfileList(profileType, selectedQuery)
@@ -33,29 +45,26 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
 
     //load saved filters
     useEffect(() => {
-        if (savedFilters.length){
-            const filterOptions = savedFilters.filter(x => x.filterType === 'filter')
-            const audienceOptions = savedFilters.filter(x => x.filterType === 'audience')
-            console.log(audienceOptions)
-            const optionsObj = [{
-                label: '',
-                options: options.slice()
-            }]
-            optionsObj.push({
-                label: 'Audience',
-                options: audienceOptions.map((filter) => ({ value: filter._id, label: filter.name, filter:true }))
-            })
-            optionsObj.push({
-                label: 'Filters',
-                options: filterOptions.map((filter) => ({ value: filter._id, label: filter.name, filter: true }))
-            })
-            setStatus({...selectStatus, options: optionsObj})  
-        }
-    }, [savedFilters])
+      if (savedFilters.length || audiences.length){
+        const optionsObj = [{
+            label: '',
+            options: options.slice()
+        }]
+        optionsObj.push({
+            label: 'Audience',
+            options: audiences.map((filter) => ({ value: filter._id, label: filter.name, filter:true, filterType: 'audience' }))
+        })
+        optionsObj.push({
+            label: 'Filters',
+            options: savedFilters.map((filter) => ({ value: filter._id, label: filter.name, filter: true, filterType: 'filter' }))
+        })
+        setStatus({...selectStatus, options: optionsObj})  
+      }
+    }, [audiences, savedFilters])
 
     const setListByStatus = (v) => {
         if(v.filter){
-            loadSavedFilter(v.value, profileType)
+            loadSavedFilter(v.value, profileType, v.filterType)
         }else{
             loadProfileList(profileType, v.value)
         }   
@@ -124,8 +133,7 @@ ProfileList.propTypes = {
 
 const mapStateToProps = state => ({
     profileList: state.profile.profileList,
-    activeFilter: state.profile.activeFilter,
-    savedFilters: state.profile.savedFilters
+    activeFilter: state.profile.activeFilter
 });
 
 

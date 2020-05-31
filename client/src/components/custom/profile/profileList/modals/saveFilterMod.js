@@ -1,22 +1,22 @@
 import React, {useEffect, useRef, useState, Fragment} from 'react'
 import {Modal, Form, Button} from 'react-bootstrap'
+import {connect} from 'react-redux'
 
 import {saveFilter} from '../../../../../actions/profile'
 
-const SaveFilterMod = ({show, handleClose, activeFilter, profileList, profileType}) => {
+const SaveFilterMod = ({show, handleClose, activeFilter, profileList, profileType, saveFilter}) => {
     const [fltrName, setFltrName] = useState('')
     const [audience] = useState(() => profileList.list.map((profile) => profile._id))
     const nameInput = useRef();
 
     const onSubmit = (type) => {
+        console.log('On submit called')
             const data = {
                 name: fltrName,
-                profileType: profileType, 
-                filterType: type,
                 filters: activeFilter,
                 audience: type === 'audience' ? audience : []
             }
-            saveFilter(data)
+            saveFilter(data, type, profileType)
             onClose()
         }
 
@@ -61,4 +61,5 @@ const SaveFilterMod = ({show, handleClose, activeFilter, profileList, profileTyp
     )
 }
 
-export default SaveFilterMod
+
+export default connect(() => {}, {saveFilter})(SaveFilterMod)

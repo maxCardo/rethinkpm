@@ -1,8 +1,11 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
+const mongoose = require('mongoose')
 
 const Agent = require('../../db/models/sales/agent')
 const Office = require('../../db/models/sales/office')
+const FilterModel = require('../../db/models/sales/filters')
+const AudienceModel = require('../../db/models/sales/audience')
 
 
 //filter options: refactor to get these from api
@@ -48,19 +51,7 @@ router.post('/filter/:page?', async (req, res) => {
         })
 
         //create string query 
-        const queryObj = {}
-        filters.map((x) => {
-            if (x.filterType === 'range') {
-                Object.assign(queryObj, {
-                    [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
-                })
-            } else if (x.subField) {
-                Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
-            } else {
-                Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
-            }
-        })
-
+        const queryObj = convertFiltersToQuery(filters)
 
         //query DB
         let record;
@@ -82,6 +73,24 @@ router.post('/filter/:page?', async (req, res) => {
         res.status(400).send('server error')
     }
 });
+
+function convertFiltersToQuery(filters) {
+
+  //create string query 
+  const queryObj = {}
+  filters.map((x) => {
+      if (x.filterType === 'range') {
+          Object.assign(queryObj, {
+              [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
+          })
+      } else if (x.subField) {
+          Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
+      } else {
+          Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
+      }
+  })
+  return queryObj
+}
 
 
 // @route: GET /api/profile/filterOptions/agentPros;
@@ -153,6 +162,46 @@ router.post('/addNote/:id', auth, async (req, res) => {
   }
 });
 
+router.get('/audiences', async (req,res) => {
+  const audiences = await AudienceModel.find({profileType: 'agentPros'})
+  res.json(audiences)
+})
+
+router.get('/audiences/:id', async (req,res) => {
+  const {id} = req.params
+  const audience = await AudienceModel.findById(id)
+  const agents = await Agent.find({'_id': {$in: audience.audience.map((id) => mongoose.Types.ObjectId(id))}})
+  res.json({record: agents, filters: audience.filters})
+})
+
+router.post('/audiences', async (req,res) => {
+  const {name, filters, audience} = req.body
+  const audienceData = new AudienceModel({name, filters, audience, profileType: 'agentPros'});
+  await audienceData.save()
+  console.log('Audience saved')
+  res.json({result: 'ok'})
+})
+
+router.get('/filters', async (req,res) => {
+  const filters = await FilterModel.find({profileType: 'agentPros'})
+  res.json(filters)
+})
+
+router.get('/filters/:id', async (req,res) => {
+  const {id} = req.params
+  const filter = await FilterModel.findById(id)
+  const queryObject = convertFiltersToQuery(filter.filters)
+  const agents = await Agent.find(queryObject)
+  res.json({record: agents, filters: filter.filters})
+})
+
+router.post('/filters', async (req,res) => {
+  const {name, filters} = req.body
+  const filter = new FilterModel({name, filters,  profileType: 'agentPros'});
+  await filter.save()
+  console.log('Filter saved')
+  res.json({result: 'ok'})
+})
 
 
 
