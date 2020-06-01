@@ -2,6 +2,8 @@ const express = require('express');
 const auth = require('../../middleware/auth')
 
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
+const FilterModel = require('../../db/models/sales/filters')
+const AudienceModel = require('../../db/models/sales/audience')
 
 const router = express.Router();
 

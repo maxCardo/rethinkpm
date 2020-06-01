@@ -6,6 +6,8 @@ const Agent = require('../../db/models/sales/agent')
 const Office = require('../../db/models/sales/office')
 const FilterModel = require('../../db/models/sales/filters')
 const AudienceModel = require('../../db/models/sales/audience')
+const singleFamilySalesModel = require('../../db/models/sales/singleFamilySales')
+const multiSalesModel = require('../../db/models/sales/multiSales')
 
 
 //filter options: refactor to get these from api

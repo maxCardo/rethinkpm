@@ -3,6 +3,8 @@ const auth = require('../../middleware/auth')
 
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
+const FilterModel = require('../../db/models/sales/filters')
+const AudienceModel = require('../../db/models/sales/audience')
 
 
 const router = express.Router();
