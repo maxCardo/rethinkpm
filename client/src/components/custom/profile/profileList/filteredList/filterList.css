@@ -34,7 +34,7 @@
 }
 
 .infinite-list__length-info p {
-  margin: none;
+  margin: 0;
 }
 
 .filter-pills__pills-container {

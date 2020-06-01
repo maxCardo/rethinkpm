@@ -173,6 +173,8 @@
 
 .table-with-search__controls-container .btn {
   height: 37px;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .table-with-search__search-input {
@@ -188,7 +190,7 @@
   height: 87%;
 }
 .tab-pane.active {
-  height: 90%;
+  height: 100%;
 }
 /*END OF Table styling in logs notes requests */
 
@@ -326,7 +328,7 @@
   width: 20%;
   right: -20%;
   /*height set to 100% - the height of the header*/
-  height: calc(100% - 64px);
+  height: calc(100% - 110px);
   /*taken above the middle content so the shadow shows*/
   z-index: 2;
   background: white;
@@ -345,7 +347,7 @@
   width: 20%;
   left: -20%;
   /*height set to 100% - the height of the header*/
-  height: calc(100% - 64px);
+  height: calc(100% - 110px);
   /*taken above the middle content so the shadow shows*/
   z-index: 2;
   background: white;
@@ -649,7 +651,7 @@
 }
 
 /*Profile subnav*/
-.profile__tabs.nav, .profile__main-container .bottom-navigation__tabs  {
+.profile__tabs.nav {
   background:#2684ff;
   border: none;
 }
@@ -664,8 +666,7 @@
 .profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
   font-size: 1.15em;
 }
-.profile__tabs a.nav-item.nav-link.active,
-.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab.active {
+.profile__tabs a.nav-item.nav-link.active {
   background-color: #7bafed;
   color: #fff;
   border-radius: 0;
@@ -675,12 +676,18 @@
   margin-left: auto;
 }
 /*Profile sub sub nav :)*/
+.profile__main-container .bottom-navigation__tabs  {
+  background:#ededed;
+  border: none;
+}
 .profile__logs-container .bottom-navigation__container {
   display: flex;
   flex-direction: column;
+  height: calc(100% - 30px);
 }
 .profile__logs-container .bottom-navigation__container .bottom-navigation__screen {
   order: 2;
+  box-shadow: 0px 0 18px 2px rgba(0, 0, 0, 0.22);
 }
 .profile-tables__container, .bottom-navigation__screen, .bottom-navigation__container {
   border: none;
@@ -699,5 +706,53 @@
 }
 
 .profile__tabs + .tab-content {
+  height: 100%;
   padding: 0
+}
+.profile__logs-container {
+  padding: 6px 20px 20px 20px;
+  background: #ededed;
+}
+.profile__logs-container .bottom-navigation__tab {
+  width: 80px;
+  text-align: center;
+  height: 0;
+  position: relative;
+  border-right: 22px solid transparent;
+  border-left: 22px solid transparent;
+  border-bottom: 30px solid #343a40;
+  box-sizing: content-box;
+  margin:0 0 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-bottom-color 220ms, color 220ms;
+  color: #fff;
+}
+.profile__logs-container .bottom-navigation__tab.active,
+.profile__logs-container .bottom-navigation__tab:hover,
+.profile__logs-container .bottom-navigation__tab:focus {
+  border-bottom-color: #fff;
+  color: #343a40;
+}
+.profile__logs-container .bottom-navigation__tab span {
+  position: absolute;
+  top: 15px;
+  display: inline-block;
+}
+.profile__logs-container .bottom-navigation__screen {
+  padding: 0;
+}
+.profile-tables__container .nav-item {
+  margin: 0 10px 10px 10px;
+  border: none;
+  border-bottom: 4px solid transparent;
+  transition: border-bottom-color 220ms;
+}
+
+.profile-tables__container .nav-item.active,
+.profile-tables__container .nav-item:hover,
+.profile-tables__container .nav-item:focus {
+  outline: none;
+  border-bottom: 4px solid #2684ff;
 }
