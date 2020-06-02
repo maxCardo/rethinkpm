@@ -10,10 +10,12 @@ import {
     SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
     START_LOADING_PROFILE_CHAT,
+    START_LOADING_PROFILE,
     SET_ACTIVE_PROFILE_CHAT,
     ADD_DATA_PROFILE_LIST,
     LOAD_MORE_PROFILE_LIST,
     SET_HAS_MORE_DATA,
+    RESET_PROFILE_INFO,
     UPDATE_ACTIVE_PROFILE_CHAT, ALERT_SUCCESS, REMOVE_ALERT, ALERT_FAILURE
 
 } from './type';
@@ -25,6 +27,9 @@ const config = {headers: {'Content-Type': 'application/json', 'Accept': 'applica
 //Set Active profile for selected lead record. 
 export const setActiveProfile = profile => async dispatch => {
     try {
+        dispatch({
+          type: RESET_PROFILE_INFO
+        })
         dispatch({
             type: SET_ACTIVE_PROFILE,
             payload: profile
@@ -62,6 +67,9 @@ export const loadBackUpProfile = (profileType, profile) => {
 //grab first profile record
 export const loadProfileDefault = profileType => async dispatch => {
     try {
+      dispatch({
+        type: START_LOADING_PROFILE
+      })
         const res = await axios.get(`/api/profile/${profileType}`);
         const data = {...res.data, profileType}
         dispatch({
