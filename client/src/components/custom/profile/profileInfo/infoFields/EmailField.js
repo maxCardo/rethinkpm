@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
 
     let profileType = useRef(data.profileType);
+    const profileId = useRef(data._id);
     const emailInput = useRef();
 
     let email = data.email.length ? data.email.find((address) => address.isPrimary).address : 'no email on file'
@@ -47,7 +48,11 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
         if (data.profileType && (profileType.current !== data.profileType)) {
             profileType.current = data.profileType;
         }
-    }, [edit, email, data.profileType]);
+        if (data._id && (profileId.current !== data._id)) {
+            profileId.current = data._id;
+            toggleEdit(false);
+        }
+    }, [edit, email, data.profileType, data._id]);
 
     return (
         <Fragment key="email">
