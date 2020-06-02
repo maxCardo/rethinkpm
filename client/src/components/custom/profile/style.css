@@ -699,5 +699,6 @@
 }
 
 .profile__tabs + .tab-content {
-  padding: 0
+  padding: 0;
+  height: 100%;
 }
