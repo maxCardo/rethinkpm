@@ -246,7 +246,7 @@
 .agentProfile .agent__stats-container {
   display: flex;
   /*span all available height i think because of the resizable element we have*/
-  height: 100%;
+  height: 96%;
   /*positioned relative so that the absolute positioned headers are always visible*/
   position: relative;
   margin: 0 15px;
@@ -314,7 +314,24 @@
 }
 /*max 4 elements in line*/
 .agent__stats li div {
-  min-width: 25%;
+  font-size: 12px;
+}
+.agent__stats li div.address {
+  order: -1;
+}
+.left__sidebar-open.chat__sidebar-open .agent__stats li div {
+  width: 50%;
+}
+.left__sidebar-open.chat__sidebar-open .agent__stats li div:nth-child(2n) {
+  text-align: right;
+}
+.left__sidebar-open:not(.chat__sidebar-open) .agent__stats li div,
+.chat__sidebar-open:not(.left__sidebar-open) .agent__stats li div {
+  width:50%;
+}
+.left__sidebar-open:not(.chat__sidebar-open) .agent__stats li div:nth-child(2n),
+.chat__sidebar-open:not(.left__sidebar-open) .agent__stats li div:nth-child(2n) {
+  text-align: right;
 }
 /*sales boxes container*/
 .agent__stats ul {
@@ -503,6 +520,7 @@
   height: 22px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 /*hiding the arrow when edit is disabled - status select*/
 .editable-false > div > div:last-child {
@@ -683,6 +701,7 @@
   display: flex;
   flex-direction: column;
   height: calc(100% - 30px);
+  position: relative;
 }
 .profile__logs-container .bottom-navigation__container .bottom-navigation__screen {
   order: 2;
@@ -692,9 +711,7 @@
   border: none;
   box-shadow: unset;
 }
-.profile-tables__container .table-with-search__table > div {
-  max-height: 30vh;
-}
+
 .profile-tables__container .table-with-search__container {
   padding-top: 10px;
 }
@@ -741,6 +758,7 @@
 }
 .profile__logs-container .bottom-navigation__screen {
   padding: 0;
+  position: static;
 }
 .profile-tables__container .nav-item {
   margin: 0 10px 10px 10px;
@@ -754,4 +772,16 @@
 .profile-tables__container .nav-item:focus {
   outline: none;
   border-bottom: 4px solid #2684ff;
+}
+/*This is to make the header stay on top of the container while a user is scrolling down*/
+.profile__logs-container .nav-tabs {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding-top: 10px;
+}
+.profile__logs-container .tab-content {
+  padding-top: 46px;
 }
