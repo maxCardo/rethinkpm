@@ -61,7 +61,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                                 </div>
                             </Resizable>
                             <div className='profile__logs-container'>
-                                <ProfileDetails settings={settings}/>
+                                <ProfileDetails settings={settings} activeProfile={activeProfile}/>
                             </div>
                         </div>
                         <div className='profile__chat-container chat__sidebar'>
