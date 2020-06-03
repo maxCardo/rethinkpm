@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import ProfileIcon from '../../common/ProfileIcon';
 
 
@@ -9,7 +9,10 @@ import AddEmailModal from "../edit_add_updated/AddEmailModal";
 
 
 const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
-    const [{columns, loading}, setColumns] =useState({data: null, loading: true}) 
+    const [{columns, loading}, setColumns] =useState({data: null, loading: true})
+    let profileType = useRef('');
+    let profileId = useRef('');
+
 
     const getPrimaryPhone = profile.phoneNumbers && profile.phoneNumbers.find(item => item.isPrimary)
     const getPrimaryEmail = profile.email && profile.email.find(item => item.isPrimary)
@@ -17,13 +20,19 @@ const ProfileInfo = ({settings:{profileInfo}, profile, tglChat, tglList}) => {
     const primaryEmail = getPrimaryEmail && getPrimaryEmail.address;
 
     useEffect(() => {
-      const columns = {1:[],2:[],3:[]}  
-      profileInfo.map((attr) => columns[attr.col].push(attr))   
-      setColumns({columns:columns, loading: false})
+        if (profile._id && profileId.current !== profile._id) {
+            const columns = {1:[],2:[],3:[]}
+            profileInfo.map((attr) => columns[attr.col].push(attr))
+            setColumns({columns:columns, loading: false})
+            profileId.current = profile._id;
+        }
+        if (profile.profileType && profileType.current !== profile.profileType) {
+            profileType.current = (profile.profileType === 'agentPros') ? 'Agent Info' : (profile.profileType === 'buyerPros') ? 'Buyer Info' : 'Renter Info';
+        }
     },[profile, profileInfo])
     
     //ToDo: refactor settings.json to incorperate below lines of code
-    const colHeader = ['', 'Personal Info', 'Profile Info', 'Commumication Info']
+    const colHeader = ['', profileType.current, 'Profile Info', 'Communication Info']
 
 
     return loading ? <Loading/> :

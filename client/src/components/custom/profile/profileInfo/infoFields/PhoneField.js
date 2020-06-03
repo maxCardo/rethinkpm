@@ -15,6 +15,7 @@ import {updatePhone} from "../../../../../actions/profile";
 const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
 
     const profileType = useRef(data.profileType);
+    const profileId = useRef(data._id);
     const phoneInput = useRef();
 
     let phone = (data.phoneNumbers.length && data.phoneNumbers.find((phone) => phone.isPrimary)) ? data.phoneNumbers.find((phone) => phone.isPrimary).number : 'no phone on file';
@@ -51,10 +52,14 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
         if (phoneInput.current && edit) {
             phoneInput.current.focus();
         }
-        if (data.profileType && (profileType !== data.profileType)) {
+        if (data.profileType && (profileType.current !== data.profileType)) {
             profileType.current = data.profileType;
         }
-    }, [edit, phone, data.profileType]);
+        if (data._id && (profileId.current !== data._id)) {
+            profileId.current = data._id;
+            toggleEdit(false);
+        }
+    }, [edit, phone, data.profileType, data._id]);
 
     return (
         <Fragment key="phoneNumber">

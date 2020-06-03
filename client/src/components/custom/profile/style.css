@@ -61,7 +61,7 @@
   flex-direction: row;
   /*span available width*/
   width: 100%;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 /*boxes with data*/
@@ -173,6 +173,8 @@
 
 .table-with-search__controls-container .btn {
   height: 37px;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .table-with-search__search-input {
@@ -188,7 +190,7 @@
   height: 87%;
 }
 .tab-pane.active {
-  height: 90%;
+  height: 100%;
 }
 /*END OF Table styling in logs notes requests */
 
@@ -244,7 +246,7 @@
 .agentProfile .agent__stats-container {
   display: flex;
   /*span all available height i think because of the resizable element we have*/
-  height: 100%;
+  height: 96%;
   /*positioned relative so that the absolute positioned headers are always visible*/
   position: relative;
   margin: 0 15px;
@@ -312,7 +314,24 @@
 }
 /*max 4 elements in line*/
 .agent__stats li div {
-  min-width: 25%;
+  font-size: 12px;
+}
+.agent__stats li div.address {
+  order: -1;
+}
+.left__sidebar-open.chat__sidebar-open .agent__stats li div {
+  width: 50%;
+}
+.left__sidebar-open.chat__sidebar-open .agent__stats li div:nth-child(2n) {
+  text-align: right;
+}
+.left__sidebar-open:not(.chat__sidebar-open) .agent__stats li div,
+.chat__sidebar-open:not(.left__sidebar-open) .agent__stats li div {
+  width:50%;
+}
+.left__sidebar-open:not(.chat__sidebar-open) .agent__stats li div:nth-child(2n),
+.chat__sidebar-open:not(.left__sidebar-open) .agent__stats li div:nth-child(2n) {
+  text-align: right;
 }
 /*sales boxes container*/
 .agent__stats ul {
@@ -326,7 +345,7 @@
   width: 20%;
   right: -20%;
   /*height set to 100% - the height of the header*/
-  height: calc(100% - 64px);
+  height: calc(100% - 110px);
   /*taken above the middle content so the shadow shows*/
   z-index: 2;
   background: white;
@@ -345,7 +364,7 @@
   width: 20%;
   left: -20%;
   /*height set to 100% - the height of the header*/
-  height: calc(100% - 64px);
+  height: calc(100% - 110px);
   /*taken above the middle content so the shadow shows*/
   z-index: 2;
   background: white;
@@ -501,6 +520,7 @@
   height: 22px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 /*hiding the arrow when edit is disabled - status select*/
 .editable-false > div > div:last-child {
@@ -649,14 +669,13 @@
 }
 
 /*Profile subnav*/
-.profile__tabs.nav, .profile__main-container .bottom-navigation__tabs  {
+.profile__tabs.nav {
   background:#2684ff;
   border: none;
 }
 .profile__tabs,
 .profile__tabs a.nav-item.nav-link,
-.profile__main-container .bottom-navigation__tabs,
-.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
+.profile__main-container .bottom-navigation__tabs {
   color: #fff;
   border-radius: 0;
   font-size: .75em;
@@ -664,8 +683,7 @@
 .profile__main-container .bottom-navigation__tabs .bottom-navigation__tab {
   font-size: 1.15em;
 }
-.profile__tabs a.nav-item.nav-link.active,
-.profile__main-container .bottom-navigation__tabs .bottom-navigation__tab.active {
+.profile__tabs a.nav-item.nav-link.active {
   background-color: #7bafed;
   color: #fff;
   border-radius: 0;
@@ -675,20 +693,25 @@
   margin-left: auto;
 }
 /*Profile sub sub nav :)*/
+.profile__main-container .bottom-navigation__tabs  {
+  background:#f2f2f2;
+  border: none;
+}
 .profile__logs-container .bottom-navigation__container {
   display: flex;
   flex-direction: column;
+  height: calc(100% - 30px);
+  position: relative;
 }
 .profile__logs-container .bottom-navigation__container .bottom-navigation__screen {
   order: 2;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.175);
 }
 .profile-tables__container, .bottom-navigation__screen, .bottom-navigation__container {
   border: none;
   box-shadow: unset;
 }
-.profile-tables__container .table-with-search__table > div {
-  max-height: 30vh;
-}
+
 .profile-tables__container .table-with-search__container {
   padding-top: 10px;
 }
@@ -699,6 +722,66 @@
 }
 
 .profile__tabs + .tab-content {
-  padding: 0;
   height: 100%;
+  padding: 0
+}
+.profile__logs-container {
+  padding: 0 10px 10px 10px;
+  background: #f2f2f2;
+}
+.profile__logs-container .bottom-navigation__tab {
+  width: 80px;
+  text-align: center;
+  height: 0;
+  position: relative;
+  border-right: 22px solid transparent;
+  border-left: 22px solid transparent;
+  border-bottom: 30px solid #fff;
+  box-sizing: content-box;
+  margin:0 0 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-bottom-color 220ms, color 220ms;
+  color: #343a40;
+  z-index: 0;
+}
+
+.profile__logs-container .bottom-navigation__tab.active {
+  z-index: 1;
+  border-bottom-color: #fff;
+}
+.profile__logs-container .bottom-navigation__tab span {
+  position: absolute;
+  top: 15px;
+  display: inline-block;
+}
+.profile__logs-container .bottom-navigation__screen {
+  padding: 0;
+  position: static;
+}
+.profile-tables__container .nav-item {
+  margin: 0 10px 10px 10px;
+  border: none;
+  border-bottom: 4px solid transparent;
+  transition: border-bottom-color 220ms;
+}
+
+.profile-tables__container .nav-item.active,
+.profile-tables__container .nav-item:hover,
+.profile-tables__container .nav-item:focus {
+  outline: none;
+  border-bottom: 4px solid #2684ff;
+}
+/*This is to make the header stay on top of the container while a user is scrolling down*/
+.profile__logs-container .nav-tabs {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding-top: 10px;
+}
+.profile__logs-container .tab-content {
+  padding-top: 46px;
 }

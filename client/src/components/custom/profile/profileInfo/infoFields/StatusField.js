@@ -7,9 +7,11 @@ import PropTypes from "prop-types";
 import settings from '../../../../../settings';
 
 const StatusField = ({updateStatus, data}) => {
-    const theProfiles = settings.routes.profile;
 
-    let profileType = useRef(data.profileType);
+    const theProfiles = settings.routes.profile;
+    const profileType = useRef(data.profileType);
+    const profileId = useRef(data._id);
+
 
     const formatStatus = (status) => {
         return {value: status, label: status[0].toUpperCase() + status.substr(1)}
@@ -25,12 +27,7 @@ const StatusField = ({updateStatus, data}) => {
 
     //ToDo: should we pull from common folder? utils? (utils.statusSchema currently was this data)
      const agentStatus = theProfiles && theProfiles[profileType.current] && theProfiles[profileType.current]['statusOptions'];
-    //     {value: 'new', label: 'Lead'},
-    //     {value: 'prospect', label: 'Prospect'},
-    //     {value: 'pending', label: 'Pending'},
-    //     {value: 'agent', label: 'Agent'},
-    //     {value: 'notInterested', label: 'Not Interested'}
-    // ];
+
 
     const handleStatusChange = selectedOption => {
         setStatus(selectedOption);
@@ -56,6 +53,10 @@ const StatusField = ({updateStatus, data}) => {
         }
         if (lossInput.current !== undefined && lossInput.current !== null) {
             lossInput.current.focus();
+        }
+        if (data._id && (profileId.current !== data._id)) {
+            profileId.current = data._id;
+            toggleEditable(false);
         }
         if (data.profileType && (profileType.current !== data.profileType)) {
             profileType.current = data.profileType;
@@ -99,8 +100,10 @@ const StatusField = ({updateStatus, data}) => {
                 )}
             </div>
             <Modal size='md' show={showConfModal} onHide={() => {
-                updateAgentStatus(status, profileType.current);
-                setConfModal(false)
+                toggleEditable(false);
+                setStatus(formatedStatus);
+                setLossReason('');
+                setConfModal(false);
             }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Are you sure you want to change the status to {status.label}</Modal.Title>

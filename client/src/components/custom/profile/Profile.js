@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux'
 import qs from 'query-string'
 import './style.css'
@@ -15,6 +15,8 @@ import {Tab, Tabs} from 'react-bootstrap';
 
 
 const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault}) => {
+    console.log(activeProfile);
+    let profileType = useRef('');
 
     useEffect(() => {
         //added to allow for reuse of profile component when redux data is orginized by component    
@@ -22,7 +24,10 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
             const backUpProfile = qs.parse(search).profile
             backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
         }
-    }, [settings])
+        if (settings.profileType && profileType.current !== settings.profileType) {
+            profileType.current = (settings.profileType === 'agentPros') ? 'Agent' : (settings.profileType === 'buyerPros') ? 'Buyer' : 'Renter';
+        }
+    }, [settings, settings.profileType])
 
     const [chatWindow, tglChatWindow] = useState(false)
     const [listWindow, tglListWindow] = useState(true)
@@ -33,7 +38,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
     return loading ? <Loading/> :
         <Fragment>
             <Tabs defaultActiveKey="details" id="profile__tabs" className='profile__tabs'>
-                <Tab eventKey="details" title="Details">
+                <Tab eventKey="details" title={profileType.current + ' Details'}>
                     <div className={`agentProfile profile__main-container ${listWindow ? 'left__sidebar-open' : null} ${chatWindow ? 'chat__sidebar-open' : null}`}>
 
                         <div className='profile__left-container'>

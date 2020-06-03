@@ -29,7 +29,7 @@ export class ProfileIcon extends Component {
         <div 
           className='profile-icon__container' 
           style={{
-            backgroundColor: colors[colorNumber % colors.length], 
+            backgroundColor: '#343a40',
             height: iconSize,
             width: iconSize,
             borderRadius: iconSize/2
