@@ -5,6 +5,7 @@ const Chat = require('../db/models/comms/Chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
 const {outgoingSMS} = require('../3ps/sms')
 
+
 const router = express.Router();
 
 //store on DB in future may need to create type object for model names id sored as String in DB
@@ -123,5 +124,20 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
         res.status(400).send('server Error')
     }
 });
+
+
+// @route: Post /api/comms/email
+// @desc: Receive chat msg from profile comp in front end
+// @ access: Public *ToDo: update to make private
+router.post('/email/parse', async (req, res) => {
+    try {
+        sendEmail('adampoznanski@outlook.com', 'test email', 'testing sendgrid email')
+        sendEmail('ezrafreedlander@gmail.com', 'test email', 'testing sendgrid email')
+        res.status(200).send()
+    } catch (error) {
+        res.status(500).send()
+    }
+    
+})
 
 module.exports = router;

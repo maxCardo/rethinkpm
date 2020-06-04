@@ -149,12 +149,14 @@ const receiveSMS = async (data) => {
 }
 
 //serve static assets in production
-app.use(express.static('client/build'));
-
-app.get('*', (req, res) => {
-  const file = path.join(__dirname+'/../client/build/index.html')
-  res.sendFile(file);
-});
+if (process.env.NODE_ENV === 'production'){
+  app.use(express.static('client/build'));
+  
+  app.get('*', (req, res) => {
+    const file = path.join(__dirname+'/../client/build/index.html')
+    res.sendFile(file);
+  });
+}
 
 
 const port = process.env.PORT || 5000;
