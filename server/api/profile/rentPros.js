@@ -114,12 +114,12 @@ router.put("/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/addPhone/:id", async (req, res) => {
     try {
-        
+        let { number, isPrimary, okToText } = req.body
         //ToDo: validte number and add numType to phone record
         const inq = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(inq.prospect);
 
-        let newPhoneNumbers;
+        let newPhoneNumbers = []
         if (req.body.isPrimary) {
             newPhoneNumbers = rentPro.phoneNumbers.map((item) => {
                 if (item.isPrimary) {
@@ -129,8 +129,8 @@ router.put("/addPhone/:id", async (req, res) => {
             });
             newPhoneNumbers.push(req.body);
         } else {
-            newPhoneNumbers = rentPro.phoneNumbers
-            newPhoneNumbers.push(req.body);
+            rentPro.phoneNumbers.length ? newPhoneNumbers = rentPro.phoneNumbers : isPrimary = true
+            newPhoneNumbers.push({ number, isPrimary, okToText });
         }
 
         await rentPro.set({
@@ -142,6 +142,7 @@ router.put("/addPhone/:id", async (req, res) => {
 
         res.status(200).send(clone);
     } catch (err) {
+        console.error(err)
         res.status(500).send(err);
     }
 });
@@ -151,10 +152,8 @@ router.put("/addPhone/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/editPhone/:id", async (req, res) => {
     try {
-
-        if (req.body.phoneNumbers) {
-            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
-        }
+        if (!req.body.phoneNumbers.length) { throw "can not edit email" }
+        //ToDo: validte number and add numType to phone record
         const renter = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(renter.prospect);
         await rentPro.set({
@@ -174,9 +173,10 @@ router.put("/editPhone/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/addEmail/:id", async (req, res) => {
     try {
+        let { address, isPrimary } = req.body
         let inq = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(inq.prospect);
-        let newEmails;
+        let newEmails = [];
 
         if (req.body.isPrimary) {
             newEmails = rentPro.email && rentPro.email.map((item) => {
@@ -187,8 +187,8 @@ router.put("/addEmail/:id", async (req, res) => {
             });
             newEmails.push(req.body);
         } else {
-            newEmails = rentPro.email && rentPro.email
-            newEmails.push(req.body);
+            rentPro.email.length ? newEmails = rentPro.email : isPrimary = true
+            newEmails.push({ address, isPrimary });
         }
 
         await rentPro.set({
@@ -209,6 +209,7 @@ router.put("/addEmail/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/editEmail/:id", async (req, res) => {
     try {
+        if (!req.body.email.length) { throw "can not edit email" }
         const renter = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(renter.prospect);
 

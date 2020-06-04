@@ -52,11 +52,11 @@ router.put("/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/addPhone/:id", async (req, res) => {
     try {
+        let { number, isPrimary, okToText } = req.body
+        let agent = await Agent.findById(req.params.id).populate('office')
+        let newPhoneNumbers = [];
 
-        let agent = await Agent.findById(req.params.id)
-        let newPhoneNumbers;
-
-        if (req.body.isPrimary) {
+        if (isPrimary) {
             newPhoneNumbers = agent.phoneNumbers && agent.phoneNumbers.map((item) => {
                 if (item.isPrimary) {
                     item.isPrimary = false
@@ -65,14 +65,15 @@ router.put("/addPhone/:id", async (req, res) => {
             });
             newPhoneNumbers.push(req.body);
         } else {
-            newPhoneNumbers = agent.phoneNumbers && agent.phoneNumbers
-            newPhoneNumbers.push(req.body);
+            agent.phoneNumbers.length ? newPhoneNumbers = agent.phoneNumbers : isPrimary = true
+            newPhoneNumbers.push({ number, isPrimary, okToText });
         }
         await agent.set({
             ...agent,
             phoneNumbers: newPhoneNumbers
         })
         await agent.save();
+        
         res.status(200).send(agent);
     } catch (err) {
         console.error(err)
@@ -85,7 +86,7 @@ router.put("/addPhone/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/editPhone/:id", async (req, res) => {
     try {
-
+        if (!req.body.phoneNumbers.length) { throw "can not edit email" }
         //ToDo: validte number and add numType to phone record
         let agent = await Agent.findById(req.params.id)
         await agent.set({
@@ -105,8 +106,10 @@ router.put("/editPhone/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/addEmail/:id", async (req, res) => {
     try {
-        let agent = await Agent.findById(req.params.id)
-        let newEmails;
+        let { address, isPrimary } = req.body
+        let agent = await Agent.findById(req.params.id).populate('office')
+        console.log(req.body);
+        let newEmails = [];
         if (req.body.isPrimary) {
             newEmails = agent.email && agent.email.map((item) => {
                 if (item.isPrimary) {
@@ -116,8 +119,8 @@ router.put("/addEmail/:id", async (req, res) => {
             });
             newEmails.push(req.body);
         } else {
-            newEmails = agent.email && agent.email
-            newEmails.push(req.body);
+            agent.email.length ? newEmails = agent.email : isPrimary = true
+            newEmails.push({ address, isPrimary });
         }
 
         await agent.set({
@@ -138,6 +141,7 @@ router.put("/addEmail/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/editEmail/:id", async (req, res) => {
     try {
+        if (!req.body.email.length) { throw "can not edit email" }
         const agent = await Agent.findById(req.params.id)
         await agent.set({
             ...agent,
@@ -168,8 +172,6 @@ router.put("/editStatus/:id", async (req, res) => {
         res.status(500).send(err);
     }
 });
-
-
 
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
