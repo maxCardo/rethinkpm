@@ -62,4 +62,4 @@ const SaveFilterMod = ({show, handleClose, activeFilter, profileList, profileTyp
 }
 
 
-export default connect(() => {}, {saveFilter})(SaveFilterMod)
+export default connect(null, {saveFilter})(SaveFilterMod)

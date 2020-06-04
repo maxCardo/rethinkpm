@@ -227,6 +227,11 @@ export const addPhoneNumSubmit = (formData, id, profileType) => async dispatch =
 
     axios.put(`/api/profile/${profileType}/addPhone/${id}`, formData, config)
         .then((res) => {
+            const data = { ...res.data, profileType }
+            dispatch({
+                type: SET_ACTIVE_PROFILE,
+                payload: data,
+            });
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {
@@ -316,6 +321,11 @@ export const addEmailSubmit = (formData, id, profileType) => async dispatch => {
 
     axios.put(`/api/profile/${profileType}/addEmail/${id}`, formData, config)
         .then((res) => {
+            const data = { ...res.data, profileType }
+            dispatch({
+                type: SET_ACTIVE_PROFILE,
+                payload: data,
+            });
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {

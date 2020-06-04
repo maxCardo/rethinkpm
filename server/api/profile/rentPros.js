@@ -114,8 +114,8 @@ router.put("/:id", async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.put("/addPhone/:id", async (req, res) => {
     try {
-         //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
-
+        
+        //ToDo: validte number and add numType to phone record
         const inq = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(inq.prospect);
 
@@ -134,11 +134,13 @@ router.put("/addPhone/:id", async (req, res) => {
         }
 
         await rentPro.set({
-            ...inq,
+            ...rentPro,
             phoneNumbers: newPhoneNumbers
         })
-        //var result = await rentPro.save();
-        res.status(200).send(rentPro);
+        await rentPro.save();
+        const clone = { ...rentPro._doc, ...inq._doc }
+
+        res.status(200).send(clone);
     } catch (err) {
         res.status(500).send(err);
     }
@@ -159,8 +161,8 @@ router.put("/editPhone/:id", async (req, res) => {
             ...rentPro,
             phoneNumbers: req.body.phoneNumbers
         })
-        var thereq = req.body;
-        //var result = await rentPro.save();
+
+        await rentPro.save();
         res.status(200).send(rentPro);
     } catch (err) {
         res.status(500).send(err);
@@ -193,8 +195,9 @@ router.put("/addEmail/:id", async (req, res) => {
             ...inq,
             email: newEmails
         })
-        //var result = await buyer.save();
-        res.status(200).send(rentPro);
+        await rentPro.save();
+        const clone = { ...rentPro._doc, ...inq._doc }
+        res.status(200).send(clone);
     } catch (err) {
         console.error(err)
         res.status(500).send(err);
@@ -208,12 +211,13 @@ router.put("/editEmail/:id", async (req, res) => {
     try {
         const renter = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(renter.prospect);
-        await rentPro.set({
+
+        rentPro.set({
             ...rentPro,
             email: req.body.email
         })
-        var thereq = req.body;
-        //var result = await rentPro.save();
+
+        await rentPro.save();
         res.status(200).send(rentPro);
     } catch (err) {
         res.status(500).send(err);

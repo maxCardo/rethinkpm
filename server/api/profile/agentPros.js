@@ -53,8 +53,6 @@ router.put("/:id", async (req, res) => {
 router.put("/addPhone/:id", async (req, res) => {
     try {
 
-        //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
-
         let agent = await Agent.findById(req.params.id)
         let newPhoneNumbers;
 
@@ -70,14 +68,11 @@ router.put("/addPhone/:id", async (req, res) => {
             newPhoneNumbers = agent.phoneNumbers && agent.phoneNumbers
             newPhoneNumbers.push(req.body);
         }
-
-
-
         await agent.set({
             ...agent,
             phoneNumbers: newPhoneNumbers
         })
-        //var result = await agent.save();
+        await agent.save();
         res.status(200).send(agent);
     } catch (err) {
         console.error(err)
@@ -91,16 +86,13 @@ router.put("/addPhone/:id", async (req, res) => {
 router.put("/editPhone/:id", async (req, res) => {
     try {
 
-        if (req.body.phoneNumbers) {
-            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
-        }
+        //ToDo: validte number and add numType to phone record
         let agent = await Agent.findById(req.params.id)
         await agent.set({
             ...agent,
             ...req.body
         })
-        var thereq = req.body;
-        //var result = await agent.save();
+        await agent.save();
         res.status(200).send(agent);
     } catch (err) {
         console.error(err)
@@ -115,7 +107,6 @@ router.put("/addEmail/:id", async (req, res) => {
     try {
         let agent = await Agent.findById(req.params.id)
         let newEmails;
-
         if (req.body.isPrimary) {
             newEmails = agent.email && agent.email.map((item) => {
                 if (item.isPrimary) {
@@ -133,7 +124,7 @@ router.put("/addEmail/:id", async (req, res) => {
             ...agent,
             email: newEmails
         })
-        //var result = await buyer.save();
+        await agent.save();
         res.status(200).send(agent);
     } catch (err) {
         console.error(err)
@@ -152,7 +143,7 @@ router.put("/editEmail/:id", async (req, res) => {
             ...agent,
             email: req.body.email
         })
-        //var result = await agent.save();
+        await agent.save();
         res.status(200).send(agent);
     } catch (err) {
         console.error(err)

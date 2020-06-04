@@ -59,8 +59,6 @@ router.get('/', async (req, res) => {
 router.put("/addPhone/:id", async (req, res) => {
     try {
 
-        //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
-
         let buyer = await model.findById(req.params.id)
         let newPhoneNumbers;
 
@@ -81,7 +79,7 @@ router.put("/addPhone/:id", async (req, res) => {
             ...buyer,
             phoneNumbers: newPhoneNumbers
         })
-        //var result = await agent.save();
+        await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
         console.error(err)
@@ -95,15 +93,13 @@ router.put("/addPhone/:id", async (req, res) => {
 router.put("/editPhone/:id", async (req, res) => {
     try {
 
-        if (req.body.phoneNumbers) {
-            //req.body.phoneNumbers.map(async (record) => record.phoneType = await validateNum(record.number))
-        }
+        //ToDo: validte number and add numType to phone record
         const buyer = await model.findById(req.params.id)
         await buyer.set({
             ...buyer,
             ...req.body
         })
-        //var result = await buyer.save();
+        await buyer.save();
         res.status(200).send({buyer});
     } catch (err) {
         res.status(500).send(err);
@@ -135,7 +131,7 @@ router.put("/addEmail/:id", async (req, res) => {
             ...buyer,
             email: newEmails
         })
-        //var result = await buyer.save();
+        await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
         console.error(err)
@@ -154,7 +150,7 @@ router.put("/editEmail/:id", async (req, res) => {
             ...buyer,
             email: req.body.email
         })
-        //var result = await buyer.save();
+        await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
         res.status(500).send(err);
