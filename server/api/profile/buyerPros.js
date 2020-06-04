@@ -168,7 +168,7 @@ router.put("/editStatus/:id", async (req, res) => {
             status: req.body.status
         })
 
-        //var result = await buyer.save();
+        await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
         res.status(500).send(err);

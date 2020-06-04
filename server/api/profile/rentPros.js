@@ -235,8 +235,7 @@ router.put("/editStatus/:id", async (req, res) => {
             ...rentLead,
             status: req.body.status
         })
-        var thereq = req.body;
-        //var result = await rentPro.save();
+        await rentLead.save();
         res.status(200).send(rentLead);
     } catch (err) {
         res.status(500).send(err);

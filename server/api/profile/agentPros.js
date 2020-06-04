@@ -161,7 +161,7 @@ router.put("/editStatus/:id", async (req, res) => {
             ...agent,
             status: req.body.status
         })
-        //var result = await agent.save();
+        await agent.save();
         res.status(200).send(agent);
     } catch (err) {
         console.error(err)
