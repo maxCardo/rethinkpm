@@ -31,6 +31,7 @@ import io from 'socket.io-client';
 import { showNotification } from './notifications'
 import settings from './settings.json'
 import UpdateAlert from "./components/core/UpdateAlert";
+import Dash from "./components/custom/Dash"
 
 
 
@@ -73,6 +74,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <Route exact path='/serviceReq' component={ServiceReq} />
             <Route exact path='/serviceTicket' component={ServiceTicket} />
             <Route exact path='/addProperty' component={AddProperty} />
+            <PrivateRoute exact path='/dash' component={Dash} />
             <PrivateRoute exact path='/profile/rentPros' component={Profile} additionalProps={{ settings: routeSettings.profile.rentPros }} />
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
