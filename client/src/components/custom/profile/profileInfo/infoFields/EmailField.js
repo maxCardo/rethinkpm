@@ -18,6 +18,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
     const [emailValid, setEmailValid] = useState(true);
     const [editEmail, setEditEmail] = useState(email);
     const [showConfModal, setConfModal] = useState(false);
+    const [disableEdit, setDisableEdit] = useState(email === 'no email on file');
 
     const editEmailFunc = async (email) => {
         const newEMail = email;
@@ -49,6 +50,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
             profileType.current = data.profileType;
         }
         if (data._id && (profileId.current !== data._id)) {
+            setDisableEdit((email === 'no email on file'));
             profileId.current = data._id;
             toggleEdit(false);
         }
@@ -65,7 +67,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                        onChange={(evt) => editEmailFunc(evt.target.value)}
                         ref={emailInput}
                 />
-                {!edit ? (
+                {!disableEdit && (!edit  ? (
                     <button className='action-buttons__button singleFieldEdit' onClick={() => toggleEdit(true)}>
                         <i className='fas fa-pencil-alt'></i>
                     </button>
@@ -89,7 +91,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                             <i className='fas fa-times'></i>
                         </button>
                     </Fragment>
-                )}
+                ))}
 
                 <button className='action-buttons__button addEmail'
                         onClick={() => {
