@@ -15,7 +15,6 @@ import {Tab, Tabs} from 'react-bootstrap';
 
 
 const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault}) => {
-    console.log(activeProfile);
     let profileType = useRef('');
 
     useEffect(() => {
