@@ -134,9 +134,7 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
 router.post('/email/parse',upload.none(), (req, res) => {
     try {
         const {to, from, html, subject, text} = req.body
-
-        console.log(html)
-
+        console.log(text)
         //sendEmail('adampoznanski@outlook.com', 'test email', 'testing sendgrid email')
         //sendEmail('ezrafreedlander@gmail.com', 'test email', 'testing sendgrid email')
         res.status(200).send()
