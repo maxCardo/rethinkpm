@@ -24,6 +24,8 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
     const [phoneValid, setPhoneValid] = useState(true)
     const [showConfModal, setConfModal] = useState(false)
     const [editPhone, setEditPhone] = useState('4125138992')
+    const [disableEdit, setDisableEdit] = useState(phone === 'no phone on file');
+
 
     const editPhonefunc = (e) => {
         setEditPhone(e)
@@ -56,6 +58,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
             profileType.current = data.profileType;
         }
         if (data._id && (profileId.current !== data._id)) {
+            setDisableEdit(phone === 'no phone on file');
             profileId.current = data._id;
             toggleEdit(false);
         }
@@ -74,7 +77,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                     onChange={(e) => editPhonefunc(e.target.value)}
                     ref={phoneInput}
                 />
-                {!edit ? (
+                {!disableEdit && (!edit ? (
                     <button className='action-buttons__button singleFieldEdit' onClick={() => toggleEdit(true)}>
                         <i className='fas fa-pencil-alt'></i>
                     </button>
@@ -99,7 +102,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                             <i className='fas fa-times'></i>
                         </button>
                     </Fragment>
-                )}
+                ))}
                 <button
                     className='action-buttons__button addPhoneNumber'
                     onClick={() => {
