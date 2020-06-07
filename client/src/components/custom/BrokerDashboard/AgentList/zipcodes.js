@@ -1,4 +1,4 @@
-const zipcodes = [
+export const zipcodes = [
   {
      "label":"14724",
      "value":"14724"

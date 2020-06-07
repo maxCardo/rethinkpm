@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import {formatMoney, filterData, accessData} from '../../../../../util/commonFunctions'
 
@@ -14,8 +13,6 @@ const SimpleField = ({field, data}) => {
     if(!fieldValue) {
       fieldValue = 'n/a'
     }
-
-   
 
     return (
         <p>

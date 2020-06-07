@@ -16,7 +16,7 @@ import {
     LOAD_MORE_PROFILE_LIST,
     SET_HAS_MORE_DATA,
     RESET_PROFILE_INFO,
-    UPDATE_ACTIVE_PROFILE_CHAT, ALERT_SUCCESS, REMOVE_ALERT, ALERT_FAILURE
+    UPDATE_ACTIVE_PROFILE_CHAT, ALERT_SUCCESS, REMOVE_ALERT, ALERT_FAILURE, TOGGLE_ADD_LEAD
 
 } from './type';
 import { Next } from 'react-bootstrap/PageItem';
@@ -573,3 +573,52 @@ export const receiveSMS = (chat) => async dispatch =>{
 export const clearAlerts = () => (dispatch) => {
     dispatch({type: REMOVE_ALERT});
 };
+
+/*AddPersonModal*/
+//Toggle view control for show add person modal
+export const tglAddLeadMod = meh => async dispatch => {
+    try {
+        dispatch({
+            type: TOGGLE_ADD_LEAD,
+            payload: meh
+        })
+
+    } catch (err) {
+        dispatch({
+            type: ALERT_FAILURE,
+            payload: {msg: 'could not open this modal'}
+        });
+
+    }
+}
+
+//Toggle view control for show add phone modal
+//set params active profile _id and new phone nun object
+export const addLeadSubmit = (formData, id, profileType) => async dispatch => {
+
+    axios.put(`/api/profile/${profileType}/addLead/${id}`, formData, config)
+        .then((res) => {
+            const data = { ...res.data, profileType }
+            dispatch({
+                type: SET_ACTIVE_PROFILE,
+                payload: data,
+            });
+            dispatch({
+                type: ALERT_SUCCESS,
+                payload: {
+                    heading: 'Lead added',
+                    msg: 'Successfully added lead record'
+                }
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: ALERT_FAILURE,
+                payload: {
+                    heading: 'Server error',
+                    msg: 'Could not add record'
+                }
+            });
+        });
+
+}

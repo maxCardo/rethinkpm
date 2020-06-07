@@ -9,12 +9,12 @@ import ProfileDetails from './profileDetails/ProfileDetails'
 import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
 import {SET_INQUIRIES} from '../../../actions/type'
-import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
+import {loadBackUpProfile, loadProfileDefault, tglAddLeadMod} from '../../../actions/profile'
 
 import {Tab, Tabs} from 'react-bootstrap';
 
 
-const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault}) => {
+const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault, tglAddLeadMod}) => {
     let profileType = useRef('');
 
     useEffect(() => {
@@ -30,8 +30,12 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
 
     const [chatWindow, tglChatWindow] = useState(false)
     const [listWindow, tglListWindow] = useState(true)
+    const [editWindow, tglEditWindow] = useState(false)
+    const [addWindow, tglAddWindow] = useState(false)
     const tglList = () => tglListWindow(!listWindow)
     const tglChat = () => tglChatWindow(!chatWindow)
+    const tglEdit = () => tglAddLeadMod(!editWindow)
+    const tglAdd = () => tglAddLeadMod(!addWindow)
 
 
     return loading ? <Loading/> :
@@ -56,7 +60,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                                        }}>
                                 <div className='profile__info-container'>
                                     <ProfileInfo profile={activeProfile} settings={settings} tglChat={tglChat}
-                                                 tglList={tglList}/>
+                                                 tglList={tglList} tglEdit={tglEdit} tglAdd={tglAdd}/>
                                 </div>
                             </Resizable>
                             <div className='profile__logs-container'>
@@ -97,4 +101,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, {...mapDispatchToProps, loadProfileDefault, loadBackUpProfile})(Profile)
+export default connect(mapStateToProps, {...mapDispatchToProps, loadProfileDefault, loadBackUpProfile, tglAddLeadMod })(Profile)

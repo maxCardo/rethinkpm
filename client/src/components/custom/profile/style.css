@@ -46,7 +46,7 @@
   display: flex;
   flex-direction: row;
   /*padding 10 top, 20 sides, 40 bottom to allow space for buttons */
-  padding: 10px 20px 40px;
+  padding: 10px 10px 40px 20px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   background-color: #FFF;
   margin:  0;
@@ -527,13 +527,17 @@
   opacity: 0;
 }
 /*style for the edit profile button and placement in bottom right corner of PrifileInfo */
-.edit-profile__button {
+.edit-profile__button,
+.add-profile__button {
   position: absolute;
   right: 20px;
   display: flex;
   justify-content: center ;
   align-items: center;
   color: #343a40;
+}
+.edit-profile__button {
+  right: 60px;
 }
 /* Phone and Email edit and add buttons and inputs */
 .Phone input + button,
@@ -645,6 +649,9 @@
 }
 .addEmailGroup .form-group:first-child {
   flex-grow: 1;
+}
+.lead__modal .addPhoneGroup .form-group {
+  margin-bottom: 1em;
 }
 /*Could probably be reworked later to use fixed positioning if we want to use it anywhere as it's own component, I didn't give this much thought it was done in last minute*/
 .invalidAlert,
@@ -784,4 +791,37 @@
 }
 .profile__logs-container .tab-content {
   padding-top: 46px;
+}
+
+.lead__modal .modal-content {
+  width: 100%;
+}
+
+/*TODO: rework for all react-select boxes in app*/
+.selectSingle {
+  top: 2px;
+}
+.selectSingle > div:first-child,
+.selectSingle > span:first-child + div:nth-child(2) {
+  min-height: 38px;
+  max-height: 38px;
+}
+.selectSingle > div:first-child > div,
+.selectSingle > span:first-child + div:nth-child(2) > div {
+  max-height: 38px;
+  min-height: 38px;
+  font-size: 14px;
+}
+
+.selectMulti {
+  top: 2px;
+}
+.selectMulti > div:first-child,
+.selectMulti > span:first-child + div:nth-child(2) {
+  min-height: 38px;
+}
+.selectMulti > div:first-child > div,
+.selectMulti > span:first-child + div:nth-child(2) > div {
+  min-height: 38px;
+  font-size: 14px;
 }
