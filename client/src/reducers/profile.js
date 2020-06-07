@@ -19,7 +19,9 @@ import {
     UPDATE_ACTIVE_PROFILE_CHAT,
     START_LOADING_PROFILE_CHAT,
     START_LOADING_PROFILE,
-    RESET_PROFILE_INFO
+    RESET_PROFILE_INFO,
+    LOAD_PROFILE_TABLE_VIEW,
+    SET_PROFILE_TABLE_VIEW,
 } from '../actions/type';
 
 const initialState = {
@@ -76,6 +78,22 @@ export default function (state = initialState, action) {
                 profileList: {
                     list: payload,
                     loading: false
+                },
+            }
+        case LOAD_PROFILE_TABLE_VIEW:
+            return {
+                ...state,
+                profileList: {
+                    ...state.profileList,
+                    loadingTableView: true
+                },
+            }
+        case SET_PROFILE_TABLE_VIEW:
+            return {
+                ...state,
+                profileList: {
+                    list: payload,
+                    loadingTableView: false
                 },
             }
         case SET_HAS_MORE_DATA:

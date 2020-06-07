@@ -44,7 +44,7 @@ export class SelectDashboard extends Component {
               fontSize={12}
               className="agentInfoTable"
               {...this.props}
-              data={this.props.data[this.state.statusSelected.value]}
+              data={this.props.data[this.state.statusSelected.value] ? this.props.data[this.state.statusSelected.value] : []}
             />
           </div>
         </div>

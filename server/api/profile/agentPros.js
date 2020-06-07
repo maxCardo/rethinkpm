@@ -176,11 +176,11 @@ router.put("/editStatus/:id", async (req, res) => {
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
 // @ access: Public * ToDo: update to make private
-router.post('/filter/:page?', async (req, res) => {
+router.post('/filter', async (req, res) => {
     try {
-        const PAGESIZE = 500;
-        const data = req.body
-        const filterFields = Object.keys(req.body);
+        const PAGESIZE = req.body.pageSize;
+        const data = req.body.filters
+        const filterFields = Object.keys(req.body.filters);
         const filters = []
 
         //create filter object
@@ -200,8 +200,12 @@ router.post('/filter/:page?', async (req, res) => {
 
         //query DB
         let record;
-        if (req.params.page) {
-            record = await Agent.find(queryObj).populate('notes.user, office').skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
+        if (req.body.page) {
+            if(PAGESIZE) {
+              record = await Agent.find(queryObj).populate('notes.user, office').skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
+            } else {
+              record = await Agent.find(queryObj).populate('notes.user, office')
+            }
         } else {
             record = await Agent.find(queryObj).populate('notes.user, office').limit(PAGESIZE + 1)
         }

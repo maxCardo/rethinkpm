@@ -29,7 +29,7 @@ export class TabbedDashboard extends Component {
                     fontSize={12}
                     className="agentInfoTable"
                     {...this.props}
-                    data={this.props.data[key]}
+                    data={this.props.data[key] ? this.props.data[key] : []}
                   />
                 </div>
               </Tab>
