@@ -61,7 +61,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
 
     return (
         <Fragment>
-            <Modal size='xl' show={showMod} onHide={onHide} className="lead__modal">
+            <Modal size='lg' show={showMod} onHide={onHide} className="lead__modal">
                 <Modal.Header closeButton>
                     <Modal.Title>Add a {`${profileLabel}`}</Modal.Title>
                 </Modal.Header>

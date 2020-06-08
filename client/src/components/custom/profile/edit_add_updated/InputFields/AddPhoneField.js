@@ -11,20 +11,31 @@ const AddPhoneField = (field, form) => {
         {value: "false", label: 'No'}
     ];
 
-    const [valid, validate] = useState(false);
+    const [valid, setValid] = useState(false);
     const [number, setNumber] = useState('');
     const [isPrimary, setIsPrimary] = useState(true);
+    const [okToText, setOkToText] = useState(true);
     const [formData, setFormData] = useState(form);
 
     const onChange = e => {
-        setIsPrimary(!isPrimary);
         setFormData({ ...formData, [e.target.name]: e.target.value })
     };
-
     const checkBox = checkBoxCheck();
 
+    const onOkChange = () => {
+        setOkToText(!okToText)
+    }
+    const onPrimaryChange = () => {
+        setIsPrimary(!isPrimary)
+    }
+
+    const validate = (e) => {
+        const validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        setValid(!!e.target.value.match(validPhone))
+    }
+
     return (
-        <Col lg={6}>
+        <Col lg={12}>
             <Form.Group className="addPhoneGroup">
                 <Form.Group>
                     <Form.Label>Number:</Form.Label>
@@ -33,26 +44,23 @@ const AddPhoneField = (field, form) => {
                                   placeholder="Enter a Number"
                                   value={number}
                                   onChange={(e) => {
-                                      // validate(e);
-                                      setNumber(e)
+                                      validate(e);
+                                      setNumber(e.target.value)
                                   }}
                                   autoFocus={true} />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Label>Ok to text:</Form.Label>
-                    <Select name="okToText"
-                            defaultValue={trueFalse[1]}
-                            onChange={(e) => onChange({target: {name: 'okToText', value: e}})}
-                            options={trueFalse}
-                            isSearchable={false}
-                    />
+                    <Form.Label className="checkbox path">
+                        <input type="checkbox" name='okToText' checked={okToText} defaultValue={trueFalse[0].value} onChange={onOkChange}/>
+                        {checkBox} &nbsp; Ok to text
+                    </Form.Label>
                 </Form.Group>
                 <Form.Group>
                     <div className="element-wrapper with--checkbox">
-                        <label className="checkbox path">
-                            <input type="checkbox" name='isPrimary' checked={isPrimary} defaultValue={trueFalse[0].value} onChange={e => onChange(e)}/>
-                            {checkBox} &nbsp; Make Primary
-                        </label>
+                        <Form.Label className="checkbox path">
+                            <input type="checkbox" name='isPrimary' checked={isPrimary} defaultValue={trueFalse[0].value} onChange={onPrimaryChange}/>
+                            {checkBox} &nbsp; Primary
+                        </Form.Label>
                     </div>
                 </Form.Group>
             </Form.Group>

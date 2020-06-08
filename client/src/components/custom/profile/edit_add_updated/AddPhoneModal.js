@@ -44,7 +44,6 @@ const AddPhoneModal = ({profile: {_id, profileType}, addPhoneNumSubmit, tglAddPh
     const validate = (e) => {
         var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         setValid(!!e.target.value.match(validPhone))
-
     }
 
 

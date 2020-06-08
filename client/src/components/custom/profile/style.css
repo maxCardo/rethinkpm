@@ -345,7 +345,7 @@
   width: 20%;
   right: -20%;
   /*height set to 100% - the height of the header*/
-  height: calc(100% - 110px);
+  height: calc(100% - 26px);
   /*taken above the middle content so the shadow shows*/
   z-index: 2;
   background: white;
@@ -364,7 +364,7 @@
   width: 20%;
   left: -20%;
   /*height set to 100% - the height of the header*/
-  height: calc(100% - 110px);
+  height: calc(100% - 26px);
   /*taken above the middle content so the shadow shows*/
   z-index: 2;
   background: white;
@@ -530,14 +530,30 @@
 .edit-profile__button,
 .add-profile__button {
   position: absolute;
-  right: 20px;
   display: flex;
   justify-content: center ;
   align-items: center;
   color: #343a40;
 }
 .edit-profile__button {
-  right: 60px;
+  right: 15px;
+}
+.add-profile__button {
+  top: 6px;
+  right: 80px;
+  height: 20px;
+  width: auto;
+  font-size: 10px;
+  background: #2684ff;
+  color: #fff;
+  box-shadow: 0 0 0 rgba(0,0,0,0.175);
+  transition: background 225ms, color 225ms, box-shadow 225ms;
+}
+.add-profile__button:hover,
+.add-profile__button:focus {
+  background: #fff;
+  color: #2684ff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 /* Phone and Email edit and add buttons and inputs */
 .Phone input + button,
@@ -643,14 +659,14 @@
   margin-left: auto;
   margin-right: 0;
 }
-.addPhoneGroup .form-group:nth-child(2),
-.addEmailGroup .form-group:nth-child(2) {
+.addPhoneGroup .form-group:nth-child(2) {
   min-width: 125px;
 }
 .addEmailGroup .form-group:first-child {
   flex-grow: 1;
 }
-.lead__modal .addPhoneGroup .form-group {
+.lead__modal .addPhoneGroup .form-group,
+.lead__modal .addEmailGroup .form-group {
   margin-bottom: 1em;
 }
 /*Could probably be reworked later to use fixed positioning if we want to use it anywhere as it's own component, I didn't give this much thought it was done in last minute*/
@@ -676,6 +692,10 @@
 }
 
 /*Profile subnav*/
+.profile__tabs-container {
+  position: relative;
+  height: 100%;
+}
 .profile__tabs.nav {
   background:#2684ff;
   border: none;
@@ -792,11 +812,24 @@
 .profile__logs-container .tab-content {
   padding-top: 46px;
 }
-
-.lead__modal .modal-content {
-  width: 100%;
+.lead__modal .modal-body {
+  max-height: 62vh;
+  overflow: auto;
 }
+.lead__modal .checkbox.path {
+  margin-bottom: 6px;
+}
+.lead__modal .addPhoneGroup,
+.lead__modal .addEmailGroup {
+  align-items: flex-end;
+  margin-bottom: 0;
+}
+.lead__modal input[type="text"].form-control {
+  font-size: .85rem;
+  padding: 8px 10px;
+  height: 38px;
 
+}
 /*TODO: rework for all react-select boxes in app*/
 .selectSingle {
   top: 2px;

@@ -71,9 +71,7 @@ const ProfileInfo = ({settings: {profileInfo}, profile, tglChat, tglList, tglEdi
                 <button className='action-buttons__button edit-profile__button' onClick={() => tglEdit()}>
                     <i className='fas fa-cogs'></i>
                 </button>
-                <button className='action-buttons__button add-profile__button' onClick={() => tglAdd()}>
-                    <i className='fas fa-plus'></i>
-                </button>
+
             </div>
             {/* modals */}
             <AddPhoneModal/>

@@ -20,7 +20,7 @@ console.log(field.profile);
     }
 
     return (
-        <Col lg={4}>
+        <Col lg={12}>
             <Form.Group>
                 <label htmlFor={type.name}>{type.name}</label>
                 <Select

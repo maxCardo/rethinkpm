@@ -39,7 +39,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
 
 
     return loading ? <Loading/> :
-        <Fragment>
+        <div className='profile__tabs-container'>
             <Tabs defaultActiveKey="details" id="profile__tabs" className='profile__tabs'>
                 <Tab eventKey="details" title={profileType.current + ' Details'}>
                     <div className={`agentProfile profile__main-container ${listWindow ? 'left__sidebar-open' : null} ${chatWindow ? 'chat__sidebar-open' : null}`}>
@@ -82,9 +82,12 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                 <Tab eventKey="table" title="Table View" style={{marginLeft: 'auto'}}>
                     Maybe a view of the old BrokerDashboard
                 </Tab>
-            </Tabs>
 
-        </Fragment>
+            </Tabs>
+            <button className='action-buttons__button add-profile__button' onClick={() => tglAdd()}>
+                <i className='fas fa-plus'></i> &nbsp;Add {profileType.current}
+            </button>
+        </div>
 }
 
 
