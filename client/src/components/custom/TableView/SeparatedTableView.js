@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Table from '../Table'
-import '../CrmDashboard/CrmDashboard.css'
+import './style.css'
 
-export class SeparatedDashboard extends Component {
+export class SeparatedTableView extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,7 +15,7 @@ export class SeparatedDashboard extends Component {
         <div className='searchContainer'>
           <input className='form-control searchInput' tabIndex={0} onChange={(e) => this.setState({filterString: e.target.value})} placeholder='Search'></input>
         </div>
-        <div style={{overflow: 'auto', maxHeight: '80vh'}}>
+        <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
           {this.props.states.map(({label, key}, index) => (
             <div key={key}>
               <h2 className='sectionTitle'>Status {index+1}: {label}</h2>
@@ -37,5 +37,5 @@ export class SeparatedDashboard extends Component {
 }
 
 
-export default SeparatedDashboard
+export default SeparatedTableView
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import Table from '../Table'
 import {Tabs, Tab} from 'react-bootstrap'
-import '../CrmDashboard/CrmDashboard.css'
+import './style.css'
 
-export class TabbedDashboard extends Component {
+export class TabbedTableView extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -16,7 +16,7 @@ export class TabbedDashboard extends Component {
         <div className='searchContainer'>
           <input className='form-control searchInput' tabIndex={0} onChange={(e) => this.setState({filterString: e.target.value})} placeholder='Search'></input>
         </div>
-        <div style={{overflow: 'auto', maxHeight: '80vh'}}>
+        <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
           <Tabs>
             {this.props.states.map(({label, key}, index) => (
               <Tab key={key} eventKey={key} title={`Status ${index+1}: ${label}`}>
@@ -42,5 +42,5 @@ export class TabbedDashboard extends Component {
 }
 
 
-export default TabbedDashboard
+export default TabbedTableView
 

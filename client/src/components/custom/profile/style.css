@@ -792,7 +792,7 @@
   margin: 10px 20px;
 }
 
-.profile-table-view__filter-icon {
+.profile-table-view__icon-button {
   background: #fff;
   color: #6f9dd4;
   border-color: #fff;
@@ -800,13 +800,18 @@
   border-style: solid;
   outline: none;
   transition: color 250ms, box-shadow 250ms;
-  width: 60px;
+  width: fit-content;
+  padding: 5px 20px;
 }
 
-.profile-table-view__filter-icon:focus,
-.profile-table-view__filter-icon:hover {
+.profile-table-view__icon-button:focus,
+.profile-table-view__icon-button:hover {
   color: #333;
   box-shadow: 1px 1px 5px rgba(0,0,0,0.12), 1px 1px 4px rgba(0,0,0,0.24);
   border-style: solid;
   outline: none;
+}
+
+.profile-table-view__table-icon {
+  width: 200px;
 }

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import { loadProfileTableView } from '../../../actions/profile'
 import axios from 'axios';
 import LoadingScreen from '../LoadingScreen/LoadingScreen'
-import Dashboard from '../dashboard/Dashboard'
+import TableView from '../TableView/TableView'
 import FilterModal from './profileList/modals/filterModel/FilterModal'
 
 export class ProfileTableView extends Component {
@@ -17,9 +17,10 @@ export class ProfileTableView extends Component {
       showFilterMod: false
     }
     this.toggleFilterModal = this.toggleFilterModal.bind(this)
+    this.toggleTableType = this.toggleTableType.bind(this)
   }
   componentDidMount() {
-    this.props.loadProfileTableView(this.props.settings.profileType, this.axiosSource.token)
+    // this.props.loadProfileTableView(this.props.settings.profileType, this.axiosSource.token)
   }
   componentWillUnmount() {
     this.axiosSource.cancel()
@@ -38,23 +39,17 @@ export class ProfileTableView extends Component {
       <LoadingScreen loading={this.props.profileList.loadingTableView}>
         <div className='profile-table-view__top-bar'>
           <div>
-            <button className='dashboard__action-button' onClick={() => this.setTableType('select')}>
-              <i className="fas fa-comments"></i>
-            </button>
-            <button className='dashboard__action-button' onClick={() => this.setTableType('tabbed')}>
-              <i className="fas fa-comments"></i>
-            </button>
-            <button className='dashboard__action-button' onClick={() => this.setTableType('separated')}>
-              <i className="fas fa-comments"></i>
+            <button className='profile-table-view__icon-button' onClick={this.toggleTableType}>
+              <i className="fas fa-table"></i> Table View
             </button>
           </div>
           <div>
-            <button className='profile-table-view__filter-icon' onClick={this.toggleFilterModal}>
+            <button className='profile-table-view__icon-button' onClick={this.toggleFilterModal}>
               <i className="fas fa-filter"></i>
             </button>
           </div>
         </div>
-        <Dashboard
+        <TableView
           type={this.state.tableType}
           data={data} 
           headers={this.props.settings.tableHeaders}
@@ -70,8 +65,15 @@ export class ProfileTableView extends Component {
       </LoadingScreen>
     )
   }
-  setTableType(tableType) {
-    this.setState({tableType})
+  toggleTableType() {
+    const actualType = this.state.tableType
+    let nextType = 'tabbed'
+    if(actualType == 'tabbed') {
+      nextType = 'separated'
+    } else if(actualType == 'separated') {
+      nextType = 'select'
+    }
+    this.setState({tableType: nextType})
   }
   toggleFilterModal() {
     this.setState((prevState) => ({showFilterMod: !prevState.showFilterMod}))
