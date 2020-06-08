@@ -1,23 +1,68 @@
-import React , {Fragment} from 'react';
-import {Link, useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React , {Fragment, Component} from 'react';
+import { withRouter } from 'react-router';
 import ProfileInfo from './ProfileInfo'
 import {Resizable} from 're-resizable'
+import axios from 'axios';
+import {connect} from 'react-redux'
+import {SET_INQUIRIES} from '../../../actions/type'
 
 import './style.css'
 import ProfileChat from './ProfileChat';
-import ProfileTables from './ProfileTables';
+import BottomNavigation from '../service/BottomNavigation';
+import AgentList from "../BrokerDashboard/AgentList/AgentList";
 
-const Profile = props => {
-    const {id} = useParams()
-    const data = {
-      name: 'Oscar Rodriguez',
-      phone: '(412) 880-3806',
-      email: 'lagartoverde97@gmail.com'
+import NotesScreen from './screens/Notes'
+import SalesScreen from './screens/SalesHistory'
+
+
+export class Profile extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      profile: undefined
     }
+  }
+  componentDidMount() {
+    const {id} = this.props.match.params
+    axios.get(`${this.props.endpoint}/${id}`).then((res) => {
+      this.setState({profile: res.data})
+    })
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+    /*SIDEBAR LINK POPULATION UPDATE*/
+    if (prevProps !== this.props) {
+
+      if (this.props.isAgent) {
+        axios.get(`/api/profile/agent/${this.props.match.params.id}`).then((res) => {
+          let agentWithSales = res.data;
+          this.setState({profile: agentWithSales});
+        })
+          .then((res) => {
+            this.setState({loadingAgent: false});
+          });
+      }
+    }
+  }
+
+  render() {
+    if(!this.state.profile) return ''
+    const screens = {
+      notes: (profile) => ({
+        route: 'notes',
+        display: 'Notes',
+        component: <NotesScreen profile={profile} />,
+      }),
+      sales: (profile) => ({
+        route: 'sales',
+        display: 'Sales',
+        component: <SalesScreen profile={profile} />,
+      })
+    }
+    const screensSelected = this.props.screens.map((screenName) => (screens[screenName](this.state.profile)))
     return (
         <Fragment>
-          <div className='profile__main-container'>
+          <div className={this.props.isAgent ? 'agentProfile profile__main-container' : 'profile__main-container'}>
             <div className='profile__left-container'>
               <Resizable 
                 defaultSize={{
@@ -39,22 +84,37 @@ const Profile = props => {
                 }}
               >
                 <div className='profile__info-container' >
-                  <ProfileInfo inquiryId={id}/>
+                  <ProfileInfo inquiry={this.state.profile} attributes={this.props.attributes} isAgent={this.props.isAgent} />
                 </div>
               </Resizable>
               <div className='profile__logs-container'>
-                <ProfileTables inquiryId={id}/>
+                <BottomNavigation screens={screensSelected}/>
               </div>
             </div>
-            <div className='profile__chat-container'>
-              <ProfileChat inquiryId={id}/>
+            <div className='profile__chat-container chat__sidebar'>
+              <ProfileChat inquiryId={this.state.profile._id}/>
             </div>
+            {this.props.isAgent ? (
+              <div className="sidebar__left profile__agent-leads">
+                <AgentList agents={this.props.listData} />
+              </div>
+            ) : ''}
           </div>
         </Fragment>
     )
+  }
+}
+
+const mapStateToProps = state => ({
+  inquiries: state.dashboard.inquiriesRaw,
+  agentSelected: state.brokerDashboard.agentSelected
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setInquiries:(inquiries) => dispatch({type: SET_INQUIRIES, payload: inquiries}),
+  }
 }
 
 
-
-
-export default Profile
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withRouter(Profile)))

@@ -27,7 +27,7 @@ export class AddRecordModal extends Component {
             </Form.Group>
             <Form.Group controlId="updateForm.prospectName">
               <Form.Label>Record:</Form.Label>
-              <Form.Control type="text" value={this.state.record} onChange={this.handleChange.bind(this, 'record')}/>
+              <Form.Control style={{resize: 'none'}} as="textarea" rows="5" value={this.state.record} onChange={this.handleChange.bind(this, 'content')}/>
             </Form.Group>
           </Form>
         </Modal.Body>

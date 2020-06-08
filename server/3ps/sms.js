@@ -37,6 +37,27 @@ const sendSMS = (to, body) => {
   }
 }
 
+//new version of sendSMS
+const outgoingSMS = (from, to, body) => {
+    if (process.env.NODE_ENV === 'production') {
+    client.messages
+        .create({
+            body: body,
+            from: from,
+            to: to
+        })
+        .then(message => console.log(message.sid))
+        .done();
+    } else {
+        console.log('sms sending function ran in dev. no sms sent')
+        console.log('sms body: ', body)
+    }
+}
+
+
+
+
+
 const validateNum = async (phoneNumber) => {
     let phoneType = 'n/a'
     await client.lookups.phoneNumbers(phoneNumber)
@@ -63,4 +84,4 @@ const sendFirstSMS = (pros,inq) => {
 
 
 
-module.exports = { sendSMS, sendFirstSMS, validateNum, testSMS };
+module.exports = { sendSMS, sendFirstSMS, validateNum, testSMS, outgoingSMS };

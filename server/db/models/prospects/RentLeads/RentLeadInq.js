@@ -19,6 +19,11 @@ const rentLeadInqSchema = new mongoose.Schema({
 
     status: {
         // current status new = sourced, engaged = hot, scheduled = upcoming appointments, toured, application, cold, dead
+        //new = raw lead, 
+        //prospect = responded to bot or endgatged with staff or system post first contact, 
+        //pending = schedualed appointment or has already seen place ,
+        //application
+        //not interested 
         currentStatus: {
             type: String,
             required: true,
@@ -87,13 +92,8 @@ const rentLeadInqSchema = new mongoose.Schema({
 
     },
     notes: [{
-        note: {
-            type: String,
-        },
-        date: {
-            type: Date,
-            default: Date.now
-        }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Note'
     }],
     Chat: {
         type: mongoose.Schema.Types.ObjectId,

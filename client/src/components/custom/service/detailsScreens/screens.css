@@ -1,0 +1,56 @@
+.ticket-screen__container {
+  padding: 20px 50px;
+}
+
+.ticket-screen__container textarea {
+  resize: none;
+}
+
+.history-screen__container {
+  padding: 20px 50px;
+}
+
+.history-screen__select-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 10px
+}
+
+.history-screen__select{
+  width: 200px;
+} 
+
+.history-screen__note-column {
+  width: 70%;
+}
+
+.billing-screen__memo-column {
+  width: 50%;
+}
+
+.communication-screen__container {
+  position: relative;
+  height: 100%;
+}
+
+.communication-screen__row {
+  height: 100%;
+}
+
+.communication-screen__chat-container {
+  height: 100%;
+}
+
+.communication-screen__contacts-container {
+  height: 100%;
+  border-right: 1px solid #CCC;
+}
+
+
+
+.billing-screen__container {
+  position: relative;
+  height: 100%;
+  padding: 20px 50px;
+}

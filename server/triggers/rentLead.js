@@ -22,7 +22,6 @@ cron.schedule(' 34 12,18 * * 0-5', async () => {
       lead.status.currentStatus = 'cold'
       notes.unshift({ note: `updated current status to cold after ${numFlwUps} tries to contact` });
     }
-    console.log(lead);
     await lead.save();
   })
 });

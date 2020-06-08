@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ChatContainer from '../common/ChatContainer'
 import Contacts from '../../common/Contacts'
 
-export class index extends Component {
+export class ChatInitiator extends Component {
   render() {
     return (
       <ChatContainer name='Chat'>
@@ -24,4 +24,4 @@ export class index extends Component {
   }
 }
 
-export default index
+export default ChatInitiator

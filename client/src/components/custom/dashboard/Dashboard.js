@@ -1,33 +1,22 @@
-import React, {Fragment} from 'react'
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import Widgit from './Widget';
+import React, { Component } from 'react'
+import SelectDashboard from './SelectDashboard'
+import SeparatedDashboard from './SeparatedDashboard'
+import TabbedDashboard from './TabbedDashboard'
 
-
-const Dashboard = ({auth:{user}}) => {
-    return (
-      <Fragment>
-        <h2>Hello {user && user.name}! </h2>
-        <div>
-          <Link to='/addProfile' className='btn'><i className='fas fa-user-circle'></i> Add Profile</Link>
-        </div>
-{/* inv dash 
-        <div className = "dashboard">
-          <Widgit/>
-          <Widgit/>
-          <Widgit/>  
-        </div> */}
-      </Fragment>
-    )
+export class Dashboard extends Component {
+  render() {
+    switch(this.props.type) {
+      case "select":
+        return <SelectDashboard {...this.props}/>
+      case "separated":
+        return <SeparatedDashboard {...this.props} />
+      case "tabbed":
+        return <TabbedDashboard {...this.props} />
+      default:
+        console.error(`The dashboard type ${this.props.type} is not yet implemented`)
+        return <p>Dashboard {this.props.type} not implemented yet</p>
+    }
+  }
 }
 
-Dashboard.propTypes = {
-  auth: PropTypes.object,
-}
-
-const mapStateToProps = state => ({
-  auth: state.auth 
-})
-
-export default connect(mapStateToProps)(Dashboard)
+export default Dashboard

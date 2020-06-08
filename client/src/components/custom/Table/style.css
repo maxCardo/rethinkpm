@@ -15,3 +15,12 @@
 .table-with-search__add-button {
   background-color: palegreen;
 }
+
+.table-striped tbody tr:nth-of-type(odd):hover {
+  background-color: #DDD;
+}
+
+
+.table-striped thead tr:nth-of-type(odd):hover {
+  background-color: #FFF;
+}

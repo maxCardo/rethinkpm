@@ -4,23 +4,26 @@ import Contacts from '../common/Contacts'
 import Profile from './Profile'
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import {UPDATE_CHATS} from '../../../../actions/type'
+import {UPDATE_CHATS, SET_INQUIRIES} from '../../../../actions/type'
 import axios from 'axios';
+import ChatBar from './ChatBar'
 
 import './chat-screen.css'
 
-export class index extends Component {
+export class ChatScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
       activeChat: 0,
-      chats: [],
     }
     this.addChat = this.addChat.bind(this)
     this.chatRef = React.createRef()
     this.sendMessage = this.sendMessage.bind(this)
     this.getChats = this.getChats.bind(this)
     this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
+    if(!this.props.inquiries || !this.props.inquiries.length) {
+      this.getInquiries()
+    }
     if(!this.props.chats || !this.props.chats.length) {
       this.getChats()
     }
@@ -28,6 +31,27 @@ export class index extends Component {
   }
   componentDidMount() {
     this.scrollToBottom()
+  }
+  async getInquiries() {
+    axios.get('/api/rent_lead/open_leads').then((res) => {
+      const properties = new Set()
+      const data = {
+        upcoming: [],
+        engaged: [],
+        cold: [],
+        scheduled: [],
+        toured: [],
+        application: [],
+        new: [],
+      }
+      res.data.forEach((lead) => {
+        properties.add(lead.listing)
+        data[lead.status.currentStatus].push(lead)
+      })
+
+      this.props.setInquiries({inquiries: data, inquiriesRaw: res.data})
+    })
+    
   }
   async getChats() {
     axios.get('/api/rent_lead/chats').then((res) => {
@@ -40,7 +64,7 @@ export class index extends Component {
           unread: chat.unread,
           messages: chat.messages.map((message) => ({
             date: new Date(message.date),
-            sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
+            sender: message.from === 'User-SMS' ? chat.inq.prospect.name : message.from,
             content: message.message,
             userMessage: message.from !== 'User-SMS'
           })),
@@ -55,7 +79,14 @@ export class index extends Component {
       })
   }
   render() {
-    if(!this.props.chats || !this.props.chats.length) return "";
+    if(!this.props.chats || !this.props.chats.length ) return "";
+    let notes = []
+    let activeChat = undefined
+    if(this.props.inquiries && this.props.inquiries.length) {
+      activeChat = this.props.chats[this.state.activeChat]
+      const inquiry = this.props.inquiries.find((inquiry) => inquiry._id === activeChat.inquiryId)
+      notes = inquiry.notes
+    }
     return (
       <div className='container-fluid h-100'>
         <div className='row h-100'>
@@ -63,16 +94,19 @@ export class index extends Component {
             <Contacts contacts={this.props.chats} handleAddChat={this.addChat} />
           </div>
           <div className='col-sm-6 h-100 chat-screen__chat-container'>
-            <ChatUI 
-              messages={this.props.chats[this.state.activeChat].messages}
-              onSendMessage={this.sendMessage}
-              chatRef={this.chatRef}
-              botOn={this.props.chats[this.state.activeChat].botOn}
-              scrollToBottom={this.scrollToBottom}
-            />
+            <ChatBar info={activeChat}/>
+            <div className='chat-screen__chat-ui'>
+              <ChatUI 
+                messages={activeChat.messages}
+                onSendMessage={this.sendMessage}
+                chatRef={this.chatRef}
+                botOn={activeChat.botOn}
+                scrollToBottom={this.scrollToBottom}
+              />
+            </div>
           </div>
           <div className='col-sm-3'>
-            <Profile name={this.props.chats[this.state.activeChat].name} notes={this.props.chats[this.state.activeChat].notes} /> 
+            <Profile name={activeChat.name} notes={notes} inquiryId={activeChat.inquiryId} /> 
           </div>
         </div>
       </div>
@@ -91,7 +125,8 @@ export class index extends Component {
   }
   sendMessage(messageContent) {
     const chats = this.props.chats.slice()
-    chats[this.state.activeChat].messages.push({
+    const activeChat = chats[this.state.activeChat]
+    activeChat.messages.push({
       userMessage: true,
       sender: 'Admin',
       content: messageContent,
@@ -102,8 +137,7 @@ export class index extends Component {
       message: messageContent,
       date: new Date()
     }
-    const chat = chats[this.state.activeChat]
-    this.socket.emit('ui_msg', {chatID: chat.id, msg: message})
+    this.socket.emit('ui_msg', {chatID: activeChat.id, msg: message})
     this.props.updateChats(chats)
     this.scrollToBottom()
   }
@@ -111,14 +145,16 @@ export class index extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateChats:(chats) => dispatch({type: UPDATE_CHATS, payload: chats})
+    updateChats:(chats) => dispatch({type: UPDATE_CHATS, payload: chats}),
+    setInquiries:(inquiries) => dispatch({type: SET_INQUIRIES, payload: inquiries})
   }
 }
 
 const mapStateToProps = state => {
   return {
-    chats: state.chat.chats
+    chats: state.chat.chats,
+    inquiries: state.dashboard.inquiriesRaw
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(index)
+export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen)

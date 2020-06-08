@@ -11,3 +11,239 @@
     float: right
 }
 
+.service__action-button {
+  outline: none;
+  border: none;
+  background-color: #00000000;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.service-detail__service-container {
+  height: 100%;
+  background-color: #EEE;
+}
+
+.service-detail__action-bar {
+  height: 10%;
+  background-color: #CCC;
+}
+
+.service-detail__detail-bar {
+  height: 15%;
+}
+
+.service-detail__main-container {
+  height: 75%;
+  display: flex;
+  
+}
+
+.service-detail__child-tasks-container {
+  height: 100%;
+  width: 25%;
+}
+
+.service-detail__data-container {
+  height: 100%;
+  width: 75%;
+  padding: 10px 10px;
+}
+
+.action-bar__container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.action-bar__profile {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+
+
+}
+.action-bar__profile-data {
+  height: fit-content;
+  margin: 0;
+  margin-left: 10px;
+}
+
+.action-bar__profile-name {
+  margin: 0;
+  font-size: 16px;
+  line-height: 10px;
+  margin-top: 6px;
+}
+
+.action-bar__profile-title {
+  margin: 0;
+  font-size: 10px;
+}
+
+.action-bar__left-side {
+  display: flex;
+}
+
+.action-bar__action-buttons {
+  margin-left: 20px;
+}
+
+.action-buttons__container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.action-buttons__button {
+  border-radius: 20px;
+  padding: 2px 7px;
+  margin-left: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border: none;
+  background-color: #FFF;
+  color: black
+}
+
+.action-buttons__button:focus {
+  outline: none;
+}
+
+.action-buttons__button:hover {
+  color: black;
+}
+
+.details-bar__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 10px
+}
+
+.details-bar__card {
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background-color: #FFF;
+}
+
+.details-bar__top {
+  display: grid;
+  grid-template-columns: 25% 25%;
+}
+.details-bar__container p {
+  margin-bottom: 0;
+  height: 30px;
+  display: flex;
+  align-items: center;
+} 
+
+.details-bar__container p b {
+  margin-right: 10px;
+}
+
+.details-bar__bottom {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+
+}
+.child-tasks__container {
+  overflow: auto;
+  height: 100%;
+  padding: 10px 10px;
+  cursor: pointer;
+}
+.child-task__container {
+  height: 150px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  margin-bottom: 10px;
+  background-color: #FFF;
+}
+
+.go-to-parent-card__container {
+  height: 150px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  margin-bottom: 10px;
+  background-color: #FFF;
+}
+
+.go-to-parent-card__container p {
+  margin: 0;
+  padding: 0;
+}
+
+.child-task__status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.child-task__childs-number {
+  position: absolute;
+  font-size: 10px;
+  bottom: 5px;
+  right: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.bottom-navigation__container {
+  height: 100%;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background-color: #FFF;
+  display: flex;
+  flex-direction: column;
+}
+
+.bottom-navigation__screen {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+  border-bottom: 1px solid #CCC;
+  z-index: 1;
+}
+
+.bottom-navigation__tabs {
+  height: fit-content;
+  display: flex;
+}
+
+.bottom-navigation__tab {
+  padding: 5px 10px;
+  border: none;
+  border-right: 1px solid #CCC;
+  height: 101%;
+  margin-top: -1px;
+  z-index: 2;
+  background-color: #FFF0;
+}
+
+.bottom-navigation__tab:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+.bottom-navigation__tab[active="true"] {
+  background-color: #FFF;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.24);
+  border-right: 0;
+}
+
+.bottom-navigation__tab:focus {
+  outline: none
+}

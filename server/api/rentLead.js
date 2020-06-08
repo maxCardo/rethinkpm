@@ -2,17 +2,23 @@ const express = require('express');
 const RentLeadPros = require('../db/models/prospects/RentLeads/RentLeadPros');
 const RentLeadInq = require('../db/models/prospects/RentLeads/RentLeadInq');
 const ChatInq = require('../db/models/prospects/RentLeads/chat');
+const Note = require('../db/models/common/Note')
+const User = require('../db/models/users/User')
 const templet = require('../templets/newLead');
 const {postSlack} = require('../3ps/slack');
 const {validateNum, sendFirstSMS, testSMS} = require('../3ps/sms');
 const {sendFirstEmail} = require('../3ps/email');
 const {loadTestDB} = require('../dev/testDB')
+const auth = require('../middleware/auth')
+const useUnless = require('../middleware/useUnless')
 
 
 const router = express.Router();
 
 //ToDo: change to call to DB once property table is created
 const {propertyNum} = require('../3ps/calandly');
+
+router.use(useUnless(auth, ['/']))
 
 //---------------------------------------------------------- New Lead From Email Parse ----------------------------------------------------------//
 // @route: Post /api/rent_lead;
@@ -77,8 +83,12 @@ router.post('/', async (req, res) => {
 router.get('/open_leads', async (req, res) => {
     console.log('open leads api fired');
     try {
-        const leads = await RentLeadInq.find({'status.currentStatus':{$ne: 'dead'}}).populate('prospect');
-        res.status(200).send(leads);
+        const leads = await RentLeadInq.find({'status.currentStatus':{$ne: 'dead'}}).populate('prospect notes');
+        res.status(200).send(await Promise.all(leads.map(async (lead) => {
+          const notesPopulated = await  Note.populate(lead.notes, {path: 'user'})
+          lead.notes = notesPopulated
+          return lead
+        })));
     } catch (error) {
         console.error(error);
         res.status(400).send('server error')
@@ -125,6 +135,19 @@ router.patch('/update_inquiry/:inq_id', async (req, res) => {
         res.status(400).send('server error')
     }
 });
+
+router.post('/update_inquiry/add_note/:inq_id', async (req,res) => {
+  const inq = await RentLeadInq.findById(req.params.inq_id);
+  const {type, content} = req.body;
+  const userId = req.user;
+  const user = await User.findById(userId)
+  const note = new Note({type, content, user: user._id})
+  await note.save()
+  const updatedInq = await RentLeadInq.findByIdAndUpdate(inq,  { $push: { notes: note } }, {new: true}).populate({path:'notes prospect'})
+  const notesPopulated = await  Note.populate(updatedInq.notes, {path: 'user'})
+  updatedInq.notes = notesPopulated
+  res.json(updatedInq)
+})
 
 
 //old api ep for UI updates  below

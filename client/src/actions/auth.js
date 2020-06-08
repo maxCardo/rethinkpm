@@ -75,12 +75,15 @@ export const logout = () => async dispatch => {
     }
 }
 
+
+//not in play commented out api call 
 export const register = ({name, email,phone, password}) => async dispatch =>{
     const body = JSON.stringify({name, email,phone, password});
     const config = {headers:{'Content-Type': 'application/json'}}
 
     try {
-       const res = await axios.post('/api/users', body, config);
+       const res = '' 
+       //await axios.post('/api/users', body, config);
 
        dispatch({
            type: REGISTER_SUCCESS,

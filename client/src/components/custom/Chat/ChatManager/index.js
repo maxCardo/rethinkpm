@@ -8,18 +8,9 @@ import axios from 'axios';
 
 import './chatManager.css'
 
-export class index extends Component {
+export class ChatManager extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      contacts: [
-      ],
-      chats: [
-      ]
-    }
-    this.refsArray = this.state.chats.map(() => {
-      return React.createRef();
-    })
     this.handleAddChat = this.handleAddChat.bind(this)
     if(!this.props.chats || !this.props.chats.length) {
       this.getChats()
@@ -37,19 +28,15 @@ export class index extends Component {
           unread: chat.unread,
           messages: chat.messages.map((message) => ({
             date: new Date(message.date),
-            sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
+            sender: message.from === 'User-SMS' ? chat.inq.prospect.name : message.from,
             content: message.message,
             userMessage: message.from !== 'User-SMS'
           })),
           notes: []
         }
       })
-
-        this.props.updateChats(chatsParsed)
-        // this.forceUpdate(() => {
-        //   this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
-        // })
-      })
+      this.props.updateChats(chatsParsed)
+    })
   }
   render() {
     return (
@@ -65,15 +52,12 @@ export class index extends Component {
   handleAddChat(chatToAdd) {
     const openChats = this.props.openChats
     let chatAlreadyAdded = false;
-    let index = -1;
     openChats.forEach((chatId, i) => {
       if(chatId === chatToAdd.id) {
         chatAlreadyAdded = true
-        index = i
       }
     })
-    if(chatAlreadyAdded) {
-    } else {
+    if(!chatAlreadyAdded) {
       this.props.openChat(chatToAdd.id)
     }
   }
@@ -97,4 +81,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(index)
+export default connect(mapStateToProps, mapDispatchToProps)(ChatManager)

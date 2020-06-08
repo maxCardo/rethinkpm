@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Table from '../Table/index'
-import AddRecordModal from './AddRecordModal'
+import AddRecordModal from '../common/AddRecordModal'
 import './style.css'
 
 export class TableWithSearch extends Component {

@@ -74,6 +74,8 @@ export class UpdateModal extends Component {
         return this.renderTourResultForm()
       case 'recordApplication':
         return this.renderApplicationForm()
+      default:
+        return ''
     }
   }
   renderAppointmentForm() {
@@ -169,9 +171,8 @@ export class UpdateModal extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => ({})
 
-})
 const mapDispatchToProps = dispatch => {
   return {
     updateInquiry:(inquiry) => dispatch({type: UPDATE_INQUIRY, payload: inquiry})

@@ -4,7 +4,7 @@ import {OPEN_INQUIRY_CHAT} from '../../../actions/type'
 import './CrmDashboard.css'
 import { connect } from 'react-redux';
 import UpdateModal from './UpdateModal';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 export class Tables extends Component {
   constructor(props) {
@@ -24,12 +24,12 @@ export class Tables extends Component {
         {
           accessor: 'prospect.phone.phoneNumber',
           label: 'Phone',
-          mapper: (data) => `(${data.substring(1,4)}) ${data.substring(4,7)}-${data.substring(7)}`
+          mapper: 'phone'
         },
         {
           accessor: 'status.lastActive',
           label: 'Last Contact',
-          mapper: (data) => new Intl.DateTimeFormat().format(new Date(data))
+          mapper: 'date'
         },
         {
           accessor: 'status.scheduled.schDate',
@@ -48,10 +48,10 @@ export class Tables extends Component {
           render: (row) =>
           <div>
             <div>
-              <button className='dashboard__action-button' onClick={() =>  this.props.openInquiryChat(row._id)}>
+              <button className='dashboard__action-button' onClick={(e) => this.cancelBubbling(e) && this.props.openInquiryChat(row._id)}>
                 <i className="fas fa-comments"></i>
               </button>
-              <button className='dashboard__action-button' onClick={() =>  this.openModal(row)}>
+              <button className='dashboard__action-button' onClick={(e) => this.cancelBubbling(e) && this.openModal(row)}>
                 <i className="fas fa-edit"></i>
               </button>
               <Link className='dashboard_action-button' to={`/profile/${row._id}`}>
@@ -64,6 +64,11 @@ export class Tables extends Component {
       filteredData: this.props.data
     }
     this.handleModalClose = this.handleModalClose.bind(this)
+    this.handleClickRow = this.handleClickRow.bind(this)
+  }
+  cancelBubbling(e){
+    e.stopPropagation()
+    return true
   }
   static getDerivedStateFromProps(props, state) {
     const filteredData = {}
@@ -79,7 +84,6 @@ export class Tables extends Component {
     } 
   }
   render() {
-    console.log(this.state.filteredData)
     return (
       <div>
         <div className='searchContainer'>
@@ -95,6 +99,8 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString}   
               fontSize={12}
+              onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div>
@@ -106,6 +112,8 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
+              onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div>
@@ -117,6 +125,8 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
+              onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div className='section'>
@@ -128,7 +138,8 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
-              
+              onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div className='section'>
@@ -140,7 +151,8 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
-              
+              onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
           <div className='section'>
@@ -152,7 +164,8 @@ export class Tables extends Component {
               sorting={true} 
               filter={this.state.filterString} 
               fontSize={12}
-              
+              onClickRow={this.handleClickRow}
+              loading={this.props.loading}
             />
           </div>
         </div>
@@ -161,8 +174,11 @@ export class Tables extends Component {
       
     )
   }
+  handleClickRow(row) {
+    this.props.history.push(`/profile/inquiry/${row._id}`)
+  }
   handleModalClose() {
-    this.setState((prevState) => ({showModal: false}))
+    this.setState({showModal: false})
   }
   openModal(row) {
     this.setState({showModal: true, prospectUpdating: row})
@@ -176,5 +192,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tables)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Tables))
 

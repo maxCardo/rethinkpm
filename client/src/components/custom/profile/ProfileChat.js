@@ -27,20 +27,20 @@ export class ProfileChat extends Component {
           unread: chat.unread,
           messages: chat.messages.map((message) => ({
             date: new Date(message.date),
-            sender: message.from == 'User-SMS' ? chat.inq.prospect.name : message.from,
+            sender: message.from === 'User-SMS' ? chat.inq.prospect.name : message.from,
             content: message.message,
             userMessage: message.from !== 'User-SMS'
           })),
           notes: []
         }
       })
-
-        this.props.updateChats(chatsParsed)
-      })
+      this.props.updateChats(chatsParsed)
+    })
   }
   render() {
     if(!this.props.chats.length) return ''
-    const chat = this.props.chats.find((chat) => chat.inquiryId == this.props.inquiryId)
+    const chat = this.props.chats.find((chat) => chat.inquiryId === this.props.inquiryId)
+    if(!chat) return ''
     return (
       <ChatUI 
         messages={chat.messages}
@@ -53,8 +53,8 @@ export class ProfileChat extends Component {
   sendMessage(messageContent) {
     const chats = this.props.chats.slice()
     let chatSelected;
-    const updatedChats = chats.map((chat) => {
-      if(chat.inquiryId == this.props.inquiryId) {
+    chats.forEach((chat) => {
+      if(chat.inquiryId === this.props.inquiryId) {
         chatSelected = chat
         chat.messages.push({
           userMessage: true,
@@ -63,7 +63,6 @@ export class ProfileChat extends Component {
           date: new Date()
         })
       }
-      return chat
     })
     const message = {
       from: 'Admin',

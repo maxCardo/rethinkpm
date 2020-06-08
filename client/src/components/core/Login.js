@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
@@ -26,7 +26,7 @@ const Login = ({login,loadUser, isAuthenticated}) => {
 
 
     return (
-        <Fragment>
+        <div style={{padding: '1rem 2rem'}}>
             <h1 className="large text-primary">Sign In</h1>
             <p className="lead"><i className="fas fa-user"></i> Sign Into Your Account</p>
              
@@ -55,9 +55,9 @@ const Login = ({login,loadUser, isAuthenticated}) => {
                 <input type="submit" className="btn btn-primary" value="Login" />
             </form>
             <p className="my-1">
-                Dont have an account? <Link className = 'btn' to="/register">Sign Up</Link>
+                {/* Dont have an account? <Link className = 'btn' to="/register">Sign Up</Link> */}
             </p>
-        </Fragment>
+        </div>
     )
 }
 

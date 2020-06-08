@@ -7,15 +7,12 @@ export default function (state = initialState, action) {
         case SET_INQUIRIES:
           return{
             ...state,
-            inquiries: payload,
+            inquiries: payload.inquiries,
+            inquiriesRaw: payload.inquiriesRaw
           }
         case UPDATE_INQUIRY:
-          let allInquiries = []
-          for(let type in state.inquiries) {
-            allInquiries = allInquiries.concat(state.inquiries[type])
-          }
-          allInquiries = allInquiries.map((inquiry) => {
-            if(inquiry._id == payload._id) {
+          const allInquiries = state.inquiriesRaw.map((inquiry) => {
+            if(inquiry._id === payload._id) {
               return payload
             }
             return inquiry
@@ -36,6 +33,7 @@ export default function (state = initialState, action) {
           return{
             ...state,
             inquiries: newInquiries,
+            inquiriesRaw: allInquiries
           }
         default:
             return state;

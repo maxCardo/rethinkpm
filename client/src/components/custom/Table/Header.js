@@ -8,7 +8,7 @@ export class Header extends Component {
   }
   render() {
     return (
-      <th onClick={this.handleClick}>
+      <th onClick={this.handleClick} className={this.props.className}>
         <div 
           style={{display: 'flex', alignItems: 'center', cursor: this.props.sortable ? 'pointer': ''}}
         >

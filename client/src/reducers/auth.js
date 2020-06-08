@@ -24,7 +24,6 @@ export default function (state = initialState, action) {
                 loginInProgress: false
             };
         case LOGIN_IN_PROGRESS:
-            console.log('login')
             return {
               ...state,
               loginInProgress: true
