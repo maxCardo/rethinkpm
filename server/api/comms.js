@@ -5,6 +5,7 @@ const Agent = require('../db/models/sales/agent')
 const Chat = require('../db/models/comms/Chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
 const {outgoingSMS} = require('../3ps/sms')
+const {zumperParse} = require('../3ps/email/parse')
 
 
 const router = express.Router();
@@ -133,12 +134,19 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
 // @ access: Public *ToDo: update to make private
 router.post('/email/parse',upload.none(), (req, res) => {
     try {
-        const {to, from, html, subject, text} = req.body
-        console.log(text)
-        //sendEmail('adampoznanski@outlook.com', 'test email', 'testing sendgrid email')
-        //sendEmail('ezrafreedlander@gmail.com', 'test email', 'testing sendgrid email')
+        // const switchCase = req.body.to.slice('Q')[0]
+        // console.log('switchCase: ', switchCase);
+
+        // switch(switchCase){
+        //     case ''
+        // }
+
+
+
+        zumperParse(req.body)
         res.status(200).send()
-    } catch (error) {
+    } catch (err) {
+        console.error(err);
         res.status(500).send()
     }
     
