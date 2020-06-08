@@ -7,7 +7,7 @@ import AddPhoneField from './InputFields/AddPhoneField';
 
 
 const AddFields = (props) => {
-
+console.log(props);
     const {field: {accessor}} = props
     switch (accessor) {
         case 'phoneNumbers':
@@ -19,7 +19,7 @@ const AddFields = (props) => {
         case 'collection':
             return <AddCollectionField {...props} />;
         default:
-            return <TextField {...props} />;
+            return <TextField {...props} onChange={props.onChange} />;
     }
 }
 

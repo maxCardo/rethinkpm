@@ -4,13 +4,13 @@ import {formatMoney, filterData, accessData} from '../../../../../util/commonFun
 import { Form, Col } from 'react-bootstrap';
 
 
-const TextField = ({field, data}) => {
-
+const TextField = ({field, data, onChange}) => {
+console.log(field);
     return (
         <Col lg={12}>
             <Form.Group>
                 <Form.Label htmlFor={field.name}>{field.name}:</Form.Label>
-                <Form.Control type="text" placeholder={'Enter ' + field.name}/>
+                <Form.Control name={field.accessor} type="text" placeholder={'Enter ' + field.name} onChange={(e) => onChange(e)}/>
             </Form.Group>
         </Col>
     )

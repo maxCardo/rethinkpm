@@ -33,6 +33,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
     const [formData, setFormData] = useState(newProfile)
 
     const onChange = e => {
+        console.log(e);
         setFormData({...formData, [e.target.name]: e.target.value})
     }
 
