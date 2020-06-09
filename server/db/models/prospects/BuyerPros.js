@@ -36,6 +36,7 @@ const buyerProsSchema = new mongoose.Schema({
             },
         },
     ],
+    buyerType: String, //homeowner or investor
     targetArea: Array,
     targetZip: Array,
     priceRange: Array,
@@ -59,7 +60,11 @@ const buyerProsSchema = new mongoose.Schema({
     lastContact: Date,
     inqListings:[
         {
-            listing: String,
+            address: String,
+            city: String,
+            state: String,
+            zip: String,
+            listingId: String,
             Date: {type: Date, default: new Date()}
         }
     ]
