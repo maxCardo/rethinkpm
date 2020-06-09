@@ -292,7 +292,7 @@ router.get('/pastSales/:agentId', async (req, res) => {
 router.post('/addNote/:id', auth, async (req, res) => {
   try {
     id = req.params.id
-    const record = await Agent.findById(id).populate('notes.user')
+    const record = await Agent.findById(id)
     const newNote = {
       ...req.body,
       user: req.user,

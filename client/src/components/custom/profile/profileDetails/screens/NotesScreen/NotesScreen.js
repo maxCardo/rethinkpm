@@ -7,9 +7,10 @@ import TableWithSearch from './TableWithSearch'
 const NotesScreen = ({profileType, activeProfile:{notes}}) => {
 
     useEffect(() => {
+        console.log('use effect on notes fired');
         console.log('notes:', notes);
         
-    }, [])
+    }, [notes])
 
 
 
