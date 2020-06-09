@@ -59,7 +59,8 @@
             "name": "Sales Volume",
             "accessor": "sales",
             "col": 2,
-            "formatter": "formatMoney"
+            "formatter": "formatMoney",
+            "derived": "true"
           },
           {
             "name": "Top Neighborhoods",
@@ -95,12 +96,14 @@
           {
             "name": "Reason for loss",
             "accessor": "reasonForLoss",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Last Contact",
             "accessor": "lastContact",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           }
         ],
         "screens": [
@@ -230,17 +233,20 @@
           {
             "name": "Lead Source",
             "accessor": "leadSource",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Reason for loss",
             "accessor": "reasonForLoss",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Last Contact",
             "accessor": "lastContact",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           }
         ],
         "screens": [
@@ -408,12 +414,14 @@
           {
             "name": "Reason for loss",
             "accessor": "reasonForLoss",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Last Contact",
             "accessor": "lastContact",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           }
         ],
         "screens": [

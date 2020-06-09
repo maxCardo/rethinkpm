@@ -57,7 +57,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        {settings.map((field, index) => <AddFields key={index} passIndex={index} field={field}
+                        {settings.map((field, index) => (!field.derived) && <AddFields key={index} passIndex={index} field={field}
                                                                    settings={settings} profile={profileType} onChange={onChange} onChangeArray={onChangeArray}/>)}
                     </Row>
                 </Modal.Body>
