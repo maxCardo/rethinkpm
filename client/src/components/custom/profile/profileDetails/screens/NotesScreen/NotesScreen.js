@@ -4,19 +4,21 @@ import { Tabs, Tab } from 'react-bootstrap'
 import TableWithSearch from './TableWithSearch'
 
 
-const NotesScreen = ({profileType, activeProfile:{notes}}) => {
+const NotesScreen = ({profileType, activeProfile}) => {
+
+    const allNotes = activeProfile.notes
 
     useEffect(() => {
         console.log('use effect on notes fired');
-        console.log('notes:', notes);
+        console.log('notes:', allNotes);
         
-    }, [notes])
+    }, [activeProfile])
 
 
 
-    var all = notes && notes.length ? notes  : []
-    var notes = notes && notes.length ? notes.filter((note) => note.type === 'note' ) : []
-    var logs = notes && notes.length ? notes.filter((note) => note.type === 'log') : []
+    var all = allNotes && allNotes.length ? allNotes  : []
+    var notes = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'note' ) : []
+    var logs = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'log') : []
 
     var headers = [
         {
