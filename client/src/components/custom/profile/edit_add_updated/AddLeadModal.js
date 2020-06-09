@@ -1,22 +1,14 @@
 import React, {Fragment, useEffect, useRef, useState} from 'react'
 import {connect} from 'react-redux'
-import {Modal, Button, Form, Container, Row} from 'react-bootstrap'
-import Select from "react-select";
+import {Modal, Button, Row} from 'react-bootstrap'
 
 import {addLeadSubmit, tglAddLeadMod} from '../../../../actions/profile'
-import {accessData, checkBoxCheck, formatMoney} from "../../../../util/commonFunctions";
 import AddFields from "./AddFields";
 
 import {newAgent, newBuyer, newRenter} from '../../../../util/EmptyModels';
 
-//set action to change showAddPhoneMod as false on redux
 
 const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod, showMod, settings}) => {
-
-    const trueFalse = [
-        {value: "true", label: 'Yes'},
-        {value: "false", label: 'No'}
-    ]
 
     const theProfileType = useRef(profileType);
     let newProfile = {};
@@ -37,6 +29,10 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         setFormData({...formData, [e.target.name]: e.target.value})
     }
 
+    const onChangeArray = (name, value) => {
+        setFormData({...formData, [name]: value});
+    }
+
     const onSubmit = () => {
         tglAddLeadMod(false);
     }
@@ -47,14 +43,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         setValid(false);
     }
 
-    const validate = (e) => {
-        var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        setValid(!!e.target.value.match(validPhone))
-    }
-
     const profileLabel =(theProfileType.current === 'agentPros') ? 'Agent' : (theProfileType.current === 'buyerPros') ? 'Buyer' : 'Renter';
-
-    let checkBox = checkBoxCheck();
 
     useEffect(() => {
 
@@ -69,7 +58,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
                 <Modal.Body>
                     <Row>
                         {settings.map((field, index) => <AddFields key={index} passIndex={index} field={field}
-                                                                   settings={settings} profile={profileType} onChange={onChange}/>)}
+                                                                   settings={settings} profile={profileType} onChange={onChange} onChangeArray={onChangeArray}/>)}
                     </Row>
                 </Modal.Body>
                 <Modal.Footer className="modalFooterBtns">

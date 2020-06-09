@@ -7,17 +7,18 @@ import AddPhoneField from './InputFields/AddPhoneField';
 
 
 const AddFields = (props) => {
-console.log(props);
+
     const {field: {accessor}} = props
     switch (accessor) {
-        case 'phoneNumbers':
-            return <AddPhoneField {...props} />;
+
         case 'email':
-            return <AddEmailField {...props}/>;
+            return <AddEmailField {...props} />;
+        case 'phoneNumbers':
+            return <AddPhoneField {...props}  />;
         case 'status':
-            return <AddStatusField {...props} />;
+            return <AddStatusField {...props} onChange={props.onChange} />;
         case 'collection':
-            return <AddCollectionField {...props} />;
+            return <AddCollectionField {...props} onChange={props.onChange} />;
         default:
             return <TextField {...props} onChange={props.onChange} />;
     }

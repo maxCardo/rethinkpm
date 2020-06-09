@@ -1,27 +1,34 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Col, Form} from 'react-bootstrap';
 import {checkBoxCheck, validateEmail} from "../../../../../util/commonFunctions";
 
 
-const AddEmailField = (field, form) => {
-
-    const trueFalse = [
-        {value: "true", label: 'Yes'},
-        {value: "false", label: 'No'}
-    ];
+const AddEmailField = ({field, form, onChangeArray}) => {
 
     const [valid, setValid] = useState(false);
     const [address, setAddress] = useState('');
-    const [isPrimary, setIsPrimary] = useState(true);
+    const [formData, setFormData] = useState({});
+
+    const onChange = e => {
+        setAddress(e.target.value);
+        let newFormData = {[e.target.name]: e.target.value};
+        setFormData({ ...formData, ...newFormData });
+        validate(e);
+    };
 
     const validate = (e) => {
         e && setValid(validateEmail(e.target.value))
     }
 
-
-    const onPrimaryChange = () => {
-        setIsPrimary(!isPrimary);
+    const onCheckChange = (e) => {
+        setFormData({...formData, [e.target.name]: e.target.checked});
     }
+
+    useEffect(() => {
+
+        onChangeArray(field.accessor, formData);
+
+    }, [formData]);
 
     const checkBox = checkBoxCheck();
 
@@ -35,15 +42,14 @@ const AddEmailField = (field, form) => {
                                   placeholder='Enter Email Address'
                                   value={address}
                                   onChange={(e) => {
-                                      validate(e);
-                                      setAddress(e.target.value)
+                                      onChange(e);
                                   }}
                                   autoFocus={true} />
                 </Form.Group>
                 <Form.Group>
                     <div className="element-wrapper with--checkbox">
                         <label className="checkbox path"   >
-                            <input type="checkbox" name='isPrimary' checked={isPrimary} defaultValue={trueFalse[1].value} onChange={onPrimaryChange}/>
+                            <input type="checkbox" name='isPrimary' onChange={(e) => onCheckChange(e)}/>
                             {checkBox} &nbsp; Primary
                         </label>
                     </div>

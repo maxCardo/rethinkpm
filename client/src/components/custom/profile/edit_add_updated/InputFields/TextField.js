@@ -5,7 +5,7 @@ import { Form, Col } from 'react-bootstrap';
 
 
 const TextField = ({field, data, onChange}) => {
-console.log(field);
+
     return (
         <Col lg={12}>
             <Form.Group>

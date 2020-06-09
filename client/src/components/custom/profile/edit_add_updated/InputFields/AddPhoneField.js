@@ -1,38 +1,38 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Col, Form} from 'react-bootstrap';
 import {checkBoxCheck} from "../../../../../util/commonFunctions";
-import Select from "react-select";
 
 
-const AddPhoneField = (field, form) => {
+const AddPhoneField = ({field, form, onChangeArray}) => {
 
-    const trueFalse = [
-        {value: "true", label: 'Yes'},
-        {value: "false", label: 'No'}
-    ];
 
     const [valid, setValid] = useState(false);
     const [number, setNumber] = useState('');
-    const [isPrimary, setIsPrimary] = useState(true);
-    const [okToText, setOkToText] = useState(true);
-    const [formData, setFormData] = useState(form);
+    const [formData, setFormData] = useState({});
 
-    const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+    const onChange =(e) => {
+        setNumber(e.target.value);
+        let newFormData = {[e.target.name]: e.target.value};
+        setFormData({ ...formData, ...newFormData});
+        validate(e);
     };
-    const checkBox = checkBoxCheck();
 
-    const onOkChange = () => {
-        setOkToText(!okToText)
-    }
-    const onPrimaryChange = () => {
-        setIsPrimary(!isPrimary)
+    const onCheckChange = (e) => {
+        setFormData({...formData, [e.target.name]: e.target.checked})
     }
 
     const validate = (e) => {
         const validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        setValid(!!e.target.value.match(validPhone))
+        e && setValid(!!e.target.value.match(validPhone))
     }
+
+    useEffect(() => {
+
+        onChangeArray(field.accessor, formData);
+
+    }, [formData]);
+
+    const checkBox = checkBoxCheck();
 
     return (
         <Col lg={12}>
@@ -44,21 +44,20 @@ const AddPhoneField = (field, form) => {
                                   placeholder="Enter a Number"
                                   value={number}
                                   onChange={(e) => {
-                                      validate(e);
-                                      setNumber(e.target.value)
+                                      onChange(e);
                                   }}
                                   autoFocus={true} />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label className="checkbox path">
-                        <input type="checkbox" name='okToText' checked={okToText} defaultValue={trueFalse[0].value} onChange={onOkChange}/>
+                        <input type="checkbox" name='okToText' onChange={(e) => onCheckChange(e)}/>
                         {checkBox} &nbsp; Ok to text
                     </Form.Label>
                 </Form.Group>
                 <Form.Group>
                     <div className="element-wrapper with--checkbox">
                         <Form.Label className="checkbox path">
-                            <input type="checkbox" name='isPrimary' checked={isPrimary} defaultValue={trueFalse[0].value} onChange={onPrimaryChange}/>
+                            <input type="checkbox" name='isPrimary' onChange={(e) => onCheckChange(e)}/>
                             {checkBox} &nbsp; Primary
                         </Form.Label>
                     </div>
