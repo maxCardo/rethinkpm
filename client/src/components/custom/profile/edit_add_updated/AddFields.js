@@ -16,11 +16,11 @@ const AddFields = (props) => {
         case 'phoneNumbers':
             return <AddPhoneField {...props}  />;
         case 'status':
-            return <AddStatusField {...props} onChange={props.onChange} />;
+            return <AddStatusField {...props} fieldSettings={props.settings} profile={props.profile} />;
         case 'collection':
             return <AddCollectionField {...props} />;
         default:
-            return <TextField {...props} onChange={props.onChange} />;
+            return <TextField {...props} />;
     }
 }
 

@@ -1,24 +1,30 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Col, Form} from 'react-bootstrap';
 import Select from 'react-select';
 import settings from '../../../../../settings';
 
 
 
-const AddStatusField = (field) => {
-console.log('status')
-    console.log(field);
+const AddStatusField = ({field, onChangeArray, passIndex, fieldSettings, profile}) => {
     const theProfiles = settings.routes.profile;
+    console.log(profile);
+    console.log(fieldSettings)
 
     const [selected, select] = useState(false)
 
-    const type = field.settings[field.passIndex];
+    const type = fieldSettings[passIndex];
 
-    let statusOptions = theProfiles && theProfiles[field.profile] && theProfiles[field.profile]['statusOptions'];
+    let statusOptions = theProfiles && theProfiles[profile] && theProfiles[profile]['statusOptions'];
 
     const handleSelectChange = (value) => {
         select(value)
     }
+
+    useEffect(() => {
+
+        onChangeArray(type.accessor, selected);
+
+    }, [selected]);
 
     return (
         <Col lg={12}>
