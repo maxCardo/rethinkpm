@@ -197,14 +197,14 @@
           },
           {
             "name": "Desired Neighborhoods",
-            "accessor": "targetAreas",
+            "accessor": "collection",
             "datatype": "targetAreas",
             "col": 2,
             "formatter": ""
           },
           {
             "name": "Desired Zip Codes",
-            "accessor": "targetZipCodes",
+            "accessor": "collection",
             "datatype": "targetZipCodes",
             "col": 2,
             "formatter": ""
@@ -367,14 +367,14 @@
           },
           {
             "name": "Desired Neighborhoods",
-            "accessor": "targetAreas",
+            "accessor": "collection",
             "datatype": "targetAreas",
             "col": 2,
             "formatter": ""
           },
           {
             "name": "Desired Zip Codes",
-            "accessor": "targetZipCodes",
+            "accessor": "collection",
             "datatype": "targetZipCodes",
             "col": 2,
             "formatter": ""

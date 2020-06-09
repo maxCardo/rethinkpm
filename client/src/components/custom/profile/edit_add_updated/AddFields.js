@@ -18,7 +18,7 @@ const AddFields = (props) => {
         case 'status':
             return <AddStatusField {...props} onChange={props.onChange} />;
         case 'collection':
-            return <AddCollectionField {...props} onChange={props.onChange} />;
+            return <AddCollectionField {...props} />;
         default:
             return <TextField {...props} onChange={props.onChange} />;
     }
