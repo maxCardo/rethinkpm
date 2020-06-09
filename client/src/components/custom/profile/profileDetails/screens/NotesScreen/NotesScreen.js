@@ -1,10 +1,17 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import { Tabs, Tab } from 'react-bootstrap'
 import TableWithSearch from './TableWithSearch'
 
 
 const NotesScreen = ({profileType, activeProfile:{notes}}) => {
+
+    useEffect(() => {
+        console.log('notes:', notes);
+        
+    }, [])
+
+
 
     var all = notes && notes.length ? notes  : []
     var notes = notes && notes.length ? notes.filter((note) => note.type === 'note' ) : []
