@@ -134,17 +134,22 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
 // @ access: Public *ToDo: update to make private
 router.post('/email/parse',upload.none(), (req, res) => {
     try {
-        // const switchCase = req.body.to.slice('Q')[0]
-        // console.log('switchCase: ', switchCase);
+        const data = req.body
+        const route = data.to.split('@')[0]
 
-        // switch(switchCase){
-        //     case ''
-        // }
-
-
-
-        zumperParse(req.body)
-        res.status(200).send()
+        switch(route){
+            case 'zumper':
+                //zumperParse(data)
+                console.log('zumperParse');
+                break;
+            case 'zillowRentals':
+                console.log('zillow Rentals');
+                break;
+            default:
+               console.log('running default'); 
+                
+        }
+        res.status(200).send('got it')
     } catch (err) {
         console.error(err);
         res.status(500).send()
