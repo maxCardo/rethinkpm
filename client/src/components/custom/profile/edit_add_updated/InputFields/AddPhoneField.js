@@ -8,7 +8,7 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
 
     const [valid, setValid] = useState(false);
     const [number, setNumber] = useState('');
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({number:'', okToText:true, isPrimary: false});
 
     const onChange =(e) => {
         setNumber(e.target.value);

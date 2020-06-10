@@ -9,10 +9,11 @@ import AddEmailModal from '../edit_add_updated/AddEmailModal'
 import AddPersonModal from '../edit_add_updated/AddLeadModal'
 
 
-const ProfileInfo = ({settings: {profileInfo}, profile, tglChat, tglList, tglEdit, tglAdd}) => {
+const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglChat, tglList, tglEdit, tglAdd}) => {
     const [{columns, loading}, setColumns] = useState({data: null, loading: true})
     let profileType = useRef('');
     let profileId = useRef('');
+    let profileName = profileNamePlural.slice(0,-1)
 
 
     const getPrimaryPhone = profile.phoneNumbers && profile.phoneNumbers.find(item => item.isPrimary)
@@ -27,13 +28,11 @@ const ProfileInfo = ({settings: {profileInfo}, profile, tglChat, tglList, tglEdi
             setColumns({columns: columns, loading: false})
             profileId.current = profile._id;
         }
-        if (profile.profileType && profileType.current !== profile.profileType) {
-            profileType.current = (profile.profileType === 'agentPros') ? 'Agent Info' : (profile.profileType === 'buyerPros') ? 'Buyer Info' : 'Renter Info';
-        }
+       
     }, [profile, profileInfo])
 
     //ToDo: refactor settings.json to incorperate below lines of code
-    const colHeader = ['', profileType.current, 'Profile Info', 'Communication Info']
+    const colHeader = ['',`${profileName} Info`, 'Profile Info', 'Communication Info']
 
 
     return loading ? <Loading/> :
@@ -76,7 +75,7 @@ const ProfileInfo = ({settings: {profileInfo}, profile, tglChat, tglList, tglEdi
             {/* modals */}
             <AddPhoneModal/>
             <AddEmailModal/>
-            <AddPersonModal settings={profileInfo}/>
+            <AddPersonModal settings={profileInfo} profileName={profileName}/>
         </div>
 
 
