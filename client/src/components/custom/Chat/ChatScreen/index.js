@@ -93,20 +93,28 @@ export class ChatScreen extends Component {
           <div className='col-sm-3 chat-screen__contacts-container'>
             <Contacts contacts={this.props.chats} handleAddChat={this.addChat} />
           </div>
-          <div className='col-sm-6 h-100 chat-screen__chat-container'>
-            <ChatBar info={activeChat}/>
-            <div className='chat-screen__chat-ui'>
-              <ChatUI 
-                messages={activeChat.messages}
-                onSendMessage={this.sendMessage}
-                chatRef={this.chatRef}
-                botOn={activeChat.botOn}
-                scrollToBottom={this.scrollToBottom}
-              />
+          {activeChat ? 
+            <div className='col-sm-6 h-100 chat-screen__chat-container'>
+              <ChatBar info={activeChat}/>
+              <div className='chat-screen__chat-ui'>
+                <ChatUI 
+                  messages={activeChat.messages}
+                  onSendMessage={this.sendMessage}
+                  chatRef={this.chatRef}
+                  botOn={activeChat.botOn}
+                  scrollToBottom={this.scrollToBottom}
+                />
+              </div>
             </div>
-          </div>
+            :
+            ''
+          }
           <div className='col-sm-3'>
-            <Profile name={activeChat.name} notes={notes} inquiryId={activeChat.inquiryId} /> 
+            {activeChat ?
+              <Profile name={activeChat.name} notes={notes} inquiryId={activeChat.inquiryId} /> 
+              :
+              ''
+            }
           </div>
         </div>
       </div>
@@ -118,7 +126,7 @@ export class ChatScreen extends Component {
   }
   scrollToBottom() {
     this.forceUpdate(() => {
-      if(this.chatRef.current) {
+      if(this.chatRef && this.chatRef.current) {
         this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
       }
     })
