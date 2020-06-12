@@ -180,20 +180,24 @@ router.post('/filter', async (req, res) => {
     try {
         const PAGESIZE = req.body.pageSize;
         const data = req.body.filters
-        const filterFields = Object.keys(req.body.filters);
-        const filters = []
-
-        //create filter object
-        filterFields.map((x) => {
-            data[x].type.value !== 'noFilter' && filters.push({
-                field: data[x].accessor,
-                subField: data[x].subAccessor,
-                filterType: data[x].type.value,
-                operator: data[x].type.operator,
-                value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
-                secondValue: data[x].secondValue ? data[x].secondValue : ''
-            })
-        })
+        let filters = []
+        if(data.length) {
+          filters = data
+        } else {
+          const filterFields = Object.keys(req.body.filters);
+          //create filter object
+          filterFields.map((x) => {
+              data[x].type.value !== 'noFilter' && filters.push({
+                  field: data[x].accessor,
+                  subField: data[x].subAccessor,
+                  filterType: data[x].type.value,
+                  operator: data[x].type.operator,
+                  value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
+                  secondValue: data[x].secondValue ? data[x].secondValue : ''
+              })
+          })
+        }
+        
 
         //create string query 
         const queryObj = convertFiltersToQuery(filters)

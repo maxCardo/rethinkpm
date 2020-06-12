@@ -22,6 +22,8 @@ import {
     RESET_PROFILE_INFO,
     LOAD_PROFILE_TABLE_VIEW,
     SET_PROFILE_TABLE_VIEW,
+    LOAD_PROFILE_LIST_AND_TABLE,
+    STOP_LOAD_PROFILE_LIST_AND_TABLE,
 } from '../actions/type';
 
 const initialState = {
@@ -57,6 +59,24 @@ export default function (state = initialState, action) {
           return {
             ...state,
             loading: true
+          }
+          case LOAD_PROFILE_LIST_AND_TABLE:
+          return {
+            ...state,
+            profileList: {
+                ...state.profileList,
+                loadingTableView: true,
+                loading: true
+            },
+          }
+        case STOP_LOAD_PROFILE_LIST_AND_TABLE:
+          return {
+            ...state,
+            profileList: {
+                ...state.profileList,
+                loadingTableView: false,
+                loading: false
+            },
           }
         case SET_ACTIVE_PROFILE:
             return {

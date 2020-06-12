@@ -16,6 +16,8 @@ import {
     LOAD_MORE_PROFILE_LIST,
     SET_HAS_MORE_DATA,
     LOAD_PROFILE_TABLE_VIEW,
+    LOAD_PROFILE_LIST_AND_TABLE,
+    STOP_LOAD_PROFILE_LIST_AND_TABLE,
     SET_PROFILE_TABLE_VIEW,
     RESET_PROFILE_INFO,
     UPDATE_ACTIVE_PROFILE_CHAT, ALERT_SUCCESS, REMOVE_ALERT, ALERT_FAILURE
@@ -145,13 +147,14 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
   }
 };
 
-export const loadProfileTableView = (profileType, cancelToken) => async dispatch => {
+export const loadProfileTableView = (profileType, filters, cancelToken) => async dispatch => {
   try {
     dispatch({
       type: LOAD_PROFILE_TABLE_VIEW,
     });
+    
     const data = {
-      filters: {},
+      filters
     }
     const res = await axios.post(`/api/profile/${profileType}/filter`, data, {cancelToken: cancelToken});
     dispatch({
@@ -416,7 +419,7 @@ export const updateEmail = (formData, id, profileType) => (dispatch) => {
 export const submitFilterModal = (filters, profileType) => async dispatch => {
     try {
         dispatch({
-            type: LOAD_PROFILE_LIST,
+            type: LOAD_PROFILE_LIST_AND_TABLE,
         });
         const data = {
           filters,
@@ -431,6 +434,9 @@ export const submitFilterModal = (filters, profileType) => async dispatch => {
             type: SET_FILTER,
             payload: res.data.filters,
         });
+        dispatch({
+          type: STOP_LOAD_PROFILE_LIST_AND_TABLE,
+      });
     } catch (err) {
         console.log(err);
         dispatch({

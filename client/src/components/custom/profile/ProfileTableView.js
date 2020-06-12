@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {connect} from 'react-redux'
 import { loadProfileTableView } from '../../../actions/profile'
 import axios from 'axios';
 import LoadingScreen from '../LoadingScreen/LoadingScreen'
 import TableView from '../TableView/TableView'
 import FilterModal from './profileList/modals/filterModel/FilterModal'
+import SaveFilterMod from './profileList/modals/saveFilterMod'
+
 
 export class ProfileTableView extends Component {
   constructor(props) {
@@ -18,9 +20,10 @@ export class ProfileTableView extends Component {
     }
     this.toggleFilterModal = this.toggleFilterModal.bind(this)
     this.toggleTableType = this.toggleTableType.bind(this)
+    this.toggleSaveFilterModal = this.toggleSaveFilterModal.bind(this)
   }
   componentDidMount() {
-    // this.props.loadProfileTableView(this.props.settings.profileType, this.axiosSource.token)
+    this.props.loadProfileTableView(this.props.settings.profileType, this.props.activeFilter, this.axiosSource.token)
   }
   componentWillUnmount() {
     this.axiosSource.cancel()
@@ -40,14 +43,21 @@ export class ProfileTableView extends Component {
         <div className='profile-table-view__top-bar'>
           <div>
             <button className='profile-table-view__icon-button' onClick={this.toggleTableType}>
-              <i className="fas fa-table"></i> Table View
+              <i className="fas fa-table"></i> Change Table View
             </button>
           </div>
-          <div>
+          <div className='profile-table-view__filters'>
             <button className='profile-table-view__icon-button' onClick={this.toggleFilterModal}>
               <i className="fas fa-filter"></i>
             </button>
+            {this.props.activeFilter.length ? (
+            <Fragment>
+              <button onClick={this.toggleSaveFilterModal}>Save filter</button>
+              <button onClick={() => this.props.loadProfileTableView(this.props.settings.profileType, [] ,this.axiosSource.token)}>Clear filter</button>
+            </Fragment>
+          ):null}
           </div>
+          
         </div>
         <TableView
           type={this.state.tableType}
@@ -61,6 +71,13 @@ export class ProfileTableView extends Component {
           show={this.state.showFilterMod}
           handleClose={this.toggleFilterModal}
           settings={this.props.settings}
+        />
+        <SaveFilterMod
+          show={this.state.showSaveFltrMod}
+          handleClose={this.toggleSaveFilterModal}
+          activeFilter={this.props.activeFilter}
+          profileList={this.props.profileList}
+          profileType= {this.props.settings.profileType}
         />
       </LoadingScreen>
     )
@@ -78,10 +95,14 @@ export class ProfileTableView extends Component {
   toggleFilterModal() {
     this.setState((prevState) => ({showFilterMod: !prevState.showFilterMod}))
   }
+  toggleSaveFilterModal() {
+    this.setState((prevState) => ({showSaveFltrMod: !prevState.showSaveFltrMod}))
+  }
 }
 
 const mapStateToProps = state => ({
   profileList: state.profile.profileList,
+  activeFilter: state.profile.activeFilter
 })
 
 export default connect(mapStateToProps, {loadProfileTableView})(ProfileTableView)
