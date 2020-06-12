@@ -78,6 +78,17 @@ router.post('/chat', async (req, res) => {
     }
 });
 
+// @route: get /api/comms/chats
+// @desc: get all the chats 
+router.get('/chats', async (req, res) => {
+  try {
+    const chats = await Chat.find({})
+    res.status(200).send(chats)
+  } catch (err) {
+      res.status(400).send('server error')
+  }
+})
+
 // @route: get /api/comms/chat/:owner;
 // @desc: get single chat by owner 
 // @ access: Public *ToDo: update to make private

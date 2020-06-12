@@ -46,7 +46,7 @@ export class Profile extends Component {
           </Button>
         </div>
         <Table 
-          data={this.props.notes}
+          data={this.props.notes ? this.props.notes : []}
           headers={this.headers}
           pageSize={5}
           fontSize={12}

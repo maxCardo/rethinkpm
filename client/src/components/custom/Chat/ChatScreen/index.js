@@ -54,38 +54,20 @@ export class ChatScreen extends Component {
     
   }
   async getChats() {
-    axios.get('/api/rent_lead/chats').then((res) => {
-      const chatsParsed = res.data.map((chat) => {
-        return {
-          id: chat._id,
-          inquiryId: chat.inq ? chat.inq._id : '',
-          name: chat.inq ? chat.inq.prospect.name : '' ,
-          listing: chat.inq ? chat.inq.listing : '',
-          unread: chat.unread,
-          messages: chat.messages.map((message) => ({
-            date: new Date(message.date),
-            sender: message.from === 'User-SMS' ? chat.inq.prospect.name : message.from,
-            content: message.message,
-            userMessage: message.from !== 'User-SMS'
-          })),
-          notes: []
-        }
-      })
-
-        this.props.updateChats(chatsParsed)
+    axios.get('/api/comms/chats').then((res) => {
+        this.props.updateChats(res.data)
         this.forceUpdate(() => {
-          this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+          if(this.chatRef.current) {
+            this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+          }
         })
       })
   }
   render() {
     if(!this.props.chats || !this.props.chats.length ) return "";
-    let notes = []
     let activeChat = undefined
     if(this.props.inquiries && this.props.inquiries.length) {
       activeChat = this.props.chats[this.state.activeChat]
-      const inquiry = this.props.inquiries.find((inquiry) => inquiry._id === activeChat.inquiryId)
-      notes = inquiry.notes
     }
     return (
       <div className='container-fluid h-100'>
@@ -111,7 +93,7 @@ export class ChatScreen extends Component {
           }
           <div className='col-sm-3'>
             {activeChat ?
-              <Profile name={activeChat.name} notes={notes} inquiryId={activeChat.inquiryId} /> 
+              <Profile name={activeChat.name} notes={activeChat.notes} inquiryId={activeChat.inquiryId} /> 
               :
               ''
             }
