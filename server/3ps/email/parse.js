@@ -1,52 +1,99 @@
 const htmlToText = require('html-to-text');
-
-
-
+const {sendEmail} = require('../email')
+const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
+const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
 
 
 const zumperParse = async (data) => {
     const {to, from, subject, text, html} = data
-    let textBody = await htmlToText.fromString(html, {wordwrap: null}) 
+    console.log(subject.slice(0, 18));
 
-    //email textBody scrape
-    var replyTo = to
-    var bodyArr = textBody.split(/\n/);
-    var phoneNumber;
+    
+    if (subject.slice(0,18) === 'Zumper tenant lead') {
+        console.log('running zumper leadparse');
+        let textBody = await htmlToText.fromString(html, {wordwrap: null}) 
+        var replyTo = to
+        var bodyArr = textBody.split(/\n/);
+        var phoneNumber;
+    
+        if (textBody.search(/\+1/) > 0) {
+            phoneNumber = textBody.slice((textBody.search(/\+1/) + 2), ((textBody.search(/\+1/) + 12)));
+    
+        };
+    
+        if (textBody.search(/\(\d{3}\)/) > 0) {
+            var rawNumber = textBody.slice((textBody.search(/\(\d{3}\)/)), ((textBody.search(/\(\d{3}\)/) + 14)));
+            phoneNumber = '+1' + rawNumber.replace(/[\s () -]/g, '') + ''
+        };
 
-    if (textBody.search(/\+1/) > 0) {
-        phoneNumber = textBody.slice((textBody.search(/\+1/) + 2), ((textBody.search(/\+1/) + 12)));
+        //save record to db
+        try {
+            // check if user exist and get user or create new if user does not exist
+            let pros;
+            phoneNumber ? pros = await RentPros.findOne({ 'phone.number': phoneNumber }) : pros = await RentPros.findOne({ email: email.address })
 
-    };
-
-    if (textBody.search(/\(\d{3}\)/) > 0) {
-        var rawNumber = textBody.slice((textBody.search(/\(\d{3}\)/)), ((textBody.search(/\(\d{3}\)/) + 14)));
-        phoneNumber = '+1' + rawNumber.replace(/[\s () -]/g, '') + ''
-    };
-
-    console.log(bodyArr[0]);
+        // validate phone number
+        //if (phoneNumber) pros.phone.phoneType = await validateNum(phoneNumber);
 
 
+        if (!pros) {
+            const nameArr = bodyArr[2].split(' ');
+            pros = await new RentPros({
+              firstName: nameArr[0],
+              lastName: nameArr[1],
+              fullName: bodyArr[2],
+              email: {
+                address: from.slice(from.indexOf('<') + 1, -1),
+                isPrimary: true,
+              },
+              phoneNumbers: {
+                number: phoneNumber.slice(2),
+                isPrimary: true,
+                okToText: true,
+              },
+            });
+        };
+        const listing = (bodyArr[0].slice(bodyArr[0].search("interested in ") + 14)).split(":")[0]
+        
+        //check if lead for this asset exist or create new
+        let inq = await RentInq.findOne({ prospect: pros._id, campaign:listing });
 
-    var record = {
-        phoneNumber: phoneNumber,
-        property: (bodyArr[0].slice(bodyArr[0].search("interested in ") + 14)).split(":")[0],
-        email: from,
-        name: bodyArr[2],
-        date: new Date(),
-        adPrice: '',
-        msg: 'from zumper',
-        MoveIn: '',
-        CreditScore: '',
-        Income: '',
-        Pets: ''
-    };
+        if (!inq) {
+            inq = await new RentInq({
+                prospect: pros._id,
+                campaign: listing,
+                leadSource: 'zumper'
 
-    //save record to db
-    //reply to email 
-    //notify team via slack
+            })
+        };
+        inq.notes.push({
+            type: 'log',
+            content:'new lead created from zumper'
+        })
 
-    console.log(record);
+        await inq.save();
+        await pros.save();
+    } catch (e) {
+        console.error(e);
+        sendEmail('adampoznanski@outlook.com', `Error: ${subject}`, text, html);
+
+    }
+        //reply to email 
+        //notify team via slack
+    } else {sendEmail('adampoznanski@outlook.com', subject, text, html)}
+}
+
+const zillowBuyers = async (data) => {
+    console.log('zillowBuyers');
+}
+
+const mlsListings = async (data) => {
+    console.log(data.html);
+
+
 }
 
 
-module.exports = {zumperParse}
+
+
+module.exports = {zumperParse, zillowBuyers, mlsListings}
