@@ -21,6 +21,7 @@ export class ProfileTableView extends Component {
     this.toggleFilterModal = this.toggleFilterModal.bind(this)
     this.toggleTableType = this.toggleTableType.bind(this)
     this.toggleSaveFilterModal = this.toggleSaveFilterModal.bind(this)
+    this.clearFilter = this.clearFilter.bind(this)
   }
   componentDidMount() {
     this.props.loadProfileTableView(this.props.settings.profileType, this.props.activeFilter, this.axiosSource.token)
@@ -53,7 +54,7 @@ export class ProfileTableView extends Component {
             {this.props.activeFilter.length ? (
             <Fragment>
               <button onClick={this.toggleSaveFilterModal}>Save filter</button>
-              <button onClick={() => this.props.loadProfileTableView(this.props.settings.profileType, [] ,this.axiosSource.token)}>Clear filter</button>
+              <button onClick={this.clearFilter}>Clear filter</button>
             </Fragment>
           ):null}
           </div>
@@ -97,6 +98,21 @@ export class ProfileTableView extends Component {
   }
   toggleSaveFilterModal() {
     this.setState((prevState) => ({showSaveFltrMod: !prevState.showSaveFltrMod}))
+  }
+  clearFilter() {
+    const filter = {
+      status: {
+        accessor: 'status',
+        dataType: 'array',
+        name: 'status',
+        type: {
+          value: 'in',
+          operator: '$in'
+        },
+        value: this.props.settings.statusSelect.selectedQuery
+      }
+    }
+    this.props.loadProfileTableView(this.props.settings.profileType, filter ,this.axiosSource.token)
   }
 }
 
