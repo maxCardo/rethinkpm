@@ -7,6 +7,8 @@ import CollectionField from './CollectionField';
 
 const InfoFields = (props) => {
 
+  //ToDo: clean up settings.json, this should pull from dataType and accesor collections should be its dataType and accesor its current dataType
+  //ref add/edit profile when refactoring. 
   const {field:{accessor}} = props
     switch (accessor) {
       case 'phoneNumbers':
