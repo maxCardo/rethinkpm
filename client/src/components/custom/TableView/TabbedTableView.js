@@ -19,7 +19,7 @@ export class TabbedTableView extends Component {
         <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
           <Tabs>
             {this.props.states.map(({label, key}, index) => (
-              <Tab key={key} eventKey={key} title={`Status ${index+1}: ${label}`}>
+              <Tab key={key} eventKey={key} title={`Current Select: ${label}`}>
                 <div className='section'>
                   <h2 className='sectionTitle'>Status {index+1}: {label}</h2>
                   <Table

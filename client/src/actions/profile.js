@@ -450,6 +450,13 @@ export const submitFilterModal = (filters, profileType) => async dispatch => {
     }
 }
 
+export const setFilter = (filter) => dispatch => {
+  dispatch({
+    type: SET_FILTER,
+    payload: filter,
+});
+}
+
 //get filter options for array fields
 export const getFilterOptions = (profileType) => async dispatch => {
     try {

@@ -76,7 +76,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
 
                 </Tab>
                 <Tab eventKey="table" title="Table View">
-                    {tabKey == 'table' && <ProfileTableView settings={settings}/>}
+                    {tabKey == 'table' && <ProfileTableView settings={settings} changeTab={setTabKey}/>}
                 </Tab>
                 <Tab eventKey="filters" title="Filters">
                     <div>Manage Filters</div>

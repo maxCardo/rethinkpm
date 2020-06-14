@@ -8,10 +8,10 @@ import FilterModal from './modals/filterModel/FilterModal'
 import SaveFilterMod from './modals/saveFilterMod'
 import axios from 'axios'
 
-import {loadProfileList, loadSavedFilter, loadMoreDataProfileList} from '../../../../actions/profile'
+import {loadProfileList, loadSavedFilter, loadMoreDataProfileList, setFilter} from '../../../../actions/profile'
 
 
-const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter }) => {
+const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter, setFilter }) => {
     
     const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
 
@@ -70,6 +70,23 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
         }   
         setStatus({ ...selectStatus, selected: v })
     } 
+ 
+    const clearFilter = () => {
+      const filter = {
+        status: {
+          accessor: 'status',
+          dataType: 'array',
+          name: 'status',
+          type: {
+            value: 'in',
+            operator: '$in'
+          },
+          value: selectedQuery
+        }
+      }
+      setFilter(filter)
+      loadProfileList(profileType, selectedQuery)
+    }
     return profileList.loading ? <Loading/> :
         <Fragment>
             <Select
@@ -93,7 +110,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
             </div>
             {activeFilter.length ? (
                 <div className='agent-list__filtering-options-container'>
-                    <button onClick={() => loadProfileList(profileType, selectedQuery)}>Clear filter</button>
+                    <button onClick={clearFilter}>Clear filter</button>
                     <button onClick={() => tglSaveFltrMod(true)}>Save filter</button>
                 </div>
             ):null}
@@ -139,4 +156,4 @@ const mapStateToProps = state => ({
 
 
 
-export default connect(mapStateToProps, {loadProfileList, loadSavedFilter, loadMoreDataProfileList})(ProfileList)
+export default connect(mapStateToProps, {loadProfileList, loadSavedFilter, loadMoreDataProfileList, setFilter})(ProfileList)

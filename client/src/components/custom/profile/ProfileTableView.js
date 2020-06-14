@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import {connect} from 'react-redux'
-import { loadProfileTableView } from '../../../actions/profile'
+import { loadProfileTableView, setActiveProfile } from '../../../actions/profile'
 import axios from 'axios';
 import LoadingScreen from '../LoadingScreen/LoadingScreen'
 import TableView from '../TableView/TableView'
@@ -22,9 +22,12 @@ export class ProfileTableView extends Component {
     this.toggleTableType = this.toggleTableType.bind(this)
     this.toggleSaveFilterModal = this.toggleSaveFilterModal.bind(this)
     this.clearFilter = this.clearFilter.bind(this)
+    this.onClickRow = this.onClickRow.bind(this)
   }
   componentDidMount() {
-    this.props.loadProfileTableView(this.props.settings.profileType, this.props.activeFilter, this.axiosSource.token)
+    if(this.props.profileList.hasMore) {
+      this.props.loadProfileTableView(this.props.settings.profileType, this.props.activeFilter, this.axiosSource.token)
+    }
   }
   componentWillUnmount() {
     this.axiosSource.cancel()
@@ -67,6 +70,7 @@ export class ProfileTableView extends Component {
           states={statuses}
           sortBy='sales'
           sortDirection='desc'
+          onClickRow={this.onClickRow}
         />
         <FilterModal
           show={this.state.showFilterMod}
@@ -99,6 +103,10 @@ export class ProfileTableView extends Component {
   toggleSaveFilterModal() {
     this.setState((prevState) => ({showSaveFltrMod: !prevState.showSaveFltrMod}))
   }
+  onClickRow(profile) {
+    this.props.setActiveProfile(profile)
+    this.props.changeTab('details')
+  }
   clearFilter() {
     const filter = {
       status: {
@@ -121,4 +129,4 @@ const mapStateToProps = state => ({
   activeFilter: state.profile.activeFilter
 })
 
-export default connect(mapStateToProps, {loadProfileTableView})(ProfileTableView)
+export default connect(mapStateToProps, {loadProfileTableView, setActiveProfile})(ProfileTableView)

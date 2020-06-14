@@ -7,7 +7,7 @@ export class SelectTableView extends Component {
   constructor(props) {
     super(props)
     const selectOptions = this.props.states.map(({label, key}, index) => ({
-      label: `Status ${index+1}: ${label}`,
+      label: `Current Select: ${label}`,
       value: key
     }))
     this.state = {
