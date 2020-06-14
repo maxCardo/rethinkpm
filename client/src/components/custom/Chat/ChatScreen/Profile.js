@@ -24,6 +24,9 @@ export class Profile extends Component {
         className: 'profile__note-content'
       }
     ]
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    this.axiosSource = source
     this.state = {
       showAddNoteModal: false,
       showNoteDetailModal: false,
@@ -37,8 +40,12 @@ export class Profile extends Component {
   }
   async renderNewProfile() {
     const data = {id: this.props.chatId}
+    this.axiosSource.cancel()
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    this.axiosSource = source
     this.setState({loading: true, chatRendered: this.props.chatId})
-    const res = await axios.post(`/api/comms/profile`, data);
+    const res = await axios.post(`/api/comms/profile`, data, {cancelToken: this.axiosSource.token});
     const {name, notes} = res.data
     this.setState({name, notes, loading: false})
   }
