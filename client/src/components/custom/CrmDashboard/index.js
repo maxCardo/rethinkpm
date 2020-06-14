@@ -6,7 +6,7 @@ import UpdateModal from './UpdateModal'
 import Properties from './Properties'
 import ChatManager from '../Chat/ChatManager'
 import {SET_INQUIRIES, OPEN_INQUIRY_CHAT} from '../../../actions/type'
-import Dashboard from '../dashboard/Dashboard'
+import Dashboard from '../TableView/TableView'
 import {Link, withRouter} from 'react-router-dom';
 
 

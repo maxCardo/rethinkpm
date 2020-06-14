@@ -19,7 +19,7 @@ const io = require('socket.io').listen(server);
 const cors = require('cors');
 const uuid = require('uuid/v1');
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '1mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors())
 app.use(cookieParser());

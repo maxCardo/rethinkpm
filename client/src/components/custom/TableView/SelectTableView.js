@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import Table from '../Table'
 import Select from 'react-select';
 
-export class SelectDashboard extends Component {
+export class SelectTableView extends Component {
   constructor(props) {
     super(props)
     const selectOptions = this.props.states.map(({label, key}, index) => ({
@@ -35,7 +35,7 @@ export class SelectDashboard extends Component {
             placeholder='Search' 
           />
         </div>
-        <div className="container-fluid " style={{overflow: 'auto', maxHeight: '80vh'}}>
+        <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
           <div className="col-12" >
             <Table
               pageSize={10}
@@ -44,7 +44,7 @@ export class SelectDashboard extends Component {
               fontSize={12}
               className="agentInfoTable"
               {...this.props}
-              data={this.props.data[this.state.statusSelected.value]}
+              data={this.props.data[this.state.statusSelected.value] ? this.props.data[this.state.statusSelected.value] : []}
             />
           </div>
         </div>
@@ -54,5 +54,5 @@ export class SelectDashboard extends Component {
 }
 
 
-export default SelectDashboard
+export default SelectTableView
 
