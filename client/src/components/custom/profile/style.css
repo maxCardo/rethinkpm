@@ -689,9 +689,6 @@
   border-radius: 0;
   border-color: #fff;
 }
-#profile__tabs-tab-table {
-  margin-left: auto;
-}
 /*Profile sub sub nav :)*/
 .profile__main-container .bottom-navigation__tabs  {
   background:#f2f2f2;
