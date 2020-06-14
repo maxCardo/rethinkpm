@@ -4,6 +4,9 @@ const { sendEmail } = require('../3ps/email')
 const Agent = require('../db/models/sales/agent')
 const Chat = require('../db/models/comms/Chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
+const RentProsModel = require('../db/models/prospects/RentLeads/RentPros')
+const RentInq = require('../db/models/prospects/RentLeads/RentInq')
+const BuyerPros = require('../db/models/prospects/BuyerPros')
 const {outgoingSMS} = require('../3ps/sms')
 
 
@@ -88,6 +91,59 @@ router.get('/chats', async (req, res) => {
       res.status(400).send('server error')
   }
 })
+
+// @route: get /api/comms/profile
+// @desc: get the profile info for the mini profile component of a specific chat 
+router.post('/profile', async (req, res) => {
+  try {
+    const chatId = req.body.id
+    const chat = await Chat.findById(chatId)
+    const profile = await getProfileOfOwner(chat.owner, chat.ownerType)
+    res.status(200).json(profile)
+  } catch (err) {
+    console.log(err)
+    res.status(400).send('server error')
+  }
+})
+
+async function getProfileOfOwner(ownerId, ownerType) {
+  if(ownerType == 'rentPros') {
+    return await getProfileOfRentPros(ownerId)
+  }
+  if(ownerType == 'agentPros') {
+    return await getProfileOfAgentPros(ownerId)
+  }
+  if(ownerType == 'buyerPros') {
+    return await getProfileOfBuyerPros(ownerId)
+  }
+}
+
+async function getProfileOfRentPros(rentInqId) {
+  const rentInqData = await RentInq.findById(rentInqId).populate('prospect')
+  const profile = {
+    name: rentInqData.prospect.fullName,
+    notes: rentInqData.notes
+  }
+  return profile
+}
+
+async function getProfileOfAgentPros(agentId) {
+  const agentData = await Agent.findById(agentId)
+  const profile = {
+    name: agentData.fullName,
+    notres: agentData.notes
+  }
+  return profile
+}
+
+async function getProfileOfBuyerPros(buyerId) {
+  const buyerData = await BuyerPros.findById(buyerId)
+  const profile = {
+    name: buyerData.fullName,
+    notres: buyerData.notes
+  }
+  return profile
+}
 
 // @route: get /api/comms/chat/:owner;
 // @desc: get single chat by owner 

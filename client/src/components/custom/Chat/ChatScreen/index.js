@@ -69,6 +69,7 @@ export class ChatScreen extends Component {
     if(this.props.inquiries && this.props.inquiries.length) {
       activeChat = this.props.chats[this.state.activeChat]
     }
+    console.log(this.props.chats)
     return (
       <div className='container-fluid h-100'>
         <div className='row h-100'>
@@ -93,7 +94,7 @@ export class ChatScreen extends Component {
           }
           <div className='col-sm-3'>
             {activeChat ?
-              <Profile name={activeChat.name} notes={activeChat.notes} inquiryId={activeChat.inquiryId} /> 
+              <Profile chatId={activeChat._id} /> 
               :
               ''
             }
@@ -123,11 +124,12 @@ export class ChatScreen extends Component {
       date: new Date()
     })
     const message = {
-      from: 'Admin',
-      message: messageContent,
-      date: new Date()
+      sender: 'Admin',
+      content: messageContent,
+      date: new Date(),
+      userMessage: true,
     }
-    this.socket.emit('ui_msg', {chatID: activeChat.id, msg: message})
+    this.socket.emit('ui_msg', {chatID: activeChat._id, msg: message})
     this.props.updateChats(chats)
     this.scrollToBottom()
   }
