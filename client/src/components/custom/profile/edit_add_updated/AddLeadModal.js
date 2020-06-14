@@ -8,28 +8,20 @@ import AddFields from "./AddFields";
 import {newAgent, newBuyer, newRenter} from '../../../../util/EmptyModels';
 
 
-const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod, showMod, settings}) => {
+const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod, showMod, settings, profileName}) => {
 
     const theProfileType = useRef(profileType);
-    let newProfile = {};
-
-    if (theProfileType.current === 'agentPros') {
-        newProfile = newAgent;
-    } else if (theProfileType.current === 'buyerPros') {
-        newProfile = newBuyer;
-    } else if (theProfileType.current === 'rentPros') {
-        newProfile = newRenter;
-    }
-
+ 
     const [valid, setValid] = useState(false)
-    const [formData, setFormData] = useState(newProfile)
+    const [formData, setFormData] = useState()
 
     const onChange = e => {
-        console.log(e);
+        console.log(e.target.name,': ' , e.target.value);
         setFormData({...formData, [e.target.name]: e.target.value})
     }
 
     const onChangeArray = (name, value) => {
+        console.log(name, ': ', value);
         setFormData({...formData, [name]: value});
     }
 
@@ -43,17 +35,11 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         setValid(false);
     }
 
-    const profileLabel =(theProfileType.current === 'agentPros') ? 'Agent' : (theProfileType.current === 'buyerPros') ? 'Buyer' : 'Renter';
-
-    useEffect(() => {
-
-    }, []);
-
     return (
         <Fragment>
             <Modal size='lg' show={showMod} onHide={onHide} className="lead__modal">
                 <Modal.Header closeButton>
-                    <Modal.Title>Add a {`${profileLabel}`}</Modal.Title>
+                    <Modal.Title>Add a {`${profileName}`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>

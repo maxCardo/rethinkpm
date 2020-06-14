@@ -7,7 +7,7 @@ const AddEmailField = ({field, form, onChangeArray}) => {
 
     const [valid, setValid] = useState(false);
     const [address, setAddress] = useState('');
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({ address: '', isPrimary: false });
 
     const onChange = e => {
         setAddress(e.target.value);
