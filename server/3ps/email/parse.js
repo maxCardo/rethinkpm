@@ -1,4 +1,5 @@
 const htmlToText = require('html-to-text');
+const cheerio = require('cheerio')
 const {sendEmail} = require('../email')
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
@@ -88,12 +89,15 @@ const zillowBuyers = async (data) => {
 }
 
 const mlsListings = async (data) => {
-    console.log(data.html);
+    console.log('running mlsListing')
+    const $ = cheerio.load('<body><div><p id="test">helloo nurse</p></div></body>')
+
+    const test = $('#test').text()
+
+    console.log('testing: ', test);
 
 
 }
-
-
 
 
 module.exports = {zumperParse, zillowBuyers, mlsListings}
