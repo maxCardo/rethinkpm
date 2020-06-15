@@ -8,8 +8,9 @@ import AddPhoneField from './InputFields/AddPhoneField';
 
 const AddFields = (props) => {
 
-    const {field: {accessor}} = props
-    switch (accessor) {
+    const {field: {accessor, datatype}} = props
+    const selector = datatype ? datatype : accessor
+    switch (selector) {
 
         case 'email':
             return <AddEmailField {...props} />;

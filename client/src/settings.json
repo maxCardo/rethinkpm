@@ -64,15 +64,15 @@
           },
           {
             "name": "Top Neighborhoods",
-            "accessor": "collection",
-            "datatype": "areas",
+            "accessor": "areas",
+            "datatype": "collection",
             "col": 2,
             "formatter": "formatLabels"
           },
           {
             "name": "Top Zip Codes",
-            "accessor": "collection",
-            "datatype": "zipCodes",
+            "accessor":"zipCodes" ,
+            "datatype": "collection",
             "col": 2,
             "formatter": "formatLabels"
           },

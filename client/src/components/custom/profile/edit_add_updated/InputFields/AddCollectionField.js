@@ -13,9 +13,9 @@ const AddCollectionField = ({field, onChangeArray, passIndex, settings}) => {
     const type = settings[passIndex];
 
     let fieldOptions;
-    if (type.datatype === 'zipCodes' || type.datatype === 'targetZipCodes') {
+    if (type.accessor === 'zipCodes' || type.accessor === 'targetZipCodes') {
         fieldOptions = zipcodes;
-    } else if (type.datatype === 'areas' || type.datatype === 'targetAreas') {
+    } else if (type.accessor === 'areas' || type.accessor === 'targetAreas') {
         fieldOptions = areas;
     }
 
@@ -25,7 +25,7 @@ const AddCollectionField = ({field, onChangeArray, passIndex, settings}) => {
 
     useEffect(() => {
 
-        onChangeArray(type.datatype, selected);
+        onChangeArray(type.accessor, selected);
 
     }, [selected]);
 
