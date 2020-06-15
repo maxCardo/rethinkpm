@@ -9,8 +9,6 @@ import settings from '../../../../../settings';
 const AddSelectField = ({field, onChangeArray, passIndex, fieldSettings, profile, offices}) => {
     const theProfiles = settings.routes.profile;
 
-    console.log(offices);
-
     const [selected, select] = useState(false)
 
     let officeOptions = theProfiles && theProfiles[profile] && offices;

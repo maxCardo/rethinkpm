@@ -812,9 +812,13 @@
 .profile__logs-container .tab-content {
   padding-top: 46px;
 }
+.lead__modal .modal-content {
+  width: 76%;
+}
 .lead__modal .modal-body {
   max-height: 62vh;
   overflow: auto;
+
 }
 .lead__modal .checkbox.path {
   margin-bottom: 6px;
@@ -823,6 +827,10 @@
 .lead__modal .addEmailGroup {
   align-items: flex-end;
   margin-bottom: 0;
+}
+.lead__modal .addPhoneGroup .action-buttons__button {
+  position: relative;
+  top: -4px;
 }
 .lead__modal input[type="text"].form-control {
   font-size: .85rem;

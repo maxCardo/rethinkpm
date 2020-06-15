@@ -29,7 +29,7 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
             profileId.current = profile._id;
         }
        
-    }, [profile, profileInfo])
+    }, [profile])
 
     //ToDo: refactor settings.json to incorperate below lines of code
     const colHeader = ['',`${profileName} Info`, 'Profile Info', 'Communication Info']
