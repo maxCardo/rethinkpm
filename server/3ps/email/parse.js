@@ -1,5 +1,6 @@
 const htmlToText = require('html-to-text');
 const cheerio = require('cheerio')
+const axios = require('axios')
 const {sendEmail} = require('../email')
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
@@ -89,15 +90,30 @@ const zillowBuyers = async (data) => {
 }
 
 const mlsListings = async (data) => {
-    console.log('running mlsListing')
-    const $ = cheerio.load('<body><div><p id="test">helloo nurse</p></div></body>')
+    const res = await axios.get('http://maxcardo.github.io/scrape_sandbox/')
+    const $ = cheerio.load(res.data)
 
-    const test = $('#test').text()
+    const test = $("#test").text();
 
     console.log('testing: ', test);
-
 
 }
 
 
 module.exports = {zumperParse, zillowBuyers, mlsListings}
+
+
+// sample axios call with headers
+// const globalHeader = {
+//     'Content-Type': 'application/x-www-form-urlencoded',
+//     accesskey: idxClientID,
+//     ancillarykey: idxPartnerID,
+//     outputtype: 'json'
+// }
+
+// // @desc: get all idx users
+// const getUsers = async () => await axios({
+//     url: 'https://api.idxbroker.com/leads/lead',
+//     method: 'get',
+//     headers: globalHeader
+// })
