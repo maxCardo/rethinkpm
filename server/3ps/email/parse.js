@@ -103,6 +103,7 @@ const mlsListings = async (data) => {
 module.exports = {zumperParse, zillowBuyers, mlsListings}
 
 
+
 // sample axios call with headers
 // const globalHeader = {
 //     'Content-Type': 'application/x-www-form-urlencoded',
