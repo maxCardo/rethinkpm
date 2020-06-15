@@ -1,7 +1,8 @@
 const htmlToText = require('html-to-text');
-const cheerio = require('cheerio')
-const axios = require('axios')
+
 const {sendEmail} = require('../email')
+const {mlsSold,mlsNew,mlsPriceDec} = require('./listing') 
+
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
 
@@ -90,13 +91,25 @@ const zillowBuyers = async (data) => {
 }
 
 const mlsListings = async (data) => {
-    const res = await axios.get('http://maxcardo.github.io/scrape_sandbox/')
-    const $ = cheerio.load(res.data)
+    const { to, from, subject, text, html } = data
+    console.log(subject);
+    const route = await htmlToText.fromString(subject, { wordwrap: null })
 
-    const test = $("#test").text();
-
-    console.log('testing: ', test);
-
+    switch(route){
+        case 'sold':
+            console.log('switch: sold');
+            mlsSold(html);
+            break;
+        case 'priceDecrease':
+            mlsPriceDec(html);
+            break;
+        case 'new':
+            mlsNew(html);
+            break;
+        default:
+            console.log('subject switch fail');
+            sendEmail('adampoznanski@outlook.com', `mls switch default: ${subject}`, text, html);
+    }
 }
 
 

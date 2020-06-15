@@ -5,7 +5,7 @@ const Agent = require('../db/models/sales/agent')
 const Chat = require('../db/models/comms/Chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
 const {outgoingSMS} = require('../3ps/sms')
-const {zumperParse, zillowBuyers, mlsListings} = require('../3ps/email/parse')
+const {zumperParse, zillowBuyers, mlsListings} = require('../3ps/scrape_parse/emailParse')
 
 
 const router = express.Router();
@@ -135,22 +135,23 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
 router.post('/email/parse',upload.none(), (req, res) => {
     try {
         const data = req.body
-        const route = data.to.split('@')[0].replace('\"', '')
+        const route = data.to.split('@')[0].replace('\"', '').toLowerCase()
+        
 
         switch(route){
             case 'zumper':
                 console.log('routing to zumper');
                 zumperParse(data)
                 break;
-            case 'zillowRentals':
+            case 'zillowrentals':
                 console.log('zillow Rentals');
                 break;
-            case 'zillowBuyer':
+            case 'zillowbuyer':
                 console.log('zillow Buyers');
                 zillowBuyers(data)
                 break;
-            case 'newListing':
-                console.log('mls');
+            case 'newlisting':
+                console.log('switch mls');
                 mlsListings(data);
                 break;
             default:

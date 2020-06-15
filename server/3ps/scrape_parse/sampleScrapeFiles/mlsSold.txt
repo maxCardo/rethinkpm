@@ -1,0 +1,519 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <style type="text/css" style="display: none;">
+      P {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body dir="ltr">
+    <div
+      style="
+        font-family: Calibri, Helvetica, sans-serif;
+        font-size: 12pt;
+        color: rgb(0, 0, 0);
+      "
+    >
+      <span style="font-family: Verdana, Arial, Helvetica; font-size: small;"
+        >Hi Adam,</span
+      ><br />
+    </div>
+    <p id='test'>Testing testing </p>
+    <div>
+      <div style="background-color: #ffffff;">
+        <font face="Verdana,Arial,Helvetica" size="2"
+          ><br />
+          One or more new/updated listing(s) match your search criteria:<br />
+          <br />
+          <a
+            href="https://eur05.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwpn.mlsmatrix.com%2FDAE.asp%3FID%3D0-423797278-10&amp;data=02%7C01%7C%7Ccecb415f11e14590ced708d81123c7d5%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C637278192652245219&amp;sdata=EtkcIFHtYhLZU9buMtQNnBA0fE%2BLpnqZcgi1IrJtYjI%3D&amp;reserved=0"
+            originalsrc="https://wpn.mlsmatrix.com/DAE.asp?ID=0-423797278-10"
+            shash="cWBMdVaFXsHGkBn/MpkMaUNbFhjvqiqARHnQBq&#43;aFXGDXETbmq2&#43;SV4OxV1itsuVfju&#43;ztdB8qtYZHwTfr7ROOUGOudDCT903yd7XCMYiuH9G23B0K0fTn&#43;ZENqfNCeJpVoUe/PeT73Ai30PG4Ti7OYoAOH0NeDvZ/J1060gx&#43;8="
+            >https://wpn.mlsmatrix.com/DAE.asp?ID=0-423797278-10</a
+          ><br />
+          <br />
+          <br />
+          <div>
+            <a id="x_aDisplay_40973359"></a>
+            <table
+              id="x_wrapperTable"
+              style="border-collapse: collapse; margin-bottom: 2px;"
+            >
+              <tbody>
+                <tr>
+                  <td style="margin: 0px; padding: 0px;">
+                    <table
+                      cellspacing="0"
+                      cellpadding="0"
+                      style="
+                        border-collapse: separate;
+                        border-spacing: 0px;
+                        border-style: none;
+                        table-layout: fixed;
+                        max-width: 548px;
+                      "
+                    >
+                      <tbody>
+                        <tr>
+                          <td
+                            style="margin: 0px; overflow: hidden; width: 143px;"
+                          ></td>
+                          <td
+                            style="margin: 0px; overflow: hidden; width: 405px;"
+                          ></td>
+                        </tr>
+                        <tr>
+                          <td
+                            style="
+                              margin: 0px;
+                              overflow: hidden;
+                              vertical-align: top;
+                              width: 143px;
+                            "
+                          >
+                            <table
+                              cellspacing="0"
+                              cellpadding="0"
+                              style="
+                                border-collapse: separate;
+                                border-spacing: 0px;
+                                table-layout: fixed;
+                                max-width: 143px;
+                              "
+                            >
+                              <tbody>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 143px;
+                                    "
+                                  ></td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 143px;
+                                    "
+                                  >
+                                    <span
+                                      ><img
+                                        class="x_IV_Image"
+                                        style="
+                                          max-width: 133px;
+                                          max-height: 100px;
+                                        "
+                                        src="https://media.wpn.mlsmatrix.com/mediaserver/GetMedia.ashx?Key=40973359&amp;TableID=9&amp;Type=1&amp;Number=0&amp;Size=1&amp;ust=AgAAAJHSTj(mN1Xs425ik24nrPx(Ull2n3aUogVUn35lm35fQhTYvg))"
+                                    /></span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                          <td
+                            style="
+                              margin: 0px;
+                              overflow: hidden;
+                              vertical-align: top;
+                              width: 405px;
+                            "
+                          >
+                            <table
+                              cellspacing="0"
+                              cellpadding="0"
+                              style="
+                                border-collapse: separate;
+                                border-spacing: 0px;
+                                table-layout: fixed;
+                                max-width: 405px;
+                              "
+                            >
+                              <tbody>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 69px;
+                                    "
+                                  ></td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 160px;
+                                    "
+                                  ></td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 62px;
+                                    "
+                                  ></td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 114px;
+                                    "
+                                  ></td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    colspan="4"
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 405px;
+                                    "
+                                  >
+                                    <span
+                                      >213 Lockheed Drive #404D, Pennsylvania
+                                      15108</span
+                                    >
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 69px;
+                                    "
+                                  >
+                                    <span>MLS #: </span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 160px;
+                                    "
+                                  >
+                                    <span
+                                      ><a
+                                        href="https://eur05.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwpn.mlsmatrix.com%2FMatrix%2FPublic%2FPortal.aspx%3Fk%3D2434410XDM90%26p%3DAE-423797-278%26L%3D1%26rk%3D40973359&amp;data=02%7C01%7C%7Ccecb415f11e14590ced708d81123c7d5%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C637278192652255206&amp;sdata=GwlwgLS2C8x6%2F%2BLwVa%2BmZ%2BMOyKQPg%2BH%2BIm73S0okr54%3D&amp;reserved=0"
+                                        originalsrc="https://wpn.mlsmatrix.com/Matrix/Public/Portal.aspx?k=2434410XDM90&amp;p=AE-423797-278&amp;L=1&amp;rk=40973359"
+                                        shash="Io9HUtJMIuZTmkQ4Gg3HMAYondbcouTVupgHqlsiZsx&#43;d1gi8nbZcoBPm3rE3I0WzJgYg1gZBV1kimm6s2kaXr/44H7VDNlYrWmcacub5Ch8KrXq5e48bkHvphzK2urRaX/5BOrV70UHxpgydiAiHZHib54mGsgetiXnYD68Rzs="
+                                        >1441732</a
+                                      ></span
+                                    >
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 62px;
+                                    "
+                                  >
+                                    <span>Price: </span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 114px;
+                                    "
+                                  >
+                                    <span>$302,775</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 69px;
+                                    "
+                                  >
+                                    <span>Type: </span>
+                                  </td>
+                                  <td
+                                    colspan="3"
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 336px;
+                                    "
+                                  >
+                                    <span>Townhouse</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 69px;
+                                    "
+                                  >
+                                    <span>BR: </span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 160px;
+                                    "
+                                  >
+                                    <span>3</span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 62px;
+                                    "
+                                  >
+                                    <span>FB/PB: </span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 114px;
+                                    "
+                                  >
+                                    <span>2/1</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 69px;
+                                    "
+                                  >
+                                    <span>Style: </span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 160px;
+                                    "
+                                  >
+                                    <span>2 Story or 2 Level</span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 62px;
+                                    "
+                                  ></td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 114px;
+                                    "
+                                  ></td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 69px;
+                                    "
+                                  >
+                                    <span>Parking: </span>
+                                  </td>
+                                  <td
+                                    colspan="3"
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 336px;
+                                    "
+                                  >
+                                    <span>2</span
+                                    ><span style="font-weight: normal;">/ </span
+                                    ><span>Integral Garage</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 69px;
+                                    "
+                                  >
+                                    <span>Acres: </span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 160px;
+                                    "
+                                  >
+                                    <span></span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 62px;
+                                    "
+                                  ></td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 114px;
+                                    "
+                                  ></td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    colspan="4"
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 405px;
+                                    "
+                                  >
+                                    <span
+                                      ><b
+                                        ><font color="green">Sold</font></b
+                                      ></span
+                                    >
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td
+                                    colspan="2"
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 229px;
+                                    "
+                                  >
+                                    <span
+                                      ><a
+                                        href="https://eur05.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwpn.mlsmatrix.com%2FMatrix%2FPublic%2FPortal.aspx%3Fk%3D2434410XDM90%26p%3DAE-423797-278%26L%3D1%26rk%3D40973359&amp;data=02%7C01%7C%7Ccecb415f11e14590ced708d81123c7d5%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C637278192652255206&amp;sdata=GwlwgLS2C8x6%2F%2BLwVa%2BmZ%2BMOyKQPg%2BH%2BIm73S0okr54%3D&amp;reserved=0"
+                                        originalsrc="https://wpn.mlsmatrix.com/Matrix/Public/Portal.aspx?k=2434410XDM90&amp;p=AE-423797-278&amp;L=1&amp;rk=40973359"
+                                        shash="Io9HUtJMIuZTmkQ4Gg3HMAYondbcouTVupgHqlsiZsx&#43;d1gi8nbZcoBPm3rE3I0WzJgYg1gZBV1kimm6s2kaXr/44H7VDNlYrWmcacub5Ch8KrXq5e48bkHvphzK2urRaX/5BOrV70UHxpgydiAiHZHib54mGsgetiXnYD68Rzs="
+                                        >MORE DETAILS</a
+                                      ></span
+                                    >
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 62px;
+                                    "
+                                  >
+                                    <span>Status: </span>
+                                  </td>
+                                  <td
+                                    style="
+                                      margin: 0px;
+                                      overflow: hidden;
+                                      width: 114px;
+                                    "
+                                  >
+                                    <span
+                                      ><span class="x_Status_S"
+                                        >Sold</span
+                                      ></span
+                                    >
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            colspan="2"
+                            style="margin: 0px; overflow: hidden; width: 548px;"
+                          >
+                            <span>
+                              <hr style="width: 100%;" />
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br />
+          <br />
+          Adam Poznanski<br />
+          412-444-5181<br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <p style="margin: 0px; font-size: 8pt;">
+            Delivered By CoreLogic, Inc. | 40 Pacifica, Irvine, CA 92618
+          </p>
+          <a
+            href="https://eur05.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwpn.mlsmatrix.com%2FUAE.asp%3FID%3D0-423797278-00%26Eml%3DYWRhbXBvem5hbnNraUBvdXRsb29rLmNvbQ%253d%253d&amp;data=02%7C01%7C%7Ccecb415f11e14590ced708d81123c7d5%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C637278192652265200&amp;sdata=OUbojf1W2cnRnusQGp%2B9V8UVDJYhVePaNc0SpalDkd0%3D&amp;reserved=0"
+            originalsrc="https://wpn.mlsmatrix.com/UAE.asp?ID=0-423797278-00&amp;Eml=YWRhbXBvem5hbnNraUBvdXRsb29rLmNvbQ%3d%3d"
+            shash="J5TMuuJe/QYwiU2mJKJtiDKnGdeDuCePchfxOa8WNvp4A4SqErngz1PSCylofbFabuWU4lUYbOp7GGu0Cfp2skhN9IZY9FP&#43;6j1kLk03UMZD8WOkByXwz26hwZeDFRulawfYsb7A0BynMPrOcAzqNhzyc9t00x8X0c4kmdhSKfo="
+            style="font-size: 8pt;"
+            >Click this link if you wish to Unsubscribe.</a
+          ><br />
+        </font>
+      </div>
+    </div>
+    <div id="DAB4FAD8-2DD7-40BB-A1B8-4E2AA1F9FDF2">
+      <br />
+      <table style="border-top: 1px solid #d3d4de;">
+        <tbody>
+          <tr>
+            <td style="width: 55px; padding-top: 13px;">
+              <a
+                href="http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail"
+                target="_blank"
+                ><img
+                  alt=""
+                  width="46"
+                  height="29"
+                  style="width: 46px; height: 29px;"
+                  src="https://ipmcdn.avast.com/images/icons/icon-envelope-tick-green-avg-v1.png"
+              /></a>
+            </td>
+            <td
+              style="
+                width: 470px;
+                padding-top: 12px;
+                color: #41424e;
+                font-size: 13px;
+                font-family: Arial, Helvetica, sans-serif;
+                line-height: 18px;
+              "
+            >
+              Virus-free.
+              <a
+                href="http://www.avg.com/email-signature?utm_medium=email&amp;utm_source=link&amp;utm_campaign=sig-email&amp;utm_content=webmail"
+                target="_blank"
+                style="color: #4453ea;"
+              >
+                www.avg.com</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <a href="#DAB4FAD8-2DD7-40BB-A1B8-4E2AA1F9FDF2" width="1" height="1"></a>
+    </div>
+  </body>
+</html>
