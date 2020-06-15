@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Col, Form} from 'react-bootstrap';
 import Select from 'react-select';
+import { connect } from 'react-redux';
 
-import {zipcodes} from '../../../BrokerDashboard/AgentList/zipcodes';
-import {areas} from '../../../BrokerDashboard/AgentList/areas';
-
-
-const AddCollectionField = ({field, onChangeArray, passIndex, settings}) => {
+const AddCollectionField = ({field, onChangeArray, passIndex, settings, zipcodes, areas}) => {
 
     const [selected, select] = useState([])
 
@@ -47,4 +44,10 @@ const AddCollectionField = ({field, onChangeArray, passIndex, settings}) => {
     )
 }
 
-export default AddCollectionField;
+function mapStateToProps(state) {
+    const zipcodes = state.profile.filterOptions.zip;
+    const areas = state.profile.filterOptions.area;
+    return { zipcodes, areas }
+}
+
+export default connect(mapStateToProps)(AddCollectionField);

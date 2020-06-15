@@ -1,12 +1,9 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react'
+import React, {Fragment, useEffect, useRef, useState } from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button, Row} from 'react-bootstrap'
 
 import {addLeadSubmit, tglAddLeadMod} from '../../../../actions/profile'
 import AddFields from "./AddFields";
-
-import {newAgent, newBuyer, newRenter} from '../../../../util/EmptyModels';
-
 
 const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod, showMod, settings, profileName}) => {
 
@@ -16,14 +13,15 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
     const [formData, setFormData] = useState()
 
     const onChange = e => {
-        console.log(e.target.name,': ' , e.target.value);
+        console.log({'name': [e.target.name], 'value': e.target.value});
+
         setFormData({...formData, [e.target.name]: e.target.value})
     }
 
     const onChangeArray = (name, value) => {
-        console.log(name, ': ', value);
+        console.log({'name': name, 'value': value});
         setFormData({...formData, [name]: value});
-    }
+    };
 
     const onSubmit = () => {
         tglAddLeadMod(false);

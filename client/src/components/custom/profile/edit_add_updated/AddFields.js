@@ -4,6 +4,7 @@ import AddCollectionField from "./InputFields/AddCollectionField";
 import AddStatusField from './InputFields/AddStatusField';
 import AddEmailField from './InputFields/AddEmailField';
 import AddPhoneField from './InputFields/AddPhoneField';
+import AddSelectField from "./InputFields/AddSelectField";
 
 
 const AddFields = (props) => {
@@ -20,6 +21,8 @@ const AddFields = (props) => {
             return <AddStatusField {...props} fieldSettings={props.settings} profile={props.profile} />;
         case 'collection':
             return <AddCollectionField {...props} />;
+        case 'select':
+            return <AddSelectField {...props} />;
         default:
             return <TextField {...props} />;
     }

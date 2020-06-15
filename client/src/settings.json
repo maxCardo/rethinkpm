@@ -40,6 +40,7 @@
           {
             "name": "Office",
             "accessor": "office.name",
+            "datatype": "select",
             "col": 1
           },
           {
@@ -67,14 +68,16 @@
             "accessor": "areas",
             "datatype": "collection",
             "col": 2,
-            "formatter": "formatLabels"
+            "formatter": "formatLabels",
+            "derived": true
           },
           {
             "name": "Top Zip Codes",
             "accessor":"zipCodes" ,
             "datatype": "collection",
             "col": 2,
-            "formatter": "formatLabels"
+            "formatter": "formatLabels",
+            "derived": true
           },
           {
             "name": "Target Offer",
