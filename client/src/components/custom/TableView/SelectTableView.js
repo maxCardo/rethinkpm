@@ -19,6 +19,14 @@ export class SelectTableView extends Component {
   }
 
   render() {
+    let data = []
+    if(this.state.statusSelected.value === '*') {
+      for(const status in this.props.data) {
+        data = data.concat(this.props.data[status])
+      }
+    } else if(this.props.data[this.state.statusSelected.value]) {
+      data = this.props.data[this.state.statusSelected.value]
+    }
     return (
       <div>
         <div className='searchContainer agentsSearchContainer'>
@@ -44,7 +52,7 @@ export class SelectTableView extends Component {
               fontSize={12}
               className="agentInfoTable"
               {...this.props}
-              data={this.props.data[this.state.statusSelected.value] ? this.props.data[this.state.statusSelected.value] : []}
+              data={data}
             />
           </div>
         </div>

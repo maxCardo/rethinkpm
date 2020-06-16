@@ -34,6 +34,7 @@ export class ProfileTableView extends Component {
   }
   render() {
     const statuses = this.props.settings.statusOptions.map((status) => ({label: status.label , key: status.value}))
+    statuses.unshift({label: 'All', key: '*'})
     const data = {} 
     this.props.profileList.list.forEach((profile) => {
       if(data[profile.status]) {
