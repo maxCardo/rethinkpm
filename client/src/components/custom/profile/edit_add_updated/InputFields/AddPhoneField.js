@@ -5,11 +5,11 @@ import {checkBoxCheck} from "../../../../../util/commonFunctions";
 
 const AddPhoneField = ({field, form, onChangeArray}) => {
 
-    let phoneNumbersCount = useRef(1);
     const emptyPhone =  {number:'', okToText:true, isPrimary: false}
 
     const [valid, setValid] = useState(false);
     const [formData, setFormData] = useState([emptyPhone]);
+    const [phoneNumbersCount, setPhoneNumbersCount] = useState(1);
 
     const onChangeNumber =(e, idx) => {
         let newFormEntry = {
@@ -29,39 +29,39 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
         };
 
         newFormEntry = {...newFormEntry, [e.target.name]: e.target.checked};
-
         let newFormData = formData;
             newFormData[index] =  newFormEntry;
+        console.log('newFormDataModified')
+        console.log(newFormData);
+        setFormData([...newFormData]);
+        console.log(formData);
 
-        setFormData(newFormData);
     }
 
     const onClickAdd = () => {
         let newFormData = formData;
-        console.log('newFormData');
-        console.log(newFormData)
-            newFormData.push(emptyPhone)
+            newFormData.push(emptyPhone);
         setFormData(newFormData);
-        phoneNumbersCount.current = phoneNumbersCount.current++;
-        console.log(' phoneNumbersCount.current');
-        console.log( phoneNumbersCount.current);
-    }
+        setPhoneNumbersCount(phoneNumbersCount + 1 );
+    };
+
+    const onClickDelete = (idx) => {
+        let newFormData = formData;
+        newFormData.splice(idx, 1);
+        setFormData(newFormData);
+        setPhoneNumbersCount(phoneNumbersCount - 1 );
+    };
 
     const validate = (e) => {
         const validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         e && setValid(!!e.target.value.match(validPhone))
-    }
+    };
 
     useEffect(() => {
 
         onChangeArray(field.accessor, formData);
-        console.log('formData');
-        console.log(formData);
-        if (formData.length === phoneNumbersCount.current) {
-            console.log('now');
-        }
 
-    }, [formData,phoneNumbersCount.current]);
+    }, [formData, phoneNumbersCount]);
 
     const checkBox = checkBoxCheck();
 
@@ -71,7 +71,7 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
                 return (
                     <Form.Group className="addPhoneGroup" key={index}>
                         <Form.Group>
-                            <Form.Label>Number:</Form.Label>
+                             {(index < 1) && (<Form.Label>Number:</Form.Label>)}
                             <Form.Control type="text" name='number'
                                           className={valid ? 'valid' : 'invalid'}
                                           placeholder="Enter a Number"
@@ -83,14 +83,14 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label className="checkbox path">
-                                <input type="checkbox" defaultChecked={formData[index].okToText} name={'okToText'} onChange={(e) => onCheckChange(e, index)}/>
+                                <input type="checkbox" checked={formData && formData[index].okToText} name='okToText' onChange={(e) => onCheckChange(e, index)}/>
                                 {checkBox} &nbsp; Ok to text
                             </Form.Label>
                         </Form.Group>
                         <Form.Group>
                             <div className="element-wrapper with--checkbox">
                                 <Form.Label className="checkbox path">
-                                    <input type="checkbox" name='isPrimary' onChange={(e) => onCheckChange(e, index)}/>
+                                    <input type="checkbox" name='isPrimary' checked={formData && formData[index].isPrimary} onChange={(e) => onCheckChange(e, index)}/>
                                     {checkBox} &nbsp; Primary
                                 </Form.Label>
                             </div>
@@ -104,7 +104,7 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
                        </Form.Group>
                            :
                            <Form.Group>
-                               <button className='action-buttons__button' onClick={onClickAdd}>
+                               <button className='action-buttons__button' onClick={() => onClickDelete(index)}>
                                    <i className="fas fa-trash"></i>
                                </button>
                            </Form.Group>
