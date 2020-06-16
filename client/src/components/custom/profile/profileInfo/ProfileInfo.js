@@ -1,11 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react'
+
 import ProfileIcon from '../../common/ProfileIcon';
-
-
 import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
-import AddPhoneModal from '../edit_add_updated/AddPhoneModal'
-import AddEmailModal from '../edit_add_updated/AddEmailModal'
+import AddPhoneModal from '../addLead/AddPhoneModal'
+import AddEmailModal from '../addLead/AddEmailModal'
 
 
 const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglChat, tglList, tglEdit, tglAdd}) => {

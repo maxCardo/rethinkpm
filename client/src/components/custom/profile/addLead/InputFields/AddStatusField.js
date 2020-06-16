@@ -8,7 +8,7 @@ import settings from '../../../../../settings';
 const AddStatusField = ({field, onChangeArray, passIndex, fieldSettings, profile}) => {
     const theProfiles = settings.routes.profile;
 
-    const [selected, select] = useState(false)
+    const [selected, select] = useState({label: "Lead", value: "lead"});
 
     const type = fieldSettings[passIndex];
 

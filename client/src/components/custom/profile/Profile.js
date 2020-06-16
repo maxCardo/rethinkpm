@@ -1,18 +1,20 @@
 import React, {Fragment, useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux'
 import qs from 'query-string'
-import './style.css'
+import {Tab, Tabs} from 'react-bootstrap'
 import {Resizable} from 're-resizable'
+
+import './style.css'
+
+import {SET_INQUIRIES} from '../../../actions/type'
+import {loadBackUpProfile, loadProfileDefault, tglAddLeadMod} from '../../../actions/profile'
 import ProfileInfo from './profileInfo/ProfileInfo'
 import ProfileList from './profileList/ProfileList'
 import ProfileDetails from './profileDetails/ProfileDetails'
-import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
-import {SET_INQUIRIES} from '../../../actions/type'
-import {loadBackUpProfile, loadProfileDefault, tglAddLeadMod} from '../../../actions/profile'
 
-import {Tab, Tabs} from 'react-bootstrap';
-import AddLeadModal from "./edit_add_updated/AddLeadModal";
+import AddLeadModal from "./addLead/AddLeadModal";
+import Chat from './profileComms/Chat'
 
 
 const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault, tglAddLeadMod}) => {

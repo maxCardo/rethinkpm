@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Col, Form} from 'react-bootstrap';
-import {checkBoxCheck, validateEmail} from "../../../../../util/commonFunctions";
 import PropTypes from "prop-types";
-import AddPhoneField from "./AddPhoneField";
+
+import {checkBoxCheck, validateEmail} from "../../../../../util/commonFunctions";
 
 
 const AddEmailField = ({field, form, onChangeArray}) => {
