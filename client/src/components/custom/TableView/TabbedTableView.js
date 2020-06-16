@@ -28,7 +28,7 @@ export class TabbedTableView extends Component {
                 data = this.props.data[key]
               }
               return (
-                <Tab key={key} eventKey={key} title={`Current Select: ${label}`}>
+                <Tab key={key} eventKey={key} title={`Current Selected: ${label}`}>
                   <div className='section'>
                     <h2 className='sectionTitle'>Status {index+1}: {label}</h2>
                     <Table

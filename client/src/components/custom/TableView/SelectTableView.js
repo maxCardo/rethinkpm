@@ -7,7 +7,7 @@ export class SelectTableView extends Component {
   constructor(props) {
     super(props)
     const selectOptions = this.props.states.map(({label, key}, index) => ({
-      label: `Current Select: ${label}`,
+      label: `Current Selected: ${label}`,
       value: key
     }))
     this.state = {
@@ -31,7 +31,7 @@ export class SelectTableView extends Component {
       <div>
         <div className='searchContainer agentsSearchContainer'>
           <Select
-            className="agentStatusFilter"
+            className="table-view__select"
             onChange={(value) => this.setState({ statusSelected: value })}
             defaultValue={this.state.statusSelected}
             options={this.state.selectOptions}
