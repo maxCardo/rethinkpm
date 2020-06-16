@@ -828,7 +828,8 @@
   align-items: flex-end;
   margin-bottom: 0;
 }
-.lead__modal .addPhoneGroup .action-buttons__button {
+.lead__modal .addPhoneGroup .action-buttons__button,
+.lead__modal .addEmailGroup .action-buttons__button {
   position: relative;
   top: -4px;
 }

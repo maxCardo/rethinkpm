@@ -1,5 +1,7 @@
 import React, { useEffect, useState} from 'react';
+import PropTypes from "prop-types";
 import { Col, Form } from 'react-bootstrap';
+
 import { checkBoxCheck } from "../../../../../util/commonFunctions";
 
 
@@ -30,14 +32,14 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
 
         newFormEntry = {...newFormEntry, [e.target.name]: e.target.checked};
         let newFormData = formData;
-            newFormData[index] =  newFormEntry;
+        newFormData[index] =  newFormEntry;
 
         setFormData([...newFormData]);
     };
 
     const onClickAdd = () => {
         let newFormData = formData;
-            newFormData.push(emptyPhone);
+        newFormData.push(emptyPhone);
         setFormData(newFormData);
         setPhoneNumbersCount(phoneNumbersCount + 1 );
     };
@@ -58,7 +60,7 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
 
         onChangeArray(field.accessor, formData);
 
-    }, [formData, phoneNumbersCount, field.accessor, onChangeArray]);
+    }, [formData, phoneNumbersCount]);
 
     const checkBox = checkBoxCheck();
 
@@ -68,7 +70,7 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
                 return (
                     <Form.Group className="addPhoneGroup" key={index}>
                         <Form.Group>
-                             {(index < 1) && (<Form.Label>Number:</Form.Label>)}
+                            {(index < 1) && (<Form.Label>Number:</Form.Label>)}
                             <Form.Control type="text" name='number'
                                           className={valid ? 'valid' : 'invalid'}
                                           placeholder="Enter a Number"
@@ -92,26 +94,31 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
                                 </Form.Label>
                             </div>
                         </Form.Group>
-                       { (index === formData.length - 1)
-                           ?
-                       <Form.Group>
-                           <button className='action-buttons__button' onClick={onClickAdd}>
-                               <i className="fas fa-plus"></i>
-                           </button>
-                       </Form.Group>
-                           :
-                           <Form.Group>
-                               <button className='action-buttons__button' onClick={() => onClickDelete(index)}>
-                                   <i className="fas fa-trash"></i>
-                               </button>
-                           </Form.Group>
-                       }
+                        { (index === formData.length - 1)
+                            ?
+                            <Form.Group>
+                                <button className='action-buttons__button' onClick={onClickAdd}>
+                                    <i className="fas fa-plus"></i>
+                                </button>
+                            </Form.Group>
+                            :
+                            <Form.Group>
+                                <button className='action-buttons__button' onClick={() => onClickDelete(index)}>
+                                    <i className="fas fa-trash"></i>
+                                </button>
+                            </Form.Group>
+                        }
 
                     </Form.Group>
                 )
             })}
         </Col>
     )
-}
+};
+
+AddPhoneField.propTypes ={
+    field: PropTypes.object.isRequired,
+    onChangeArray: PropTypes.func.isRequired,
+};
 
 export default AddPhoneField;
