@@ -170,7 +170,8 @@ export default function (state = initialState, action) {
         case SET_FILTER:
             return {
                 ...state,
-                activeFilter: payload
+                activeFilter: payload.activeFilter,
+                isFiltered: payload.isFiltered
             };
         case SET_SAVED_FILTERS:
             return {

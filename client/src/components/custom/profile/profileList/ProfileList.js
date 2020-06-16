@@ -11,7 +11,7 @@ import axios from 'axios'
 import {loadProfileList, loadSavedFilter, loadMoreDataProfileList, setFilter} from '../../../../actions/profile'
 
 
-const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter, setFilter }) => {
+const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter, setFilter, isFiltered }) => {
     
     const { profileType, statusSelect: { options, selected, selectedQuery } } = settings
 
@@ -84,9 +84,10 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
           value: selectedQuery
         }
       }
-      setFilter(filter)
+      setFilter(filter, false)
       loadProfileList(profileType, selectedQuery)
     }
+    console.log(isFiltered)
     return profileList.loading ? <Loading/> :
         <Fragment>
             <Select
@@ -108,7 +109,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
                     <i className="fas fa-filter"></i>
                 </button>
             </div>
-            {activeFilter.length ? (
+            {isFiltered ? (
                 <div className='agent-list__filtering-options-container'>
                     <button onClick={clearFilter}>Clear filter</button>
                     <button onClick={() => tglSaveFltrMod(true)}>Save filter</button>
@@ -151,7 +152,8 @@ ProfileList.propTypes = {
 
 const mapStateToProps = state => ({
     profileList: state.profile.profileList,
-    activeFilter: state.profile.activeFilter
+    activeFilter: state.profile.activeFilter,
+    isFiltered: state.profile.isFiltered
 });
 
 

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import {connect} from 'react-redux'
-import { loadProfileTableView, setActiveProfile } from '../../../actions/profile'
+import { loadProfileTableView, setActiveProfile, setFilter } from '../../../actions/profile'
 import axios from 'axios';
 import LoadingScreen from '../LoadingScreen/LoadingScreen'
 import TableView from '../TableView/TableView'
@@ -55,7 +55,7 @@ export class ProfileTableView extends Component {
             <button className='profile-table-view__icon-button' onClick={this.toggleFilterModal}>
               <i className="fas fa-filter"></i>
             </button>
-            {this.props.activeFilter.length ? (
+            {this.props.isFiltered ? (
             <Fragment>
               <button onClick={this.toggleSaveFilterModal}>Save filter</button>
               <button onClick={this.clearFilter}>Clear filter</button>
@@ -121,13 +121,15 @@ export class ProfileTableView extends Component {
         value: this.props.settings.statusSelect.selectedQuery
       }
     }
+    this.props.setFilter(filter, false)
     this.props.loadProfileTableView(this.props.settings.profileType, filter ,this.axiosSource.token)
   }
 }
 
 const mapStateToProps = state => ({
   profileList: state.profile.profileList,
-  activeFilter: state.profile.activeFilter
+  activeFilter: state.profile.activeFilter,
+  isFiltered: state.profile.isFiltered
 })
 
-export default connect(mapStateToProps, {loadProfileTableView, setActiveProfile})(ProfileTableView)
+export default connect(mapStateToProps, {loadProfileTableView, setActiveProfile, setFilter})(ProfileTableView)
