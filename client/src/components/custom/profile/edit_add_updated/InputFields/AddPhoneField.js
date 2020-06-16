@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Col, Form, Button} from 'react-bootstrap';
-import {checkBoxCheck} from "../../../../../util/commonFunctions";
+import React, { useEffect, useState} from 'react';
+import { Col, Form } from 'react-bootstrap';
+import { checkBoxCheck } from "../../../../../util/commonFunctions";
 
 
 const AddPhoneField = ({field, form, onChangeArray}) => {
@@ -31,12 +31,9 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
         newFormEntry = {...newFormEntry, [e.target.name]: e.target.checked};
         let newFormData = formData;
             newFormData[index] =  newFormEntry;
-        console.log('newFormDataModified')
-        console.log(newFormData);
-        setFormData([...newFormData]);
-        console.log(formData);
 
-    }
+        setFormData([...newFormData]);
+    };
 
     const onClickAdd = () => {
         let newFormData = formData;
@@ -61,7 +58,7 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
 
         onChangeArray(field.accessor, formData);
 
-    }, [formData, phoneNumbersCount]);
+    }, [formData, phoneNumbersCount, field.accessor, onChangeArray]);
 
     const checkBox = checkBoxCheck();
 
