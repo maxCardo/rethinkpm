@@ -33,8 +33,64 @@ const mlsNew = async (html) => {
 
 }
 
+const priceInc = async (html) => {
+    console.log('priceInc');
+    // const data = fs.readFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/priceInc.txt')
+    // const $ = cheerio.load(data)
+    // const test = $("#test").text();
+    // console.log('testing: ', test);
 
-module.exports = {mlsSold, mlsNew, mlsPriceDec}
+
+    //createTextFile
+    fs.writeFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/priceInc.txt', html)
+    console.log('done!');
+
+}
+
+const contingent = async (html) => {
+    console.log('contingant');
+    // const data = fs.readFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/contingent.txt')
+    // const $ = cheerio.load(data)
+    // const test = $("#test").text();
+    // console.log('testing: ', test);
+
+
+    //createTextFile
+    fs.writeFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/contingent.txt', html)
+    console.log('done!');
+
+}
+
+const backOnMarket = async (html) => {
+    console.log('backOnMarket');
+    // const data = fs.readFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/backOnMarket.txt')
+    // const $ = cheerio.load(data)
+    // const test = $("#test").text();
+    // console.log('testing: ', test);
+
+
+    //createTextFile
+    fs.writeFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/backOnMarket.txt', html)
+    console.log('done!');
+
+}
+
+
+const expired = async (html) => {
+    console.log('expired');
+    // const data = fs.readFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/expired.txt')
+    // const $ = cheerio.load(data)
+    // const test = $("#test").text();
+    // console.log('testing: ', test);
+
+
+    //createTextFile
+    fs.writeFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/expired.txt', html)
+    console.log('done!');
+
+}
+
+module.exports = {mlsSold, mlsNew, mlsPriceDec,priceInc, contingent, backOnMarket, expired}
 
 // //createTextFile
 // fs.writeFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/<nameOfFile>.txt', html)

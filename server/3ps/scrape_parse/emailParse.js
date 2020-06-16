@@ -1,7 +1,7 @@
 const htmlToText = require('html-to-text');
 
 const {sendEmail} = require('../email')
-const {mlsSold,mlsNew,mlsPriceDec} = require('./listing') 
+const {mlsSold,mlsNew,mlsPriceDec, priceInc, contingent, backOnMarket, expired } = require('./listing') 
 
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
@@ -96,6 +96,9 @@ const mlsListings = async (data) => {
     const route = await htmlToText.fromString(subject, { wordwrap: null })
 
     switch(route){
+        case 'new':
+            mlsNew(html);
+            break;
         case 'sold':
             console.log('switch: sold');
             mlsSold(html);
@@ -103,9 +106,20 @@ const mlsListings = async (data) => {
         case 'priceDecrease':
             mlsPriceDec(html);
             break;
-        case 'new':
-            mlsNew(html);
+        case 'priceIncrease':
+            priceInc(html);
             break;
+        case 'underContract':
+        case 'contingent':
+            contingent(html);
+            break;
+        case 'BackOnMarket':
+            backOnMarket(html);
+            break;
+        case 'expired':
+            expired(html);
+            break;
+        
         default:
             console.log('subject switch fail');
             sendEmail('adampoznanski@outlook.com', `mls switch default: ${subject}`, text, html);
