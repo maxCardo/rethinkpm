@@ -82,7 +82,8 @@
           {
             "name": "Target Offer",
             "accessor": "targetOffer",
-            "col": 2
+            "col": 2,
+            "derived": true
           },
           {
             "name": "Status",
@@ -93,8 +94,8 @@
           {
             "name": "Lead Owner",
             "accessor": "leadOwner",
-            "col": 3
-
+            "col": 3,
+            "derived": true
           },
           {
             "name": "Reason for loss",

@@ -9,10 +9,10 @@ import AddEmailModal from '../edit_add_updated/AddEmailModal'
 
 
 const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglChat, tglList, tglEdit, tglAdd}) => {
-    const [{columns, loading}, setColumns] = useState({data: null, loading: true})
-    let profileId = useRef('');
-    let profileName = profileNamePlural.slice(0,-1)
+    const [{columns, loading}, setColumns] = useState({data: null, loading: true});
 
+    let profileId = useRef('');
+    let profileName = profileNamePlural.slice(0, -1);
 
     const getPrimaryPhone = profile.phoneNumbers && profile.phoneNumbers.find(item => item.isPrimary)
     const getPrimaryEmail = profile.email && profile.email.find(item => item.isPrimary)
@@ -26,11 +26,11 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
             setColumns({columns: columns, loading: false})
             profileId.current = profile._id;
         }
-       
+
     }, [profile])
 
     //ToDo: refactor settings.json to incorperate below lines of code
-    const colHeader = ['',`${profileName} Info`, 'Profile Info', 'Communication Info']
+    const colHeader = ['', `${profileName} Info`, 'Profile Info', 'Communication Info']
 
 
     return loading ? <Loading/> :
@@ -74,7 +74,6 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
             <AddPhoneModal/>
             <AddEmailModal/>
         </div>
-
 
 }
 
