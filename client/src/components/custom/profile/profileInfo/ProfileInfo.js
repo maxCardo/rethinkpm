@@ -6,12 +6,10 @@ import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
 import AddPhoneModal from '../edit_add_updated/AddPhoneModal'
 import AddEmailModal from '../edit_add_updated/AddEmailModal'
-import AddPersonModal from '../edit_add_updated/AddLeadModal'
 
 
 const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglChat, tglList, tglEdit, tglAdd}) => {
     const [{columns, loading}, setColumns] = useState({data: null, loading: true})
-    let profileType = useRef('');
     let profileId = useRef('');
     let profileName = profileNamePlural.slice(0,-1)
 
@@ -75,7 +73,6 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
             {/* modals */}
             <AddPhoneModal/>
             <AddEmailModal/>
-            <AddPersonModal settings={profileInfo} profileName={profileName}/>
         </div>
 
 
