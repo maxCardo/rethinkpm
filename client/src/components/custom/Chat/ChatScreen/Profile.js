@@ -90,11 +90,17 @@ export class Profile extends Component {
       </LoadingScreen>
     )
   }
-  async handleSubmit(data) {
+  async handleSubmit({type, content}) {
     const config = {headers: {'Content-Type': 'application/json'}};
+    const data = {
+      type,
+      content,
+      chatId: this.props.chatId
+    }
     const body = JSON.stringify(data)
-    const response = await axios.post(`/api/rent_lead/update_inquiry/add_note/${this.props.inquiryId}`, body, config);
-    this.props.updateInquiry(response.data)
+    const response = await axios.post(`/api/comms/add_note`, body, config);
+    const {name, notes} = response.data
+    this.setState({name, notes})
   }
   handleAddNoteClose() {
     this.setState({showAddNoteModal: false})

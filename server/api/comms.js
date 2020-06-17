@@ -8,10 +8,14 @@ const RentProsModel = require('../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../db/models/prospects/RentLeads/RentInq')
 const BuyerPros = require('../db/models/prospects/BuyerPros')
 const {outgoingSMS} = require('../3ps/sms')
+const getOwner = require('./chatOwner/getOwner')
+const auth = require('../middleware/auth')
 
 
 const router = express.Router();
 const upload = multer()
+
+router.use(auth)
 
 //store on DB in future may need to create type object for model names id sored as String in DB
 const activeNumber = [
@@ -98,7 +102,8 @@ router.post('/profile', async (req, res) => {
   try {
     const chatId = req.body.id
     const chat = await Chat.findById(chatId)
-    const profile = await getProfileOfOwner(chat.owner, chat.ownerType)
+    const owner = getOwner(chat.owner, chat.ownerType)
+    const profile = await owner.getProfile()
     res.status(200).json(profile)
   } catch (err) {
     console.log(err)
@@ -106,44 +111,16 @@ router.post('/profile', async (req, res) => {
   }
 })
 
-async function getProfileOfOwner(ownerId, ownerType) {
-  if(ownerType == 'rentPros') {
-    return await getProfileOfRentPros(ownerId)
-  }
-  if(ownerType == 'agentPros') {
-    return await getProfileOfAgentPros(ownerId)
-  }
-  if(ownerType == 'buyerPros') {
-    return await getProfileOfBuyerPros(ownerId)
-  }
-}
-
-async function getProfileOfRentPros(rentInqId) {
-  const rentInqData = await RentInq.findById(rentInqId).populate('prospect')
-  const profile = {
-    name: rentInqData.prospect.fullName,
-    notes: rentInqData.notes
-  }
-  return profile
-}
-
-async function getProfileOfAgentPros(agentId) {
-  const agentData = await Agent.findById(agentId)
-  const profile = {
-    name: agentData.fullName,
-    notres: agentData.notes
-  }
-  return profile
-}
-
-async function getProfileOfBuyerPros(buyerId) {
-  const buyerData = await BuyerPros.findById(buyerId)
-  const profile = {
-    name: buyerData.fullName,
-    notres: buyerData.notes
-  }
-  return profile
-}
+// @route: get /api/comms/add_note
+router.post('/add_note', async (req,res) => {
+  const {chatId, type, content} = req.body
+  console.log(req.body)
+  const chat = await Chat.findById(chatId)
+  const owner = getOwner(chat.owner, chat.ownerType)
+  await owner.addNote({type, content}, req.user)
+  const profile = await owner.getProfile()
+  res.status(200).json(profile)
+})
 
 // @route: get /api/comms/chat/:owner;
 // @desc: get single chat by owner 

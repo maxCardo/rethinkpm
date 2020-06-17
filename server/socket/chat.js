@@ -5,6 +5,7 @@ const AgentPros = require('../db/models/sales/agent')
 const BuyerPros = require('../db/models/prospects/BuyerPros')
 const {sendSMS} = require('../3ps/sms')
 const {sendEmail} = require('../3ps/email')
+const getOwner = require('../api/chatOwner/getOwner')
 
 const chat = (io) => {
     io.sockets.on('connection', (socket) => {
@@ -16,7 +17,8 @@ const chat = (io) => {
         socket.on('ui_msg', async (data, callback) => {
             const {chatID, msg} = data
             let chat = await Chat.findById(chatID)
-            const phoneNumber = await getPhoneNumberOfOwner(chat.owner, chat.ownerType)
+            const owner = getOwner(chat.owner, chat.ownerType)
+            const phoneNumber = await owner.getPhone()
             chat.messages.push(msg);
             await chat.save()
             //send chat to pros (if no phone num must indicate on UI)
@@ -33,36 +35,6 @@ const chat = (io) => {
             await chat.save()
         })
     })
-}
-
-async function getPhoneNumberOfOwner(ownerId, ownerType) {
-  if(ownerType == 'rentPros') {
-    return await getPhoneNumberOfRentPros(ownerId)
-  }
-  if(ownerType == 'agentPros') {
-    return await getPhoneNumberOfAgentPros(ownerId)
-  }
-  if(ownerType == 'buyerPros') {
-    return await getPhoneNumberOfBuyerPros(ownerId)
-  }
-}
-
-async function getPhoneNumberOfRentPros(rentInqId) {
-  const rentInqData = await RentInq.findById(rentInqid).populate('prospect')
-  const phoneNumber = rentInqData.prospect.phoneNumbers.find((phone) => phone.isPrimary)
-  return phoneNumber.number
-}
-
-async function getPhoneNumberOfAgentPros(agentId) {
-  const agentData = await AgentPros.findById(agentId)
-  const phoneNumber = agentData.phoneNumbers.find((phone) => phone.isPrimary)
-  return phoneNumber.number
-}
-
-async function getPhoneNumberOfBuyerPros(buyerId) {
-  const buyerData = await BuyerPros.findById(buyerId)
-  const phoneNumber = buyerData.phoneNumbers.find((phone) => phone.isPrimary)
-  return phoneNumber.number
 }
 
 

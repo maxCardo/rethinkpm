@@ -31,9 +31,9 @@ const sendSMS = (to, body) => {
         .done();
         console.log('PRODS: sms sent');
   } else {
-
     console.log('sms sending function ran in dev. no sms sent')
     console.log('sms body: ', body)
+    console.log('fullSms: ', JSON.stringify({body: body, from: '+14124447505', to: to}))
   }
 }
 
