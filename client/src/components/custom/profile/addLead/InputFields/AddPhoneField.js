@@ -7,9 +7,9 @@ import { checkBoxCheck } from "../../../../../util/commonFunctions";
 
 const AddPhoneField = ({field, form, onChangeArray}) => {
 
-    const emptyPhone =  {number:'', okToText:true, isPrimary: false}
+    const emptyPhone =  {number:'', okToText:true, isPrimary: true}
 
-    const [valid, setValid] = useState(false);
+    const [valid, setValid] = useState(true);
     const [formData, setFormData] = useState([emptyPhone]);
     const [phoneNumbersCount, setPhoneNumbersCount] = useState(1);
 
@@ -108,10 +108,10 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
                                 </button>
                             </Form.Group>
                         }
-
                     </Form.Group>
                 )
             })}
+            {(!valid) && <span className='addPhoneField__invalidMessage'>Please insert all valid phone numbers.</span>}
         </Col>
     )
 };

@@ -649,6 +649,21 @@
   align-items: center;
   margin-bottom: 0;
 }
+
+.addEmailField__invalidMessage,
+.addPhoneField__invalidMessage {
+  position: absolute;
+  top: 4px;
+  right: 20px;
+  font-size: 12px;
+  color: red;
+}
+
+.addEmailGroup .form-group:nth-child(3),
+.addPhoneGroup .form-group:nth-child(4) {
+  margin-right: 0;
+}
+
 .addPhoneGroup .form-group,
 .addEmailGroup .form-group {
   margin-bottom: 0;

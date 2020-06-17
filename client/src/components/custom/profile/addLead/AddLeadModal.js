@@ -11,7 +11,6 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
     const theProfileType = useRef(profileType);
  
     const [valid, setValid] = useState(false);
-    const [invalidMsgs, setInvalidMsgs] = useState([]);
     const [formData, setFormData] = useState({});
 
     const onChange = e => {
@@ -27,46 +26,33 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         let emailsValid = true;
         const validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-        data.phoneNumbers.forEach((item, index) => {
-            if (item.number.match(validPhone)) {
-                phonesValid = phonesValid && item.number.match(validPhone);
-            } else {
-
-                let newMsgs = invalidMsgs;
-                    newMsgs.push(`Phone ${index + 1} is invalid`);
-
-                setInvalidMsgs(newMsgs);
-            }
-
-        });
-        data.email.forEach((item, index) => {
-            if (validateEmail(item.address)) {
-                emailsValid = emailsValid && validateEmail(item.address);
-            } else {
-
-                let newMsgs = invalidMsgs;
-                newMsgs.push(`Email ${index + 1} is invalid`);
-
-                setInvalidMsgs(newMsgs);
-            }
-        });
-
-        if (emailsValid && phonesValid) {
-            setInvalidMsgs([]);
-            setValid(true);
+        if (data.phoneNumbers) {
+            data.phoneNumbers.forEach((item, index) => {
+                if (item.number.match(validPhone)) {
+                    phonesValid = phonesValid && item.number.match(validPhone);
+                }
+            });
         }
+
+        if (data.email) {
+            data.email.forEach((item, index) => {
+                if (validateEmail(item.address)) {
+                    emailsValid = emailsValid && validateEmail(item.address);
+                }
+            });
+        }
+
+        (emailsValid && phonesValid) && setValid(true);
     }
 
     const onSubmit = () => {
-        validateInput(formData);
-        setTimeout(()=>{
-            if (valid) {
-                tglAddLeadMod(false);
-                addLeadSubmit(formData, theProfileType.current);
-                setFormData({});
-                setValid(false);
-            }
-        }, 750);
+
+        if (valid) {
+            tglAddLeadMod(false);
+            addLeadSubmit(formData, theProfileType.current);
+            setFormData({});
+            setValid(false);
+        }
 
     }
 
@@ -75,6 +61,11 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         setFormData(formData);
         setValid(false);
     }
+
+    useEffect(() => {
+        validateInput(formData);
+
+    }, [formData.phoneNumbers, formData.email]);
 
     return (
         <Fragment>

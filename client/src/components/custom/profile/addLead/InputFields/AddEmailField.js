@@ -7,9 +7,9 @@ import {checkBoxCheck, validateEmail} from "../../../../../util/commonFunctions"
 
 const AddEmailField = ({field, form, onChangeArray}) => {
 
-    const emptyEmail = { address: '', isPrimary: false }
+    const emptyEmail = { address: '', isPrimary: true };
 
-    const [valid, setValid] = useState(false);
+    const [valid, setValid] = useState(true);
     const [formData, setFormData] = useState([emptyEmail]);
     const [emailsCount, setEmailsCount] = useState(1);
 
@@ -105,11 +105,10 @@ const AddEmailField = ({field, form, onChangeArray}) => {
                                 </button>
                             </Form.Group>
                         }
-
                     </Form.Group>
                 )
             })}
-
+            {(!valid) && <span className='addEmailField__invalidMessage'>Please insert all valid email addresses.</span>}
         </Col>
     )
 };
