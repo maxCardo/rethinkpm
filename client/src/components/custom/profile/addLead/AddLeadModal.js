@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Modal, Button, Row} from 'react-bootstrap'
 
 import {addLeadSubmit, tglAddLeadMod} from '../../../../actions/profile'
-import AddFields from "./AddFields";
+import AddFields from "./inputFields/InputFields";
 import {validateEmail} from "../../../../util/commonFunctions";
 
 const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod, showMod, settings, profileName}) => {

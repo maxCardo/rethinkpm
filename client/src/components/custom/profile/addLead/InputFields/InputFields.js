@@ -1,10 +1,10 @@
 import React from 'react';
-import TextField from './InputFields/TextField';
-import AddCollectionField from "./InputFields/AddCollectionField";
-import AddStatusField from './InputFields/AddStatusField';
-import AddEmailField from './InputFields/AddEmailField';
-import AddPhoneField from './InputFields/AddPhoneField';
-import AddSelectField from "./InputFields/AddSelectField";
+import TextField from './TextField';
+import AddCollectionField from "./AddCollectionField";
+import AddStatusField from './AddStatusField';
+import AddEmailField from './AddEmailField';
+import AddPhoneField from './AddPhoneField';
+import AddSelectField from "./AddSelectField";
 
 
 const AddFields = (props) => {
