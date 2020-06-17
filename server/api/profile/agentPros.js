@@ -47,8 +47,8 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-// @route: PUT /api/profile/agentPros/addLead/:id;
-// @desc: Update profile info, should work with any filed in schema
+// @route: POST /api/profile/agentPros/addLead;
+// @desc: Add an Agent entry
 // @ access: Public * ToDo: update to make private
 router.post("/addLead", async (req, res) => {
     try {

@@ -5,7 +5,7 @@ import { Col, Form } from 'react-bootstrap';
 import { checkBoxCheck } from "../../../../../util/commonFunctions";
 
 
-const AddPhoneField = ({field, form, onChangeArray}) => {
+const AddPhoneField = ({field, onChangeArray}) => {
 
     const emptyPhone =  {number:'', okToText:true, isPrimary: true}
 
@@ -60,7 +60,7 @@ const AddPhoneField = ({field, form, onChangeArray}) => {
 
         onChangeArray(field.accessor, formData);
 
-    }, [formData, phoneNumbersCount]);
+    }, [field.accessor, formData]);
 
     const checkBox = checkBoxCheck();
 

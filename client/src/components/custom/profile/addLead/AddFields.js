@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import TextField from './InputFields/TextField';
 import AddCollectionField from "./InputFields/AddCollectionField";
 import AddStatusField from './InputFields/AddStatusField';
@@ -22,7 +22,7 @@ const AddFields = (props) => {
         case 'collection':
             return <AddCollectionField {...props} />;
         case 'select':
-            return <AddSelectField {...props} />;
+            return <AddSelectField {...props}  fieldSettings={props.settings} profile={props.profile} />;
         default:
             return <TextField {...props} />;
     }

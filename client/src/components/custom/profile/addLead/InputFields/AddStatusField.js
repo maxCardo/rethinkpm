@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Col, Form} from 'react-bootstrap';
 import Select from 'react-select';
 import settings from '../../../../../settings';
+import PropTypes from "prop-types";
 
 
 
@@ -9,6 +10,8 @@ const AddStatusField = ({field, onChangeArray, passIndex, fieldSettings, profile
     const theProfiles = settings.routes.profile;
 
     const [selected, select] = useState({label: "Lead", value: "lead"});
+
+    console.log(fieldSettings);
 
     const type = fieldSettings[passIndex];
 
@@ -22,7 +25,7 @@ const AddStatusField = ({field, onChangeArray, passIndex, fieldSettings, profile
 
         onChangeArray(type.accessor, selected);
 
-    }, [selected]);
+    }, [type.accessor, selected]);
 
     return (
         <Col lg={12}>
@@ -40,5 +43,11 @@ const AddStatusField = ({field, onChangeArray, passIndex, fieldSettings, profile
         </Col>
     )
 }
+
+AddStatusField.propTypes ={
+    passIndex: PropTypes.number.isRequired,
+    fieldSettings: PropTypes.array.isRequired,
+    onChangeArray: PropTypes.func.isRequired,
+};
 
 export default AddStatusField;

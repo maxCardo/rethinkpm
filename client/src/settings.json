@@ -371,15 +371,15 @@
           },
           {
             "name": "Desired Neighborhoods",
-            "accessor": "collection",
-            "datatype": "targetAreas",
+            "accessor": "targetAreas",
+            "datatype": "collection",
             "col": 2,
-            "formatter": ""
+            "formatter": "formatLabels"
           },
           {
             "name": "Desired Zip Codes",
-            "accessor": "collection",
-            "datatype": "targetZipCodes",
+            "accessor": "targetZipCodes",
+            "datatype": "collection",
             "col": 2,
             "formatter": ""
           },
@@ -408,12 +408,14 @@
           {
             "name": "Lead Owner",
             "accessor": "leadOwner",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Lead Source",
             "accessor": "leadSource",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Reason for loss",

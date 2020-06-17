@@ -37,6 +37,24 @@ router.post('/', async (req, res) => {
     res.status(200).send('hell ya')
 })
 
+// @route: POST /api/profile/buyerPros/addLead;
+// @desc: Add a Buyer record
+// @ access: Public * ToDo: update to make private
+router.post("/addLead", async (req, res) => {
+    try {
+        const buyer = new model();
+        await buyer.set({
+            ...buyer,
+            ...req.body
+        });
+
+        /*TODO: hardcode leadsource here*/
+        //var result = await agent.save();
+        res.status(200).send(buyer);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
 
 // @route: GET /api/profile/buyerPros;
 // @desc: Get single profile when loading profile screen

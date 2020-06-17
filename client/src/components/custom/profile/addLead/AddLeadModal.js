@@ -18,24 +18,25 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
     }
 
     const onChangeArray = (name, value) => {
+        console.log(name);
         setFormData({...formData, [name]: value});
     };
 
-    const validateInput = (data) => {
+    const validateInput = (phoneNumbers, emails) => {
         let phonesValid = true;
         let emailsValid = true;
         const validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-        if (data.phoneNumbers) {
-            data.phoneNumbers.forEach((item, index) => {
+        if (phoneNumbers) {
+            phoneNumbers.forEach((item, index) => {
                 if (item.number.match(validPhone)) {
                     phonesValid = phonesValid && item.number.match(validPhone);
                 }
             });
         }
 
-        if (data.email) {
-            data.email.forEach((item, index) => {
+        if (emails) {
+            emails.forEach((item, index) => {
                 if (validateEmail(item.address)) {
                     emailsValid = emailsValid && validateEmail(item.address);
                 }
@@ -63,7 +64,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
     }
 
     useEffect(() => {
-        validateInput(formData);
+        validateInput(formData.phoneNumbers, formData.email);
 
     }, [formData.phoneNumbers, formData.email]);
 

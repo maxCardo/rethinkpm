@@ -5,14 +5,15 @@ import { connect } from 'react-redux';
 
 const AddCollectionField = ({field, onChangeArray, passIndex, settings, zipcodes, areas}) => {
 
+    console.log(zipcodes);
+
     const [selected, select] = useState([])
 
-    const type = settings[passIndex];
 
-    let fieldOptions;
-    if (type.accessor === 'zipCodes' || type.accessor === 'targetZipCodes') {
+    let fieldOptions = [];
+    if ((settings[passIndex].accessor === 'zipCodes') || (settings[passIndex].accessor === 'targetZipCodes') || ( settings[passIndex].accessor === 'desiredZipCodes')) {
         fieldOptions = zipcodes;
-    } else if (type.accessor === 'areas' || type.accessor === 'targetAreas') {
+    } else if (settings[passIndex].accessor === 'areas' || settings[passIndex].accessor === 'targetAreas' || settings[passIndex].accessor === 'desiredAreas') {
         fieldOptions = areas;
     }
 
@@ -22,18 +23,19 @@ const AddCollectionField = ({field, onChangeArray, passIndex, settings, zipcodes
 
     useEffect(() => {
 
-        onChangeArray(type.accessor, selected);
 
-    }, [selected]);
+        onChangeArray(settings[passIndex].accessor, selected);
+
+    }, [settings, passIndex, selected]);
 
     return (
         <Col lg={12}>
             <Form.Group>
-                <label htmlFor={type.name}>{type.name}</label>
+                <label htmlFor={settings[passIndex].name}>{settings[passIndex].name}</label>
                 <Select
                     className='selectMulti'
                     isMulti={true}
-                    name={type.name}
+                    name={settings[passIndex].name}
                     value={selected}
                     onChange={handleSelectChange}
                     options={fieldOptions}

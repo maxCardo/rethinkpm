@@ -66,6 +66,25 @@ router.post('/', async (req, res) => {
     }
 });
 
+// @route: POST /api/profile/rentPros/addLead;
+// @desc: Add a Renter record
+// @ access: Public * ToDo: update to make private
+router.post("/addLead", async (req, res) => {
+    try {
+
+        const renter = new model();
+        await renter.set({
+            ...renter,
+            ...req.body
+        });
+
+        /*TODO: find leadsource here, create the response object that the front end expects*/
+        //var result = await renter.save();
+        res.status(200).send(renter);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
 
 // @route: GET /api/profile/rentPros;
 // @desc: Get single profile when loading profile screen
