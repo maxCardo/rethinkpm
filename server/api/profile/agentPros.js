@@ -47,6 +47,24 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+// @route: PUT /api/profile/agentPros/addLead/:id;
+// @desc: Update profile info, should work with any filed in schema
+// @ access: Public * ToDo: update to make private
+router.post("/addLead", async (req, res) => {
+    try {
+        const agent = new Agent();
+        await agent.set({
+            ...agent,
+            ...req.body
+        })
+
+        //var result = await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
 // @route: PUT /api/profile/agentPros/addPhone/:id;
 // @desc: Add phone number to profile
 // @ access: Public * ToDo: update to make private

@@ -594,9 +594,9 @@ export const tglAddLeadMod = meh => async dispatch => {
 
 //Toggle view control for show add phone modal
 //set params active profile _id and new phone nun object
-export const addLeadSubmit = (formData, id, profileType) => async dispatch => {
+export const addLeadSubmit = (formData, profileType) => async dispatch => {
 
-    axios.put(`/api/profile/${profileType}/addLead/${id}`, formData, config)
+    axios.post(`/api/profile/${profileType}/addLead`, formData, config)
         .then((res) => {
             const data = { ...res.data, profileType }
             dispatch({

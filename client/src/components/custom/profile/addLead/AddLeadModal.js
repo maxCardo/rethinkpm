@@ -4,12 +4,14 @@ import {Modal, Button, Row} from 'react-bootstrap'
 
 import {addLeadSubmit, tglAddLeadMod} from '../../../../actions/profile'
 import AddFields from "./AddFields";
+import {validateEmail} from "../../../../util/commonFunctions";
 
 const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod, showMod, settings, profileName}) => {
 
     const theProfileType = useRef(profileType);
  
     const [valid, setValid] = useState(false);
+    const [invalidMsgs, setInvalidMsgs] = useState([]);
     const [formData, setFormData] = useState({});
 
     const onChange = e => {
@@ -20,8 +22,52 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         setFormData({...formData, [name]: value});
     };
 
+    const validateInput = (data) => {
+        let phonesValid = true;
+        let emailsValid = true;
+        const validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+        data.phoneNumbers.forEach((item, index) => {
+            if (item.number.match(validPhone)) {
+                phonesValid = phonesValid && item.number.match(validPhone);
+            } else {
+
+                let newMsgs = invalidMsgs;
+                    newMsgs.push(`Phone ${index + 1} is invalid`);
+
+                setInvalidMsgs(newMsgs);
+            }
+
+        });
+        data.email.forEach((item, index) => {
+            if (validateEmail(item.address)) {
+                emailsValid = emailsValid && validateEmail(item.address);
+            } else {
+
+                let newMsgs = invalidMsgs;
+                newMsgs.push(`Email ${index + 1} is invalid`);
+
+                setInvalidMsgs(newMsgs);
+            }
+        });
+
+        if (emailsValid && phonesValid) {
+            setInvalidMsgs([]);
+            setValid(true);
+        }
+    }
+
     const onSubmit = () => {
-        tglAddLeadMod(false);
+        validateInput(formData);
+        setTimeout(()=>{
+            if (valid) {
+                tglAddLeadMod(false);
+                addLeadSubmit(formData, theProfileType.current);
+                setFormData({});
+                setValid(false);
+            }
+        }, 750);
+
     }
 
     const onHide = e => {
@@ -43,7 +89,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
                     </Row>
                 </Modal.Body>
                 <Modal.Footer className="modalFooterBtns">
-                    <Button className="btn btn-primary" disabled={!valid} variant="secondary"
+                    <Button className="btn btn-primary" variant="secondary"
                             onClick={onSubmit}>
                         Submit
                     </Button>
