@@ -15,6 +15,10 @@ import {
     ADD_DATA_PROFILE_LIST,
     LOAD_MORE_PROFILE_LIST,
     SET_HAS_MORE_DATA,
+    LOAD_PROFILE_TABLE_VIEW,
+    LOAD_PROFILE_LIST_AND_TABLE,
+    STOP_LOAD_PROFILE_LIST_AND_TABLE,
+    SET_PROFILE_TABLE_VIEW,
     RESET_PROFILE_INFO,
     UPDATE_ACTIVE_PROFILE_CHAT, ALERT_SUCCESS, REMOVE_ALERT, ALERT_FAILURE
 
@@ -95,6 +99,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
     dispatch({
       type: LOAD_PROFILE_LIST,
     });
+    
     const filter = {
       status: {
         accessor: 'status',
@@ -108,8 +113,14 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
       }
     }
 
+    const data = {
+      filters: filter,
+      page: pageNumber,
+      pageSize: 500
+    }
+
         
-    const res = await axios.post(`/api/profile/${profileType}/filter`, filter, config);
+    const res = await axios.post(`/api/profile/${profileType}/filter`, data, config);
     
     dispatch({
         type: SET_PROFILE_LIST,
@@ -136,6 +147,40 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
   }
 };
 
+export const loadProfileTableView = (profileType, filters, cancelToken) => async dispatch => {
+  try {
+    dispatch({
+      type: LOAD_PROFILE_TABLE_VIEW,
+    });
+    
+    const data = {
+      filters
+    }
+    const res = await axios.post(`/api/profile/${profileType}/filter`, data, {cancelToken: cancelToken});
+    dispatch({
+      type: SET_PROFILE_TABLE_VIEW,
+      payload: res.data.record,
+    });
+    dispatch({
+      type: SET_HAS_MORE_DATA,
+      payload: res.data.hasMore
+    })
+  } catch (err) {
+    if(axios.isCancel(err)) {
+      return console.log('Cancelled by the user')
+    }
+    console.log(err);
+    dispatch({
+      type: ALERT_FAILURE,
+      payload: {
+          heading: "Server Error",
+          msg: "Could not load more data!",
+          location: "loadMoreDataProfileList malfunction"
+      },
+    });
+  }
+}
+
 export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => async dispatch => {
   try {
     console.log(profileType)
@@ -156,12 +201,12 @@ export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => a
         value: eval(queryList).map((status) => ({value: status}))
       }
     }
-    let res
-    if(pageNumber) {
-      res = await axios.post(`/api/profile/${profileType}/filter/${pageNumber}`, filter, config);
-    } else {
-      res = await axios.post(`/api/profile/${profileType}/filter`, filter, config);
+    const data = {
+      filters: filter,
+      page: pageNumber,
+      pageSize: 500
     }
+    const res = await axios.post(`/api/profile/${profileType}/filter`, data, config);
     dispatch({
         type: ADD_DATA_PROFILE_LIST,
         payload: res.data.record,
@@ -371,11 +416,14 @@ export const updateEmail = (formData, id, profileType) => (dispatch) => {
 };
 
 //submit Filter query
-export const submitFilterModal = (data, profileType) => async dispatch => {
+export const submitFilterModal = (filters, profileType) => async dispatch => {
     try {
         dispatch({
-            type: LOAD_PROFILE_LIST,
+            type: LOAD_PROFILE_LIST_AND_TABLE,
         });
+        const data = {
+          filters,
+        }
         const res = await axios.post(`/api/profile/${profileType}/filter`, data, config);
         console.log(res);
         dispatch({
@@ -386,6 +434,9 @@ export const submitFilterModal = (data, profileType) => async dispatch => {
             type: SET_FILTER,
             payload: res.data.filters,
         });
+        dispatch({
+          type: STOP_LOAD_PROFILE_LIST_AND_TABLE,
+      });
     } catch (err) {
         console.log(err);
         dispatch({

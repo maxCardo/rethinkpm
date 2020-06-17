@@ -7,7 +7,7 @@ const rentInqSchema = new mongoose.Schema({
         required: true,
         ref: 'rentPros'
     },
-   notes: [
+    notes: [
         {
             type: {
                 type: String,
@@ -32,7 +32,7 @@ const rentInqSchema = new mongoose.Schema({
     reasonForLoss: String,
     leadOwner: String,
     leadSource:String,  
-    createData: {
+    createDate: {
         type: Date,
         default: new Date()
     },
