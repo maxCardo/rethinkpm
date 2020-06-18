@@ -7,10 +7,10 @@ import { checkBoxCheck } from "../../../../../util/commonFunctions";
 
 const AddPhoneField = ({field, onChangeArray}) => {
 
-    const emptyPhone =  {number:'', okToText:true, isPrimary: true}
+    const emptyPhone =  {number:'', okToText:true, isPrimary: false}
 
     const [valid, setValid] = useState(true);
-    const [formData, setFormData] = useState([emptyPhone]);
+    const [formData, setFormData] = useState([{number:'', okToText:true, isPrimary: true}]);
     const [phoneNumbersCount, setPhoneNumbersCount] = useState(1);
 
     const onChangeNumber =(e, idx) => {
@@ -26,14 +26,11 @@ const AddPhoneField = ({field, onChangeArray}) => {
     };
 
     const onCheckChange = (e, index) => {
-        let newFormEntry = {
-            ...formData[index]
-        };
-
-        newFormEntry = {...newFormEntry, [e.target.name]: e.target.checked};
         let newFormData = formData;
-        newFormData[index] =  newFormEntry;
-
+        newFormData.map((record) => {
+          record.isPrimary = false;
+        });
+        newFormData[index].isPrimary = true;
         setFormData([...newFormData]);
     };
 
@@ -46,6 +43,9 @@ const AddPhoneField = ({field, onChangeArray}) => {
 
     const onClickDelete = (idx) => {
         let newFormData = formData;
+        if (newFormData[idx].isPrimary == true) {
+          newFormData[0].isPrimary = true;
+        }
         newFormData.splice(idx, 1);
         setFormData(newFormData);
         setPhoneNumbersCount(phoneNumbersCount - 1 );
@@ -94,7 +94,7 @@ const AddPhoneField = ({field, onChangeArray}) => {
                                 </Form.Label>
                             </div>
                         </Form.Group>
-                        { (index === formData.length - 1)
+                        { (index === 0)
                             ?
                             <Form.Group>
                                 <button className='action-buttons__button' onClick={onClickAdd}>

@@ -40,8 +40,7 @@ const AddEmailField = ({field, form, onChangeArray}) => {
 
     const onClickAdd = () => {
         let newFormData = formData;
-            newFormData.push(emptyEmail);
-
+        newFormData.push(emptyEmail);
         setFormData(newFormData);
         setEmailsCount(emailsCount + 1 );
     };
