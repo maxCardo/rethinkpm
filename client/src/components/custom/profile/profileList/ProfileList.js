@@ -70,6 +70,10 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
         }   
         setStatus({ ...selectStatus, selected: v })
     } 
+    const clearFilter = () => {
+      setSearchString('')
+      loadProfileList(profileType, selectedQuery)
+    }
     return profileList.loading ? <Loading/> :
         <Fragment>
             <Select
@@ -93,7 +97,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
             </div>
             {activeFilter.length ? (
                 <div className='agent-list__filtering-options-container'>
-                    <button onClick={() => loadProfileList(profileType, selectedQuery)}>Clear filter</button>
+                    <button onClick={clearFilter}>Clear filter</button>
                     <button onClick={() => tglSaveFltrMod(true)}>Save filter</button>
                 </div>
             ):null}
