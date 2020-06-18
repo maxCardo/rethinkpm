@@ -7,10 +7,10 @@ import {checkBoxCheck, validateEmail} from "../../../../../util/commonFunctions"
 
 const AddEmailField = ({field, form, onChangeArray}) => {
 
-    const emptyEmail = { address: '', isPrimary: true };
+    const emptyEmail = { address: '', isPrimary: false };
 
     const [valid, setValid] = useState(true);
-    const [formData, setFormData] = useState([emptyEmail]);
+    const [formData, setFormData] = useState([{ address: '', isPrimary: true }]);
     const [emailsCount, setEmailsCount] = useState(1);
 
     const onChangeAddress = (e, idx) => {
@@ -30,14 +30,11 @@ const AddEmailField = ({field, form, onChangeArray}) => {
     }
 
     const onCheckChange = (e, idx) => {
-        let newFormEntry = {
-            ...formData[idx]
-        };
-            newFormEntry = {...newFormEntry, [e.target.name]: e.target.checked};
-
-        let newFormData = formData;
-            newFormData[idx] = newFormEntry;
-
+        let newFormData = formData
+        newFormData.map((record) => {
+            record.isPrimary = false
+        })
+        newFormData[idx].isPrimary = true
         setFormData([...newFormData]);
     };
 
@@ -51,6 +48,9 @@ const AddEmailField = ({field, form, onChangeArray}) => {
 
     const onClickDelete = (idx) => {
         let newFormData = formData;
+        if(newFormData[idx].isPrimary == true){
+            newFormData[0].isPrimary = true 
+        }
         newFormData.splice(idx, 1);
         setFormData(newFormData);
         setEmailsCount(emailsCount - 1 );
@@ -82,14 +82,14 @@ const AddEmailField = ({field, form, onChangeArray}) => {
                             <div className="element-wrapper with--checkbox">
                                 <label className="checkbox path"   >
                                     <input type="checkbox" name='isPrimary'
-                                           checked={formData && formData[index].isPrimary}
+                                           checked = {formData && formData[index].isPrimary}
                                            onChange={(e) => onCheckChange(e, index)}/>
                                     {checkBox} &nbsp; Primary
                                 </label>
                             </div>
                         </Form.Group>
 
-                        { (index === formData.length - 1)
+                        { (index === 0)
                             ?
                             <Form.Group>
                                 <button className='action-buttons__button' onClick={onClickAdd}>
