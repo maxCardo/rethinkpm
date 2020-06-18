@@ -38,6 +38,12 @@
             "editable": "input"
           },
           {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
             "name": "Office",
             "accessor": "office.name",
             "datatype": "select",
@@ -84,12 +90,6 @@
             "accessor": "targetOffer",
             "col": 2,
             "derived": true
-          },
-          {
-            "name": "Status",
-            "accessor": "status",
-            "col": 3,
-            "editable": "select"
           },
           {
             "name": "Lead Owner",
