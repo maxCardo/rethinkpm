@@ -46,9 +46,9 @@ const AddCollectionField = ({field, onChangeArray, passIndex, settings, zipcodes
     )
 }
 
-function mapStateToProps(state) {
-    const zipcodes = state.profile.filterOptions.zip;
-    const areas = state.profile.filterOptions.area;
-}
+const mapStateToProps = (state) => ({
+    zipcodes: state.profile.filterOptions.zip,
+    areas: state.profile.filterOptions.area
+});
 
 export default connect(mapStateToProps)(AddCollectionField);

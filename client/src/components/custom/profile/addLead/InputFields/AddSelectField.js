@@ -42,10 +42,9 @@ const AddSelectField = ({field, onChangeArray, passIndex, fieldSettings, profile
     )
 }
 
-function mapStateToProps(state) {
-    const offices = state.profile.filterOptions.office;
-    return { offices }
-}
+const  mapStateToProps = state =>  ({
+    offices: state.profile.filterOptions.office
+})
 
 AddSelectField.propTypes ={
     field: PropTypes.object.isRequired,
