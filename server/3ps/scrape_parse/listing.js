@@ -7,10 +7,13 @@ const mlsSold = async (html) => {
     console.log('mlsSold');
     const data = fs.readFileSync('./server/3ps/scrape_parse/sampleScrapeFiles/mlsSold.txt')
     const $ = cheerio.load(data)
+
     const test = $("#test").text();
     console.log('testing: ', test);
 
-    //get mls id, find in DB and update as sold
+
+    //get mls id, 
+    //find in DB and update as sold
     //ToDo: set cron job to find sold price by county api in the future
 
 }
@@ -21,6 +24,9 @@ const  mlsPriceDec = async (html) => {
     const $ = cheerio.load(data)
     const test = $("#test").text();
     console.log('testing: ', test);
+
+    //get mls id, new price, 
+    // find record in db update price
   
 }
 
