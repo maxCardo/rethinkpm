@@ -21,7 +21,7 @@
             { "value": "['agent']", "label": "Agent"},
             { "value": "['notInterested']", "label": "Not Interested"}
           ],
-          "selected": {"value": "all", "label": "All"},
+          "selected": {"value": "['prospect','pending','agent']", "label": "Active"},
           "selectedQuery": "['prospect', 'pending','agent']"
         },
         "profileInfo": [
