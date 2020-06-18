@@ -5,6 +5,11 @@ const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const FilterModel = require('../../db/models/sales/filters')
 const AudienceModel = require('../../db/models/sales/audience')
 
+
+//filter options: refactor to get these from api
+const zipcodeOptions = require('../../config/supportData/zipcodes')
+const areaOptions = require('../../config/supportData/areas')
+
 const router = express.Router();
 
 const model = BuyerPros
@@ -265,6 +270,8 @@ router.get('/filterOptions', async ({ params: { query } }, res) => {
             { value: 'agent', label: 'Agent' },
             { value: 'notInterested', label: 'Not Interested' }
         ];
+        options.zip = zipcodeOptions;
+        options.area = areaOptions;
         res.status(200).send(options);
     } catch (error) {
         console.error(error);
