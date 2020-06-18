@@ -19,7 +19,6 @@ import Chat from './profileComms/Chat'
 
 const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault, tglAddLeadMod}) => {
     let profileType = useRef('');
-    console.log(settings);
     useEffect(() => {
         //added to allow for reuse of profile component when redux data is orginized by component    
         if (!activeProfile.profile || activeProfile.profileType !== settings.profileType) {
@@ -90,7 +89,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
             <button className='action-buttons__button add-profile__button' onClick={() => tglAdd()}>
                 <i className='fas fa-plus'></i> &nbsp;Add {profileType.current}
             </button>
-            <AddLeadModal settings={settings['profileInfo']} profileName={profileType.current}/>
+            <AddLeadModal settings={settings} profileName={profileType.current}/>
 
         </div>
 }

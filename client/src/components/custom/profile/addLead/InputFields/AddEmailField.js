@@ -57,10 +57,8 @@ const AddEmailField = ({field, form, onChangeArray}) => {
     };
 
     useEffect(() => {
-
         onChangeArray(field.accessor, formData);
-
-    }, [formData, emailsCount]);
+    }, [formData]);
 
     const checkBox = checkBoxCheck();
 

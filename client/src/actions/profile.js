@@ -508,7 +508,6 @@ export const getActiveChat = (chatOwner) => async dispatch =>{
         dispatch({
           type: START_LOADING_PROFILE_CHAT
         })
-        console.log(chatOwner);
         const res = await axios.get(`/api/comms/profile/chat/${chatOwner}`)
         dispatch ({
             type: SET_ACTIVE_PROFILE_CHAT,

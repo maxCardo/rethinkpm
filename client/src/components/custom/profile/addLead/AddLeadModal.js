@@ -15,11 +15,12 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
 
     const onChange = e => {
         setFormData({...formData, [e.target.name]: e.target.value})
+        console.log(formData);
     }
 
     const onChangeArray = (name, value) => {
-        console.log(name);
         setFormData({...formData, [name]: value});
+        console.log(formData);
     };
 
     const validateInput = (phoneNumbers, emails) => {
@@ -76,7 +77,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        {settings.map((field, index) => (!field.derived) && <AddFields key={index} passIndex={index} field={field}
+                        {settings.profileInfo.map((field, index) => (!field.derived) && <AddFields key={index} passIndex={index} field={field}
                                                                    settings={settings} profile={profileType} onChange={onChange} onChangeArray={onChangeArray}/>)}
                     </Row>
                 </Modal.Body>

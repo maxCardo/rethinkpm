@@ -18,7 +18,7 @@ const AddFields = (props) => {
         case 'phoneNumbers':
             return <AddPhoneField {...props}  />;
         case 'status':
-            return <AddStatusField {...props} fieldSettings={props.settings} profile={props.profile} />;
+            return <AddStatusField {...props}/>;
         case 'collection':
             return <AddCollectionField {...props} />;
         case 'select':
