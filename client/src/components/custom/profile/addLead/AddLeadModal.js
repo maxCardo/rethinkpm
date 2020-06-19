@@ -13,15 +13,18 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
     const [valid, setValid] = useState(false);
     const [formData, setFormData] = useState({});
 
-    const onChange = e => {
-        setFormData({...formData, [e.target.name]: e.target.value})
-        console.log(formData);
+    const onChange = async e =>  {
+        await setFormData({...formData, [e.target.name]: e.target.value})
     }
 
     const onChangeArray = (name, value) => {
+        console.log('running onChageArr:', name);
         setFormData({...formData, [name]: value});
-        console.log(formData);
     };
+
+    useEffect(() => {
+        console.log(formData);
+    },[formData])
 
     const validateInput = (phoneNumbers, emails) => {
         let phonesValid = true;
@@ -30,21 +33,22 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
 
         if (phoneNumbers) {
             phoneNumbers.forEach((item, index) => {
-                if (item.number.match(validPhone)) {
-                    phonesValid = phonesValid && item.number.match(validPhone);
-                }
+                if (!!item.number.match(validPhone) === false && item.number != '') { phonesValid = false}
             });
         }
+        
 
         if (emails) {
             emails.forEach((item, index) => {
-                if (validateEmail(item.address)) {
-                    emailsValid = emailsValid && validateEmail(item.address);
+                const valid = validateEmail(item.address)
+                console.log(valid);
+                if (!valid && item.address != '') {
+                    emailsValid = false
                 }
             });
         }
 
-        (emailsValid && phonesValid) && setValid(true);
+        (emailsValid && phonesValid) ? setValid(true) : setValid(false)
     }
 
     const onSubmit = () => {
@@ -52,6 +56,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         if (valid) {
             tglAddLeadMod(false);
             addLeadSubmit(formData, theProfileType.current);
+            console.log(formData);
             setFormData({});
             setValid(false);
         }
@@ -60,12 +65,13 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
 
     const onHide = e => {
         tglAddLeadMod(false);
-        setFormData(formData);
+        setFormData({});
         setValid(false);
     }
 
     useEffect(() => {
         validateInput(formData.phoneNumbers, formData.email);
+        console.log('running validate: ', valid );
 
     }, [formData.phoneNumbers, formData.email]);
 
@@ -83,6 +89,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
                 </Modal.Body>
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" variant="secondary"
+                            disabled={!valid}
                             onClick={onSubmit}>
                         Submit
                     </Button>

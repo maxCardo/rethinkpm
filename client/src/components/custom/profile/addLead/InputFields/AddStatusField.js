@@ -6,8 +6,7 @@ import PropTypes from "prop-types";
 
 
 const AddStatusField = ({field, onChangeArray, passIndex, profile, settings}) => {
-
-    const [selected, select] = useState({label: "Lead", value: "lead"});
+    const [selected, select] = useState({ label: "Lead", value: "lead" });
 
     let statusOptions = settings.statusOptions;
 
@@ -16,8 +15,8 @@ const AddStatusField = ({field, onChangeArray, passIndex, profile, settings}) =>
     }
 
     useEffect(() => {
-        onChangeArray(field.accessor, selected);
-    }, [field.accessor, selected]);
+        onChangeArray(field.accessor, selected.value);
+    }, [selected]);
 
     return (
         <Col lg={12}>
@@ -27,7 +26,7 @@ const AddStatusField = ({field, onChangeArray, passIndex, profile, settings}) =>
                     className='selectSingle'
                     name={field.name}
                     value={selected}
-                    onChange={handleSelectChange}
+                    onChange={(e) => handleSelectChange(e)}
                     options={statusOptions}
                     placeholder='Select...'
                 />
