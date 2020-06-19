@@ -47,6 +47,7 @@
             "name": "Office",
             "accessor": "office.name",
             "datatype": "select",
+            "dataOptions": "custom",
             "col": 1
           },
           {
@@ -182,6 +183,12 @@
             "editable": "input"
           },
           {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
             "name": "Phone",
             "accessor": "phoneNumbers",
             "col": 1,
@@ -201,38 +208,42 @@
           },
           {
             "name": "Desired Neighborhoods",
-            "accessor": "collection",
-            "datatype": "targetAreas",
+            "accessor": "targetAreas",
+            "datatype": "collection",
             "col": 2,
             "formatter": ""
           },
           {
             "name": "Desired Zip Codes",
-            "accessor": "collection",
-            "datatype": "targetZipCodes",
+            "accessor": "targetZipCodes",
+            "datatype":"collection", 
             "col": 2,
             "formatter": ""
           },
           {
             "name": "Pets",
             "accessor": "pets",
-            "col": 2
+            "col": 2,
+            "datatype":"select",
+            "dataOptions":[
+              {"value":"no", "label":"No Pets"},
+              {"value":"dog", "label":"Dog"},
+              {"value": "cat", "label": "Cat"},
+              {"value": "other", "label": "Other"}
+            ]
           },
           {
             "name": "Other Preferences",
             "accessor": "otherPref",
-            "col": 2
-          },
-          {
-            "name": "Status",
-            "accessor": "status",
-            "col": 3,
-            "editable": "select"
+            "col": 2,
+            "derived": "true"
+
           },
           {
             "name": "Lead Owner",
             "accessor": "leadOwner",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Lead Source",
@@ -352,6 +363,12 @@
             "editable": "input"
           },
           {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
             "name": "Phone",
             "accessor": "phoneNumbers",
             "col": 1,
@@ -367,7 +384,12 @@
           {
             "name": "Buyer Type",
             "accessor": "buyerType",
-            "col": 2
+            "col": 2,
+            "datatype": "select",
+            "dataOptions": [
+              {"value": "homeOwner", "label": "Home Owner"},
+              {"value": "investor", "label": "Investor"}
+            ]
           },
           {
             "name": "Desired Neighborhoods",
@@ -391,19 +413,18 @@
           {
             "name": "Pre Approved",
             "accessor": "preApproved.status",
-            "col": 2
+            "col": 2,
+            "datatype": "select",
+            "dataOptions": [
+              {"value": "yes", "label": "Yes"},
+              {"value": "no", "label": "No"}
+            ]
           },
           {
             "name": "Other Preferences",
             "accessor": "otherPref",
-            "col": 2
-          },
-
-          {
-            "name": "Status",
-            "accessor": "status",
-            "col": 3,
-            "editable": "select"
+            "col": 2,
+            "derived": "true"
           },
           {
             "name": "Lead Owner",

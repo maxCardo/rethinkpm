@@ -2,18 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {Col, Form} from 'react-bootstrap';
 import Select from 'react-select';
 import { connect } from 'react-redux';
-import settings from '../../../../../settings';
 import PropTypes from "prop-types";
 
 
 
-const AddSelectField = ({field, onChangeArray, passIndex, fieldSettings, profile, offices}) => {
-    const theProfiles = settings.routes.profile;
+const AddSelectField = ({field, onChangeArray, offices}) => {
 
     const [selected, select] = useState(null);
+    const options = field.name === 'Office' ? offices : field.dataOptions
 
-    let officeOptions = theProfiles && theProfiles[profile] && offices;
-
+ 
     const handleSelectChange = (value) => {
         select(value);
         onChangeArray(field.accessor, selected);
@@ -34,7 +32,7 @@ const AddSelectField = ({field, onChangeArray, passIndex, fieldSettings, profile
                     name={field.name}
                     value={selected}
                     onChange={handleSelectChange}
-                    options={officeOptions}
+                    options={options}
                     placeholder='Select...'
                 />
             </Form.Group>
