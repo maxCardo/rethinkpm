@@ -47,6 +47,38 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+// @route: POST /api/profile/agentPros/addLead;
+// @desc: Add an Agent entry from ui
+// @ access: Public * ToDo: update to make private
+router.post("/addLead",auth, async (req, res) => {
+    try {
+        const {firstName, lastName, office, phoneNumbers, email, status } = req.body
+        const getOffice = await Office.findOne({officeId: office })
+        const agentObj = {
+            firstName,
+            lastName,
+            fullName: `${firstName} ${lastName}`,
+            officeId : office,
+            office: getOffice._id,
+            phoneNumbers,
+            email,
+            status,
+        }
+        const agent = new Agent(agentObj);
+        const newNote = {
+            content:'New user manualy created.',
+            user: req.user,
+            type: 'log'
+        }
+        agent.notes.push(newNote)
+        await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
+
 // @route: PUT /api/profile/agentPros/addPhone/:id;
 // @desc: Add phone number to profile
 // @ access: Public * ToDo: update to make private

@@ -5,6 +5,11 @@ const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const FilterModel = require('../../db/models/sales/filters')
 const AudienceModel = require('../../db/models/sales/audience')
 
+
+//filter options: refactor to get these from api
+const zipcodeOptions = require('../../config/supportData/zipcodes')
+const areaOptions = require('../../config/supportData/areas')
+
 const router = express.Router();
 
 const model = BuyerPros
@@ -37,6 +42,29 @@ router.post('/', async (req, res) => {
     res.status(200).send('hell ya')
 })
 
+// @route: POST /api/profile/buyerPros/addLead;
+// @desc: Add a Buyer record
+// @ access: Public * ToDo: update to make private
+router.post("/addLead",auth, async (req, res) => {
+    try {
+        let recordObj = req.body
+        const { firstName, lastName, preApproved  } = req.body
+        recordObj.fullName = `${firstName} ${lastName}`
+        recordObj.preApproved =  {status: preApproved}
+        const record = new model(recordObj);
+        const newNote = {
+            content: 'New user manualy created.',
+            user: req.user,
+            type: 'log'
+        }
+        await record.notes.push(newNote)
+        await record.save();
+        res.status(200).send(record);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
 
 // @route: GET /api/profile/buyerPros;
 // @desc: Get single profile when loading profile screen
@@ -254,6 +282,8 @@ router.get('/filterOptions', async ({ params: { query } }, res) => {
             { value: 'agent', label: 'Agent' },
             { value: 'notInterested', label: 'Not Interested' }
         ];
+        options.zip = zipcodeOptions;
+        options.area = areaOptions;
         res.status(200).send(options);
     } catch (error) {
         console.error(error);

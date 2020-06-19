@@ -22,7 +22,12 @@ const rentLeadProsSchema = new mongoose.Schema({
             type: String
         },
     },
-
+    targetArea: [{
+        name: String
+    }],
+    targetZip: [{
+        name: String
+    }],
     notes: [{
         note: {
             type: String,
@@ -32,6 +37,7 @@ const rentLeadProsSchema = new mongoose.Schema({
             default: Date.now
         }
     }],
+
 
 });
 

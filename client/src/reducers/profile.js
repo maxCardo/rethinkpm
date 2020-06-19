@@ -3,6 +3,7 @@ import {
     PROFILE_ERROR,
     TOGGLE_ADD_PHONE,
     TOGGLE_ADD_EMAIL,
+    TOGGLE_ADD_LEAD,
     SET_PROFILE_LIST,
     ADD_DATA_PROFILE_LIST,
     CLEAR_PROFILE_ERROR,
@@ -158,6 +159,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 showAddEmailMod: payload,
+            };
+        case TOGGLE_ADD_LEAD:
+            return {
+                ...state,
+                showAddLeadMod: payload,
             };
         case PROFILE_FILTER_OPTIONS:
             return {
