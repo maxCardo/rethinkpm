@@ -5,7 +5,7 @@ const db = creds.mongoURI;
 
 dbConnect = async () => {
   try {
-   await mongoose.connect(db,{ useNewUrlParser: true, useCreateIndex:true, useFindAndModify:false });
+   await mongoose.connect(db,{ useNewUrlParser: true, useCreateIndex:true, useFindAndModify:false, useUnifiedTopology: true });
    console.log('MongoDB connected');
  } catch (e) {
    console.error(e.message);

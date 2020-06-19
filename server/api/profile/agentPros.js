@@ -208,32 +208,40 @@ router.put("/editStatus/:id", async (req, res) => {
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
 // @ access: Public * ToDo: update to make private
-router.post('/filter/:page?', async (req, res) => {
+router.post('/filter', async (req, res) => {
     try {
-        const PAGESIZE = 500;
-        const data = req.body
-        const filterFields = Object.keys(req.body);
-        const filters = []
-
-        //create filter object
-        filterFields.map((x) => {
-            data[x].type.value !== 'noFilter' && filters.push({
-                field: data[x].accessor,
-                subField: data[x].subAccessor,
-                filterType: data[x].type.value,
-                operator: data[x].type.operator,
-                value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
-                secondValue: data[x].secondValue ? data[x].secondValue : ''
-            })
-        })
+        const PAGESIZE = req.body.pageSize;
+        const data = req.body.filters
+        let filters = []
+        if(data.length) {
+          filters = data
+        } else {
+          const filterFields = Object.keys(req.body.filters);
+          //create filter object
+          filterFields.map((x) => {
+              data[x].type.value !== 'noFilter' && filters.push({
+                  field: data[x].accessor,
+                  subField: data[x].subAccessor,
+                  filterType: data[x].type.value,
+                  operator: data[x].type.operator,
+                  value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
+                  secondValue: data[x].secondValue ? data[x].secondValue : ''
+              })
+          })
+        }
+        
 
         //create string query 
         const queryObj = convertFiltersToQuery(filters)
 
         //query DB
         let record;
-        if (req.params.page) {
-            record = await Agent.find(queryObj).populate('notes.user, office').skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
+        if (req.body.page) {
+            if(PAGESIZE) {
+              record = await Agent.find(queryObj).populate('notes.user, office').skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
+            } else {
+              record = await Agent.find(queryObj).populate('notes.user, office')
+            }
         } else {
             record = await Agent.find(queryObj).populate('notes.user, office').limit(PAGESIZE + 1)
         }
@@ -324,7 +332,7 @@ router.get('/pastSales/:agentId', async (req, res) => {
 router.post('/addNote/:id', auth, async (req, res) => {
   try {
     id = req.params.id
-    const record = await Agent.findById(id).populate('notes.user')
+    const record = await Agent.findById(id)
     const newNote = {
       ...req.body,
       user: req.user,

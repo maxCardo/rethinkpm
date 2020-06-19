@@ -123,7 +123,34 @@
           "leadOwner": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Lead Owner", "dataType":"string", "accessor":"leadOwner", "subAccessor":""},
           "status": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Status", "dataType":"array", "accessor":"status", "subAccessor":""},
           "office": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Office", "dataType":"array", "accessor":"officeId", "subAccessor":"" }
-        }
+        },
+        "tableHeaders": [
+          {
+            "accessor": "firstName",
+            "label": "First Name"
+          },
+          {
+            "accessor": "lastName",
+            "label": "Last Name"
+          },
+          {
+            "accessor": "emailAddress",
+            "label": "Email"
+          },
+          {
+            "accessor": "phone",
+            "label": "Phone",
+            "mapper": "phone"
+          },
+          {
+            "accessor": "officeId",
+            "label": "Office ID"
+          },
+          {
+            "accessor": "sales",
+            "label": "Revenue"
+          }
+        ]
       },
       "rentPros": {
         "profileType": "rentPros",

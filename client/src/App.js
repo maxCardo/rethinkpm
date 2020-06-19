@@ -13,7 +13,7 @@ import Login from './components/core/Login';
 import Register from './components/core/Register';
 import Playground from './components/core/Playground';
 import BrokerDashboard from './components/custom/BrokerDashboard/BrokerDashboard';
-import Dashboard from './components/custom/dashboard/Dashboard';
+import Dashboard from './components/custom/TableView/TableView';
 import Alert from './components/core/Alert';
 import ServiceList from './components/custom/service/ServiceList';
 import ServiceDetail from './components/custom/service/ServiceDetail';

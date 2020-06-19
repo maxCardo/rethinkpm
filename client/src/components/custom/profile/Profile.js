@@ -11,10 +11,13 @@ import {loadBackUpProfile, loadProfileDefault, tglAddLeadMod} from '../../../act
 import ProfileInfo from './profileInfo/ProfileInfo'
 import ProfileList from './profileList/ProfileList'
 import ProfileDetails from './profileDetails/ProfileDetails'
+import ProfileTableView from './ProfileTableView'
+import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
 
 import AddLeadModal from "./addLead/AddLeadModal";
 import Chat from './profileComms/Chat'
+
 
 
 const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault, tglAddLeadMod}) => {
@@ -39,10 +42,12 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
     const tglEdit = () => tglAddLeadMod(!editWindow)
     const tglAdd = () => tglAddLeadMod(!addWindow)
 
+    const [tabKey, setTabKey] = useState('details');
+
 
     return loading ? <Loading/> :
-        <div className='profile__tabs-container'>
-            <Tabs defaultActiveKey="details" id="profile__tabs" className='profile__tabs'>
+        <Fragment>
+            <Tabs id="profile__tabs" className='profile__tabs' activeKey={tabKey} onSelect={(k) => setTabKey(k)}>
                 <Tab eventKey="details" title={profileType.current + ' Details'}>
                     <div className={`agentProfile profile__main-container ${listWindow ? 'left__sidebar-open' : null} ${chatWindow ? 'chat__sidebar-open' : null}`}>
 
@@ -82,7 +87,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                     <div>Manage Filters</div>
                 </Tab>
                 <Tab eventKey="table" title="Table View" style={{marginLeft: 'auto'}}>
-                    Maybe a view of the old BrokerDashboard
+                    {tabKey == 'table' && <ProfileTableView settings={settings}/>}
                 </Tab>
 
             </Tabs>

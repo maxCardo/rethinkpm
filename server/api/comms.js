@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer')
 const { sendEmail } = require('../3ps/email')
 const Agent = require('../db/models/sales/agent')
 const Chat = require('../db/models/comms/Chat')
@@ -7,6 +8,7 @@ const {outgoingSMS} = require('../3ps/sms')
 
 
 const router = express.Router();
+const upload = multer()
 
 //store on DB in future may need to create type object for model names id sored as String in DB
 const activeNumber = [
@@ -126,13 +128,17 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
 });
 
 
-// @route: Post /api/comms/email
+// @route: Post /api/comms/email/parse
 // @desc: Receive chat msg from profile comp in front end
 // @ access: Public *ToDo: update to make private
-router.post('/email/parse', async (req, res) => {
+router.post('/email/parse',upload.none(), (req, res) => {
     try {
-        sendEmail('adampoznanski@outlook.com', 'test email', 'testing sendgrid email')
-        sendEmail('ezrafreedlander@gmail.com', 'test email', 'testing sendgrid email')
+        const {to, from, html, subject, text} = req.body
+
+        console.log(html)
+
+        //sendEmail('adampoznanski@outlook.com', 'test email', 'testing sendgrid email')
+        //sendEmail('ezrafreedlander@gmail.com', 'test email', 'testing sendgrid email')
         res.status(200).send()
     } catch (error) {
         res.status(500).send()
