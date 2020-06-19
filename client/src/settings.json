@@ -224,7 +224,7 @@
           },
           {
             "name": "Pets",
-            "accessor": "pets[0].petType",
+            "accessor": "pets.petType",
             "key": "pets",
             "col": 2,
             "datatype":"select",

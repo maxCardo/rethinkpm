@@ -79,8 +79,8 @@ router.post("/addLead",auth, async (req, res) => {
         let prosObj = req.body
         const {firstName, lastName, pets, campaign, status,} = req.body
         prosObj.fullName = `${firstName} ${lastName}`
+        prosObj.pets = {petType:pets}
         const pros = await new prosModel(prosObj);
-        await pros.pets.push({petType:pets})
         
         let inqObj = {
             prospect: pros._id,

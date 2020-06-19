@@ -20,10 +20,10 @@ const rentProsSchema = new mongoose.Schema({
     ],
     targetArea: Array,
     targetZip: Array,
-    pets: [{
+    pets: {
         petType:String,
         breed:String
-    }],
+    },
     otherPref: Array,
     income: Number,
 
