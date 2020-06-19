@@ -598,6 +598,8 @@ export const addLeadSubmit = (formData, profileType) => async dispatch => {
     axios.post(`/api/profile/${profileType}/addLead`, formData, config)
         .then((res) => {
             const data = { ...res.data, profileType }
+            console.log(data);
+
             dispatch({
                 type: SET_ACTIVE_PROFILE,
                 payload: data,

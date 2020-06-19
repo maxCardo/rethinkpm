@@ -46,6 +46,7 @@
           {
             "name": "Office",
             "accessor": "office.name",
+            "key":"office",
             "datatype": "select",
             "dataOptions": "custom",
             "col": 1
@@ -204,18 +205,19 @@
           {
             "name": "Property",
             "accessor": "campaign",
-            "col": 2
+            "col": 2,
+            "datatype": "select"
           },
           {
             "name": "Desired Neighborhoods",
-            "accessor": "targetAreas",
+            "accessor": "targetArea",
             "datatype": "collection",
             "col": 2,
             "formatter": ""
           },
           {
             "name": "Desired Zip Codes",
-            "accessor": "targetZipCodes",
+            "accessor": "targetZip",
             "datatype":"collection", 
             "col": 2,
             "formatter": ""
@@ -387,20 +389,20 @@
             "col": 2,
             "datatype": "select",
             "dataOptions": [
-              {"value": "homeOwner", "label": "Home Owner"},
+              {"value": "owner", "label": "Home Owner"},
               {"value": "investor", "label": "Investor"}
             ]
           },
           {
             "name": "Desired Neighborhoods",
-            "accessor": "targetAreas",
+            "accessor": "targetArea",
             "datatype": "collection",
             "col": 2,
             "formatter": "formatLabels"
           },
           {
             "name": "Desired Zip Codes",
-            "accessor": "targetZipCodes",
+            "accessor": "targetZip",
             "datatype": "collection",
             "col": 2,
             "formatter": ""
@@ -413,11 +415,12 @@
           {
             "name": "Pre Approved",
             "accessor": "preApproved.status",
+            "key":"preApproved",
             "col": 2,
             "datatype": "select",
             "dataOptions": [
-              {"value": "yes", "label": "Yes"},
-              {"value": "no", "label": "No"}
+              {"value": true, "label": "Yes"},
+              {"value": false, "label": "No"}
             ]
           },
           {

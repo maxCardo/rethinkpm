@@ -45,18 +45,23 @@ router.post('/', async (req, res) => {
 // @route: POST /api/profile/buyerPros/addLead;
 // @desc: Add a Buyer record
 // @ access: Public * ToDo: update to make private
-router.post("/addLead", async (req, res) => {
+router.post("/addLead",auth, async (req, res) => {
     try {
-        const buyer = new model();
-        await buyer.set({
-            ...buyer,
-            ...req.body
-        });
-
-        /*TODO: hardcode leadsource here*/
-        //var result = await agent.save();
-        res.status(200).send(buyer);
+        let recordObj = req.body
+        const { firstName, lastName, preApproved  } = req.body
+        recordObj.fullName = `${firstName} ${lastName}`
+        recordObj.preApproved =  {status: preApproved}
+        const record = new model(recordObj);
+        const newNote = {
+            content: 'New user manualy created.',
+            user: req.user,
+            type: 'log'
+        }
+        await record.notes.push(newNote)
+        await record.save();
+        res.status(200).send(record);
     } catch (err) {
+        console.error(err);
         res.status(500).send(err);
     }
 });

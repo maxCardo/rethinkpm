@@ -18,13 +18,8 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
     }
 
     const onChangeArray = (name, value) => {
-        console.log('running onChageArr:', name);
         setFormData({...formData, [name]: value});
     };
-
-    useEffect(() => {
-        console.log(formData);
-    },[formData])
 
     const validateInput = (phoneNumbers, emails) => {
         let phonesValid = true;
@@ -71,8 +66,6 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
 
     useEffect(() => {
         validateInput(formData.phoneNumbers, formData.email);
-        console.log('running validate: ', valid );
-
     }, [formData.phoneNumbers, formData.email]);
 
     return (

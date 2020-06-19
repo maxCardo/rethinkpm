@@ -7,12 +7,12 @@ const AddCollectionField = ({field, onChangeArray, passIndex, settings, zipcodes
 
     const [selected, select] = useState([])
     const profileInfo = settings.profileInfo[passIndex];
-
+    const key = field.key ? field.key : field.accessor
 
     let fieldOptions = [];
-    if ((profileInfo.accessor === 'zipCodes') || (profileInfo.accessor === 'targetZipCodes') || ( profileInfo.accessor === 'desiredZipCodes')) {
+    if ((profileInfo.accessor === 'zipCodes') || (profileInfo.accessor === 'targetZip') || ( profileInfo.accessor === 'desiredZipCodes')) {
         fieldOptions = zipcodes;
-    } else if (profileInfo.accessor === 'areas' || profileInfo.accessor === 'targetAreas' || profileInfo.accessor === 'desiredAreas') {
+    } else if (profileInfo.accessor === 'areas' || profileInfo.accessor === 'targetArea' || profileInfo.accessor === 'desiredAreas') {
         fieldOptions = areas;
     }
 
@@ -21,11 +21,8 @@ const AddCollectionField = ({field, onChangeArray, passIndex, settings, zipcodes
     }
 
     useEffect(() => {
-
-
-        onChangeArray(profileInfo.accessor, selected);
-
-    }, [settings, passIndex, selected]);
+        onChangeArray(key, selected.map((x) => {return {name: x.value}}))
+    }, [selected]);
 
     return (
         <Col lg={12}>

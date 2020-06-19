@@ -1,6 +1,5 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
-
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
 const FilterModel = require('../../db/models/sales/filters')
@@ -10,6 +9,7 @@ const AudienceModel = require('../../db/models/sales/audience')
 //filter options: refactor to get these from api
 const zipcodeOptions = require('../../config/supportData/zipcodes')
 const areaOptions = require('../../config/supportData/areas')
+const activeListings = require('../../config/supportData/activeLisitng')
 
 
 const router = express.Router();
@@ -74,19 +74,33 @@ router.post('/', async (req, res) => {
 // @route: POST /api/profile/rentPros/addLead;
 // @desc: Add a Renter record
 // @ access: Public * ToDo: update to make private
-router.post("/addLead", async (req, res) => {
+router.post("/addLead",auth, async (req, res) => {
     try {
-
-        const renter = new model();
-        await renter.set({
-            ...renter,
-            ...req.body
-        });
-
-        /*TODO: find leadsource here, create the response object that the front end expects*/
-        //var result = await renter.save();
-        res.status(200).send(renter);
+        let prosObj = req.body
+        const {firstName, lastName, pets, campaign, status,} = req.body
+        prosObj.fullName = `${firstName} ${lastName}`
+        prosObj.pets = { type: pets }
+        const pros = await new prosModel(prosObj);
+        
+        let inqObj = {
+            prospect: pros._id,
+            campaign,
+            status
+        }
+        const inq = await new model(inqObj)
+        const newNote = {
+            content: 'New inquiry manualy created.',
+            user: req.user,
+            type: 'log'
+        }
+        await inq.notes.push(newNote)
+        // await pros.save()
+        // await inq.save()
+        const clone = { ...pros._doc, ...inq._doc }
+        console.log(clone)
+        res.status(200).send(clone);
     } catch (err) {
+        console.error(err);
         res.status(500).send(err);
     }
 });
@@ -163,7 +177,6 @@ router.put("/addPhone/:id", async (req, res) => {
         })
         await rentPro.save();
         const clone = { ...rentPro._doc, ...inq._doc }
-
         res.status(200).send(clone);
     } catch (err) {
         console.error(err)
@@ -346,6 +359,7 @@ router.get('/filterOptions', async ({ params: { query } }, res) => {
         ];
         options.zip = zipcodeOptions;
         options.area = areaOptions;
+        options.rentalListings = activeListings
         res.status(200).send(options);
     } catch (error) {
         console.error(error);

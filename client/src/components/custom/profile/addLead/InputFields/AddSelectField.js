@@ -6,22 +6,17 @@ import PropTypes from "prop-types";
 
 
 
-const AddSelectField = ({field, onChangeArray, offices}) => {
+const AddSelectField = ({field, onChangeArray, offices, rentalListings}) => {
 
     const [selected, select] = useState(null);
-    const options = field.name === 'Office' ? offices : field.dataOptions
+    const options = field.name === 'Office' ? offices : field.name ==='Property'? rentalListings : field.dataOptions
+    const key = field.key ? field.key: field.accessor
 
  
     const handleSelectChange = (value) => {
         select(value);
-        onChangeArray(field.accessor, selected);
+        onChangeArray(key, value.value);
     };
-
-    useEffect(() => {
-
-        onChangeArray(field.accessor, selected);
-
-    }, [field.accessor, selected]);
 
     return (
         <Col lg={12}>
@@ -31,7 +26,7 @@ const AddSelectField = ({field, onChangeArray, offices}) => {
                     className='selectSingle'
                     name={field.name}
                     value={selected}
-                    onChange={handleSelectChange}
+                    onChange={(e) => handleSelectChange(e)}
                     options={options}
                     placeholder='Select...'
                 />
@@ -41,7 +36,8 @@ const AddSelectField = ({field, onChangeArray, offices}) => {
 }
 
 const  mapStateToProps = state =>  ({
-    offices: state.profile.filterOptions.office
+    offices: state.profile.filterOptions.office,
+    rentalListings: state.profile.filterOptions.rentalListings
 })
 
 AddSelectField.propTypes ={
