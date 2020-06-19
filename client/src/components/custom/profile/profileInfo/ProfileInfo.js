@@ -6,6 +6,7 @@ import Loading from '../../../core/LoadingScreen/Loading'
 import AddPhoneModal from './AddPhoneModal'
 import AddEmailModal from './AddEmailModal'
 
+//ToDo: in rentpros , pets not showing on ui. 
 
 const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglChat, tglList, tglEdit, tglAdd}) => {
     const [{columns, loading}, setColumns] = useState({data: null, loading: true});

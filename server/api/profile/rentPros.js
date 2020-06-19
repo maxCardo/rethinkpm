@@ -79,8 +79,8 @@ router.post("/addLead",auth, async (req, res) => {
         let prosObj = req.body
         const {firstName, lastName, pets, campaign, status,} = req.body
         prosObj.fullName = `${firstName} ${lastName}`
-        prosObj.pets = { type: pets }
         const pros = await new prosModel(prosObj);
+        await pros.pets.push({petType:pets})
         
         let inqObj = {
             prospect: pros._id,
@@ -94,8 +94,8 @@ router.post("/addLead",auth, async (req, res) => {
             type: 'log'
         }
         await inq.notes.push(newNote)
-        // await pros.save()
-        // await inq.save()
+        await pros.save()
+        await inq.save()
         const clone = { ...pros._doc, ...inq._doc }
         console.log(clone)
         res.status(200).send(clone);
