@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState, Fragment} from 'react';
 import {connect} from 'react-redux'
 import qs from 'query-string'
 import {Tab, Tabs} from 'react-bootstrap'
@@ -16,7 +16,6 @@ import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
 
 import AddLeadModal from "./addLead/AddLeadModal";
-import Chat from './profileComms/Chat'
 
 
 
@@ -96,7 +95,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
             </button>
             <AddLeadModal settings={settings} profileName={profileType.current}/>
 
-        </div>
+        </Fragment>
 }
 
 
