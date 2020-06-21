@@ -88,6 +88,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
       loadProfileList(profileType, selectedQuery)
     }
     console.log(isFiltered)
+
     return profileList.loading ? <Loading/> :
         <Fragment>
             <Select
