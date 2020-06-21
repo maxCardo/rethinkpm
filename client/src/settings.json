@@ -130,13 +130,14 @@
             "label": "Name"
           },
           {
-            "accessor": "emailAddress",
-            "label": "Email"
+            "accessor": "email",
+            "label": "Email",
+            "mapper": "emailArray"
           },
           {
-            "accessor": "phone",
+            "accessor": "phoneNumbers",
             "label": "Phone",
-            "mapper": "phone"
+            "mapper": "phoneArray"
           },
           {
             "accessor": "officeId",
@@ -328,7 +329,23 @@
             "accessor": "status",
             "subAccessor": ""
           }
-        }
+        },
+        "tableHeaders": [
+          {
+            "accessor": "fullName",
+            "label": "Name"
+          },
+          {
+            "accessor": "email",
+            "label": "Email",
+            "mapper": "emailArray"
+          },
+          {
+            "accessor": "phoneNumbers",
+            "label": "Phone",
+            "mapper": "phoneArray"
+          }
+        ]
       },
       "buyerPros": {
         "profileType": "buyerPros",
@@ -504,7 +521,23 @@
             "accessor": "status",
             "subAccessor": ""
           }
-        }
+        },
+        "tableHeaders": [
+          {
+            "accessor": "fullName",
+            "label": "Name"
+          },
+          {
+            "accessor": "email",
+            "label": "Email",
+            "mapper": "emailArray"
+          },
+          {
+            "accessor": "phoneNumbers",
+            "label": "Phone",
+            "mapper": "phoneArray"
+          }
+        ]
       }
     }
   }
