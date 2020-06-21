@@ -3,6 +3,7 @@ import {
     PROFILE_ERROR,
     TOGGLE_ADD_PHONE,
     TOGGLE_ADD_EMAIL,
+    TOGGLE_ADD_LEAD,
     SET_PROFILE_LIST,
     ADD_DATA_PROFILE_LIST,
     CLEAR_PROFILE_ERROR,
@@ -54,6 +55,7 @@ export default function (state = initialState, action) {
             profileList: state.profileList,
             filterOptions: state.filterOptions,
             activeFilter:state.activeFilter,
+            isFiltered: state.isFiltered
           };
         case START_LOADING_PROFILE:
           return {
@@ -107,6 +109,7 @@ export default function (state = initialState, action) {
                     ...state.profileList,
                     loadingTableView: true
                 },
+                activeFilter:[]
             }
         case SET_PROFILE_TABLE_VIEW:
             return {
@@ -159,6 +162,11 @@ export default function (state = initialState, action) {
                 ...state,
                 showAddEmailMod: payload,
             };
+        case TOGGLE_ADD_LEAD:
+            return {
+                ...state,
+                showAddLeadMod: payload,
+            };
         case PROFILE_FILTER_OPTIONS:
             return {
                 ...state,
@@ -170,7 +178,8 @@ export default function (state = initialState, action) {
         case SET_FILTER:
             return {
                 ...state,
-                activeFilter: payload
+                activeFilter: payload.activeFilter,
+                isFiltered: payload.isFiltered
             };
         case SET_SAVED_FILTERS:
             return {

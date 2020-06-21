@@ -17,8 +17,6 @@ const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, h
         }
         return value
     }
-    console.log('searchString: ', searchString);
-    console.log('fullName: ', data);
 
     const searchData = data.filter(profile => profile.fullName.toLowerCase().includes(searchString.toLowerCase()) && profile) 
 

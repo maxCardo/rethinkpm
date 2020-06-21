@@ -39,7 +39,7 @@ const NotesScreen = ({profileType, activeProfile}) => {
     logHeaders.unshift({
         accessor: 'type',
         label: 'Type',
-        mapper: (data) => data.charAt(0).toUpperCase() + data.slice(1)
+        mapper: (data) => data ? data.charAt(0).toUpperCase() + data.slice(1) : ''
     })
 
     const onSubmit = (data) => {
