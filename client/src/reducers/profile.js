@@ -107,6 +107,7 @@ export default function (state = initialState, action) {
                     ...state.profileList,
                     loadingTableView: true
                 },
+                activeFilter:[]
             }
         case SET_PROFILE_TABLE_VIEW:
             return {

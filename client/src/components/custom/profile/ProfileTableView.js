@@ -118,7 +118,7 @@ export class ProfileTableView extends Component {
           value: 'in',
           operator: '$in'
         },
-        value: this.props.settings.statusSelect.selectedQuery
+        value: eval(this.props.settings.statusSelect.selectedQuery).map((status) => ({value: status}))
       }
     }
     this.props.setFilter(filter, false)

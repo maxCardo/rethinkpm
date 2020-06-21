@@ -162,6 +162,10 @@ export const loadProfileTableView = (profileType, filters, cancelToken) => async
       payload: res.data.record,
     });
     dispatch({
+      type: SET_FILTER,
+      payload: {activeFilter: res.data.filters},
+    });
+    dispatch({
       type: SET_HAS_MORE_DATA,
       payload: res.data.hasMore
     })
