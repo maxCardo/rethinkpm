@@ -73,6 +73,9 @@ export class ProfileTableView extends Component {
           sortDirection='desc'
           onClickRow={this.onClickRow}
         />
+        <div className='profile-table-view__total-number'>
+          <p>Total of {this.props.settings.profileNamePlural}: {this.props.profileList.list.length}</p>
+        </div>
         <FilterModal
           show={this.state.showFilterMod}
           handleClose={this.toggleFilterModal}

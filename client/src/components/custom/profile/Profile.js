@@ -88,10 +88,6 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                 <Tab eventKey="filters" title="Filters">
                     <div>Manage Filters</div>
                 </Tab>
-                <Tab eventKey="table" title="Table View" style={{marginLeft: 'auto'}}>
-                    {tabKey == 'table' && <ProfileTableView settings={settings}/>}
-                </Tab>
-
             </Tabs>
             <button className='action-buttons__button add-profile__button' onClick={() => tglAdd()}>
                 <i className='fas fa-plus'></i> &nbsp;Add {profileType.current}

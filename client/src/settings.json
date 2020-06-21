@@ -126,12 +126,8 @@
         },
         "tableHeaders": [
           {
-            "accessor": "firstName",
-            "label": "First Name"
-          },
-          {
-            "accessor": "lastName",
-            "label": "Last Name"
+            "accessor": "fullName",
+            "label": "Name"
           },
           {
             "accessor": "emailAddress",
