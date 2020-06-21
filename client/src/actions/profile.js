@@ -132,7 +132,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
     })
     dispatch({
         type: SET_FILTER,
-        payload: res.data.filters,
+        payload: {activeFilter: res.data.filters},
     });
   } catch (err) {
     console.log(err);
@@ -160,6 +160,10 @@ export const loadProfileTableView = (profileType, filters, cancelToken) => async
     dispatch({
       type: SET_PROFILE_TABLE_VIEW,
       payload: res.data.record,
+    });
+    dispatch({
+      type: SET_FILTER,
+      payload: {activeFilter: res.data.filters},
     });
     dispatch({
       type: SET_HAS_MORE_DATA,
@@ -432,7 +436,7 @@ export const submitFilterModal = (filters, profileType) => async dispatch => {
         });
         dispatch({
             type: SET_FILTER,
-            payload: res.data.filters,
+            payload: {activeFilter: res.data.filters, isFiltered:true},
         });
         dispatch({
           type: STOP_LOAD_PROFILE_LIST_AND_TABLE,
@@ -448,6 +452,13 @@ export const submitFilterModal = (filters, profileType) => async dispatch => {
             },
         });
     }
+}
+
+export const setFilter = (filter, isFiltered = true) => dispatch => {
+  dispatch({
+    type: SET_FILTER,
+    payload: {activeFilter: filter, isFiltered: isFiltered},
+});
 }
 
 //get filter options for array fields
@@ -506,7 +517,7 @@ export const loadSavedFilter = (id, profileType, filterType) => async dispatch =
           });
           dispatch({
             type: SET_FILTER,
-            payload: res.data.filters,
+            payload: {activeFilter: res.data.filters},
           });
         } else {
           const res = await axios.get(`/api/profile/${profileType}/filters/${id}`)
@@ -516,7 +527,7 @@ export const loadSavedFilter = (id, profileType, filterType) => async dispatch =
           });
           dispatch({
             type: SET_FILTER,
-            payload: res.data.filters,
+            payload: {activeFilter: res.data.filters, isFiltered:true},
           });
         }
 

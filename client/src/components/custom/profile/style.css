@@ -731,9 +731,6 @@
   border-radius: 0;
   border-color: #fff;
 }
-#profile__tabs-tab-table {
-  margin-left: auto;
-}
 /*Profile sub sub nav :)*/
 .profile__main-container .bottom-navigation__tabs  {
   background:#f2f2f2;
@@ -925,5 +922,9 @@
 
 .profile-table-view__table-icon {
   width: 200px;
+}
+
+.profile-table-view__total-number {
+  margin: 10px 30px;
 }
 

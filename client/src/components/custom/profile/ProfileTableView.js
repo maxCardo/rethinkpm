@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import {connect} from 'react-redux'
-import { loadProfileTableView } from '../../../actions/profile'
+import { loadProfileTableView, setActiveProfile, setFilter } from '../../../actions/profile'
 import axios from 'axios';
 import LoadingScreen from '../LoadingScreen/LoadingScreen'
 import TableView from '../TableView/TableView'
@@ -21,15 +21,20 @@ export class ProfileTableView extends Component {
     this.toggleFilterModal = this.toggleFilterModal.bind(this)
     this.toggleTableType = this.toggleTableType.bind(this)
     this.toggleSaveFilterModal = this.toggleSaveFilterModal.bind(this)
+    this.clearFilter = this.clearFilter.bind(this)
+    this.onClickRow = this.onClickRow.bind(this)
   }
   componentDidMount() {
-    this.props.loadProfileTableView(this.props.settings.profileType, this.props.activeFilter, this.axiosSource.token)
+    if(this.props.profileList.hasMore) {
+      this.props.loadProfileTableView(this.props.settings.profileType, this.props.activeFilter, this.axiosSource.token)
+    }
   }
   componentWillUnmount() {
     this.axiosSource.cancel()
   }
   render() {
     const statuses = this.props.settings.statusOptions.map((status) => ({label: status.label , key: status.value}))
+    statuses.unshift({label: 'All', key: '*'})
     const data = {} 
     this.props.profileList.list.forEach((profile) => {
       if(data[profile.status]) {
@@ -50,10 +55,10 @@ export class ProfileTableView extends Component {
             <button className='profile-table-view__icon-button' onClick={this.toggleFilterModal}>
               <i className="fas fa-filter"></i>
             </button>
-            {this.props.activeFilter.length ? (
+            {this.props.isFiltered ? (
             <Fragment>
               <button onClick={this.toggleSaveFilterModal}>Save filter</button>
-              <button onClick={() => this.props.loadProfileTableView(this.props.settings.profileType, [] ,this.axiosSource.token)}>Clear filter</button>
+              <button onClick={this.clearFilter}>Clear filter</button>
             </Fragment>
           ):null}
           </div>
@@ -66,7 +71,11 @@ export class ProfileTableView extends Component {
           states={statuses}
           sortBy='sales'
           sortDirection='desc'
+          onClickRow={this.onClickRow}
         />
+        <div className='profile-table-view__total-number'>
+          <p>Total of {this.props.settings.profileNamePlural}: {this.props.profileList.list.length}</p>
+        </div>
         <FilterModal
           show={this.state.showFilterMod}
           handleClose={this.toggleFilterModal}
@@ -98,11 +107,32 @@ export class ProfileTableView extends Component {
   toggleSaveFilterModal() {
     this.setState((prevState) => ({showSaveFltrMod: !prevState.showSaveFltrMod}))
   }
+  onClickRow(profile) {
+    this.props.setActiveProfile(profile)
+    this.props.changeTab('details')
+  }
+  clearFilter() {
+    const filter = {
+      status: {
+        accessor: 'status',
+        dataType: 'array',
+        name: 'status',
+        type: {
+          value: 'in',
+          operator: '$in'
+        },
+        value: eval(this.props.settings.statusSelect.selectedQuery).map((status) => ({value: status}))
+      }
+    }
+    this.props.setFilter(filter, false)
+    this.props.loadProfileTableView(this.props.settings.profileType, filter ,this.axiosSource.token)
+  }
 }
 
 const mapStateToProps = state => ({
   profileList: state.profile.profileList,
-  activeFilter: state.profile.activeFilter
+  activeFilter: state.profile.activeFilter,
+  isFiltered: state.profile.isFiltered
 })
 
-export default connect(mapStateToProps, {loadProfileTableView})(ProfileTableView)
+export default connect(mapStateToProps, {loadProfileTableView, setActiveProfile, setFilter})(ProfileTableView)

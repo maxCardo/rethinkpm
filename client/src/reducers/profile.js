@@ -55,6 +55,7 @@ export default function (state = initialState, action) {
             profileList: state.profileList,
             filterOptions: state.filterOptions,
             activeFilter:state.activeFilter,
+            isFiltered: state.isFiltered
           };
         case START_LOADING_PROFILE:
           return {
@@ -108,6 +109,7 @@ export default function (state = initialState, action) {
                     ...state.profileList,
                     loadingTableView: true
                 },
+                activeFilter:[]
             }
         case SET_PROFILE_TABLE_VIEW:
             return {
@@ -176,7 +178,8 @@ export default function (state = initialState, action) {
         case SET_FILTER:
             return {
                 ...state,
-                activeFilter: payload
+                activeFilter: payload.activeFilter,
+                isFiltered: payload.isFiltered
             };
         case SET_SAVED_FILTERS:
             return {

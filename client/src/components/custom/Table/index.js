@@ -37,6 +37,7 @@ export class Table extends Component {
     this.state = {
       sortDirections: this.sortDirectionsInitial.slice(),
       data: data,
+      sortedData: sortedData,
       paginatedData: data.slice(0, this.pageSize),
       pageIndex: 0,
       actualFilterString: this.props.filter,
@@ -69,7 +70,7 @@ export class Table extends Component {
       }
       return header;
     })
-    let sortedData = state.data.length && Table.compareArrays(state.rawData, props.data) ? state.data.slice() : props.data.slice();
+    let sortedData = state.sortedData.length && Table.compareArrays(state.rawData, props.data) ? state.sortedData.slice() : props.data.slice();
 
     let newSortDirections = state.sortDirections.slice()
     if(!Table.compareArrays(state.rawData,props.data) || (props.sortBy && !state.alreadySorted)) {
@@ -105,6 +106,7 @@ export class Table extends Component {
     const pageIndex = state.pageIndex ? state.pageIndex : 0
     return {
       data: newData,
+      sortedData: sortedData,
       paginatedData: state.pageIndex ? state.paginatedData : newData.slice(0, pageSize),
       pageIndex: pageIndex,
       actualFilterString: newFilterString,
@@ -179,11 +181,10 @@ export class Table extends Component {
         return getData(b, this.state.headers[index]) > getData(a, this.state.headers[index])  ? 1 : -1
       }
     });
-    this.setState({alreadySorted: true, sortDirections: newSortDirections, data, paginatedData: data.slice(0, this.pageSize), pageIndex: 0 })
+    this.setState({alreadySorted: true, sortDirections: newSortDirections, sortedData: data, paginatedData: data.slice(0, this.pageSize), pageIndex: 0 })
   }
   changePage(index) {
     const newPaginatedData = this.state.data.slice(this.pageSize * index, this.pageSize * (index+1))
-    console.log(newPaginatedData)
     this.setState({pageIndex: index, paginatedData: newPaginatedData, alreadySorted: true})
   }
   mapData(mapper, data) {

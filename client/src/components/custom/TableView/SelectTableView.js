@@ -7,7 +7,7 @@ export class SelectTableView extends Component {
   constructor(props) {
     super(props)
     const selectOptions = this.props.states.map(({label, key}, index) => ({
-      label: `Status ${index+1}: ${label}`,
+      label: `Current Selected: ${label}`,
       value: key
     }))
     this.state = {
@@ -19,11 +19,19 @@ export class SelectTableView extends Component {
   }
 
   render() {
+    let data = []
+    if(this.state.statusSelected.value === '*') {
+      for(const status in this.props.data) {
+        data = data.concat(this.props.data[status])
+      }
+    } else if(this.props.data[this.state.statusSelected.value]) {
+      data = this.props.data[this.state.statusSelected.value]
+    }
     return (
       <div>
         <div className='searchContainer agentsSearchContainer'>
           <Select
-            className="agentStatusFilter"
+            className="table-view__select"
             onChange={(value) => this.setState({ statusSelected: value })}
             defaultValue={this.state.statusSelected}
             options={this.state.selectOptions}
@@ -44,7 +52,7 @@ export class SelectTableView extends Component {
               fontSize={12}
               className="agentInfoTable"
               {...this.props}
-              data={this.props.data[this.state.statusSelected.value] ? this.props.data[this.state.statusSelected.value] : []}
+              data={data}
             />
           </div>
         </div>
