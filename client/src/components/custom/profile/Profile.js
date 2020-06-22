@@ -45,7 +45,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
 
 
     return loading ? <Loading/> :
-        <Fragment>
+        <div className='relative'>
             <Tabs id="profile__tabs" className='profile__tabs' activeKey={tabKey} onSelect={(k) => setTabKey(k)}>
                 <Tab eventKey="details" title={profileType.current + ' Details'}>
                     <div className={`agentProfile profile__main-container ${listWindow ? 'left__sidebar-open' : null} ${chatWindow ? 'chat__sidebar-open' : null}`}>
@@ -94,7 +94,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
             </button>
             <AddLeadModal settings={settings} profileName={profileType.current}/>
 
-        </Fragment>
+        </div>
 }
 
 
