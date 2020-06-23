@@ -62,3 +62,8 @@
   min-width: 5px;
   padding-left: 20px;
 }
+
+.table-view__select {
+  width: 300px;
+  margin: 10px
+}

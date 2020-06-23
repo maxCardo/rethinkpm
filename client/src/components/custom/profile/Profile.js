@@ -1,23 +1,26 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState, Fragment} from 'react';
 import {connect} from 'react-redux'
 import qs from 'query-string'
-import './style.css'
+import {Tab, Tabs} from 'react-bootstrap'
 import {Resizable} from 're-resizable'
+
+import './style.css'
+
+import {SET_INQUIRIES} from '../../../actions/type'
+import {loadBackUpProfile, loadProfileDefault, tglAddLeadMod} from '../../../actions/profile'
 import ProfileInfo from './profileInfo/ProfileInfo'
 import ProfileList from './profileList/ProfileList'
 import ProfileDetails from './profileDetails/ProfileDetails'
 import ProfileTableView from './ProfileTableView'
 import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
-import {SET_INQUIRIES} from '../../../actions/type'
-import {loadBackUpProfile, loadProfileDefault} from '../../../actions/profile'
 
-import {Tab, Tabs} from 'react-bootstrap';
+import AddLeadModal from "./addLead/AddLeadModal";
 
 
-const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault}) => {
+
+const Profile = ({profile: {activeProfile, loading}, location: {search}, settings, loadBackUpProfile, loadProfileDefault, tglAddLeadMod}) => {
     let profileType = useRef('');
-
     useEffect(() => {
         //added to allow for reuse of profile component when redux data is orginized by component    
         if (!activeProfile.profile || activeProfile.profileType !== settings.profileType) {
@@ -31,14 +34,18 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
 
     const [chatWindow, tglChatWindow] = useState(false)
     const [listWindow, tglListWindow] = useState(true)
+    const [editWindow, tglEditWindow] = useState(false)
+    const [addWindow, tglAddWindow] = useState(false)
     const tglList = () => tglListWindow(!listWindow)
     const tglChat = () => tglChatWindow(!chatWindow)
+    const tglEdit = () => tglAddLeadMod(!editWindow)
+    const tglAdd = () => tglAddLeadMod(!addWindow)
 
     const [tabKey, setTabKey] = useState('details');
 
 
     return loading ? <Loading/> :
-        <Fragment>
+        <div className='profile__tabs-container'>
             <Tabs id="profile__tabs" className='profile__tabs' activeKey={tabKey} onSelect={(k) => setTabKey(k)}>
                 <Tab eventKey="details" title={profileType.current + ' Details'}>
                     <div className={`agentProfile profile__main-container ${listWindow ? 'left__sidebar-open' : null} ${chatWindow ? 'chat__sidebar-open' : null}`}>
@@ -59,7 +66,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                                        }}>
                                 <div className='profile__info-container'>
                                     <ProfileInfo profile={activeProfile} settings={settings} tglChat={tglChat}
-                                                 tglList={tglList}/>
+                                                 tglList={tglList} tglEdit={tglEdit} tglAdd={tglAdd}/>
                                 </div>
                             </Resizable>
                             <div className='profile__logs-container'>
@@ -75,15 +82,19 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                     </div>
 
                 </Tab>
+                <Tab eventKey="table" title="Table View">
+                    {tabKey == 'table' && <ProfileTableView settings={settings} changeTab={setTabKey}/>}
+                </Tab>
                 <Tab eventKey="filters" title="Filters">
                     <div>Manage Filters</div>
                 </Tab>
-                <Tab eventKey="table" title="Table View" style={{marginLeft: 'auto'}}>
-                    {tabKey == 'table' && <ProfileTableView settings={settings}/>}
-                </Tab>
             </Tabs>
+            <button className='action-buttons__button add-profile__button' onClick={() => tglAdd()}>
+                <i className='fas fa-plus'></i> &nbsp;Add {profileType.current}
+            </button>
+            <AddLeadModal settings={settings} profileName={profileType.current}/>
 
-        </Fragment>
+        </div>
 }
 
 
@@ -100,4 +111,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, {...mapDispatchToProps, loadProfileDefault, loadBackUpProfile})(Profile)
+export default connect(mapStateToProps, {...mapDispatchToProps, loadProfileDefault, loadBackUpProfile, tglAddLeadMod })(Profile)

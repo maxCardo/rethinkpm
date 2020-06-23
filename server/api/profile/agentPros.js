@@ -17,12 +17,16 @@ const areaOptions = require('../../config/supportData/areas')
 
 const router = express.Router();
 
+router.use(auth)
+
 // @route: GET /api/profile/agentPros;
 // @desc: Get single profile when loading profile screen (agentPros) 
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
         const record = await Agent.findOne().populate('notes.user, office')
+        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
+        record.notes = notesPopulated
         res.status(200).send(record);
     } catch (error) {
         console.error(error);
@@ -43,6 +47,38 @@ router.put("/:id", async (req, res) => {
         //var result = await agent.save();
         res.status(200).send(agent);
     } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: POST /api/profile/agentPros/addLead;
+// @desc: Add an Agent entry from ui
+// @ access: Public * ToDo: update to make private
+router.post("/addLead",auth, async (req, res) => {
+    try {
+        const {firstName, lastName, office, phoneNumbers, email, status } = req.body
+        const getOffice = await Office.findOne({officeId: office })
+        const agentObj = {
+            firstName,
+            lastName,
+            fullName: `${firstName} ${lastName}`,
+            officeId : office,
+            office: getOffice._id,
+            phoneNumbers,
+            email,
+            status,
+        }
+        const agent = new Agent(agentObj);
+        const newNote = {
+            content:'New user manualy created.',
+            user: req.user,
+            type: 'log'
+        }
+        agent.notes.push(newNote)
+        await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err);
         res.status(500).send(err);
     }
 });
@@ -213,11 +249,19 @@ router.post('/filter', async (req, res) => {
         } else {
             record = await Agent.find(queryObj).populate('notes.user, office').limit(PAGESIZE + 1)
         }
+        
         let hasMore = false;
         if (record.length > PAGESIZE) {
             hasMore = true;
             record.pop()
         }
+
+        record = await Promise.all(record.map(async (agent) => {
+          const notesPopulated = await  Note.populate(agent.notes, {path: 'user', select: 'name'})
+          agent.notes = notesPopulated
+
+          return agent
+        }))
 
         res.status(200).send({ record, filters, hasMore });
 
@@ -226,6 +270,14 @@ router.post('/filter', async (req, res) => {
         res.status(400).send('server error')
     }
 });
+
+function populateNotes(doc) {
+  return new Promise((res, reject) => {
+    Note.populate(doc.notes, {path: 'user'}, function (err, doc) {
+      res(doc)
+    })
+  })
+}
 
 function convertFiltersToQuery(filters) {
 

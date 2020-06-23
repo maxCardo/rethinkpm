@@ -44,7 +44,6 @@ const AddPhoneModal = ({profile: {_id, profileType}, addPhoneNumSubmit, tglAddPh
     const validate = (e) => {
         var validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         setValid(!!e.target.value.match(validPhone))
-
     }
 
 
@@ -69,7 +68,8 @@ const AddPhoneModal = ({profile: {_id, profileType}, addPhoneNumSubmit, tglAddPh
                     <Form.Group className="addPhoneGroup">
                         <Form.Group>
                             <Form.Label>Number:</Form.Label>
-                            <Form.Control type="text" name='number'
+                            <Form.Control type="text"
+                                          name='number'
                                           className={valid ? 'valid' : 'invalid'}
                                           value={formData.number}
                                           onChange={(e) => {

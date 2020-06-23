@@ -18,22 +18,32 @@ export class TabbedTableView extends Component {
         </div>
         <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
           <Tabs>
-            {this.props.states.map(({label, key}, index) => (
-              <Tab key={key} eventKey={key} title={`Status ${index+1}: ${label}`}>
-                <div className='section'>
-                  <h2 className='sectionTitle'>Status {index+1}: {label}</h2>
-                  <Table
-                    pageSize={10}
-                    sorting={true}
-                    filter={this.state.filterString}
-                    fontSize={12}
-                    className="agentInfoTable"
-                    {...this.props}
-                    data={this.props.data[key] ? this.props.data[key] : []}
-                  />
-                </div>
-              </Tab>
-            ))}
+            {this.props.states.map(({label, key}, index) => {
+              let data = []
+              if(key === '*') {
+                for(const status in this.props.data) {
+                  data = data.concat(this.props.data[status])
+                }
+              } else if(this.props.data[key]) {
+                data = this.props.data[key]
+              }
+              return (
+                <Tab key={key} eventKey={key} title={`Current Selected: ${label}`}>
+                  <div className='section'>
+                    <h2 className='sectionTitle'>Status {index+1}: {label}</h2>
+                    <Table
+                      pageSize={10}
+                      sorting={true}
+                      filter={this.state.filterString}
+                      fontSize={12}
+                      className="agentInfoTable"
+                      {...this.props}
+                      data={data}
+                    />
+                  </div>
+                </Tab>
+              )
+            })}
           </Tabs>
         </div>
       </div>
