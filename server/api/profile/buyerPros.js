@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth')
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const FilterModel = require('../../db/models/sales/filters')
 const AudienceModel = require('../../db/models/sales/audience')
+const Note = require('../../db/models/common/Note')
 
 
 //filter options: refactor to get these from api
@@ -14,6 +15,7 @@ const router = express.Router();
 
 const model = BuyerPros
 
+router.use(auth)
 
 
 // @route: POST /api/profile/buyerPros;
@@ -72,6 +74,8 @@ router.post("/addLead",auth, async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const record = await model.findOne()
+        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
+        record.notes = notesPopulated
         res.status(200).send(record);
     } catch (error) {
         console.error(error);
@@ -260,6 +264,13 @@ router.post('/filter', async (req, res) => {
             hasMore = true;
             record.pop()
         }
+
+        record = await Promise.all(record.map(async (buyer) => {
+          const notesPopulated = await  Note.populate(buyer.notes, {path: 'user', select: 'name'})
+          buyer.notes = notesPopulated
+
+          return buyer
+        }))
 
         res.status(200).send({ record, filters, hasMore });
 
