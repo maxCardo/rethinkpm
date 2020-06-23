@@ -540,7 +540,7 @@
 }
 .add-profile__button {
   top: 6px;
-  right: 80px;
+  right: 5px;
   height: 20px;
   width: auto;
   font-size: 10px;
@@ -928,3 +928,6 @@
   margin: 10px 30px;
 }
 
+.container-b {
+  background: #f2f2f2;
+}
