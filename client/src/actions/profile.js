@@ -20,7 +20,12 @@ import {
     STOP_LOAD_PROFILE_LIST_AND_TABLE,
     SET_PROFILE_TABLE_VIEW,
     RESET_PROFILE_INFO,
-    UPDATE_ACTIVE_PROFILE_CHAT, ALERT_SUCCESS, REMOVE_ALERT, ALERT_FAILURE, TOGGLE_ADD_LEAD
+    UPDATE_ACTIVE_PROFILE_CHAT, 
+    ALERT_SUCCESS, 
+    REMOVE_ALERT, 
+    ALERT_FAILURE, 
+    TOGGLE_ADD_LEAD,
+    UPDATE_PROFILE
 
 } from './type';
 import { Next } from 'react-bootstrap/PageItem';
@@ -282,6 +287,10 @@ export const addPhoneNumSubmit = (formData, id, profileType) => async dispatch =
                 payload: data,
             });
             dispatch({
+              type: UPDATE_PROFILE,
+              payload: data
+            })
+            dispatch({
                 type: ALERT_SUCCESS,
                 payload: {
                     heading: 'Phone number added',
@@ -305,6 +314,7 @@ export const addPhoneNumSubmit = (formData, id, profileType) => async dispatch =
 export const updatePhone = (formData, id, profileType) => (dispatch) => {
     axios.put(`/api/profile/${profileType}/editPhone/${id}`, formData, config)
         .then((res) => {
+            const data = { ...res.data, profileType }
             dispatch({
                 type: ALERT_SUCCESS,
                 payload: {
@@ -312,6 +322,10 @@ export const updatePhone = (formData, id, profileType) => (dispatch) => {
                     msg: 'Successfully updated primary phone record'
                 }
             });
+            dispatch({
+              type: UPDATE_PROFILE,
+              payload: data
+            })
         })
         .catch(err => {
             dispatch({
