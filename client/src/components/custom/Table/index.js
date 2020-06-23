@@ -70,6 +70,7 @@ export class Table extends Component {
       }
       return header;
     })
+
     let sortedData = state.sortedData.length && Table.compareArrays(state.rawData, props.data) ? state.sortedData.slice() : props.data.slice();
 
     let newSortDirections = state.sortDirections.slice()
@@ -96,9 +97,10 @@ export class Table extends Component {
       return {
         headers, 
         data: sortedData,
+        sortedData: sortedData,
         paginatedData: newPaginatedData,
         sortDirections: newSortDirections,
-        rawData: props.data
+        rawData: props.data.slice()
       };
     } 
     const newFilterString = props.filter ? props.filter : ''
@@ -112,7 +114,7 @@ export class Table extends Component {
       actualFilterString: newFilterString,
       headers: headers,
       sortDirections: newSortDirections,
-      rawData: props.data
+      rawData: props.data.slice()
     }
   }
 
