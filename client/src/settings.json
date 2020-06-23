@@ -536,7 +536,18 @@
             "accessor": "phoneNumbers",
             "label": "Phone",
             "mapper": "phoneArray"
+          },
+          {
+            "accessor": "lastContact",
+            "label": "Last Contact",
+            "mapper": "date"
+          },
+          {
+            "accessor": "createDate",
+            "label": "Create Date",
+            "mapper": "date"
           }
+
         ]
       }
     }
