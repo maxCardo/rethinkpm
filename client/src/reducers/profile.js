@@ -3,6 +3,7 @@ import {
     PROFILE_ERROR,
     TOGGLE_ADD_PHONE,
     TOGGLE_ADD_EMAIL,
+    TOGGLE_ADD_LEAD,
     SET_PROFILE_LIST,
     ADD_DATA_PROFILE_LIST,
     CLEAR_PROFILE_ERROR,
@@ -19,7 +20,11 @@ import {
     UPDATE_ACTIVE_PROFILE_CHAT,
     START_LOADING_PROFILE_CHAT,
     START_LOADING_PROFILE,
-    RESET_PROFILE_INFO
+    RESET_PROFILE_INFO,
+    LOAD_PROFILE_TABLE_VIEW,
+    SET_PROFILE_TABLE_VIEW,
+    LOAD_PROFILE_LIST_AND_TABLE,
+    STOP_LOAD_PROFILE_LIST_AND_TABLE,
 } from '../actions/type';
 
 const initialState = {
@@ -50,11 +55,30 @@ export default function (state = initialState, action) {
             profileList: state.profileList,
             filterOptions: state.filterOptions,
             activeFilter:state.activeFilter,
+            isFiltered: state.isFiltered
           };
         case START_LOADING_PROFILE:
           return {
             ...state,
             loading: true
+          }
+          case LOAD_PROFILE_LIST_AND_TABLE:
+          return {
+            ...state,
+            profileList: {
+                ...state.profileList,
+                loadingTableView: true,
+                loading: true
+            },
+          }
+        case STOP_LOAD_PROFILE_LIST_AND_TABLE:
+          return {
+            ...state,
+            profileList: {
+                ...state.profileList,
+                loadingTableView: false,
+                loading: false
+            },
           }
         case SET_ACTIVE_PROFILE:
             return {
@@ -76,6 +100,23 @@ export default function (state = initialState, action) {
                 profileList: {
                     list: payload,
                     loading: false
+                },
+            }
+        case LOAD_PROFILE_TABLE_VIEW:
+            return {
+                ...state,
+                profileList: {
+                    ...state.profileList,
+                    loadingTableView: true
+                },
+                activeFilter:[]
+            }
+        case SET_PROFILE_TABLE_VIEW:
+            return {
+                ...state,
+                profileList: {
+                    list: payload,
+                    loadingTableView: false
                 },
             }
         case SET_HAS_MORE_DATA:
@@ -121,6 +162,11 @@ export default function (state = initialState, action) {
                 ...state,
                 showAddEmailMod: payload,
             };
+        case TOGGLE_ADD_LEAD:
+            return {
+                ...state,
+                showAddLeadMod: payload,
+            };
         case PROFILE_FILTER_OPTIONS:
             return {
                 ...state,
@@ -132,7 +178,8 @@ export default function (state = initialState, action) {
         case SET_FILTER:
             return {
                 ...state,
-                activeFilter: payload
+                activeFilter: payload.activeFilter,
+                isFiltered: payload.isFiltered
             };
         case SET_SAVED_FILTERS:
             return {

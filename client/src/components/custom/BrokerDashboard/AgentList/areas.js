@@ -1,4 +1,4 @@
-const areas = [
+export const areas = [
   {
       label: "Adamsburg",
       value: "Adamsburg"

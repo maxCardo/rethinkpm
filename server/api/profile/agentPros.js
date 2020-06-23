@@ -17,12 +17,16 @@ const areaOptions = require('../../config/supportData/areas')
 
 const router = express.Router();
 
+router.use(auth)
+
 // @route: GET /api/profile/agentPros;
 // @desc: Get single profile when loading profile screen (agentPros) 
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
         const record = await Agent.findOne().populate('notes.user, office')
+        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
+        record.notes = notesPopulated
         res.status(200).send(record);
     } catch (error) {
         console.error(error);
@@ -43,6 +47,38 @@ router.put("/:id", async (req, res) => {
         //var result = await agent.save();
         res.status(200).send(agent);
     } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// @route: POST /api/profile/agentPros/addLead;
+// @desc: Add an Agent entry from ui
+// @ access: Public * ToDo: update to make private
+router.post("/addLead",auth, async (req, res) => {
+    try {
+        const {firstName, lastName, office, phoneNumbers, email, status } = req.body
+        const getOffice = await Office.findOne({officeId: office })
+        const agentObj = {
+            firstName,
+            lastName,
+            fullName: `${firstName} ${lastName}`,
+            officeId : office,
+            office: getOffice._id,
+            phoneNumbers,
+            email,
+            status,
+        }
+        const agent = new Agent(agentObj);
+        const newNote = {
+            content:'New user manualy created.',
+            user: req.user,
+            type: 'log'
+        }
+        agent.notes.push(newNote)
+        await agent.save();
+        res.status(200).send(agent);
+    } catch (err) {
+        console.error(err);
         res.status(500).send(err);
     }
 });
@@ -176,40 +212,56 @@ router.put("/editStatus/:id", async (req, res) => {
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
 // @ access: Public * ToDo: update to make private
-router.post('/filter/:page?', async (req, res) => {
+router.post('/filter', async (req, res) => {
     try {
-        const PAGESIZE = 500;
-        const data = req.body
-        const filterFields = Object.keys(req.body);
-        const filters = []
-
-        //create filter object
-        filterFields.map((x) => {
-            data[x].type.value !== 'noFilter' && filters.push({
-                field: data[x].accessor,
-                subField: data[x].subAccessor,
-                filterType: data[x].type.value,
-                operator: data[x].type.operator,
-                value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
-                secondValue: data[x].secondValue ? data[x].secondValue : ''
-            })
-        })
+        const PAGESIZE = req.body.pageSize;
+        const data = req.body.filters
+        let filters = []
+        if(data.length) {
+          filters = data
+        } else {
+          const filterFields = Object.keys(req.body.filters);
+          //create filter object
+          filterFields.map((x) => {
+              data[x].type.value !== 'noFilter' && filters.push({
+                  field: data[x].accessor,
+                  subField: data[x].subAccessor,
+                  filterType: data[x].type.value,
+                  operator: data[x].type.operator,
+                  value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
+                  secondValue: data[x].secondValue ? data[x].secondValue : ''
+              })
+          })
+        }
+        
 
         //create string query 
         const queryObj = convertFiltersToQuery(filters)
 
         //query DB
         let record;
-        if (req.params.page) {
-            record = await Agent.find(queryObj).populate('notes.user, office').skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
+        if (req.body.page) {
+            if(PAGESIZE) {
+              record = await Agent.find(queryObj).populate('notes.user, office').skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
+            } else {
+              record = await Agent.find(queryObj).populate('notes.user, office')
+            }
         } else {
             record = await Agent.find(queryObj).populate('notes.user, office').limit(PAGESIZE + 1)
         }
+        
         let hasMore = false;
         if (record.length > PAGESIZE) {
             hasMore = true;
             record.pop()
         }
+
+        record = await Promise.all(record.map(async (agent) => {
+          const notesPopulated = await  Note.populate(agent.notes, {path: 'user', select: 'name'})
+          agent.notes = notesPopulated
+
+          return agent
+        }))
 
         res.status(200).send({ record, filters, hasMore });
 
@@ -218,6 +270,14 @@ router.post('/filter/:page?', async (req, res) => {
         res.status(400).send('server error')
     }
 });
+
+function populateNotes(doc) {
+  return new Promise((res, reject) => {
+    Note.populate(doc.notes, {path: 'user'}, function (err, doc) {
+      res(doc)
+    })
+  })
+}
 
 function convertFiltersToQuery(filters) {
 
@@ -292,7 +352,7 @@ router.get('/pastSales/:agentId', async (req, res) => {
 router.post('/addNote/:id', auth, async (req, res) => {
   try {
     id = req.params.id
-    const record = await Agent.findById(id).populate('notes.user')
+    const record = await Agent.findById(id)
     const newNote = {
       ...req.body,
       user: req.user,

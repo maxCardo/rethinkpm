@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {agentStatus} from "../../../util/statusSchemas";
 import { SET_AGENT_OPPORTUNITIES, SET_ACTIVE_PROFILE } from '../../../actions/type'
 import { withRouter } from 'react-router-dom';
-import Dashboard from '../dashboard/Dashboard';
+import Dashboard from '../TableView/TableView';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 
 

@@ -21,7 +21,7 @@
             { "value": "['agent']", "label": "Agent"},
             { "value": "['notInterested']", "label": "Not Interested"}
           ],
-          "selected": {"value": "all", "label": "All"},
+          "selected": {"value": "['prospect','pending','agent']", "label": "Active"},
           "selectedQuery": "['prospect', 'pending','agent']"
         },
         "profileInfo": [
@@ -38,8 +38,17 @@
             "editable": "input"
           },
           {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
             "name": "Office",
             "accessor": "office.name",
+            "key":"office",
+            "datatype": "select",
+            "dataOptions": "custom",
             "col": 1
           },
           {
@@ -59,48 +68,48 @@
             "name": "Sales Volume",
             "accessor": "sales",
             "col": 2,
-            "formatter": "formatMoney"
+            "formatter": "formatMoney",
+            "derived": "true"
           },
           {
             "name": "Top Neighborhoods",
-            "accessor": "collection",
-            "datatype": "areas",
+            "accessor": "areas",
+            "datatype": "collection",
             "col": 2,
-            "formatter": "formatLabels"
+            "formatter": "formatLabels",
+            "derived": true
           },
           {
             "name": "Top Zip Codes",
-            "accessor": "collection",
-            "datatype": "zipCodes",
+            "accessor":"zipCodes" ,
+            "datatype": "collection",
             "col": 2,
-            "formatter": "formatLabels"
+            "formatter": "formatLabels",
+            "derived": true
           },
           {
             "name": "Target Offer",
             "accessor": "targetOffer",
-            "col": 2
-          },
-          {
-            "name": "Status",
-            "accessor": "status",
-            "col": 3,
-            "editable": "select"
+            "col": 2,
+            "derived": true
           },
           {
             "name": "Lead Owner",
             "accessor": "leadOwner",
-            "col": 3
-
+            "col": 3,
+            "derived": true
           },
           {
             "name": "Reason for loss",
             "accessor": "reasonForLoss",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Last Contact",
             "accessor": "lastContact",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           }
         ],
         "screens": [
@@ -114,7 +123,31 @@
           "leadOwner": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Lead Owner", "dataType":"string", "accessor":"leadOwner", "subAccessor":""},
           "status": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Status", "dataType":"array", "accessor":"status", "subAccessor":""},
           "office": {"type":{ "label": "Don't filter", "value": "noFilter"}, "value":"", "name":"Office", "dataType":"array", "accessor":"officeId", "subAccessor":"" }
-        }
+        },
+        "tableHeaders": [
+          {
+            "accessor": "fullName",
+            "label": "Name"
+          },
+          {
+            "accessor": "email",
+            "label": "Email",
+            "mapper": "emailArray"
+          },
+          {
+            "accessor": "phoneNumbers",
+            "label": "Phone",
+            "mapper": "phoneArray"
+          },
+          {
+            "accessor": "officeId",
+            "label": "Office ID"
+          },
+          {
+            "accessor": "sales",
+            "label": "Revenue"
+          }
+        ]
       },
       "rentPros": {
         "profileType": "rentPros",
@@ -175,6 +208,12 @@
             "editable": "input"
           },
           {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
             "name": "Phone",
             "accessor": "phoneNumbers",
             "col": 1,
@@ -190,57 +229,66 @@
           {
             "name": "Property",
             "accessor": "campaign",
-            "col": 2
+            "col": 2,
+            "datatype": "select"
           },
           {
             "name": "Desired Neighborhoods",
-            "accessor": "targetAreas",
-            "datatype": "targetAreas",
+            "accessor": "targetArea",
+            "datatype": "collection",
             "col": 2,
             "formatter": ""
           },
           {
             "name": "Desired Zip Codes",
-            "accessor": "targetZipCodes",
-            "datatype": "targetZipCodes",
+            "accessor": "targetZip",
+            "datatype":"collection", 
             "col": 2,
             "formatter": ""
           },
           {
             "name": "Pets",
-            "accessor": "pets",
-            "col": 2
+            "accessor": "pets.petType",
+            "key": "pets",
+            "col": 2,
+            "datatype":"select",
+            "dataOptions":[
+              {"value":"no", "label":"No Pets"},
+              {"value":"dog", "label":"Dog"},
+              {"value": "cat", "label": "Cat"},
+              {"value": "other", "label": "Other"}
+            ]
           },
           {
             "name": "Other Preferences",
             "accessor": "otherPref",
-            "col": 2
-          },
-          {
-            "name": "Status",
-            "accessor": "status",
-            "col": 3,
-            "editable": "select"
+            "col": 2,
+            "derived": "true"
+
           },
           {
             "name": "Lead Owner",
             "accessor": "leadOwner",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Lead Source",
             "accessor": "leadSource",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Reason for loss",
             "accessor": "reasonForLoss",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Last Contact",
             "accessor": "lastContact",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           }
         ],
         "screens": [
@@ -281,7 +329,23 @@
             "accessor": "status",
             "subAccessor": ""
           }
-        }
+        },
+        "tableHeaders": [
+          {
+            "accessor": "fullName",
+            "label": "Name"
+          },
+          {
+            "accessor": "email",
+            "label": "Email",
+            "mapper": "emailArray"
+          },
+          {
+            "accessor": "phoneNumbers",
+            "label": "Phone",
+            "mapper": "phoneArray"
+          }
+        ]
       },
       "buyerPros": {
         "profileType": "buyerPros",
@@ -342,6 +406,12 @@
             "editable": "input"
           },
           {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
             "name": "Phone",
             "accessor": "phoneNumbers",
             "col": 1,
@@ -357,19 +427,24 @@
           {
             "name": "Buyer Type",
             "accessor": "buyerType",
-            "col": 2
+            "col": 2,
+            "datatype": "select",
+            "dataOptions": [
+              {"value": "owner", "label": "Home Owner"},
+              {"value": "investor", "label": "Investor"}
+            ]
           },
           {
             "name": "Desired Neighborhoods",
-            "accessor": "targetAreas",
-            "datatype": "targetAreas",
+            "accessor": "targetArea",
+            "datatype": "collection",
             "col": 2,
-            "formatter": ""
+            "formatter": "formatLabels"
           },
           {
             "name": "Desired Zip Codes",
-            "accessor": "targetZipCodes",
-            "datatype": "targetZipCodes",
+            "accessor": "targetZip",
+            "datatype": "collection",
             "col": 2,
             "formatter": ""
           },
@@ -381,39 +456,43 @@
           {
             "name": "Pre Approved",
             "accessor": "preApproved.status",
-            "col": 2
+            "key":"preApproved",
+            "col": 2,
+            "datatype": "select",
+            "dataOptions": [
+              {"value": true, "label": "Yes"},
+              {"value": false, "label": "No"}
+            ]
           },
           {
             "name": "Other Preferences",
             "accessor": "otherPref",
-            "col": 2
-          },
-
-          {
-            "name": "Status",
-            "accessor": "status",
-            "col": 3,
-            "editable": "select"
+            "col": 2,
+            "derived": "true"
           },
           {
             "name": "Lead Owner",
             "accessor": "leadOwner",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Lead Source",
             "accessor": "leadSource",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Reason for loss",
             "accessor": "reasonForLoss",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           },
           {
             "name": "Last Contact",
             "accessor": "lastContact",
-            "col": 3
+            "col": 3,
+            "derived": "true"
           }
         ],
         "screens": [
@@ -442,7 +521,23 @@
             "accessor": "status",
             "subAccessor": ""
           }
-        }
+        },
+        "tableHeaders": [
+          {
+            "accessor": "fullName",
+            "label": "Name"
+          },
+          {
+            "accessor": "email",
+            "label": "Email",
+            "mapper": "emailArray"
+          },
+          {
+            "accessor": "phoneNumbers",
+            "label": "Phone",
+            "mapper": "phoneArray"
+          }
+        ]
       }
     }
   }

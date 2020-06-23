@@ -25,11 +25,13 @@ export class ProfileIcon extends Component {
       }
       const iconSize = this.props.size ? this.props.size : 40
 
+      const getColor = Math.round((colorNumber - 64 ) / 6);
+
       return (
         <div 
           className='profile-icon__container' 
           style={{
-            backgroundColor: '#343a40',
+            background: colors[getColor],
             height: iconSize,
             width: iconSize,
             borderRadius: iconSize/2
