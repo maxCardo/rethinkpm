@@ -357,7 +357,7 @@
                                       width: 160px;
                                     "
                                   >
-                                    <span></span>
+                                    <span>120</span>
                                   </td>
                                   <td
                                     style="
