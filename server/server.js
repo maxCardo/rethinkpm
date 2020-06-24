@@ -8,7 +8,7 @@ const dbConnect = require('./db/db');
 //DB Models
 const RentPros = require('./db/models/prospects/RentLeads/RentLeadPros');
 const Chat = require('./db/models/comms/Chat')
-const Agent = require('./db/models/sales/agent')
+const Agent = require('./db/models/prospects/agentPros/agent')
 const { postSlack } = require('./3ps/slack');
 //ToDo: change to call to DB once property table is created
 const { propertyNum } = require('./3ps/calandly');
@@ -35,7 +35,7 @@ app.use('/api/users', require('./api/users'));
 app.use('/api/tasks', require('./api/tasks'));
 app.use('/api/3ps',(req,res,next) => {req.io = {io:io}, next()}, require('./api/3ps'));
 app.use('/api/sales', require('./api/salesLeads'));
-app.use('/api/agent_lead', require('./api/agentLead'));
+//app.use('/api/agent_lead', require('./api/agentLead'));
 app.use('/api/rent_lead', require('./api/rentLead'));
 app.use('/api/comms', require('./api/comms'));
 app.use('/api/profile', require('./api/profile/profile'));

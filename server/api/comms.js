@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer')
 const { sendEmail } = require('../3ps/email')
-const Agent = require('../db/models/sales/agent')
+const Agent = require('../db/models/prospects/agentPros/agent')
 const Chat = require('../db/models/comms/Chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
 const {outgoingSMS} = require('../3ps/sms')

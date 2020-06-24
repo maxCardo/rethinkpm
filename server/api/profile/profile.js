@@ -3,7 +3,7 @@ const auth = require('../../middleware/auth')
 
 //db models
 const RentLeadInq = require('../../db/models/prospects/RentLeads/RentLeadInq');
-const Agent = require('../../db/models/sales/agent')
+const Agent = require('../../db/models/prospects/agentPros/agent')
 const singleFamilySalesModel = require('../../db/models/sales/singleFamilySales')
 const multiSalesModel = require('../../db/models/sales/multiSales')
 const Office = require('../../db/models/sales/office')

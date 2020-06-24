@@ -2,9 +2,9 @@ const express = require('express');
 const auth = require('../../middleware/auth')
 
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
-const FilterModel = require('../../db/models/sales/filters')
-const AudienceModel = require('../../db/models/sales/audience')
-const Note = require('../../db/models/common/Note')
+const FilterModel = require('../../db/models/prospects/filters')
+const AudienceModel = require('../../db/models/prospects/audience')
+
 
 
 //filter options: refactor to get these from api
@@ -74,8 +74,6 @@ router.post("/addLead",auth, async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const record = await model.findOne()
-        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
-        record.notes = notesPopulated
         res.status(200).send(record);
     } catch (error) {
         console.error(error);
