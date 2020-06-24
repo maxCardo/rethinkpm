@@ -51,7 +51,7 @@ const buyerProsSchema = new mongoose.Schema({
     otherPref:Array,
     status: {
         type: String,
-        default: 'prospect'
+        default: 'new'
     }, 
     reasonForLoss: String,
     leadOwner: String,

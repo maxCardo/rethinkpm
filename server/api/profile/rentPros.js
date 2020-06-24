@@ -100,7 +100,6 @@ router.post("/addLead",auth, async (req, res) => {
         await pros.save()
         await inq.save()
         const clone = { ...pros._doc, ...inq._doc }
-        console.log(clone)
         res.status(200).send(clone);
     } catch (err) {
         console.error(err);
