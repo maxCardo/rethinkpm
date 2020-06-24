@@ -140,7 +140,7 @@ router.get('/profile/chat/:ownerId', async (req, res) => {
 //Note: migrated call to server page in order to include socket call
 router.post('/profile/chat/:ownerId', async (req, res) => {
     const {activeProfile:{profileType, campaign = '', fullName, phoneNumbers}, message} = req.body
-    let phone = (phoneNumbers.length && phoneNumbers.find((phone) => phone.isPrimary)) ? phoneNumbers.find((phone) => phone.isPrimary).number : '';
+    let phone = (phoneNumbers.length && phoneNumbers.find((phone) => phone.isPrimary))
     try {
         let chat = await Chat.findOne({ owner: req.params.ownerId })
         if (!chat) {
@@ -152,7 +152,7 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
                 subTitle: campaign,
                 botOn: false,
                 unread: true,
-                clientNum: phone,
+                clientNum: phone.number,
                 routingNum: activeNum.number && activeNum.number,
                 messages: [],
             })

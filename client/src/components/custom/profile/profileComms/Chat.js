@@ -6,7 +6,7 @@ import {getActiveChat, sendChat} from '../../../../actions/profile'
 
 
 
-const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat, sendChat}) => {
+const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat, sendChat, profileType}) => {
     const chatRef = useRef()
     let phone
     useEffect(() => {
@@ -14,6 +14,7 @@ const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat, sendCha
     }, [activeProfile])
 
     const onSend = (data) => {
+      activeProfile.profileType = profileType
         const message = {
             sender:'Admin', 
             content: data,
