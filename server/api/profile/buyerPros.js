@@ -105,11 +105,7 @@ router.put("/addPhone/:id", async (req, res) => {
             buyer.phoneNumbers.length ? newPhoneNumbers = buyer.phoneNumbers : isPrimary = true
             newPhoneNumbers.push({ number, isPrimary, okToText });
         }
-
-        await buyer.set({
-            ...buyer,
-            phoneNumbers: newPhoneNumbers
-        })
+        buyer.phoneNumbers = newPhoneNumbers
         await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
@@ -126,10 +122,7 @@ router.put("/editPhone/:id", async (req, res) => {
         if (!req.body.phoneNumbers.length) { throw "can not edit email" }
         //ToDo: validte number and add numType to phone record
         const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            ...req.body
-        })
+        buyer.phoneNumbers = req.body.phoneNumbers
         await buyer.save();
         res.status(200).send({buyer});
     } catch (err) {
@@ -159,10 +152,7 @@ router.put("/addEmail/:id", async (req, res) => {
             newEmails.push({address, isPrimary});
         }
 
-        await buyer.set({
-            ...buyer,
-            email: newEmails
-        })  
+        buyer.email = newEmails
         await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
@@ -179,10 +169,7 @@ router.put("/editEmail/:id", async (req, res) => {
     try {
         if (!req.body.email.length) { throw "can not edit email"}
         const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            email: req.body.email
-        })
+        buyer.email = req.body.email
         await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
@@ -196,11 +183,7 @@ router.put("/editEmail/:id", async (req, res) => {
 router.put("/editStatus/:id", async (req, res) => {
     try {
         const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            status: req.body.status
-        })
-
+        buyer.status = req.body.status
         await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
