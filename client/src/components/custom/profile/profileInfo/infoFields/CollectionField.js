@@ -4,7 +4,7 @@ import {accessData} from '../../../../../util/commonFunctions'
 
 
 const CollectionField = ({field, data}) => {
-  const value = accessData(data, field.datatype)
+    const value = accessData(data, field.accessor)
     const theFields =  (value && value.length) ? value.sort((a, b) => {
         return b.value - a.value;
     }).slice(0, 3) : 'no entries';

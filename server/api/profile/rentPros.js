@@ -1,13 +1,21 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
-
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
 const FilterModel = require('../../db/models/sales/filters')
 const AudienceModel = require('../../db/models/sales/audience')
+const Note = require('../../db/models/common/Note')
+
+
+//filter options: refactor to get these from api
+const zipcodeOptions = require('../../config/supportData/zipcodes')
+const areaOptions = require('../../config/supportData/areas')
+const activeListings = require('../../config/supportData/activeLisitng')
 
 
 const router = express.Router();
+
+router.use(auth)
 
 const model = RentInq
 const prosModel = RentPros
@@ -66,16 +74,50 @@ router.post('/', async (req, res) => {
     }
 });
 
+// @route: POST /api/profile/rentPros/addLead;
+// @desc: Add a Renter record
+// @ access: Public * ToDo: update to make private
+router.post("/addLead",auth, async (req, res) => {
+    try {
+        let prosObj = req.body
+        const {firstName, lastName, pets, campaign, status,} = req.body
+        prosObj.fullName = `${firstName} ${lastName}`
+        prosObj.pets = {petType:pets}
+        const pros = await new prosModel(prosObj);
+        
+        let inqObj = {
+            prospect: pros._id,
+            campaign,
+            status
+        }
+        const inq = await new model(inqObj)
+        const newNote = {
+            content: 'New inquiry manualy created.',
+            user: req.user,
+            type: 'log'
+        }
+        await inq.notes.push(newNote)
+        await pros.save()
+        await inq.save()
+        const clone = { ...pros._doc, ...inq._doc }
+        res.status(200).send(clone);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
 
 // @route: GET /api/profile/rentPros;
 // @desc: Get single profile when loading profile screen
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
-        const inq = await model.findOne().populate('prospect notes.user')
-        const clone = { ...inq.prospect._doc, ...inq._doc }
+        const record = await model.findOne().populate('prospect notes.user')
+        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
+        record.notes = notesPopulated
+        const clone = { ...record.prospect._doc, ...record._doc }
         const test = {
-            inq,
+            record,
             clone
         }
         delete clone.prospect
@@ -133,13 +175,9 @@ router.put("/addPhone/:id", async (req, res) => {
             newPhoneNumbers.push({ number, isPrimary, okToText });
         }
 
-        await rentPro.set({
-            ...rentPro,
-            phoneNumbers: newPhoneNumbers
-        })
+        rentPro.phoneNumbers = newPhoneNumbers
         await rentPro.save();
         const clone = { ...rentPro._doc, ...inq._doc }
-
         res.status(200).send(clone);
     } catch (err) {
         console.error(err)
@@ -156,11 +194,7 @@ router.put("/editPhone/:id", async (req, res) => {
         //ToDo: validte number and add numType to phone record
         const renter = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(renter.prospect);
-        await rentPro.set({
-            ...rentPro,
-            phoneNumbers: req.body.phoneNumbers
-        })
-
+        rentPro.phoneNumbers = req.body.phoneNumbers
         await rentPro.save();
         res.status(200).send(rentPro);
     } catch (err) {
@@ -191,10 +225,7 @@ router.put("/addEmail/:id", async (req, res) => {
             newEmails.push({ address, isPrimary });
         }
 
-        await rentPro.set({
-            ...inq,
-            email: newEmails
-        })
+        rentPro.email = newEmails
         await rentPro.save();
         const clone = { ...rentPro._doc, ...inq._doc }
         res.status(200).send(clone);
@@ -213,11 +244,7 @@ router.put("/editEmail/:id", async (req, res) => {
         const renter = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(renter.prospect);
 
-        rentPro.set({
-            ...rentPro,
-            email: req.body.email
-        })
-
+        rentPro.email = req.body.emails
         await rentPro.save();
         res.status(200).send(rentPro);
     } catch (err) {
@@ -232,10 +259,7 @@ router.put("/editStatus/:id", async (req, res) => {
     try {
 
         const rentLead = await model.findById(req.params.id)
-        await rentLead.set({
-            ...rentLead,
-            status: req.body.status
-        })
+        rentLead.status = req.body.status
         await rentLead.save();
         res.status(200).send(rentLead);
     } catch (err) {
@@ -246,24 +270,27 @@ router.put("/editStatus/:id", async (req, res) => {
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
 // @ access: Public * ToDo: update to make private
-router.post('/filter/:page?', async (req, res) => {  
+router.post('/filter', async (req, res) => {  
     try {
-        const PAGESIZE = 500;
-        const data = req.body
-        const filterFields = Object.keys(req.body);
+      const PAGESIZE = req.body.pageSize;
+        const data =  req.body.filters
+        const filterFields = Object.keys( req.body.filters);
         const filters = []
-
-        //create filter object
-        filterFields.map((x) => {
-            data[x].type.value !== 'noFilter' && filters.push({
-                field: data[x].accessor,
-                subField: data[x].subAccessor,
-                filterType: data[x].type.value,
-                operator: data[x].type.operator,
-                value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
-                secondValue: data[x].secondValue ? data[x].secondValue : ''
-            })
-        })
+        if(data.length) {
+          filters = data
+        } else {
+          //create filter object
+          filterFields.map((x) => {
+              data[x].type.value !== 'noFilter' && filters.push({
+                  field: data[x].accessor,
+                  subField: data[x].subAccessor,
+                  filterType: data[x].type.value,
+                  operator: data[x].type.operator,
+                  value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
+                  secondValue: data[x].secondValue ? data[x].secondValue : ''
+              })
+          })
+        }
 
         //create string query 
         const queryObj = {}
@@ -283,7 +310,11 @@ router.post('/filter/:page?', async (req, res) => {
         //query DB
         let record;
         if (req.params.page) {
-            record = await model.find(queryObj).populate('prospect notes.user').skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
+          if(PAGESIZE) {
+            record = await model.find(queryObj).populate('prospect notes.user').skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
+          }else {
+            record = await model.find(queryObj).populate('prospect notes.user')
+          }
         } else {
             record = await model.find(queryObj).populate('prospect notes.user').limit(PAGESIZE + 1)
         }
@@ -298,6 +329,17 @@ router.post('/filter/:page?', async (req, res) => {
             delete clone.prospect
             return clone
         })
+        record.forEach((inq) => {
+          console.log(inq.notes[0])
+        } )
+
+
+        record = await Promise.all(record.map(async (inquiry) => {
+          const notesPopulated = await  Note.populate(inquiry.notes, {path: 'user', select: 'name'})
+          inquiry.notes = notesPopulated
+
+          return inquiry
+        }))
 
         res.status(200).send({ record, filters, hasMore });
 
@@ -320,6 +362,9 @@ router.get('/filterOptions', async ({ params: { query } }, res) => {
             { value: 'agent', label: 'Agent' },
             { value: 'notInterested', label: 'Not Interested' }
         ];
+        options.zip = zipcodeOptions;
+        options.area = areaOptions;
+        options.rentalListings = activeListings
         res.status(200).send(options);
     } catch (error) {
         console.error(error);

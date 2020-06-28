@@ -36,8 +36,12 @@ const buyerProsSchema = new mongoose.Schema({
             },
         },
     ],
-    targetArea: Array,
-    targetZip: Array,
+    targetArea: [{
+            name:String
+        }],
+    targetZip: [{
+        name:String
+    }],
     priceRange: Array,
     preApproved:{
         status:Boolean,
@@ -47,7 +51,7 @@ const buyerProsSchema = new mongoose.Schema({
     otherPref:Array,
     status: {
         type: String,
-        default: 'prospect'
+        default: 'new'
     }, 
     reasonForLoss: String,
     leadOwner: String,
@@ -57,6 +61,7 @@ const buyerProsSchema = new mongoose.Schema({
         default: new Date()
     },
     lastContact: Date,
+    buyerType: String,
     inqListings:[
         {
             listing: String,

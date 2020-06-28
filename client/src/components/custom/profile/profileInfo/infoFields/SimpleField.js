@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import {formatMoney, filterData, accessData} from '../../../../../util/commonFunctions'
 
@@ -6,7 +5,8 @@ import {formatMoney, filterData, accessData} from '../../../../../util/commonFun
 const SimpleField = ({field, data}) => {
     
     let fieldValue = accessData(data, field.accessor)
-
+    let value; 
+    if (fieldValue === true) { value = 'Yes' } else if (fieldValue === false){ value = 'No'} else { value = fieldValue }
     if (field.formatter === 'formatMoney') {
       fieldValue = formatMoney(fieldValue)
     }
@@ -15,11 +15,9 @@ const SimpleField = ({field, data}) => {
       fieldValue = 'n/a'
     }
 
-   
-
     return (
         <p>
-            <b>{field.name}:</b>&nbsp;{fieldValue}
+          <b>{field.name}:</b>&nbsp;{value}
         </p>
     )
 }

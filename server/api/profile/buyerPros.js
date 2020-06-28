@@ -4,11 +4,18 @@ const auth = require('../../middleware/auth')
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const FilterModel = require('../../db/models/sales/filters')
 const AudienceModel = require('../../db/models/sales/audience')
+const Note = require('../../db/models/common/Note')
+
+
+//filter options: refactor to get these from api
+const zipcodeOptions = require('../../config/supportData/zipcodes')
+const areaOptions = require('../../config/supportData/areas')
 
 const router = express.Router();
 
 const model = BuyerPros
 
+router.use(auth)
 
 
 // @route: POST /api/profile/buyerPros;
@@ -37,6 +44,29 @@ router.post('/', async (req, res) => {
     res.status(200).send('hell ya')
 })
 
+// @route: POST /api/profile/buyerPros/addLead;
+// @desc: Add a Buyer record
+// @ access: Public * ToDo: update to make private
+router.post("/addLead",auth, async (req, res) => {
+    try {
+        let recordObj = req.body
+        const { firstName, lastName, preApproved  } = req.body
+        recordObj.fullName = `${firstName} ${lastName}`
+        recordObj.preApproved =  {status: preApproved}
+        const record = new model(recordObj);
+        const newNote = {
+            content: 'New user manualy created.',
+            user: req.user,
+            type: 'log'
+        }
+        await record.notes.push(newNote)
+        await record.save();
+        res.status(200).send(record);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
 
 // @route: GET /api/profile/buyerPros;
 // @desc: Get single profile when loading profile screen
@@ -44,6 +74,8 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const record = await model.findOne()
+        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
+        record.notes = notesPopulated
         res.status(200).send(record);
     } catch (error) {
         console.error(error);
@@ -73,11 +105,7 @@ router.put("/addPhone/:id", async (req, res) => {
             buyer.phoneNumbers.length ? newPhoneNumbers = buyer.phoneNumbers : isPrimary = true
             newPhoneNumbers.push({ number, isPrimary, okToText });
         }
-
-        await buyer.set({
-            ...buyer,
-            phoneNumbers: newPhoneNumbers
-        })
+        buyer.phoneNumbers = newPhoneNumbers
         await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
@@ -94,10 +122,7 @@ router.put("/editPhone/:id", async (req, res) => {
         if (!req.body.phoneNumbers.length) { throw "can not edit email" }
         //ToDo: validte number and add numType to phone record
         const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            ...req.body
-        })
+        buyer.phoneNumbers = req.body.phoneNumbers
         await buyer.save();
         res.status(200).send({buyer});
     } catch (err) {
@@ -127,10 +152,7 @@ router.put("/addEmail/:id", async (req, res) => {
             newEmails.push({address, isPrimary});
         }
 
-        await buyer.set({
-            ...buyer,
-            email: newEmails
-        })  
+        buyer.email = newEmails
         await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
@@ -147,10 +169,7 @@ router.put("/editEmail/:id", async (req, res) => {
     try {
         if (!req.body.email.length) { throw "can not edit email"}
         const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            email: req.body.email
-        })
+        buyer.email = req.body.email
         await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
@@ -164,11 +183,7 @@ router.put("/editEmail/:id", async (req, res) => {
 router.put("/editStatus/:id", async (req, res) => {
     try {
         const buyer = await model.findById(req.params.id)
-        await buyer.set({
-            ...buyer,
-            status: req.body.status
-        })
-
+        buyer.status = req.body.status
         await buyer.save();
         res.status(200).send(buyer);
     } catch (err) {
@@ -179,24 +194,27 @@ router.put("/editStatus/:id", async (req, res) => {
 // @route: GET /api/profile/agentPros/filter;
 // @desc: Get get new profile list based on filter submited
 // @ access: Public * ToDo: update to make private
-router.post('/filter/:page?', async (req, res) => {
+router.post('/filter', async (req, res) => {
     try {
-        const PAGESIZE = 500;
-        const data = req.body
-        const filterFields = Object.keys(req.body);
+        const PAGESIZE = req.body.pageSize;
+        const data =  req.body.filters
+        const filterFields = Object.keys( req.body.filters);
         const filters = []
-
-        //create filter object
-        filterFields.map((x) => {
-            data[x].type.value !== 'noFilter' && filters.push({
-                field: data[x].accessor,
-                subField: data[x].subAccessor,
-                filterType: data[x].type.value,
-                operator: data[x].type.operator,
-                value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
-                secondValue: data[x].secondValue ? data[x].secondValue : ''
-            })
-        })
+        if(data.length) {
+          filters = data
+        } else {
+          //create filter object
+          filterFields.map((x) => {
+              data[x].type.value !== 'noFilter' && filters.push({
+                  field: data[x].accessor,
+                  subField: data[x].subAccessor,
+                  filterType: data[x].type.value,
+                  operator: data[x].type.operator,
+                  value: typeof (data[x].value) === 'string' ? data[x].value : data[x].value.map((y) => y.value),
+                  secondValue: data[x].secondValue ? data[x].secondValue : ''
+              })
+          })
+        }
 
         //create string query 
         const queryObj = {}
@@ -216,7 +234,11 @@ router.post('/filter/:page?', async (req, res) => {
         //query DB
         let record;
         if (req.params.page) {
-            record = await model.find(queryObj).skip(PAGESIZE * (+req.params.page)).limit(PAGESIZE + 1)
+          if(PAGESIZE) {
+            record = await model.find(queryObj).skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
+          } else {
+            record = await model.find(queryObj)
+          }
         } else {
             record = await model.find(queryObj).limit(PAGESIZE + 1)
         }
@@ -225,6 +247,13 @@ router.post('/filter/:page?', async (req, res) => {
             hasMore = true;
             record.pop()
         }
+
+        record = await Promise.all(record.map(async (buyer) => {
+          const notesPopulated = await  Note.populate(buyer.notes, {path: 'user', select: 'name'})
+          buyer.notes = notesPopulated
+
+          return buyer
+        }))
 
         res.status(200).send({ record, filters, hasMore });
 
@@ -247,6 +276,8 @@ router.get('/filterOptions', async ({ params: { query } }, res) => {
             { value: 'agent', label: 'Agent' },
             { value: 'notInterested', label: 'Not Interested' }
         ];
+        options.zip = zipcodeOptions;
+        options.area = areaOptions;
         res.status(200).send(options);
     } catch (error) {
         console.error(error);

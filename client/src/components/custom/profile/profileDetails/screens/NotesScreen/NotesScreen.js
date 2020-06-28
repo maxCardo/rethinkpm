@@ -1,14 +1,24 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import { Tabs, Tab } from 'react-bootstrap'
 import TableWithSearch from './TableWithSearch'
 
 
-const NotesScreen = ({profileType, activeProfile:{notes}}) => {
+const NotesScreen = ({profileType, activeProfile}) => {
 
-    var all = notes && notes.length ? notes  : []
-    var notes = notes && notes.length ? notes.filter((note) => note.type === 'note' ) : []
-    var logs = notes && notes.length ? notes.filter((note) => note.type === 'log') : []
+    const allNotes = activeProfile.notes
+
+    useEffect(() => {
+        console.log('use effect on notes fired');
+        console.log('notes:', allNotes);
+        
+    }, [activeProfile])
+
+
+
+    var all = allNotes && allNotes.length ? allNotes  : []
+    var notes = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'note' ) : []
+    var logs = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'log') : []
 
     var headers = [
         {
@@ -29,7 +39,7 @@ const NotesScreen = ({profileType, activeProfile:{notes}}) => {
     logHeaders.unshift({
         accessor: 'type',
         label: 'Type',
-        mapper: (data) => data.charAt(0).toUpperCase() + data.slice(1)
+        mapper: (data) => data ? data.charAt(0).toUpperCase() + data.slice(1) : ''
     })
 
     const onSubmit = (data) => {
