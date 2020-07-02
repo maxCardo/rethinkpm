@@ -14,12 +14,10 @@ import Register from './components/core/Register';
 import Playground from './components/core/Playground';
 import BrokerDashboard from './components/custom/BrokerDashboard/BrokerDashboard';
 import Dashboard from './components/custom/TableView/TableView';
-import Alert from './components/core/Alert';
 import ServiceList from './components/custom/service/ServiceList';
 import ServiceDetail from './components/custom/service/ServiceDetail';
 import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
-import AddProperty from './components/custom/assets/AddProperty';
 import Profile from './components/custom/profile/Profile'
 import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
@@ -73,7 +71,6 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/chat' component={ChatScreen} />
             <Route exact path='/serviceReq' component={ServiceReq} />
             <Route exact path='/serviceTicket' component={ServiceTicket} />
-            <Route exact path='/addProperty' component={AddProperty} />
             <PrivateRoute exact path='/dash' component={Dash} />
             <PrivateRoute exact path='/profile/rentPros' component={Profile} additionalProps={{ settings: routeSettings.profile.rentPros }} />
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
