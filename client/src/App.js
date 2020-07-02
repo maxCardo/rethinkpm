@@ -12,14 +12,11 @@ import Landing from './components/custom/Landing';
 import Login from './components/core/Login';
 import Register from './components/core/Register';
 import Playground from './components/core/Playground';
-import BrokerDashboard from './components/custom/BrokerDashboard/BrokerDashboard';
-import Dashboard from './components/custom/TableView/TableView';
 import ServiceList from './components/custom/service/ServiceList';
 import ServiceDetail from './components/custom/service/ServiceDetail';
 import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
 import Profile from './components/custom/profile/Profile'
-import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 import {loadUser} from './actions/auth';
 import {receiveSMS} from './actions/profile'
@@ -62,12 +59,9 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
           <Switch>
             <Route exact path = '/login' component = {Login}/>
             <Route exact path='/register' component={Register} />
-            <PrivateRoute exact path='/brokerLeads' component={BrokerDashboard} />
-            <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <PrivateRoute exact path='/services' component={ServiceList} />
             <PrivateRoute exact path='/services/:id' component={ServiceDetail} />
             <PrivateRoute exact path='/services/:id/:screen' component={ServiceDetail} />
-            <PrivateRoute exact path='/crm' component={CrmDashboard} />
             <PrivateRoute exact path='/chat' component={ChatScreen} />
             <Route exact path='/serviceReq' component={ServiceReq} />
             <Route exact path='/serviceTicket' component={ServiceTicket} />
