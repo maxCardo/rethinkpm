@@ -26,8 +26,6 @@ const SalesScreen = ({pastSales, activeProfile, profileType, loadProfileSales}) 
         fetchData()
     }, [activeProfile])
 
-    console.log(propertiesSold);
-
     return (
         loading ? <Loading/> : <Fragment>
             <div className="agent__stats-container">

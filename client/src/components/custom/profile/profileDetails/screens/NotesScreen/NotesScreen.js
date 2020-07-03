@@ -8,14 +8,6 @@ const NotesScreen = ({profileType, activeProfile}) => {
 
     const allNotes = activeProfile.notes
 
-    useEffect(() => {
-        console.log('use effect on notes fired');
-        console.log('notes:', allNotes);
-        
-    }, [activeProfile])
-
-
-
     var all = allNotes && allNotes.length ? allNotes  : []
     var notes = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'note' ) : []
     var logs = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'log') : []

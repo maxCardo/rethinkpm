@@ -12,9 +12,7 @@ const router = express.Router();
 // @desc: get all chats (read and unread): use when loading chat page.
 // @ access: Public *ToDo: update to make private
 router.get('/chats', async (req, res) => {
-    console.log(' All chats api fired');
     try {
-        console.log('get chat fired');
         const chats = await ChatAgent.find().populate({ path: 'owner', select: ['fullName', 'sales'], populate: { path: 'office', select: 'name' } });
         res.status(200).send(chats);
     } catch (error) {
@@ -28,7 +26,6 @@ router.get('/chats', async (req, res) => {
 // @desc: get all unread chats: use when loading mini chat component.
 // @ access: Public *ToDo: update to make private
 router.get('/chats/unread', async (req, res) => {
-    console.log('unread chats api fired');
     // try {
     //     const chats = await ChatInq.find({ unread: true });
     //     res.status(200).send(chats);
@@ -44,7 +41,6 @@ router.get('/chats/unread', async (req, res) => {
 // @desc: NOT ACTIVE: get single chat by inq id: use on leasing dashboard, triggerd by inq chat icon. 
 // @ access: Public *ToDo: update to make private
 router.get('/chat/:inq_id', async (req, res) => {
-    console.log('get single inq chat');
     // try {
     //     let chat = await ChatInq.findOne({ inq: req.params.inq_id }).populate({ path: 'inq', select: 'prospect', select: 'listing', populate: { path: 'prospect', select: 'name' } })
     //     if (!chat) {
@@ -101,7 +97,6 @@ router.post('/chat', async (req, res) => {
 // @desc: update record when update form on UI is submitted
 // @ access: Public * ToDo: update to make private
 router.patch('/update_record/:inq_id', async (req, res) => {
-    console.log('update_record api call ran');
     // try {
     //     const inq = await RentLeadInq.findById(req.params.inq_id).populate({ path: 'prospect' })
     //     const { status } = req.body;

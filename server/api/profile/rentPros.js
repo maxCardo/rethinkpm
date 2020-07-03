@@ -34,7 +34,6 @@ router.post('/', async (req, res) => {
         // validate phone number
         //if (phoneNumber) pros.phone.phoneType = await validateNum(phoneNumber);
 
-        console.log(phoneNumber);
 
         if (!pros) {
             pros = await new prosModel({
@@ -64,7 +63,6 @@ router.post('/', async (req, res) => {
             })
         };
 
-        console.log(inq);
         await inq.save();
         await pros.save();
         res.status(200).send(inq);
@@ -329,9 +327,6 @@ router.post('/filter', async (req, res) => {
             delete clone.prospect
             return clone
         })
-        record.forEach((inq) => {
-          console.log(inq.notes[0])
-        } )
 
 
         record = await Promise.all(record.map(async (inquiry) => {
@@ -413,7 +408,6 @@ router.post('/audiences', async (req,res) => {
   const {name, filters, audience} = req.body
   const audienceData = new AudienceModel({name, filters, audience, profileType: 'rentPros'});
   await audienceData.save()
-  console.log('Audience saved')
   res.json({result: 'ok'})
 })
 
@@ -434,7 +428,6 @@ router.post('/filters', async (req,res) => {
   const {name, filters} = req.body
   const filter = new FilterModel({name, filters,  profileType: 'rentPros'});
   await filter.save()
-  console.log('Filter saved')
   res.json({result: 'ok'})
 })
 

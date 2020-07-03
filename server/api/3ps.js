@@ -30,7 +30,6 @@ router.post('/sms', async (req, res) => {
         const newLeads = await inq.find({prospect:lead._id, 'status.currentStatus':'new'});
         //update open inq status to engaged
         newLeads.map(lead => {
-            console.log('yo')
             lead.status.currentStatus = 'engaged'
             lead.save()
         })

@@ -23,7 +23,7 @@ const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat, sendCha
     }
 
     const scrollToBottom = () => {
-        console.log('scroll to bottom')
+      
     }
     
     return loading ? <Loading/> : 

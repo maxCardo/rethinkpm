@@ -15,7 +15,7 @@ const FilterFields = (props) => {
         case 'number':
             return <NumberField orderKey={props.orderKey} {...props} />;
         default:
-            console.log('errror, default caled')
+            console.error(`Filter field ${dataType} not yet implemented`)
     }
 }
 

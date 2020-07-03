@@ -10,7 +10,6 @@ const SaveFilterMod = ({show, handleClose, activeFilter, profileList, profileTyp
     const nameInput = useRef();
 
     const onSubmit = (type) => {
-        console.log('On submit called')
             const data = {
                 name: fltrName,
                 filters: activeFilter,

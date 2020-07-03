@@ -192,9 +192,6 @@ export const loadProfileTableView = (profileType, filters, cancelToken) => async
 
 export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => async dispatch => {
   try {
-    console.log(profileType)
-    console.log(queryList)
-    console.log(pageNumber)
     dispatch({
       type: LOAD_MORE_PROFILE_LIST,
     });
@@ -606,9 +603,8 @@ export const getActiveChat = (chatOwner) => async dispatch =>{
 //send chat from UI
 export const sendChat = (chatOwner, data) => async dispatch => {
     try {
-        console.log(chatOwner)
         const res = await axios.post(`/api/comms/profile/chat/${chatOwner}`, data, config)
-        console.log('res: ', res);
+
         dispatch({
             type: UPDATE_ACTIVE_PROFILE_CHAT,
             payload: res.data
@@ -674,7 +670,6 @@ export const addLeadSubmit = (formData, profileType) => async dispatch => {
     axios.post(`/api/profile/${profileType}/addLead`, formData, config)
         .then((res) => {
             const data = { ...res.data, profileType }
-            console.log(res.data);
 
             dispatch({
                 type: SET_ACTIVE_PROFILE,
