@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import Table from '../../../../Table/index'
+import Table from '../../../../../core/Table'
 import AddNoteModal from './AddNoteModel'
 import '../../../style.css'
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 
-import ProfileIcon from '../../common/ProfileIcon';
+import ProfileIcon from '../../../core/ProfileIcon';
 import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
 import AddPhoneModal from './AddPhoneModal'

@@ -8,7 +8,7 @@ import './filterList.css'
 const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, hasMore, settings}) => {
 
     const [showPills, setShowPills] = useState(true)
-s
+
     var representValue = (value) => {
         if (Array.isArray(value)) {
             return `[${value.join(', ')}]`

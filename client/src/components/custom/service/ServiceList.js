@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Link, withRouter} from 'react-router-dom';
-import Table from '../Table'
+import Table from '../../core/Table'
 import {ButtonGroup} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import './style.css'
