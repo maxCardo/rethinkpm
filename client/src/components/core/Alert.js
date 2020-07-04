@@ -19,6 +19,10 @@ const UpdateAlert = ({error, success, clearAlerts}) => {
         msg.variant='success';
     }
 
+    if(msg) {
+      console.log(`Alert produced in ${msg.location}`)
+    }
+
     useEffect(() => {
         if (success) {
             setTimeout(() => {
@@ -26,20 +30,15 @@ const UpdateAlert = ({error, success, clearAlerts}) => {
             }, 2000)
         }
     });
-
+    
     if (error || success) {
         return (
-            (<div className="alert-container" onClick={() => {
-                clearAlerts();
-            }}>
-                <Alert className={`${msg.className} fade`} variant={msg.variant} show={true}
-                       onClose={() => clearAlerts()} dismissible={!!error}>
-                    <Alert.Heading>{msg.heading && msg.heading}</Alert.Heading>
-                    <p>
-                        {msg.msg}
-                    </p>
-                </Alert>
-            </div>)
+          <div className="alert-container" onClick={clearAlerts}>
+            <Alert className={`${msg.className} fade`} variant={msg.variant} show={true} onClose={clearAlerts} dismissible={!!error}>
+              <Alert.Heading>{msg.heading && msg.heading}</Alert.Heading>
+              <p>{msg.msg}</p>
+            </Alert>
+          </div>
         );
     } else {
         return null

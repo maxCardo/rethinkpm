@@ -12,3 +12,14 @@ export const setAlert = (msg, location) => dispatch => {
       }
     });
 }
+
+export const createErrorAlert = (message, location)  => {
+  return {
+    type: ALERT_FAILURE,
+    payload: {
+      heading: 'Error',
+      msg: message,
+      location: location
+    }
+  }
+}
