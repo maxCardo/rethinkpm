@@ -33,8 +33,8 @@ export class Contacts extends Component {
     return (
       <div className='contacts__container'>
           {contactsSorted.map((contact, index) => (
-            <Contact key={`contact-${index}`} name={contact.name} listing={contact.listing} unread={contact.unread} onClick={() => {
-              const index = this.props.contacts.findIndex((element) => contact.id === element.id)
+            <Contact key={`contact-${index}`} title={contact.title} subTitle={contact.subTitle} unread={contact.unread} onClick={() => {
+              const index = this.props.contacts.findIndex((element) => contact._id === element._id)
               return this.props.handleAddChat(index)
             }}/>
           ))}
