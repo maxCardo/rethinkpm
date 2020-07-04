@@ -74,7 +74,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                             </div>
                         </div>
                         <div className='profile__chat-container chat__sidebar'>
-                            <Chat/>
+                            <Chat profileType={settings.profileType}/>
                         </div>
                         <div className="sidebar__left profile__agent-leads">
                             <ProfileList settings={settings}/>

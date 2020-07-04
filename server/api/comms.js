@@ -4,11 +4,18 @@ const { sendEmail } = require('../3ps/email')
 const Agent = require('../db/models/sales/agent')
 const Chat = require('../db/models/comms/Chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
+const RentProsModel = require('../db/models/prospects/RentLeads/RentPros')
+const RentInq = require('../db/models/prospects/RentLeads/RentInq')
+const BuyerPros = require('../db/models/prospects/BuyerPros')
 const {outgoingSMS} = require('../3ps/sms')
+const getOwner = require('./chatOwner/getOwner')
+const auth = require('../middleware/auth')
 
 
 const router = express.Router();
 const upload = multer()
+
+router.use(auth)
 
 //store on DB in future may need to create type object for model names id sored as String in DB
 const activeNumber = [
@@ -77,6 +84,43 @@ router.post('/chat', async (req, res) => {
     }
 });
 
+// @route: get /api/comms/chats
+// @desc: get all the chats 
+router.get('/chats', async (req, res) => {
+  try {
+    const chats = await Chat.find({})
+    res.status(200).send(chats)
+  } catch (err) {
+      res.status(400).send('server error')
+  }
+})
+
+// @route: get /api/comms/profile
+// @desc: get the profile info for the mini profile component of a specific chat 
+router.post('/profile', async (req, res) => {
+  try {
+    const chatId = req.body.id
+    const chat = await Chat.findById(chatId)
+    const owner = getOwner(chat.owner, chat.ownerType)
+    const profile = await owner.getProfile()
+    res.status(200).json(profile)
+  } catch (err) {
+    console.log(err)
+    res.status(400).send('server error')
+  }
+})
+
+// @route: get /api/comms/add_note
+router.post('/add_note', async (req,res) => {
+  const {chatId, type, content} = req.body
+  console.log(req.body)
+  const chat = await Chat.findById(chatId)
+  const owner = getOwner(chat.owner, chat.ownerType)
+  await owner.addNote({type, content}, req.user)
+  const profile = await owner.getProfile()
+  res.status(200).json(profile)
+})
+
 // @route: get /api/comms/chat/:owner;
 // @desc: get single chat by owner 
 // @ access: Public *ToDo: update to make private
@@ -95,7 +139,7 @@ router.get('/profile/chat/:ownerId', async (req, res) => {
 //Note: migrated call to server page in order to include socket call
 router.post('/profile/chat/:ownerId', async (req, res) => {
     const {activeProfile:{profileType, campaign = '', fullName, phoneNumbers}, message} = req.body
-    let phone = (phoneNumbers.length && phoneNumbers.find((phone) => phone.isPrimary)) ? phoneNumbers.find((phone) => phone.isPrimary).number : '';
+    let phone = (phoneNumbers.length && phoneNumbers.find((phone) => phone.isPrimary))
     try {
         let chat = await Chat.findOne({ owner: req.params.ownerId })
         if (!chat) {
@@ -107,7 +151,7 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
                 subTitle: campaign,
                 botOn: false,
                 unread: true,
-                clientNum: phone,
+                clientNum: phone.number,
                 routingNum: activeNum.number && activeNum.number,
                 messages: [],
             })
