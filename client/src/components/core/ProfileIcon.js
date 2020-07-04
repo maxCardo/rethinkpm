@@ -25,7 +25,7 @@ export class ProfileIcon extends Component {
       }
       const iconSize = this.props.size ? this.props.size : 40
 
-      const getColor = Math.round((colorNumber - 64 ) / 6);
+      const getColor = Math.round((colorNumber - 64 ) / 6) % 12;
 
       return (
         <div 
