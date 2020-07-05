@@ -8,31 +8,11 @@ import './style.css'
 export class Table extends Component {
   constructor(props) {
     super(props);
-    const headers = props.headers.map((header) => {
-      if(!header.label) {
-        header.label = header.accessor
-      }
-      if(this.props.sorting){
-        if(!header.reactComponent) {
-          header.sortable = true;
-        }
-      }
-      return header;
-    })
+    const headers = this.processHeaders(props);
     this.filter = this.props.filter ? this.props.filter : '' 
     this.sortDirectionsInitial = this.props.headers.map(() => 'notSorted')
     this.pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
-    let sortedData = this.props.data.slice();
-    if(props.sortBy) {
-      const sortBy = props.sortBy
-      sortedData = sortedData.sort((a, b) => {
-        if(props.sortDirection === 'desc') {
-          return b[sortBy] > a[sortBy] ? 1 : -1
-        } else {
-          return a[sortBy] > b[sortBy]  ? 1 : -1
-        }
-      });
-    }
+    let sortedData = this.getSortedData(props)
     const data = filterData(sortedData, this.filter, headers)
     this.state = {
       sortDirections: this.sortDirectionsInitial.slice(),
@@ -48,6 +28,33 @@ export class Table extends Component {
     this.increasePage = this.increasePage.bind(this);
     this.decreasePage = this.decreasePage.bind(this)
     this.changePage = this.changePage.bind(this)
+  }
+  processHeaders(props) {
+    return props.headers.map((header) => {
+      if(!header.label) {
+        header.label = header.accessor
+      }
+      if(props.sorting){
+        if(!header.reactComponent) {
+          header.sortable = true;
+        }
+      }
+      return header;
+    })
+  }
+  getSortedData(props) {
+    let sortedData = props.data.slice();
+    if(props.sortBy) {
+      const sortBy = props.sortBy
+      sortedData = sortedData.sort((a, b) => {
+        if(props.sortDirection === 'desc') {
+          return b[sortBy] > a[sortBy] ? 1 : -1
+        } else {
+          return a[sortBy] > b[sortBy]  ? 1 : -1
+        }
+      });
+    }
+    return sortedData
   }
   static compareArrays(arr1, arr2) {
     if(arr1.length !== arr2.length) return false
