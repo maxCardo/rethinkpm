@@ -11,7 +11,7 @@ export class Table extends Component {
     super(props);
     const headers = Table.processHeaders(props);
     this.filter = this.props.filter ? this.props.filter : '' 
-    this.sortDirectionsInitial = this.props.headers.map(() => 'notSorted')
+    this.sortDirectionsInitial = Table.resetSortDirections(headers, props.sortBy, props.sortDirection)
     this.pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
     let sortedData = props.data.slice();
     if(props.sortBy) {
@@ -56,6 +56,14 @@ export class Table extends Component {
       }
     });
   }
+  static resetSortDirections(headers, sortBy, sortDirection) {
+    return headers.map((header) => {
+      if(header.accessor === sortBy) {
+        return sortDirection
+      }
+      return 'notSorted'
+    })
+  }
   static compareArrays(arr1, arr2) {
     if(arr1.length !== arr2.length) return false
     for(let i = 0; i < arr1.length; i++) {
@@ -75,13 +83,7 @@ export class Table extends Component {
     let newSortDirections = state.sortDirections.slice()
     let weNeedToSort = !Table.compareArrays(state.rawData,props.data) || (props.sortBy && !state.alreadySorted)
     if(weNeedToSort) {
-      const sortBy = props.sortBy
-      newSortDirections = newSortDirections.map((sortDirection, index) => {
-        if(headers[index].accessor === sortBy) {
-          return props.sortDirection
-        }
-        return 'notSorted'
-      })
+      newSortDirections = Table.resetSortDirections(headers, props.sortBy, props.sortDirection)
       sortedData = Table.sortDataByProp(props, sortedData)
     }
     if(props.filter === state.actualFilterString && !Table.compareArrays(state.rawData,props.data)) {
