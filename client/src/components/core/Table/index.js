@@ -67,10 +67,13 @@ export class Table extends Component {
     const pageSize = props.pageSize ? props.pageSize : Infinity;
     const headers = Table.processHeaders(props)
 
-    let sortedData = state.sortedData.length && Table.compareArrays(state.rawData, props.data) ? state.sortedData.slice() : props.data.slice();
+    let canWeUsePreviousSortedData = state.sortedData.length && Table.compareArrays(state.rawData, props.data)
+
+    let sortedData = canWeUsePreviousSortedData ? state.sortedData.slice() : props.data.slice();
 
     let newSortDirections = state.sortDirections.slice()
-    if(!Table.compareArrays(state.rawData,props.data) || (props.sortBy && !state.alreadySorted)) {
+    let weNeedToSort = !Table.compareArrays(state.rawData,props.data) || (props.sortBy && !state.alreadySorted)
+    if(weNeedToSort) {
       const sortBy = props.sortBy
       newSortDirections = newSortDirections.map((sortDirection, index) => {
         if(headers[index].accessor === sortBy) {
