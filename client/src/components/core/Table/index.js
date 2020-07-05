@@ -8,11 +8,14 @@ import './style.css'
 export class Table extends Component {
   constructor(props) {
     super(props);
-    const headers = this.processHeaders(props);
+    const headers = Table.processHeaders(props);
     this.filter = this.props.filter ? this.props.filter : '' 
     this.sortDirectionsInitial = this.props.headers.map(() => 'notSorted')
     this.pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
-    let sortedData = this.getSortedData(props)
+    let sortedData = props.data.slice();
+    if(props.sortBy) {
+      sortedData = Table.sortDataByProp(props, sortedData)
+    }
     const data = filterData(sortedData, this.filter, headers)
     this.state = {
       sortDirections: this.sortDirectionsInitial.slice(),
@@ -29,7 +32,7 @@ export class Table extends Component {
     this.decreasePage = this.decreasePage.bind(this)
     this.changePage = this.changePage.bind(this)
   }
-  processHeaders(props) {
+  static processHeaders(props) {
     return props.headers.map((header) => {
       if(!header.label) {
         header.label = header.accessor
@@ -42,19 +45,15 @@ export class Table extends Component {
       return header;
     })
   }
-  getSortedData(props) {
-    let sortedData = props.data.slice();
-    if(props.sortBy) {
-      const sortBy = props.sortBy
-      sortedData = sortedData.sort((a, b) => {
-        if(props.sortDirection === 'desc') {
-          return b[sortBy] > a[sortBy] ? 1 : -1
-        } else {
-          return a[sortBy] > b[sortBy]  ? 1 : -1
-        }
-      });
-    }
-    return sortedData
+  static sortDataByProp(props, data) {
+    const sortBy = props.sortBy
+    return data.sort((a, b) => {
+      if(props.sortDirection === 'desc') {
+        return b[sortBy] > a[sortBy] ? 1 : -1
+      } else {
+        return a[sortBy] > b[sortBy]  ? 1 : -1
+      }
+    });
   }
   static compareArrays(arr1, arr2) {
     if(arr1.length !== arr2.length) return false
@@ -66,17 +65,7 @@ export class Table extends Component {
   static getDerivedStateFromProps(props, state) {
 
     const pageSize = props.pageSize ? props.pageSize : Infinity;
-    const headers = props.headers.map((header) => {
-      if(!header.label) {
-        header.label = header.accessor
-      }
-      if(props.sorting){
-        if(!header.reactComponent) {
-          header.sortable = true;
-        }
-      }
-      return header;
-    })
+    const headers = Table.processHeaders(props)
 
     let sortedData = state.sortedData.length && Table.compareArrays(state.rawData, props.data) ? state.sortedData.slice() : props.data.slice();
 
@@ -89,13 +78,7 @@ export class Table extends Component {
         }
         return 'notSorted'
       })
-      sortedData = sortedData.sort((a, b) => {
-        if(props.sortDirection === 'desc') {
-          return b[sortBy] > a[sortBy] ? 1 : -1
-        } else {
-          return a[sortBy] > b[sortBy]  ? 1 : -1
-        }
-      });
+      sortedData = Table.sortDataByProp(props, sortedData)
     }
     if(props.filter === state.actualFilterString && !Table.compareArrays(state.rawData,props.data)) {
       const pageSize = props.pageSize ? props.pageSize : Infinity;
@@ -109,19 +92,20 @@ export class Table extends Component {
         sortDirections: newSortDirections,
         rawData: props.data.slice()
       };
-    } 
-    const newFilterString = props.filter ? props.filter : ''
-    const newData = filterData(sortedData, newFilterString, headers)
-    const pageIndex = state.pageIndex ? state.pageIndex : 0
-    return {
-      data: newData,
-      sortedData: sortedData,
-      paginatedData: state.pageIndex ? state.paginatedData : newData.slice(0, pageSize),
-      pageIndex: pageIndex,
-      actualFilterString: newFilterString,
-      headers: headers,
-      sortDirections: newSortDirections,
-      rawData: props.data.slice()
+    } else {
+      const newFilterString = props.filter ? props.filter : ''
+      const newData = filterData(sortedData, newFilterString, headers)
+      const pageIndex = state.pageIndex ? state.pageIndex : 0
+      return {
+        data: newData,
+        sortedData: sortedData,
+        paginatedData: state.pageIndex ? state.paginatedData : newData.slice(0, pageSize),
+        pageIndex: pageIndex,
+        actualFilterString: newFilterString,
+        headers: headers,
+        sortDirections: newSortDirections,
+        rawData: props.data.slice()
+      }
     }
   }
 
