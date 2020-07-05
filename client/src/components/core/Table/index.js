@@ -14,9 +14,11 @@ export class Table extends Component {
     this.sortDirectionsInitial = Table.resetSortDirections(headers, props.sortBy, props.sortDirection)
     this.pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
     let sortedData = props.data.slice();
+
     if(props.sortBy) {
       sortedData = Table.sortDataByProp(props, sortedData)
     }
+
     const data = filterData(sortedData, this.filter, headers)
     this.state = {
       sortDirections: this.sortDirectionsInitial.slice(),
@@ -33,6 +35,7 @@ export class Table extends Component {
     this.decreasePage = this.decreasePage.bind(this)
     this.changePage = this.changePage.bind(this)
   }
+
   static processHeaders(props) {
     return props.headers.map((header) => {
       if(!header.label) {
@@ -46,6 +49,7 @@ export class Table extends Component {
       return header;
     })
   }
+
   static sortDataByProp(props, data) {
     const sortBy = props.sortBy
     return data.sort((a, b) => {
@@ -56,6 +60,7 @@ export class Table extends Component {
       }
     });
   }
+
   static resetSortDirections(headers, sortBy, sortDirection) {
     return headers.map((header) => {
       if(header.accessor === sortBy) {
@@ -64,6 +69,7 @@ export class Table extends Component {
       return 'notSorted'
     })
   }
+
   static compareArrays(arr1, arr2) {
     if(arr1.length !== arr2.length) return false
     for(let i = 0; i < arr1.length; i++) {
@@ -71,6 +77,7 @@ export class Table extends Component {
     }
     return true;
   }
+
   static getDerivedStateFromProps(props, state) {
 
     const pageSize = props.pageSize ? props.pageSize : Infinity;
@@ -82,10 +89,12 @@ export class Table extends Component {
 
     let newSortDirections = state.sortDirections.slice()
     let weNeedToSort = !Table.compareArrays(state.rawData,props.data) || (props.sortBy && !state.alreadySorted)
+
     if(weNeedToSort) {
       newSortDirections = Table.resetSortDirections(headers, props.sortBy, props.sortDirection)
       sortedData = Table.sortDataByProp(props, sortedData)
     }
+    
     if(props.filter === state.actualFilterString && !Table.compareArrays(state.rawData,props.data)) {
       const pageSize = props.pageSize ? props.pageSize : Infinity;
       const index = state.pageIndex ? state.pageIndex : 0;
@@ -162,6 +171,7 @@ export class Table extends Component {
       </div>
     )
   }
+
   handleSort(index) {
     const sortDirection = this.state.sortDirections[index]
     const newSortDirections = this.sortDirectionsInitial.slice()
@@ -172,7 +182,6 @@ export class Table extends Component {
       newSortDirections[index] = 'desc'
     }
 
-
     const data = this.state.data.sort((a, b) => {
       if(newSortDirections[index] === 'asc') {
         return getData(a, this.state.headers[index]) > getData(b, this.state.headers[index]) ? 1 : -1
@@ -182,28 +191,33 @@ export class Table extends Component {
     });
     this.setState({alreadySorted: true, sortDirections: newSortDirections, sortedData: data, paginatedData: data.slice(0, this.pageSize), pageIndex: 0 })
   }
+
   changePage(index) {
     const newPaginatedData = this.state.data.slice(this.pageSize * index, this.pageSize * (index+1))
     this.setState({pageIndex: index, paginatedData: newPaginatedData, alreadySorted: true})
   }
+
   mapData(mapper, data) {
     if(typeof mapper == 'string') {
       return commonMappers(mapper)(data)
     }
     return mapper(data)
   }
+
   increasePage() {
     if(this.state.pageIndex >= Math.ceil(this.state.data.length/this.pageSize)) {
       return;
     }
     this.changePage(this.state.pageIndex + 1)
   }
+
   decreasePage() {
     if(this.state.pageIndex === 0) {
       return;
     }
     this.changePage(this.state.pageIndex - 1)
   }
+  
 }
 
 
