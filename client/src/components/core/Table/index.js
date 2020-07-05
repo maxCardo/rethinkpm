@@ -5,6 +5,7 @@ import commonMappers from './commonMappers';
 import { filterData, getData } from "../../../util/commonFunctions";
 import './style.css'
 
+//TODO: Default sortBy is not working
 export class Table extends Component {
   constructor(props) {
     super(props);
