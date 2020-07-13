@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@popperjs/core": "^2.4.4",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.0",
@@ -27,6 +28,7 @@
     "node-cron": "^2.0.3",
     "nodemailer": "^6.3.0",
     "query-string": "^6.12.1",
+    "react-popper-tooltip": "^3.1.0",
     "react-select": "^3.1.0",
     "react-spinners": "^0.8.1",
     "request": "^2.88.0",
