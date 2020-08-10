@@ -46,7 +46,6 @@ const activeNumber = [
 // @ access: Public *ToDo: update to make private
 //Note: migrated call to server page in order to include socket call
 router.post('/chat', async (req, res) => {
-    console.log('running post/chat');
     try {
         let { To, From, Body } = req.body;
 

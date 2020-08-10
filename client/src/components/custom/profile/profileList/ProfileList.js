@@ -87,7 +87,6 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
       setFilter(filter, false)
       loadProfileList(profileType, selectedQuery)
     }
-    console.log(isFiltered)
 
     return profileList.loading ? <Loading/> :
         <Fragment>
@@ -125,7 +124,6 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
                 hasMore={profileList.hasMore}
                 settings={settings}
             />
-            {searchString && (<a onClick={() => console.log('clcick')}> do not see the record you are </a>)}
             
             <FilterModal
                 show={showFilterMod}

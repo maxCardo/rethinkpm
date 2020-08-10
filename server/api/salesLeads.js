@@ -64,10 +64,7 @@ router.post('/idx_lead', (req,res) => {
 // @desc: Get all agents
 // @ access: Private
 router.get('/agents', async (req,res) => {
-  console.log('Agents called')
-  console.time('Agents call')
   const agents = await AgentModel.find({}).populate('office')
-  console.timeEnd('Agents call')
   res.json(agents)
 })
 

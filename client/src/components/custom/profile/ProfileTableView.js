@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import { loadProfileTableView, setActiveProfile, setFilter } from '../../../actions/profile'
 import axios from 'axios';
 import LoadingScreen from '../LoadingScreen/LoadingScreen'
-import TableView from '../TableView/TableView'
+import TableView from '../../core/TableView/TableView'
 import FilterModal from './profileList/modals/filterModel/FilterModal'
 import SaveFilterMod from './profileList/modals/saveFilterMod'
 

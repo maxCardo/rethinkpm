@@ -12,16 +12,11 @@ import Landing from './components/custom/Landing';
 import Login from './components/core/Login';
 import Register from './components/core/Register';
 import Playground from './components/core/Playground';
-import BrokerDashboard from './components/custom/BrokerDashboard/BrokerDashboard';
-import Dashboard from './components/custom/TableView/TableView';
-import Alert from './components/core/Alert';
 import ServiceList from './components/custom/service/ServiceList';
 import ServiceDetail from './components/custom/service/ServiceDetail';
 import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
-import AddProperty from './components/custom/assets/AddProperty';
 import Profile from './components/custom/profile/Profile'
-import CrmDashboard from './components/custom/CrmDashboard'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 import {loadUser} from './actions/auth';
 import {receiveSMS} from './actions/profile'
@@ -30,13 +25,12 @@ import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
 import { showNotification } from './notifications'
 import settings from './settings.json'
-import UpdateAlert from "./components/core/UpdateAlert";
+import Alert from "./components/core/Alert";
 import Dash from "./components/custom/Dash"
 
 
 
 const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
-  console.log(Notification.permission)
   if(Notification.permission === 'default') {
     Notification.requestPermission();
   }
@@ -64,23 +58,19 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
           <Switch>
             <Route exact path = '/login' component = {Login}/>
             <Route exact path='/register' component={Register} />
-            <PrivateRoute exact path='/brokerLeads' component={BrokerDashboard} />
-            <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <PrivateRoute exact path='/services' component={ServiceList} />
             <PrivateRoute exact path='/services/:id' component={ServiceDetail} />
             <PrivateRoute exact path='/services/:id/:screen' component={ServiceDetail} />
-            <PrivateRoute exact path='/crm' component={CrmDashboard} />
             <PrivateRoute exact path='/chat' component={ChatScreen} />
             <Route exact path='/serviceReq' component={ServiceReq} />
             <Route exact path='/serviceTicket' component={ServiceTicket} />
-            <Route exact path='/addProperty' component={AddProperty} />
             <PrivateRoute exact path='/dash' component={Dash} />
             <PrivateRoute exact path='/profile/rentPros' component={Profile} additionalProps={{ settings: routeSettings.profile.rentPros }} />
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
-          <UpdateAlert  />
+          <Alert  />
         </section>
       </Fragment>
     </Router>
@@ -88,10 +78,8 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
 }
 
 const registerServiceWorker = async () => {
-  //console.log('serviceWorker' in navigator)
   const swRegistration = await navigator.serviceWorker.register('/service-worker.js');
   window.serviceWorker = swRegistration
-  //console.log(window.serviceWorker)
   return swRegistration;
 }
 

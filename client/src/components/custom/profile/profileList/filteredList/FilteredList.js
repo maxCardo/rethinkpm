@@ -7,9 +7,7 @@ import './filterList.css'
 
 const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, hasMore, settings}) => {
 
-
     const [showPills, setShowPills] = useState(true)
- 
 
     var representValue = (value) => {
         if (Array.isArray(value)) {
@@ -30,7 +28,6 @@ const FilteredList = ({data, searchString, filters, loadNextPage, loadingMore, h
                 </div>
                 {showPills ?
                     <div className='filter-pills__pills-container'>
-
                         {filters.map((filter, index) => (
                             <Pill key={index} text={`${filter.field} ${filter.filterType} ${representValue(filter.value)}`} />
                         ))}

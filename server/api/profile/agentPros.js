@@ -138,7 +138,6 @@ router.put("/addEmail/:id", async (req, res) => {
     try {
         let { address, isPrimary } = req.body
         let agent = await Agent.findById(req.params.id).populate('office')
-        console.log(req.body);
         let newEmails = [];
         if (req.body.isPrimary) {
             newEmails = agent.email && agent.email.map((item) => {
@@ -367,7 +366,6 @@ router.post('/audiences', async (req,res) => {
   const {name, filters, audience} = req.body
   const audienceData = new AudienceModel({name, filters, audience, profileType: 'agentPros'});
   await audienceData.save()
-  console.log('Audience saved')
   res.json({result: 'ok'})
 })
 
@@ -388,7 +386,6 @@ router.post('/filters', async (req,res) => {
   const {name, filters} = req.body
   const filter = new FilterModel({name, filters,  profileType: 'agentPros'});
   await filter.save()
-  console.log('Filter saved')
   res.json({result: 'ok'})
 })
 

@@ -64,12 +64,12 @@
   color: white;
 }
 
-.chat-bar__name {
+.chat-bar__title {
   margin: 0;
   font-size: 20px;
 }
 
-.chat-bar__listing {
+.chat-bar__sub-title {
   margin: 0;
   font-size: 10px;
   margin-top: -8px
