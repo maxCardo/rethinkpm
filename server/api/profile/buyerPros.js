@@ -246,12 +246,12 @@ router.post('/filter', async (req, res) => {
             record.pop()
         }
 
-        record = await Promise.all(record.map(async (buyer) => {
-          const notesPopulated = await  Note.populate(buyer.notes, {path: 'user', select: 'name'})
-          buyer.notes = notesPopulated
+        // record = await Promise.all(record.map(async (buyer) => {
+        //   const notesPopulated = await  Note.populate(buyer.notes, {path: 'user', select: 'name'})
+        //   buyer.notes = notesPopulated
 
-          return buyer
-        }))
+        //   return buyer
+        // }))
 
         res.status(200).send({ record, filters, hasMore });
 

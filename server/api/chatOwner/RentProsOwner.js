@@ -1,6 +1,6 @@
 const RentInqModel = require('../../db/models/prospects/RentLeads/RentInq')
 const RentProsModel = require('../../db/models/prospects/RentLeads/RentPros')
-const NoteModel = require('../../db/models/common/Note')
+//const NoteModel = require('../../db/models/common/Note')
 class RentProsOwner {
   constructor(ownerId) {
     this.rentInqId = ownerId
@@ -18,13 +18,13 @@ class RentProsOwner {
     const phoneNumber = rentInqData.prospect.phoneNumbers.find((phone) => phone.isPrimary)
     return phoneNumber.number
   }
-  async addNote(noteData, userId) {
-    const {type, content} = noteData;
-    const user = await User.findById(userId)
-    const note = new NoteModel({type, content, user: user._id})
-    await note.save()
-    await RentInqModel.findByIdAndUpdate(this.rentInqId,  { $push: { notes: note } }, {new: true})
-  }
+  // async addNote(noteData, userId) {
+  //   const {type, content} = noteData;
+  //   const user = await User.findById(userId)
+  //   const note = new NoteModel({type, content, user: user._id})
+  //   await note.save()
+  //   await RentInqModel.findByIdAndUpdate(this.rentInqId,  { $push: { notes: note } }, {new: true})
+  // }
 }
 
 module.exports = RentProsOwner

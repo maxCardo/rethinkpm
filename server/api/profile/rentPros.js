@@ -329,12 +329,12 @@ router.post('/filter', async (req, res) => {
         })
 
 
-        record = await Promise.all(record.map(async (inquiry) => {
-          const notesPopulated = await  Note.populate(inquiry.notes, {path: 'user', select: 'name'})
-          inquiry.notes = notesPopulated
+        // record = await Promise.all(record.map(async (inquiry) => {
+        //   const notesPopulated = await  Note.populate(inquiry.notes, {path: 'user', select: 'name'})
+        //   inquiry.notes = notesPopulated
 
-          return inquiry
-        }))
+        //   return inquiry
+        // }))
 
         res.status(200).send({ record, filters, hasMore });
 
