@@ -2,10 +2,10 @@ const express = require('express');
 const auth = require('../../middleware/auth')
 const mongoose = require('mongoose')
 
-const Agent = require('../../db/models/sales/agent')
+const Agent = require('../../db/models/prospects/agentPros/agent')
 const Office = require('../../db/models/sales/office')
-const FilterModel = require('../../db/models/sales/filters')
-const AudienceModel = require('../../db/models/sales/audience')
+const FilterModel = require('../../db/models/prospects/filters')
+const AudienceModel = require('../../db/models/prospects/audience')
 const singleFamilySalesModel = require('../../db/models/sales/singleFamilySales')
 const multiSalesModel = require('../../db/models/sales/multiSales')
 
@@ -24,9 +24,7 @@ router.use(auth)
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
-        const record = await Agent.findOne().populate('notes.user, office')
-        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
-        record.notes = notesPopulated
+        const record = await Agent.findOne().populate('office')
         res.status(200).send(record);
     } catch (error) {
         console.error(error);

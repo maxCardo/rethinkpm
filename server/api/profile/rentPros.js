@@ -2,9 +2,9 @@ const express = require('express');
 const auth = require('../../middleware/auth')
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
-const FilterModel = require('../../db/models/sales/filters')
-const AudienceModel = require('../../db/models/sales/audience')
-const Note = require('../../db/models/common/Note')
+const FilterModel = require('../../db/models/prospects/filters')
+const AudienceModel = require('../../db/models/prospects/audience')
+
 
 
 //filter options: refactor to get these from api
@@ -110,9 +110,9 @@ router.post("/addLead",auth, async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
-        const record = await model.findOne().populate('prospect notes.user')
-        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
-        record.notes = notesPopulated
+        const record = await model.findOne().populate('prospect')
+        //const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
+        //record.notes = notesPopulated
         const clone = { ...record.prospect._doc, ...record._doc }
         const test = {
             record,

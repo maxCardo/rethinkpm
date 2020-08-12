@@ -1,13 +1,14 @@
 const express = require('express');
 const multer = require('multer')
 const { sendEmail } = require('../3ps/email')
-const Agent = require('../db/models/sales/agent')
+const Agent = require('../db/models/prospects/agentPros/agent')
 const Chat = require('../db/models/comms/Chat')
 const RentPros = require('../db/models/prospects/RentLeads/RentLeadPros')
 const RentProsModel = require('../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../db/models/prospects/RentLeads/RentInq')
 const BuyerPros = require('../db/models/prospects/BuyerPros')
 const {outgoingSMS} = require('../3ps/sms')
+const {zumperParse, zillowBuyers, mlsListings} = require('../3ps/scrape_parse/emailParse')
 const getOwner = require('./chatOwner/getOwner')
 const auth = require('../middleware/auth')
 
@@ -176,14 +177,34 @@ router.post('/profile/chat/:ownerId', async (req, res) => {
 // @ access: Public *ToDo: update to make private
 router.post('/email/parse',upload.none(), (req, res) => {
     try {
-        const {to, from, html, subject, text} = req.body
+        const data = req.body
+        const route = data.to.split('@')[0].replace('\"', '').toLowerCase()
+        
 
-        console.log(html)
-
-        //sendEmail('adampoznanski@outlook.com', 'test email', 'testing sendgrid email')
-        //sendEmail('ezrafreedlander@gmail.com', 'test email', 'testing sendgrid email')
-        res.status(200).send()
-    } catch (error) {
+        switch(route){
+            case 'zumper':
+                console.log('routing to zumper');
+                zumperParse(data)
+                break;
+            case 'zillowrentals':
+                console.log('zillow Rentals');
+                break;
+            case 'zillowbuyer':
+                console.log('zillow Buyers');
+                zillowBuyers(data)
+                break;
+            case 'newlisting':
+                console.log('switch mls');
+                mlsListings(data);
+                break;
+            default:
+                console.log('defalt');
+                console.log(route);
+               
+        }
+        res.status(200).send('got it')
+    } catch (err) {
+        console.error('error rec');
         res.status(500).send()
     }
     

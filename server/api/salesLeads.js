@@ -1,9 +1,9 @@
 const express = require('express');
 const {sendEmail} = require('../3ps/email')
-const AgentModel = require('../db/models/sales/agent')
+const AgentModel = require('../db/models/prospects/agentPros/agent')
 const OfficeModel = require('../db/models/sales/office')
-const AudienceModel = require('../db/models/sales/audience')
-const FilterModel = require('../db/models/sales/filters')
+const AudienceModel = require('../db/models/prospects/audience')
+const FilterModel = require('../db/models/prospects/filters')
 
 const router = express.Router();
 
