@@ -4,6 +4,7 @@ const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
 const FilterModel = require('../../db/models/prospects/filters')
 const AudienceModel = require('../../db/models/prospects/audience')
+const NoteModel = require('../../db/models/common/Note')
 
 
 
@@ -111,8 +112,8 @@ router.post("/addLead",auth, async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const record = await model.findOne().populate('prospect')
-        //const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
-        //record.notes = notesPopulated
+        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
+        record.notes = notesPopulated
         const clone = { ...record.prospect._doc, ...record._doc }
         const test = {
             record,
@@ -329,12 +330,12 @@ router.post('/filter', async (req, res) => {
         })
 
 
-        // record = await Promise.all(record.map(async (inquiry) => {
-        //   const notesPopulated = await  Note.populate(inquiry.notes, {path: 'user', select: 'name'})
-        //   inquiry.notes = notesPopulated
+        record = await Promise.all(record.map(async (inquiry) => {
+          const notesPopulated = await  Note.populate(inquiry.notes, {path: 'user', select: 'name'})
+          inquiry.notes = notesPopulated
 
-        //   return inquiry
-        // }))
+          return inquiry
+        }))
 
         res.status(200).send({ record, filters, hasMore });
 

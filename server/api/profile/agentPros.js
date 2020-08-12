@@ -8,6 +8,7 @@ const FilterModel = require('../../db/models/prospects/filters')
 const AudienceModel = require('../../db/models/prospects/audience')
 const singleFamilySalesModel = require('../../db/models/sales/singleFamilySales')
 const multiSalesModel = require('../../db/models/sales/multiSales')
+const NoteModel = require('../../db/models/common/Note')
 
 
 //filter options: refactor to get these from api
@@ -237,12 +238,12 @@ router.post('/filter', async (req, res) => {
             record.pop()
         }
 
-        // record = await Promise.all(record.map(async (agent) => {
-        //   const notesPopulated = await  Note.populate(agent.notes, {path: 'user', select: 'name'})
-        //   agent.notes = notesPopulated
+        record = await Promise.all(record.map(async (agent) => {
+          const notesPopulated = await  Note.populate(agent.notes, {path: 'user', select: 'name'})
+          agent.notes = notesPopulated
 
-        //   return agent
-        // }))
+          return agent
+        }))
 
         res.status(200).send({ record, filters, hasMore });
 

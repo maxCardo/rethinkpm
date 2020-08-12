@@ -1,4 +1,5 @@
 const BuyerModel = require('../../db/models/prospects/BuyerPros')
+const NoteModel = require('../../db/models/common/Note')
 class BuyerOwner {
   constructor(ownerId) {
     this.buyerId = ownerId
@@ -16,13 +17,13 @@ class BuyerOwner {
     const phoneNumber = buyerData.phoneNumbers.find((phone) => phone.isPrimary)
     return phoneNumber.number
   }
-  // async addNote() {
-  //   const {type, content} = noteData;
-  //   const user = await User.findById(userId)
-  //   const note = new NoteModel({type, content, user: user._id})
-  //   await note.save()
-  //   await BuyerModel.findByIdAndUpdate(this.buyerId,  { $push: { notes: note } }, {new: true})
-  // }
+  async addNote() {
+    const {type, content} = noteData;
+    const user = await User.findById(userId)
+    const note = new NoteModel({type, content, user: user._id})
+    await note.save()
+    await BuyerModel.findByIdAndUpdate(this.buyerId,  { $push: { notes: note } }, {new: true})
+  }
 }
 
 module.exports = BuyerOwner

@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth')
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const FilterModel = require('../../db/models/prospects/filters')
 const AudienceModel = require('../../db/models/prospects/audience')
+const NoteModel = require('../../db/models/common/Note')
 
 
 
@@ -246,12 +247,12 @@ router.post('/filter', async (req, res) => {
             record.pop()
         }
 
-        // record = await Promise.all(record.map(async (buyer) => {
-        //   const notesPopulated = await  Note.populate(buyer.notes, {path: 'user', select: 'name'})
-        //   buyer.notes = notesPopulated
+        record = await Promise.all(record.map(async (buyer) => {
+          const notesPopulated = await  Note.populate(buyer.notes, {path: 'user', select: 'name'})
+          buyer.notes = notesPopulated
 
-        //   return buyer
-        // }))
+          return buyer
+        }))
 
         res.status(200).send({ record, filters, hasMore });
 
