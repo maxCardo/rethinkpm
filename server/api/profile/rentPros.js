@@ -34,7 +34,6 @@ router.post('/', async (req, res) => {
         // validate phone number
         //if (phoneNumber) pros.phone.phoneType = await validateNum(phoneNumber);
 
-        console.log(phoneNumber);
 
         if (!pros) {
             pros = await new prosModel({
@@ -64,7 +63,6 @@ router.post('/', async (req, res) => {
             })
         };
 
-        console.log(inq);
         await inq.save();
         await pros.save();
         res.status(200).send(inq);
@@ -175,10 +173,7 @@ router.put("/addPhone/:id", async (req, res) => {
             newPhoneNumbers.push({ number, isPrimary, okToText });
         }
 
-        await rentPro.set({
-            ...rentPro,
-            phoneNumbers: newPhoneNumbers
-        })
+        rentPro.phoneNumbers = newPhoneNumbers
         await rentPro.save();
         const clone = { ...rentPro._doc, ...inq._doc }
         res.status(200).send(clone);
@@ -197,11 +192,7 @@ router.put("/editPhone/:id", async (req, res) => {
         //ToDo: validte number and add numType to phone record
         const renter = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(renter.prospect);
-        await rentPro.set({
-            ...rentPro,
-            phoneNumbers: req.body.phoneNumbers
-        })
-
+        rentPro.phoneNumbers = req.body.phoneNumbers
         await rentPro.save();
         res.status(200).send(rentPro);
     } catch (err) {
@@ -232,10 +223,7 @@ router.put("/addEmail/:id", async (req, res) => {
             newEmails.push({ address, isPrimary });
         }
 
-        await rentPro.set({
-            ...inq,
-            email: newEmails
-        })
+        rentPro.email = newEmails
         await rentPro.save();
         const clone = { ...rentPro._doc, ...inq._doc }
         res.status(200).send(clone);
@@ -254,11 +242,7 @@ router.put("/editEmail/:id", async (req, res) => {
         const renter = await model.findById(req.params.id)
         let rentPro = await prosModel.findById(renter.prospect);
 
-        rentPro.set({
-            ...rentPro,
-            email: req.body.email
-        })
-
+        rentPro.email = req.body.emails
         await rentPro.save();
         res.status(200).send(rentPro);
     } catch (err) {
@@ -273,10 +257,7 @@ router.put("/editStatus/:id", async (req, res) => {
     try {
 
         const rentLead = await model.findById(req.params.id)
-        await rentLead.set({
-            ...rentLead,
-            status: req.body.status
-        })
+        rentLead.status = req.body.status
         await rentLead.save();
         res.status(200).send(rentLead);
     } catch (err) {
@@ -346,9 +327,6 @@ router.post('/filter', async (req, res) => {
             delete clone.prospect
             return clone
         })
-        record.forEach((inq) => {
-          console.log(inq.notes[0])
-        } )
 
 
         record = await Promise.all(record.map(async (inquiry) => {
@@ -430,7 +408,6 @@ router.post('/audiences', async (req,res) => {
   const {name, filters, audience} = req.body
   const audienceData = new AudienceModel({name, filters, audience, profileType: 'rentPros'});
   await audienceData.save()
-  console.log('Audience saved')
   res.json({result: 'ok'})
 })
 
@@ -451,7 +428,6 @@ router.post('/filters', async (req,res) => {
   const {name, filters} = req.body
   const filter = new FilterModel({name, filters,  profileType: 'rentPros'});
   await filter.save()
-  console.log('Filter saved')
   res.json({result: 'ok'})
 })
 

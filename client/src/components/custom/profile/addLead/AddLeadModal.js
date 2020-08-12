@@ -36,7 +36,6 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         if (emails) {
             emails.forEach((item, index) => {
                 const valid = validateEmail(item.address)
-                console.log(valid);
                 if (!valid && item.address != '') {
                     emailsValid = false
                 }
@@ -51,7 +50,6 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         if (valid) {
             tglAddLeadMod(false);
             addLeadSubmit(formData, theProfileType.current);
-            console.log(formData);
             setFormData({});
             setValid(false);
         }

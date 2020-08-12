@@ -6,8 +6,8 @@ export class ChatBar extends Component {
     return (
       <div className='chat-bar__container'>
         <div className='chat-bar__info-container'>
-          <p className='chat-bar__name'>{info.name}</p>
-          <p className='chat-bar__listing'>{info.listing}</p>
+          <p className='chat-bar__title'>{info.title}</p>
+          <p className='chat-bar__sub-title'>{info.subTitle}</p>
         </div>
         <div>
 

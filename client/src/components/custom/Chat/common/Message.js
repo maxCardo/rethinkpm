@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ProfileIcon from '../../common/ProfileIcon'
+import ProfileIcon from '../../../core/ProfileIcon'
 
 import './common.css'
 

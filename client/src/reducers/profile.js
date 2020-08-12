@@ -25,6 +25,7 @@ import {
     SET_PROFILE_TABLE_VIEW,
     LOAD_PROFILE_LIST_AND_TABLE,
     STOP_LOAD_PROFILE_LIST_AND_TABLE,
+    UPDATE_PROFILE,
 } from '../actions/type';
 
 const initialState = {
@@ -227,6 +228,21 @@ export default function (state = initialState, action) {
                 ...state,
                 success: '',
             }
+        case UPDATE_PROFILE:
+          const profileList = state.profileList.list.slice()
+          const updatedProfileList = profileList.map(profile => {
+            if(profile._id === payload._id) {
+              return payload
+            }
+            return profile
+          })
+          return {
+            ...state,
+            profileList: {
+              ...state.profileList,
+              list: updatedProfileList
+            }
+          }
         default:
             return state;
     }

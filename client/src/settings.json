@@ -336,14 +336,18 @@
             "label": "Name"
           },
           {
-            "accessor": "email",
-            "label": "Email",
-            "mapper": "emailArray"
+            "accessor": "campaign",
+            "label": "Property"
           },
           {
             "accessor": "phoneNumbers",
             "label": "Phone",
             "mapper": "phoneArray"
+          },
+          {
+            "accessor": "lastContact",
+            "label": "Last Contact",
+            "mapper": "date"
           }
         ]
       },
@@ -536,7 +540,18 @@
             "accessor": "phoneNumbers",
             "label": "Phone",
             "mapper": "phoneArray"
+          },
+          {
+            "accessor": "lastContact",
+            "label": "Last Contact",
+            "mapper": "date"
+          },
+          {
+            "accessor": "createDate",
+            "label": "Create Date",
+            "mapper": "date"
           }
+
         ]
       }
     }

@@ -47,8 +47,7 @@ export class AddRecordModal extends Component {
   }
   handleSubmit() {
     const data = Object.assign({
-      date: new Date(),
-      user: 'Admin'
+      date: new Date()
     }, this.state)
     this.props.handleSubmit(data)
     this.handleClose()

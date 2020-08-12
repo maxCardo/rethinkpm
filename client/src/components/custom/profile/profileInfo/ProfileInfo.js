@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 
-import ProfileIcon from '../../common/ProfileIcon';
+import ProfileIcon from '../../../core/ProfileIcon';
 import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
 import AddPhoneModal from './AddPhoneModal'
@@ -43,8 +43,9 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                     <div className='column' key={index}>
                         <div className='column-content'>
                             <h2>{colHeader[col]}</h2>
-                            {columns[col].map((field, index) => <InfoField key={index} passIndex={index} field={field}
-                                                                           data={profile} settings={profileInfo}/>)}
+                            {columns[col].map((field, index) => (
+                              <InfoField key={index} passIndex={index} field={field} data={profile} settings={profileInfo}/>
+                            ))}
                         </div>
                     </div>
                 ))}

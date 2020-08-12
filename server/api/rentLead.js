@@ -81,7 +81,6 @@ router.post('/', async (req, res) => {
 // @desc: get all open leads on client
 // @ access: Public *ToDo: update to make private
 router.get('/open_leads', async (req, res) => {
-    console.log('open leads api fired');
     try {
         const leads = await RentLeadInq.find({'status.currentStatus':{$ne: 'dead'}}).populate('prospect notes');
         res.status(200).send(await Promise.all(leads.map(async (lead) => {
@@ -169,7 +168,6 @@ router.patch('/sch_form', async (req, res) => {
 // @desc: update record when tour is completed
 // @ access: Public * ToDo: update to make privat
 router.patch('/tour_form', async (req, res) => {
-    console.log('tour_form api fired');
     try {
         const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
             $set: {
@@ -188,7 +186,6 @@ router.patch('/tour_form', async (req, res) => {
 // @desc: update form when application is recived
 // @ access: Public * ToDo: update to make private
 router.patch('/app_form', async (req, res) => {
-    console.log('app_form api fired');
     try {
         const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
             $set: {
@@ -209,7 +206,6 @@ router.patch('/app_form', async (req, res) => {
 // @desc: archive record when not interested
 // @ access: Public * ToDo: update to make private
 router.patch('/arc_form', async (req, res) => {
-    console.log('app_form api fired');
     try {
         const record = await RentLead.findOneAndUpdate({ 'phoneNumber': req.body.phoneNumber }, {
             $set: {
@@ -230,7 +226,6 @@ router.patch('/arc_form', async (req, res) => {
 // @desc: get all chats (read and unread): use when loading chat page.
 // @ access: Public *ToDo: update to make private
 router.get('/chats', async (req, res) => {
-    console.log(' All chats api fired');
     try {
         const chats = await ChatInq.find().populate({path:'inq',select:'prospect',select:'listing', populate: {path:'prospect', select: 'name'}});
         res.status(200).send(chats);
@@ -244,7 +239,6 @@ router.get('/chats', async (req, res) => {
 // @desc: get all unread chats: use when loading mini chat component.
 // @ access: Public *ToDo: update to make private
 router.get('/chats/unread', async (req, res) => {
-    console.log('unread chats api fired');
     try {
         const chats = await ChatInq.find({unread:true});
         res.status(200).send(chats);
@@ -259,14 +253,12 @@ router.get('/chats/unread', async (req, res) => {
 // @desc: get single chat by inq id: use on leasing dashboard, triggerd by inq chat icon. 
 // @ access: Public *ToDo: update to make private
 router.get('/chat/:inq_id', async (req, res) => {
-    console.log('get single inq chat');
     try {
         let chat = await ChatInq.findOne({ inq: req.params.inq_id }).populate({path:'inq',select:'prospect',select:'listing', populate: {path:'prospect', select: 'name'}})
         if (!chat) { 
           chat = await new ChatInq({ inq: req.params.inq_id })
           chat.save(async (err, item) => {
             chat = await ChatInq.findOne(item).populate({path:'inq',select:'prospect',select:'listing', populate: {path:'prospect', select: 'name'}})
-            console.log(chat)
             res.status(200).send(chat);
           })
         } else {

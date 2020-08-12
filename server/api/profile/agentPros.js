@@ -102,10 +102,7 @@ router.put("/addPhone/:id", async (req, res) => {
             agent.phoneNumbers.length ? newPhoneNumbers = agent.phoneNumbers : isPrimary = true
             newPhoneNumbers.push({ number, isPrimary, okToText });
         }
-        await agent.set({
-            ...agent,
-            phoneNumbers: newPhoneNumbers
-        })
+        agent.phoneNumbers = newPhoneNumbers
         await agent.save();
         
         res.status(200).send(agent);
@@ -123,10 +120,7 @@ router.put("/editPhone/:id", async (req, res) => {
         if (!req.body.phoneNumbers.length) { throw "can not edit email" }
         //ToDo: validte number and add numType to phone record
         let agent = await Agent.findById(req.params.id)
-        await agent.set({
-            ...agent,
-            ...req.body
-        })
+        agent.phoneNumbers = req.body.phoneNumbers
         await agent.save();
         res.status(200).send(agent);
     } catch (err) {
@@ -142,7 +136,6 @@ router.put("/addEmail/:id", async (req, res) => {
     try {
         let { address, isPrimary } = req.body
         let agent = await Agent.findById(req.params.id).populate('office')
-        console.log(req.body);
         let newEmails = [];
         if (req.body.isPrimary) {
             newEmails = agent.email && agent.email.map((item) => {
@@ -156,12 +149,8 @@ router.put("/addEmail/:id", async (req, res) => {
             agent.email.length ? newEmails = agent.email : isPrimary = true
             newEmails.push({ address, isPrimary });
         }
-
-        await agent.set({
-            ...agent,
-            email: newEmails
-        })
-        await agent.save();
+        agent.email = req.body.email
+        await agent.save()
         res.status(200).send(agent);
     } catch (err) {
         console.error(err)
@@ -177,11 +166,8 @@ router.put("/editEmail/:id", async (req, res) => {
     try {
         if (!req.body.email.length) { throw "can not edit email" }
         const agent = await Agent.findById(req.params.id)
-        await agent.set({
-            ...agent,
-            email: req.body.email
-        })
-        await agent.save();
+        agent.email = req.body.email
+        await agent.save()
         res.status(200).send(agent);
     } catch (err) {
         console.error(err)
@@ -195,10 +181,7 @@ router.put("/editEmail/:id", async (req, res) => {
 router.put("/editStatus/:id", async (req, res) => {
     try {
         let agent = await Agent.findById(req.params.id)
-        await agent.set({
-            ...agent,
-            status: req.body.status
-        })
+        agent.status = req.body.status
         await agent.save();
         res.status(200).send(agent);
     } catch (err) {
@@ -381,7 +364,6 @@ router.post('/audiences', async (req,res) => {
   const {name, filters, audience} = req.body
   const audienceData = new AudienceModel({name, filters, audience, profileType: 'agentPros'});
   await audienceData.save()
-  console.log('Audience saved')
   res.json({result: 'ok'})
 })
 
@@ -402,7 +384,6 @@ router.post('/filters', async (req,res) => {
   const {name, filters} = req.body
   const filter = new FilterModel({name, filters,  profileType: 'agentPros'});
   await filter.save()
-  console.log('Filter saved')
   res.json({result: 'ok'})
 })
 

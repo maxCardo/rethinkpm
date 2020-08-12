@@ -22,7 +22,6 @@ const ArrayFields = ({orderKey, filterFields, onChange, prop, options}) => {
     }
 
     useLayoutEffect(() => {
-        console.log(state.value);
         (state.type.value && (state.type.value !== 'noFilter') && (state.value === '' || state.value === null)) && selectInput.current.focus();
     });
 

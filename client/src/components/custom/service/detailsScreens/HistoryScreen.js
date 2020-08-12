@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Table from '../../Table'
+import Table from '../../../core/Table'
 import { Form, Modal, Button } from 'react-bootstrap'
 import './screens.css'
 
