@@ -2,8 +2,9 @@ const express = require('express');
 const {sendEmail} = require('../3ps/email')
 const AgentModel = require('../db/models/prospects/agentPros/agent')
 const OfficeModel = require('../db/models/sales/office')
-const AudienceModel = require('../db/models/prospects/audience')
-const FilterModel = require('../db/models/prospects/filters')
+const AudienceModel = require('../db/models/sales/audience')
+const FilterModel = require('../db/models/sales/filters')
+const SalesListings = require('../db/models/Ops/SalesListings')
 
 const router = express.Router();
 
@@ -73,6 +74,11 @@ router.get('/agents', async (req,res) => {
 router.get('/offices', async(req,res) => {
   const offices = await OfficeModel.find({})
   res.json(offices)
+})
+
+router.get('/listings', async (req,res) => {
+  const listings = await SalesListings.find({})
+  res.json(listings)
 })
 
 

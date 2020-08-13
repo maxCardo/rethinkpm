@@ -18,6 +18,7 @@ import ServiceReq from './components/custom/service/ServiceReq';
 import ServiceTicket from './components/custom/service/ServiceTicket';
 import Profile from './components/custom/profile/Profile'
 import ChatScreen from './components/custom/Chat/ChatScreen'
+import Listings from './components/custom/Listings/Listings'
 import {loadUser} from './actions/auth';
 import {receiveSMS} from './actions/profile'
 import { connect } from 'react-redux';
@@ -68,6 +69,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/profile/rentPros' component={Profile} additionalProps={{ settings: routeSettings.profile.rentPros }} />
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
+            <PrivateRoute exact path='/listings' component={Listings} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
           <Alert  />
