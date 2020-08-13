@@ -51,6 +51,12 @@ const Navbar = ({auth: {isAuthenticated, loginInProgress}, logout}) => {
                   <span>Communications</span>
                 </Link>
             </li>
+            <li>
+                <Link to='/marketplace'>
+                  <CommunicationIcon />
+                  <span>Marketplace</span>
+                </Link>
+            </li>
             {/* <li><Link to="/rentroll">Current Rentals</Link></li>
             <li><Link to="/acquisition">New Acquisition</Link></li> */}
             <li>
