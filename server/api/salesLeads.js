@@ -75,7 +75,7 @@ router.get('/offices', async(req,res) => {
 })
 
 router.get('/listings', async (req,res) => {
-  const listings = await SalesListings.find({})
+  const listings = await SalesListings.find({}).limit(100)
   res.json(listings)
 })
 

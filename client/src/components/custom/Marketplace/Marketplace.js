@@ -44,7 +44,7 @@ export class Listings extends Component {
         label: 'Actions',
         render: (item) => (
           <div>
-            <a href={`http://google.com/search?q=${item.streetName}`}>
+            <a href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
               <i class="fas fa-link"></i>
             </a>
             <a>
