@@ -7,13 +7,13 @@
   display: flex;
   flex-direction: row;
   height: 70px;
-  border-bottom: 1px solid black;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   background-color: white;
 }
 
 .kpi-item__container {
-  width: 150px;
-  border-right: 1px solid black;
+  flex: 1;
+  border-right: 1px solid #CCC;
   padding: 10px 20px;
 }
 
