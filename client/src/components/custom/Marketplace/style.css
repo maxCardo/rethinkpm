@@ -1,0 +1,43 @@
+.marketplace__table-icon {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.kpi-bar__container {
+  display: flex;
+  flex-direction: row;
+  height: 70px;
+  border-bottom: 1px solid black;
+  background-color: white;
+}
+
+.kpi-item__container {
+  width: 150px;
+  border-right: 1px solid black;
+  padding: 10px 20px;
+}
+
+.kpi-item__title {
+  font-size: 10px;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.kpi-item__number {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.kpi-item__variation{
+  margin-left: 5px;
+}
+
+.kpi-item__positive-variation {
+  color: green;
+}
+
+.kpi-item__negative-variation {
+  color: red;
+}

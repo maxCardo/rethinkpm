@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import Table from '../../core/Table'
 import Loading from '../../core/LoadingScreen/Loading';
+import './style.css'
+import KpiBar from './KpiBar';
 
 export class Listings extends Component {
   constructor(props) {
@@ -44,19 +46,19 @@ export class Listings extends Component {
         label: 'Actions',
         render: (item) => (
           <div>
-            <a href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
+            <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
               <i class="fas fa-link"></i>
             </a>
-            <a>
+            <a className='marketplace__table-icon'>
               <i class="fas fa-plus"></i>
             </a>
-            <a>
+            <a className='marketplace__table-icon'>
               <i class="fas fa-check"></i>
             </a>
-            <a>
+            <a className='marketplace__table-icon'>
               <i class="fas fa-adjust"></i>
             </a>
-            <a>
+            <a className='marketplace__table-icon'>
               <i class="fas fa-times"></i>
             </a>
           </div>
@@ -73,6 +75,7 @@ export class Listings extends Component {
   render() {
     return this.state.loading ? <Loading /> : (
       <div>
+        <KpiBar />
         <div className='searchContainer agentsSearchContainer'>
           <input 
             className='form-control searchInput' 
