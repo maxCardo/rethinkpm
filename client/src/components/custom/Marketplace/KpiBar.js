@@ -7,15 +7,15 @@ export class KpiBar extends Component {
     this.kpis= [
       {
         title: '# of listings',
-        endpoint: '/api/kpis/numberOfListings'
+        endpoint: '/api/sales/kpi/numberOfListings'
       },
       {
         title: '# of days from active to contigent',
-        endpoint: '/api/kpis/numberOfListings'
+        endpoint: '/api/sales/kpi/numberOfListings'
       },
       {
         title: 'Avg sale price',
-        endpoint: '/api/kpis/numberOfListings'
+        endpoint: '/api/sales/kpi/numberOfListings'
       },
     ]
   }

@@ -79,5 +79,12 @@ router.get('/listings', async (req,res) => {
   res.json(listings)
 })
 
+router.get('/kpi/numberOfListings', async (req, res) => {
+  const actualNumber = 9000 + Math.floor(Math.random()*2000)
+  const pastNumber = 9000 + Math.floor(Math.random()*2000)
+  const porcentualChange = (((actualNumber - pastNumber) / pastNumber) * 100).toFixed(2)
+  res.json({actualNumber, porcentualChange})
+})
+
 
 module.exports = router;
