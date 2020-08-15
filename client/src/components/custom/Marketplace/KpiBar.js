@@ -1,10 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import KpiItem from './KpiItem'
 
-export class KpiBar extends Component {
-  constructor(props) {
-    super(props);
-    this.kpis= [
+const KPIS = [
       {
         title: '# of listings',
         endpoint: '/api/sales/kpi/numberOfListings'
@@ -18,16 +15,15 @@ export class KpiBar extends Component {
         endpoint: '/api/sales/kpi/numberOfListings'
       },
     ]
-  }
-  render() {
-    return (
-      <div className='kpi-bar__container'>
-        {this.kpis.map((kpi) => (
-          <KpiItem title={kpi.title} endpoint={kpi.endpoint} />
-        ))}
-      </div>
-    )
-  }
+
+const KpiBar = () => {
+  return (
+    <div className='kpi-bar__container'>
+      {KPIS.map((kpi) => (
+        <KpiItem title={kpi.title} endpoint={kpi.endpoint} />
+      ))}
+    </div>
+  )
 }
 
 export default KpiBar
