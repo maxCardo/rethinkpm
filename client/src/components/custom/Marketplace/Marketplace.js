@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Table from '../../core/Table'
+import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
-import './style.css'
+import './style.css';
 import KpiBar from './KpiBar';
+import FilterModal from '../../core/filterModal/FilterModal';
 
 const HEADERS = [
   {
@@ -60,10 +61,60 @@ const HEADERS = [
   }
 ]
 
+const FILTERFIELDS = {
+  type: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Type", 
+    dataType:"array", 
+    accessor:"type"
+  },
+  numberOfBedrooms: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Number of bedrooms", 
+    dataType:"number", 
+    accessor:"bedrooms"
+  },
+  numberOfBathrooms: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Number of bathrooms", 
+    dataType:"number", 
+    accessor:"bathsFull"
+  },
+  zipcode: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Zipcode", 
+    dataType:"array", 
+    accessor:"zipcode"
+  },
+}
+
+const FILTEROPTIONS = {
+  type : [
+    {value: 'res', label: 'Residential'}
+  ]
+}
+
 const Marketplace = () => {
   const [loading, setLoading] = useState(false)
   const [listings, setListings] = useState([])
   const [filterString, setFilterString] = useState('')
+  const [showFilterModal, setShowFilterModal] = useState(false)
 
   const fetchData = async () => {
     setLoading(true)
@@ -72,6 +123,16 @@ const Marketplace = () => {
     setListings(listings)
     setLoading(false)
   }
+
+  const submitFilterModal = (filters) => {
+    const data = {
+      filters,
+    }
+    const res = await axios.post(`/api/sales/listings/filter`, data, config);
+    console.log(res)
+  }
+
+
 
   useEffect(async () => {
     fetchData()
@@ -87,6 +148,9 @@ const Marketplace = () => {
           onChange={(e) => setFilterString(e.target.value)} 
           placeholder='Search' 
         />
+        <button className='marketplace__filter-icon' onClick={() => setShowFilterModal(true)}>
+          <i className="fas fa-filter"></i>
+        </button>
       </div>
       <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
         <div className="col-12" >
@@ -100,6 +164,13 @@ const Marketplace = () => {
           />
         </div>
       </div>
+      <FilterModal 
+        show={showFilterModal} 
+        filterFields={FILTERFIELDS} 
+        options={FILTEROPTIONS} 
+        handleClose={() => setShowFilterModal(false)}
+        onSubmit={submitFilterModal}
+      />
     </div>
   )
 }
