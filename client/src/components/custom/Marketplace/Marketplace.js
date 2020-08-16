@@ -124,12 +124,16 @@ const Marketplace = () => {
     setLoading(false)
   }
 
-  const submitFilterModal = (filters) => {
+  const submitFilterModal = async (filters) => {
+    setLoading(true)
     const data = {
       filters,
     }
-    const res = await axios.post(`/api/sales/listings/filter`, data, config);
-    console.log(res)
+    const res = await axios.post(`/api/sales/listings/filter`, data);
+    const listings = res.data.record;
+    console.log(listings)
+    setListings(listings)
+    setLoading(false)
   }
 
 
