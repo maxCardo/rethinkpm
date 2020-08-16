@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React , {Fragment, useState} from 'react'
+import React , {Fragment, useState, useEffect} from 'react'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap';
 import {checkBoxCheck} from '../../../../util/commonFunctions'
@@ -10,11 +10,14 @@ const NumberFields = ({ filterFields, onChange, prop, orderKey }) => {
     const [useFilter, setUseFilter] = useState(false)
     const { name, type, value, secondValue } = filterFields
 
+    useEffect(() => {
+      onChange(prop, state)
+    }, [state])
+
     const callChange = (property, value) => {
         setState((prevState) => {
             const newState = Object.assign({}, prevState)
             newState[property] = value
-            onChange(prop, newState)
             return newState
         })
     }

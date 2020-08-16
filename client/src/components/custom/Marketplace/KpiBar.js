@@ -39,8 +39,8 @@ const KPIS = [
 const KpiBar = () => {
   return (
     <div className='kpi-bar__container'>
-      {KPIS.map((kpi) => (
-        <KpiItem title={kpi.title} endpoint={kpi.endpoint} />
+      {KPIS.map((kpi, index) => (
+        <KpiItem title={kpi.title} endpoint={kpi.endpoint} key={index} />
       ))}
     </div>
   )

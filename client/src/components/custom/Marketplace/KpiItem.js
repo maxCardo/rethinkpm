@@ -20,21 +20,21 @@ const KpiItem = ({title, endpoint}) => {
   if(porcentualChange > 0) {
     variationBlock = (
       <span className='kpi-item__variation kpi-item__positive-variation'>
-        <i class="fas fa-long-arrow-alt-up"></i>
+        <i className="fas fa-long-arrow-alt-up"></i>
         {porcentualChange}%
       </span>
     )
   } else if(porcentualChange < 0) {
     variationBlock = (
       <span className='kpi-item__variation kpi-item__negative-variation'>
-        <i class="fas fa-long-arrow-alt-down"></i>
+        <i className="fas fa-long-arrow-alt-down"></i>
         {porcentualChange * -1}%
       </span>
     )
   } else {
     variationBlock = (
       <span className='kpi-item__variation'>
-        <i class="fas fa-long-arrow-alt-right"></i>
+        <i className="fas fa-long-arrow-alt-right"></i>
         {porcentualChange}%
       </span>
     )

@@ -42,19 +42,19 @@ const HEADERS = [
     render: (item) => (
       <div>
         <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
-          <i class="fas fa-link"></i>
+          <i className="fas fa-link"></i>
         </a>
         <a className='marketplace__table-icon'>
-          <i class="fas fa-plus"></i>
+          <i className="fas fa-plus"></i>
         </a>
         <a className='marketplace__table-icon'>
-          <i class="fas fa-check"></i>
+          <i className="fas fa-check"></i>
         </a>
         <a className='marketplace__table-icon'>
-          <i class="fas fa-adjust"></i>
+          <i className="fas fa-adjust"></i>
         </a>
         <a className='marketplace__table-icon'>
-          <i class="fas fa-times"></i>
+          <i className="fas fa-times"></i>
         </a>
       </div>
     )
@@ -116,9 +116,9 @@ const Marketplace = () => {
   const [filterString, setFilterString] = useState('')
   const [showFilterModal, setShowFilterModal] = useState(false)
 
-  const fetchData = async () => {
+  const fetchData = async (cancelToken) => {
     setLoading(true)
-    const res = await axios.get(`/api/sales/listings`);
+    const res = await axios.get(`/api/sales/listings`, {cancelToken});
     const listings = res.data;
     setListings(listings)
     setLoading(false)
@@ -138,8 +138,13 @@ const Marketplace = () => {
 
 
 
-  useEffect(async () => {
-    fetchData()
+  useEffect(() => {
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    fetchData(source.token)
+    return () => {
+      source.cancel('Component unmounted');
+    }
   },[])
 
   return loading ? <Loading /> : (
