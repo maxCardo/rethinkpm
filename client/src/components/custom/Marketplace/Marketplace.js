@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
@@ -111,9 +111,11 @@ const FILTEROPTIONS = {
 }
 
 const Marketplace = () => {
+  
   const [loading, setLoading] = useState(false)
   const [listings, setListings] = useState([])
   const [filterString, setFilterString] = useState('')
+  const [filters, setFilters] = useState(undefined)
   const [showFilterModal, setShowFilterModal] = useState(false)
 
   const fetchData = async (cancelToken) => {
@@ -124,16 +126,23 @@ const Marketplace = () => {
     setLoading(false)
   }
 
-  const submitFilterModal = async (filters) => {
+  const submitFilterModal = async (selectedFilters) => {
     setLoading(true)
     const data = {
-      filters,
+      filters: selectedFilters,
     }
     const res = await axios.post(`/api/sales/listings/filter`, data);
     const listings = res.data.record;
+    const filters = res.data.filters
     console.log(listings)
+    setFilters(filters)
     setListings(listings)
     setLoading(false)
+  }
+
+  const clearFilter = () => {
+    setFilters(undefined)
+    fetchData()
   }
 
 
@@ -157,9 +166,18 @@ const Marketplace = () => {
           onChange={(e) => setFilterString(e.target.value)} 
           placeholder='Search' 
         />
-        <button className='marketplace__filter-icon' onClick={() => setShowFilterModal(true)}>
-          <i className="fas fa-filter"></i>
-        </button>
+        <div className='marketplace__filter-icons'>
+          {filters &&
+            <Fragment>
+              <button onClick={() => {}}>Save filter</button>
+              <button onClick={clearFilter}>Clear filter</button>
+            </Fragment>
+          }
+          <button onClick={() => setShowFilterModal(true)}>
+            <i className="fas fa-filter"></i>
+          </button>
+        </div>
+        
       </div>
       <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
         <div className="col-12" >
