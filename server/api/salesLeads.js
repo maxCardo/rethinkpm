@@ -155,5 +155,11 @@ function convertFiltersToQuery(filters) {
   return queryObj
 }
 
+router.post('/recommendToBuyer', (req, res) => {
+  const {property, buyers} = req.body
+  console.log(`Recommending property ${property} to buyers ${buyers}`)
+  res.json({ok: true})
+})
+
 
 module.exports = router;
