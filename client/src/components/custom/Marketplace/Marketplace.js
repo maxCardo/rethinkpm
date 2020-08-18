@@ -113,9 +113,6 @@ const Marketplace = () => {
             <i className="fas fa-check"></i>
           </a>
           <a className='marketplace__table-icon'>
-            <i className="fas fa-adjust"></i>
-          </a>
-          <a className='marketplace__table-icon'>
             <i className="fas fa-times"></i>
           </a>
         </div>
