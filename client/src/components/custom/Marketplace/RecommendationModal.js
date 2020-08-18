@@ -6,16 +6,21 @@ import axios from 'axios';
 const RecommendationModal = ({show, handleClose, handleSubmit}) => {
   const [buyers, setBuyers] = useState([])
   const [selectedBuyers, setSelectedBuyers] = useState([])
-  const loadBuyers = async () => {
+  const loadBuyers = async (cancelToken) => {
     const data = {
       filters: {}
     }
-    const res = await axios.post('/api/profile/buyerPros/filter', data)
+    const res = await axios.post('/api/profile/buyerPros/filter', data, {cancelToken})
     const buyerOptions = res.data.record.map((buyer) => ({label: buyer.fullName, value: buyer._id}))
     setBuyers(buyerOptions)
   }
   useEffect(() => {
-    loadBuyers()
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    loadBuyers(source.token)
+    return () => {
+      source.cancel('Component unmounted');
+    }
   }, [])
 
   const onSubmit = () => {
@@ -38,6 +43,7 @@ const RecommendationModal = ({show, handleClose, handleSubmit}) => {
           <Select
             isMulti
             name="buyers"
+            placeholder="Select Buyers..."
             options={buyers}
             onChange={handleSelectChange}
           />
