@@ -6,6 +6,7 @@ import axios from 'axios';
 const RecommendationModal = ({show, handleClose, handleSubmit}) => {
   const [buyers, setBuyers] = useState([])
   const [selectedBuyers, setSelectedBuyers] = useState([])
+  const [customMessage, setCustomMessage] = useState('')
   const loadBuyers = async (cancelToken) => {
     const data = {
       filters: {}
@@ -25,12 +26,16 @@ const RecommendationModal = ({show, handleClose, handleSubmit}) => {
 
   const onSubmit = () => {
     const selectedBuyersIds = selectedBuyers.map(buyer => buyer.value)
-    handleSubmit(selectedBuyersIds)
+    handleSubmit(selectedBuyersIds, customMessage)
     handleClose()
   }
   
   const handleSelectChange = (newValue) => {
     setSelectedBuyers(newValue);
+  }
+
+  const handleTextAreaChange = (event) => {
+    setCustomMessage(event.target.value)
   }
 
   return (
@@ -47,6 +52,9 @@ const RecommendationModal = ({show, handleClose, handleSubmit}) => {
             options={buyers}
             onChange={handleSelectChange}
           />
+          <div style={{marginTop: 10}}>
+            <Form.Control as="textarea" rows="3" placeholder="Write a custom message..." onChange={handleTextAreaChange}/>
+          </div>
         </Form>
       </Modal.Body>
       <Modal.Footer>

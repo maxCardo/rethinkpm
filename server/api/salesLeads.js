@@ -156,8 +156,8 @@ function convertFiltersToQuery(filters) {
 }
 
 router.post('/recommendToBuyer', (req, res) => {
-  const {property, buyers} = req.body
-  console.log(`Recommending property ${property} to buyers ${buyers}`)
+  const {property, buyers, customMessage} = req.body
+  console.log(`Recommending property ${property} to buyers ${buyers} with message: ${customMessage}`)
   res.json({ok: true})
 })
 

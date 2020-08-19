@@ -152,10 +152,11 @@ const Marketplace = () => {
     setFocusedProperty(propertyId)
   }
 
-  const submitRecommendationModal = (buyers) => {
+  const submitRecommendationModal = (buyers, customMessage) => {
     const data = {
       property: focusedProperty,
-      buyers: buyers
+      buyers: buyers,
+      customMessage: customMessage
     }
     axios.post('/api/sales/recommendToBuyer', data)
   }
