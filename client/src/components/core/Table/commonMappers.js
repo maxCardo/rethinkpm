@@ -13,6 +13,18 @@ function date(data) {
   return new Intl.DateTimeFormat().format(new Date(data))
 }
 
+function money(data) {
+  if(!data) {
+    return ''
+  } else {
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+    return formatter.format(data)
+  }
+}
+
 function phoneArray(data) {
   if (!data) return '';
   let phoneNumber = '';
@@ -44,6 +56,7 @@ function emailArray(data) {
 const mappers = {
   phone,
   date,
+  money,
   phoneArray,
   emailArray
 }
