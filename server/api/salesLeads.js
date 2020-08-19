@@ -2,7 +2,9 @@ const express = require('express');
 const {sendEmail} = require('../3ps/email')
 const AgentModel = require('../db/models/prospects/agentPros/agent')
 const OfficeModel = require('../db/models/sales/office')
-const SalesListings = require('../db/models/Ops/SalesListings')
+const SalesListings = require('../db/models/Ops/SalesListings');
+const BuyerPros = require('../db/models/prospects/BuyerPros');
+const {sendRecomendationEmail} = require('../3ps/email')
 
 const router = express.Router();
 
@@ -155,9 +157,13 @@ function convertFiltersToQuery(filters) {
   return queryObj
 }
 
-router.post('/recommendToBuyer', (req, res) => {
-  const {property, buyers, customMessage} = req.body
-  console.log(`Recommending property ${property} to buyers ${buyers} with message: ${customMessage}`)
+router.post('/recommendToBuyer', async (req, res) => {
+  const {property : propertyId, buyers : buyersId, customMessage} = req.body
+  const property = await SalesListings.findById(propertyId)
+  const buyers = await Promise.all(buyersId.map((buyerId) => BuyerPros.findById(buyerId)))
+  buyers.forEach((buyer) => {
+    sendRecomendationEmail(property, buyer, customMessage)
+  })
   res.json({ok: true})
 })
 
