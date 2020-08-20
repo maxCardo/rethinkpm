@@ -6,6 +6,7 @@ import './style.css';
 import KpiBar from './KpiBar';
 import FilterModal from '../../core/filterModal/FilterModal';
 import RecommendationModal from './RecommendationModal';
+import Select from 'react-select'
 
 
 
@@ -175,13 +176,25 @@ const Marketplace = () => {
   return loading ? <Loading /> : (
     <div>
       <KpiBar />
+      <div>
+      </div>
       <div className='searchContainer agentsSearchContainer'>
-        <input 
-          className='form-control searchInput' 
-          tabIndex={0}
-          onChange={(e) => setFilterString(e.target.value)} 
-          placeholder='Search' 
-        />
+        <div style={{display: 'flex'}}>
+          <Select
+            className="marketplace__filter-select"
+            onChange={v => {}}
+            defaultValue="All"
+            options={[]}
+            placeholder='Select Filter'
+            value={undefined}
+          />
+          <input 
+            className='form-control searchInput' 
+            tabIndex={0}
+            onChange={(e) => setFilterString(e.target.value)} 
+            placeholder='Search' 
+          />
+        </div>
         <div className='marketplace__filter-icons'>
           {filters &&
             <Fragment>
