@@ -5,61 +5,9 @@ import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
 import KpiBar from './KpiBar';
 import FilterModal from '../../core/filterModal/FilterModal';
+import RecommendationModal from './RecommendationModal';
 
-const HEADERS = [
-  {
-    accessor: "propertyType",
-    label: "Type"
-  },
-  {
-    accessor: "county",
-    label: "Area"
-  },
-  {
-    accessor: "streetName",
-    label: "Address"
-  },
-  {
-    accessor: 'listPrice',
-    label: 'List Price',
-    mapper: 'money'
-  },
-  {
-    accessor: 'bedrooms',
-    label: 'Bedrooms'
-  },
-  {
-    accessor: 'bathsFull',
-    label: 'Full Bath'
-  },
-  {
-    accessor: 'bathsPartial',
-    label: 'Partial Bath'
-  },
-  {
-    reactComponent: true,
-    label: 'Actions',
-    render: (item) => (
-      <div>
-        <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
-          <i className="fas fa-link"></i>
-        </a>
-        <a className='marketplace__table-icon'>
-          <i className="fas fa-plus"></i>
-        </a>
-        <a className='marketplace__table-icon'>
-          <i className="fas fa-check"></i>
-        </a>
-        <a className='marketplace__table-icon'>
-          <i className="fas fa-adjust"></i>
-        </a>
-        <a className='marketplace__table-icon'>
-          <i className="fas fa-times"></i>
-        </a>
-      </div>
-    )
-  }
-]
+
 
 const FILTERFIELDS = {
   type: {
@@ -117,6 +65,60 @@ const Marketplace = () => {
   const [filterString, setFilterString] = useState('')
   const [filters, setFilters] = useState(undefined)
   const [showFilterModal, setShowFilterModal] = useState(false)
+  const [showRecommendationModal, setShowRecommendationModal] = useState(false)
+  const [focusedProperty, setFocusedProperty] = useState(undefined)
+
+  const HEADERS = [
+    {
+      accessor: "propertyType",
+      label: "Type"
+    },
+    {
+      accessor: "county",
+      label: "Area"
+    },
+    {
+      accessor: "streetName",
+      label: "Address"
+    },
+    {
+      accessor: 'listPrice',
+      label: 'List Price',
+      mapper: 'money'
+    },
+    {
+      accessor: 'bedrooms',
+      label: 'Bedrooms'
+    },
+    {
+      accessor: 'bathsFull',
+      label: 'Full Bath'
+    },
+    {
+      accessor: 'bathsPartial',
+      label: 'Partial Bath'
+    },
+    {
+      reactComponent: true,
+      label: 'Actions',
+      render: (item) => (
+        <div>
+          <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
+            <i className="fas fa-link"></i>
+          </a>
+          <a className='marketplace__table-icon'>
+            <i className="fas fa-plus"></i>
+          </a>
+          <a className='marketplace__table-icon' onClick={() => startRecommendationFlow(item._id)}>
+            <i className="fas fa-check"></i>
+          </a>
+          <a className='marketplace__table-icon'>
+            <i className="fas fa-times"></i>
+          </a>
+        </div>
+      )
+    }
+  ]
 
   const fetchData = async (cancelToken) => {
     setLoading(true)
@@ -143,6 +145,20 @@ const Marketplace = () => {
   const clearFilter = () => {
     setFilters(undefined)
     fetchData()
+  }
+
+  const startRecommendationFlow = (propertyId) => {
+    setShowRecommendationModal(true)
+    setFocusedProperty(propertyId)
+  }
+
+  const submitRecommendationModal = (buyers, customMessage) => {
+    const data = {
+      property: focusedProperty,
+      buyers: buyers,
+      customMessage: customMessage
+    }
+    axios.post('/api/sales/recommendToBuyer', data)
   }
 
 
@@ -198,6 +214,7 @@ const Marketplace = () => {
         handleClose={() => setShowFilterModal(false)}
         onSubmit={submitFilterModal}
       />
+      <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
     </div>
   )
 }
