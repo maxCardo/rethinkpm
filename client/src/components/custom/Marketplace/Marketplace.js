@@ -6,6 +6,7 @@ import './style.css';
 import KpiBar from './KpiBar';
 import FilterModal from '../../core/filterModal/FilterModal';
 import RecommendationModal from './RecommendationModal';
+import SaveFilterModal from './SaveFilterModal'
 import Select from 'react-select'
 
 
@@ -68,6 +69,7 @@ const Marketplace = () => {
   const [showFilterModal, setShowFilterModal] = useState(false)
   const [showRecommendationModal, setShowRecommendationModal] = useState(false)
   const [focusedProperty, setFocusedProperty] = useState(undefined)
+  const [showSaveFilterModal, setShowSaveFilterModal] = useState(false);
 
   const HEADERS = [
     {
@@ -148,6 +150,10 @@ const Marketplace = () => {
     fetchData()
   }
 
+  const saveFilter = () => {
+    setShowSaveFilterModal(true)
+  }
+
   const startRecommendationFlow = (propertyId) => {
     setShowRecommendationModal(true)
     setFocusedProperty(propertyId)
@@ -160,6 +166,14 @@ const Marketplace = () => {
       customMessage: customMessage
     }
     axios.post('/api/marketplace/ops/recommend', data)
+  }
+
+  const submitSaveFilterModal = (name) => {
+    const data = {
+      name,
+      filters
+    }
+    axios.post('/api/marketplace/ops/filters', data)
   }
 
 
@@ -198,7 +212,7 @@ const Marketplace = () => {
         <div className='marketplace__filter-icons'>
           {filters &&
             <Fragment>
-              <button onClick={() => {}}>Save filter</button>
+              <button onClick={saveFilter}>Save filter</button>
               <button onClick={clearFilter}>Clear filter</button>
             </Fragment>
           }
@@ -228,6 +242,7 @@ const Marketplace = () => {
         onSubmit={submitFilterModal}
       />
       <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
+      <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
     </div>
   )
 }

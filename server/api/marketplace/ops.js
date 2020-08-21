@@ -1,11 +1,12 @@
 const express = require('express')
 const {sendEmail} = require('../../3ps/email')
 const SalesListings = require('../../db/models/sales/SalesListings')
+const MarketFilter = require('../../db/models/sales/MarketFilter')
 
 const router = express.Router()
 
 
-// @route: post /api/marketPlace/ops
+// @route: post /api/marketPlace/ops/recommend
 // @desc: 
 // @ access: Public 
 router.post('/recommend', async (req, res) => {
@@ -31,6 +32,18 @@ router.post('/recommend', async (req, res) => {
         res.status(500).send('server error')
     }
 })
+
+// @route: post /api/marketPlace/ops/recommend
+// @desc: 
+// @ access: Public 
+router.post('/filters', async (req, res) => {
+  const {name, filters} = req.body
+  const marketFilter = new MarketFilter({name, filters})
+  await marketFilter.save()
+  res.send({ok: true})
+})
+
+
 
 
 
