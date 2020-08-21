@@ -21,7 +21,7 @@ const sendEmail = (to, subject, body, html) => {
     let sendTo;
     process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testEmail)
     let mailOptions = {
-        from: 'info@levanongrp.com',
+        from: 'no-reply@fifthgrant.com',
         to: sendTo,
         subject: subject,
         text: body,

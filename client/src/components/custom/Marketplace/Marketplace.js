@@ -159,7 +159,7 @@ const Marketplace = () => {
       buyers: buyers,
       customMessage: customMessage
     }
-    axios.post('/api/sales/recommendToBuyer', data)
+    axios.post('/api/marketplace/ops/recommend', data)
   }
 
 
