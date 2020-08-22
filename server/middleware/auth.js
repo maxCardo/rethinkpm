@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 
 const {jwtSecret} = require('../config/creds');
-const User = require('../db/models/users/User')
+const User = require('../db/models/auth/User')
 
 const auth = async (req,res,next) => {
   // x-auth token header was used for postman api, for production we will use the header in the cookie

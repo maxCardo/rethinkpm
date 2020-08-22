@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 
-const User = require('../db/models/users/User');
+const User = require('../db/models/auth/User');
 const auth = require('../middleware/auth');
 const useUnless = require('../middleware/useUnless')
 
