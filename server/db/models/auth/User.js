@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique:true
   },
+  roles : [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User' 
+  }],
   avatar:{
     type: String
   },
