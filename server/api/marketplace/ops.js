@@ -33,7 +33,7 @@ router.post('/recommend', async (req, res) => {
     }
 })
 
-// @route: post /api/marketPlace/ops/recommend
+// @route: post /api/marketPlace/ops/filters
 // @desc: 
 // @ access: Public 
 router.post('/filters', async (req, res) => {
@@ -41,6 +41,14 @@ router.post('/filters', async (req, res) => {
   const marketFilter = new MarketFilter({name, filters})
   await marketFilter.save()
   res.send({ok: true})
+})
+
+// @route: get /api/marketPlace/ops/filters
+// @desc: 
+// @ access: Public 
+router.get('/filters', async (req, res) => {
+  const filters = await MarketFilter.find({})
+  res.send({filters})
 })
 
 

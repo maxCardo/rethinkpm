@@ -70,6 +70,8 @@ const Marketplace = () => {
   const [showRecommendationModal, setShowRecommendationModal] = useState(false)
   const [focusedProperty, setFocusedProperty] = useState(undefined)
   const [showSaveFilterModal, setShowSaveFilterModal] = useState(false);
+  const [savedFilters, setSavedFilters] = useState([])
+  const [selectedFilter, setSelectedFilter] = useState(undefined)
 
   const HEADERS = [
     {
@@ -131,18 +133,28 @@ const Marketplace = () => {
     setLoading(false)
   }
 
-  const submitFilterModal = async (selectedFilters) => {
+  const fetchFilteredData = async (filters) => {
     setLoading(true)
-    const data = {
-      filters: selectedFilters,
-    }
+    const data = {filters}
     const res = await axios.post(`/api/sales/listings/filter`, data);
     const listings = res.data.record;
-    const filters = res.data.filters
+    const appliedFilters = res.data.filters
     console.log(listings)
-    setFilters(filters)
+    setFilters(appliedFilters)
     setListings(listings)
     setLoading(false)
+  }
+
+  const fetchSavedFilters = async (cancelToken) => {
+    const res = await axios.get(`/api/marketplace/ops/filters`, {cancelToken});
+    const { filters } = res.data;
+    const savedFiltersOptions = filters.map((filter) => ({label: filter.name, value: {filters: filter.filters}}))
+    setSavedFilters(savedFiltersOptions)
+  }
+
+  const submitFilterModal = async (selectedFilters) => {
+    setSelectedFilter(undefined)
+    fetchFilteredData(selectedFilters)
   }
 
   const clearFilter = () => {
@@ -168,12 +180,19 @@ const Marketplace = () => {
     axios.post('/api/marketplace/ops/recommend', data)
   }
 
-  const submitSaveFilterModal = (name) => {
+  const submitSaveFilterModal = async (name) => {
     const data = {
       name,
       filters
     }
-    axios.post('/api/marketplace/ops/filters', data)
+    await axios.post('/api/marketplace/ops/filters', data)
+    fetchSavedFilters()
+  }
+
+  const handleFilterChange = (value) => {
+    const {name, value: { filters }} = value
+    setSelectedFilter(value)
+    fetchFilteredData(filters)
   }
 
 
@@ -182,6 +201,7 @@ const Marketplace = () => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     fetchData(source.token)
+    fetchSavedFilters(source.token)
     return () => {
       source.cancel('Component unmounted');
     }
@@ -196,11 +216,11 @@ const Marketplace = () => {
         <div style={{display: 'flex'}}>
           <Select
             className="marketplace__filter-select"
-            onChange={v => {}}
+            onChange={handleFilterChange}
             defaultValue="All"
-            options={[]}
+            options={savedFilters}
             placeholder='Select Filter'
-            value={undefined}
+            value={selectedFilter}
           />
           <input 
             className='form-control searchInput' 
@@ -210,7 +230,7 @@ const Marketplace = () => {
           />
         </div>
         <div className='marketplace__filter-icons'>
-          {filters &&
+          {filters && !selectedFilter &&
             <Fragment>
               <button onClick={saveFilter}>Save filter</button>
               <button onClick={clearFilter}>Clear filter</button>
