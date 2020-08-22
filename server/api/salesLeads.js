@@ -132,6 +132,11 @@ router.post('/listings/filter', async (req, res) => {
           record.pop()
       }
 
+      const blacklist = req.body.blacklist
+      if(blacklist) {
+        record = record.filter((listing) => !blacklist.includes(listing._id.toString()))
+      }
+
       res.status(200).send({ record, filters, hasMore });
 
   } catch (error) {

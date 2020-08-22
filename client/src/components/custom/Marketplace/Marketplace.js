@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import {connect} from 'react-redux'
 import axios from 'axios';
 import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
@@ -8,6 +9,8 @@ import FilterModal from '../../core/filterModal/FilterModal';
 import RecommendationModal from './RecommendationModal';
 import SaveFilterModal from './SaveFilterModal'
 import Select from 'react-select'
+import { array } from 'prop-types';
+import {createErrorAlert} from '../../../actions/alert';
 
 
 
@@ -60,7 +63,7 @@ const FILTEROPTIONS = {
   ]
 }
 
-const Marketplace = () => {
+const Marketplace = ({createErrorAlert}) => {
   
   const [loading, setLoading] = useState(false)
   const [listings, setListings] = useState([])
@@ -117,7 +120,7 @@ const Marketplace = () => {
           <a className='marketplace__table-icon' onClick={() => startRecommendationFlow(item._id)}>
             <i className="fas fa-check"></i>
           </a>
-          <a className='marketplace__table-icon'>
+          <a className='marketplace__table-icon' onClick={() => blacklistListing(item._id)}>
             <i className="fas fa-times"></i>
           </a>
         </div>
@@ -133,9 +136,9 @@ const Marketplace = () => {
     setLoading(false)
   }
 
-  const fetchFilteredData = async (filters) => {
+  const fetchFilteredData = async (filters, blacklist) => {
     setLoading(true)
-    const data = {filters}
+    const data = {filters, blacklist}
     const res = await axios.post(`/api/sales/listings/filter`, data);
     const listings = res.data.record;
     const appliedFilters = res.data.filters
@@ -148,7 +151,7 @@ const Marketplace = () => {
   const fetchSavedFilters = async (cancelToken) => {
     const res = await axios.get(`/api/marketplace/ops/filters`, {cancelToken});
     const { filters } = res.data;
-    const savedFiltersOptions = filters.map((filter) => ({label: filter.name, value: {filters: filter.filters}}))
+    const savedFiltersOptions = filters.map((filter) => ({label: filter.name, value: {filters: filter.filters, _id: filter._id, blacklist: filter.blacklist}}))
     setSavedFilters(savedFiltersOptions)
   }
 
@@ -190,9 +193,20 @@ const Marketplace = () => {
   }
 
   const handleFilterChange = (value) => {
-    const {name, value: { filters }} = value
+    const {name, value: { filters, blacklist }} = value
     setSelectedFilter(value)
-    fetchFilteredData(filters)
+    fetchFilteredData(filters, blacklist)
+  }
+
+  const blacklistListing = (listingId) => {
+    if(!selectedFilter) {
+      createErrorAlert('You need to save the filter before blacklisting a property')
+      return;
+    } else {
+      axios.post(`/api/marketplace/ops/filters/${selectedFilter.value._id}/blackList`, {listingId})
+      const listingsBlacklisted = listings.filter((listing) => listing._id !== listingId)
+      setListings(listingsBlacklisted)
+    }
   }
 
 
@@ -267,4 +281,4 @@ const Marketplace = () => {
   )
 }
 
-export default Marketplace
+export default connect(undefined, {createErrorAlert})(Marketplace)

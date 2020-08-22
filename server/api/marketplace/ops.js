@@ -51,6 +51,14 @@ router.get('/filters', async (req, res) => {
   res.send({filters})
 })
 
+router.post('/filters/:filterId/blacklist', async (req, res) => {
+  const {filterId} = req.params;
+  const {listingId} = req.body;
+  const marketFilter = await MarketFilter.findById(filterId)
+  marketFilter.blacklist.push(listingId)
+  await marketFilter.save()
+})
+;
 
 
 
