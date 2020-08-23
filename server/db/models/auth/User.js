@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   },
   roles : [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User' 
+    ref: 'Role' 
   }],
   avatar:{
     type: String

@@ -40,6 +40,7 @@ app.use('/api/rent_lead', require('./api/rentLead'));
 app.use('/api/comms', require('./api/comms'));
 app.use('/api/profile', require('./api/profile/profile'));
 app.use('/api/marketplace', require('./api/marketPlace'));
+app.use('/api/testAuth', require('./api/testAuth'));
 
 //Socket.io socket and API calls
 require('./socket/chat')(io);
