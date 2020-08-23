@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
+const requirePermission = require('../../middleware/requirePermission')
 const mongoose = require('mongoose')
 
 const Agent = require('../../db/models/prospects/agentPros/agent')
@@ -19,7 +20,7 @@ const areaOptions = require('../../config/supportData/areas')
 const router = express.Router();
 
 router.use(auth)
-
+router.use(requirePermission('ACCESS_AGENT_BLOCK'))
 // @route: GET /api/profile/agentPros;
 // @desc: Get single profile when loading profile screen (agentPros) 
 // @ access: Public * ToDo: update to make private

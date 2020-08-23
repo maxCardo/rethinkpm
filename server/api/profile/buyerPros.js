@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
+const requirePermission = require('../../middleware/requirePermission')
 
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const FilterModel = require('../../db/models/prospects/filters')
@@ -17,6 +18,7 @@ const router = express.Router();
 const model = BuyerPros
 
 router.use(auth)
+router.use(requirePermission('ACCESS_BUYER_BLOCK'))
 
 
 // @route: POST /api/profile/buyerPros;
