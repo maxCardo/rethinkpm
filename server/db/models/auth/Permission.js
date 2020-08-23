@@ -6,7 +6,11 @@ const permissionSchema = new mongoose.Schema({
   },
   code: {
     type: String
-  }
+  },
+  navigationRoutes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'NavigationRoute' 
+  }]
 });
 
 

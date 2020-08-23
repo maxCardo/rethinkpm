@@ -7,7 +7,7 @@ import './App.css';
 
 //Components
 import PrivateRoute from './components/core/routing/PrivateRoute';
-import Navbar from './components/core/Navbar';
+import Navbar from './components/core/Navbar/Navbar';
 import Landing from './components/custom/Landing';
 import Login from './components/core/Login';
 import Register from './components/core/Register';

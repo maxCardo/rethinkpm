@@ -5,6 +5,7 @@ const {jwtSecret} = require('../config/creds');
 const User = require('../db/models/auth/User')
 const Role = require('../db/models/auth/Role')
 const Permission = require('../db/models/auth/Permission')
+const NavigationRoute = require('../db/models/auth/NavigationRoute')
 
 const auth = async (req,res,next) => {
   // x-auth token header was used for postman api, for production we will use the header in the cookie
@@ -18,7 +19,10 @@ const auth = async (req,res,next) => {
     const user = await User.findOne({_id:decode._id, 'tokens.token': token}).populate({ 
       path: 'roles',
       populate: {
-        path: 'permissions'
+        path: 'permissions',
+        populate: {
+          path: 'navigationRoutes'
+        }
       } 
     })
     req.token = token;
