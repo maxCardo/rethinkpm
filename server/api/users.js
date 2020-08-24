@@ -2,8 +2,12 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 
 const User = require('../db/models/auth/User');
+const Role = require('../db/models/auth/Role')
+const Permission = require('../db/models/auth/Permission')
+const NavigationRoute = require('../db/models/auth/NavigationRoute')
 const auth = require('../middleware/auth');
 const useUnless = require('../middleware/useUnless')
+const cachegoose = require('cachegoose')
 
 const router = express.Router();
 
@@ -46,11 +50,20 @@ router.get('/', auth, (req,res) => {
 router.post('/login', async (req,res) => {
   const {email, password} = req.body;
   try {
-    let user = await User.findOne({email});
+    let user = await User.findOne({email}).populate({ 
+      path: 'roles',
+      populate: {
+        path: 'permissions',
+        populate: {
+          path: 'navigationRoutes'
+        }
+      } 
+    })
     if (!user) {return res.status(400).json({errors:[{msg:'Invalid User Name'}]})};
     const passVarify = await bcrypt.compare(password, user.password);
     if (!passVarify) {return res.status(400).json({errors:[{msg:'Invalid Creds'}]})};
     const token = await user.getToken();
+    cachegoose.clearCache(`user-cache-${user._id}`)
     await res.cookie('sid', token);
     res.json({user});
   } catch (e) {
@@ -65,10 +78,12 @@ router.post('/login', async (req,res) => {
 // @ access: Private
 router.post('/logout', async(req,res) => {
   try {
-    req.user.tokens = req.user.tokens.filter((token) => {
+    const user = await User.findById(req.user._id)
+    user.tokens = user.tokens.filter((token) => {
       return token.token != req.token;
     });
-    const user = await req.user.save()
+    cachegoose.clearCache(`user-cache-${user._id}`)
+    await user.save()
     await res.clearCookie('sid');
     res.json('user loged out')
   } catch (e) {
@@ -82,8 +97,10 @@ router.post('/logout', async(req,res) => {
 // @ access: Private
 router.get('/logout/all', async(req,res) => {
   try {
-    req.user.tokens = [];
-    await req.user.save();
+    const user = await User.findById(req.user._id)
+    user.tokens = [];
+    cachegoose.clearCache(`user-cache-${user._id}`)
+    await user.save();
     res.send('all users signed out');
   } catch (e) {
     res.status(500).send('Server Error');
