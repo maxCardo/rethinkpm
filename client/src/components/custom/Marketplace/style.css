@@ -63,3 +63,8 @@
 .kpi-item__negative-variation {
   color: red;
 }
+
+.marketplace__filter-select {
+  width: 200px;
+  margin: 10px;
+}
