@@ -73,4 +73,3 @@ const sendGridEmail = (to, subject, text, html) => {
 
 module.exports = { sendEmail, sendFirstEmail };
 
-module.exports = { sendEmail, sendFirstEmail, sendRecomendationEmail };
