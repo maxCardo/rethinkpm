@@ -168,7 +168,6 @@ const Marketplace = () => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     fetchData(source.token)
-    fetchTest()
     return () => {
       source.cancel('Component unmounted');
     }
