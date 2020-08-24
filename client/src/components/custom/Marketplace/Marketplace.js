@@ -123,7 +123,7 @@ const Marketplace = () => {
 
   const fetchData = async (cancelToken) => {
     setLoading(true)
-    const res = await axios.get(`/api/sales/listings`, {cancelToken});
+    const res = await axios.get(`/api/marketplace/ops/listings`, {cancelToken});
     const listings = res.data;
     setListings(listings)
     setLoading(false)
@@ -134,7 +134,7 @@ const Marketplace = () => {
     const data = {
       filters: selectedFilters,
     }
-    const res = await axios.post(`/api/sales/listings/filter`, data);
+    const res = await axios.post(`/api/marketplace/ops/listings/filter`, data);
     const listings = res.data.record;
     const filters = res.data.filters
     console.log(listings)
