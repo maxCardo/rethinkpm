@@ -24,7 +24,7 @@ const auth = async (req,res,next) => {
           path: 'navigationRoutes'
         }
       } 
-    })
+    }).lean().cache()
     req.token = token;
     req.user = user;
     next();
