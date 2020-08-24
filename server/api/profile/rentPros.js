@@ -1,5 +1,7 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
+const requirePermission = require('../../middleware/requirePermission')
+
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
 const FilterModel = require('../../db/models/prospects/filters')
@@ -17,6 +19,7 @@ const activeListings = require('../../config/supportData/activeLisitng')
 const router = express.Router();
 
 router.use(auth)
+router.use(requirePermission('ACCESS_RENTER_BLOCK'))
 
 const model = RentInq
 const prosModel = RentPros
