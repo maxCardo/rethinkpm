@@ -1,4 +1,4 @@
-const sgMail = require('@sendGrid/mail') 
+const sgMail = require('@sendgrid/mail') 
 const nodemailer = require('nodemailer');
 const {smtpAcct, smtpPass, testEmail, sendGridKey} = require('./../config/creds')
 const { availabilityLink } = require('./calandly');
