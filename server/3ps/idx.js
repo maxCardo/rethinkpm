@@ -36,7 +36,6 @@ const addIdxUser = async (record) => {
         headers: globalHeader
     })
 
-    console.log(res.data);
     return res.data
 }
 

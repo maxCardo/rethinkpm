@@ -66,10 +66,8 @@ router.post("/addLead",auth, async (req, res) => {
         if (!email) {
             email = emails[0]
         }
-        console.log(emails, email);
-        const {newId} = await addIdxUser(firstName, lastName, email)
-        console.log('idxId: ',newId)
-        record.idxId = newId
+        const {newID} = await addIdxUser({firstName, lastName, email: email.address})
+        record.idxId = newID
         await record.save();
         res.status(200).send(record);
     } catch (err) {

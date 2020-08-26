@@ -3,8 +3,7 @@ const { postSlack } = require('../../3ps/slack')
 const { addIdxUser } = require('../../3ps/idx')
 const Buyer = require('../../db/models/prospects/BuyerPros')
 const Pipeline = require('../../db/models/sales/Pipeline')
-const {addIdxListing} = require('../../3ps/idx')
-const {postSlack} = require('../../3ps/slack')
+const { addIdxListing } = require('../../3ps/idx')
 
 
 const router = express.Router()
@@ -33,12 +32,12 @@ router.post('/newuser', async (req, res) => {
 // @ access: Public 
 router.post('/deal/view', async (req, res) => {
     try {
-        const {bid} = req.body
+        const { bid } = req.body
         const deal = await Pipeline.findById(bid)
         deal.viewedOnSite = true
         deal.history.push({
-            event:'viewd',
-            note:'buyer viewd property on website'
+            event: 'viewd',
+            note: 'buyer viewd property on website'
         })
         await deal.save()
         res.status(200).send('success view')
@@ -54,14 +53,11 @@ router.post('/deal/view', async (req, res) => {
 // @ access: Public 
 router.post('/deal/like', async (req, res) => {
     try {
-        //find pipeline deal
-        const { bid, liked} = req.body
+        const { bid, liked, propertyID } = req.body
         const deal = await Pipeline.findById(bid).populate('buyer')
-        //if like === true
-        if (liked === true){
+        if (liked === 'true') {
             console.log('liked the deal');
-            //update status to like
-            deal.liked = true 
+            deal.liked = true
             deal.history.push({
                 event: 'liked',
                 statusTo: 'liked',
@@ -70,9 +66,10 @@ router.post('/deal/like', async (req, res) => {
             })
             deal.status = 'liked'
             //update idx to like
-            console.log(deal.buyer);
-            addIdxListing(deal.buyer.idxId, deal.deal)
-        } else if (liked === false) {
+            await deal.save()
+            console.log('dealing: ', deal)
+            addIdxListing(deal.buyer.idxId, propertyID)
+        } else if (liked === 'false') {
             console.log('did not like');
             deal.liked = false
             deal.history.push({
@@ -82,9 +79,9 @@ router.post('/deal/like', async (req, res) => {
                 note: 'buyer did not like deal on property on website'
             })
             deal.status = 'dead'
-            deal.active = false     
+            deal.active = false
+            deal.save()
         }
-        console.log('ran deal liked')
         res.status(200).send('success like')
     } catch (err) {
         res.status(400).send('server error')
