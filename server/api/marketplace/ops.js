@@ -6,6 +6,10 @@ const MarketFilter = require('../../db/models/sales/MarketFilter')
 const router = express.Router()
 
 
+//filter options: refactor to get these from api
+const zipcodeOptions = require('../../config/supportData/zipcodes')
+const areaOptions = require('../../config/supportData/areas')
+
 // @route: post /api/marketPlace/ops/recommend
 // @desc: 
 // @ access: Public 
@@ -62,5 +66,20 @@ router.post('/filters/:filterId/blacklist', async (req, res) => {
 
 
 
+
+// @route: GET /api/marketplace/ops/filterOptions
+// @desc: Get options for filter fields used by filter filtersModal comp (agentPros) 
+// @ access: Public * ToDo: update to make private
+router.get('/filterOptions', async (req, res) => {
+  const options = {}
+  try {
+      options.zip = zipcodeOptions
+      options.area = areaOptions
+      res.status(200).send(options);
+  } catch (error) {
+      console.error(error);
+      res.status(400).send('server error')
+  }
+});
 
 module.exports = router

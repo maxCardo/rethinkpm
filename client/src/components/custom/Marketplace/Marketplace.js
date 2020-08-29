@@ -45,7 +45,7 @@ const FILTERFIELDS = {
     dataType:"number", 
     accessor:"bathsFull"
   },
-  zipcode: {
+  zip: {
     type: { 
       label: "Don't filter", 
       value: "noFilter"
@@ -54,6 +54,16 @@ const FILTERFIELDS = {
     name: "Zipcode", 
     dataType:"array", 
     accessor:"zipcode"
+  },
+  area: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Area", 
+    dataType:"array", 
+    accessor:"area"
   },
 }
 
@@ -75,6 +85,7 @@ const Marketplace = ({createErrorAlert}) => {
   const [showSaveFilterModal, setShowSaveFilterModal] = useState(false);
   const [savedFilters, setSavedFilters] = useState([])
   const [selectedFilter, setSelectedFilter] = useState(undefined)
+  const [filterOptions, setFilterOptions] = useState(FILTEROPTIONS)
 
   const HEADERS = [
     {
@@ -134,6 +145,12 @@ const Marketplace = ({createErrorAlert}) => {
     const listings = res.data;
     setListings(listings)
     setLoading(false)
+  }
+
+  const loadFilterOptions = async (cancelToken) => {
+    const res = await axios.get(`/api/marketplace/ops/filterOptions`, {cancelToken});
+    const options = res.data
+    setFilterOptions(Object.assign({}, filterOptions, options))
   }
 
   const fetchFilteredData = async (filters, blacklist) => {
@@ -215,6 +232,7 @@ const Marketplace = ({createErrorAlert}) => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     fetchData(source.token)
+    loadFilterOptions(source.token)
     fetchSavedFilters(source.token)
     return () => {
       source.cancel('Component unmounted');
@@ -271,7 +289,7 @@ const Marketplace = ({createErrorAlert}) => {
       <FilterModal 
         show={showFilterModal} 
         filterFields={FILTERFIELDS} 
-        options={FILTEROPTIONS} 
+        options={filterOptions} 
         handleClose={() => setShowFilterModal(false)}
         onSubmit={submitFilterModal}
       />
