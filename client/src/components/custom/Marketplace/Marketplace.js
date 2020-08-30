@@ -11,6 +11,7 @@ import SaveFilterModal from './SaveFilterModal'
 import Select from 'react-select'
 import { array } from 'prop-types';
 import {createErrorAlert} from '../../../actions/alert';
+import AddDataModal from './AddDataModal';
 
 
 
@@ -86,6 +87,14 @@ const Marketplace = ({createErrorAlert}) => {
   const [savedFilters, setSavedFilters] = useState([])
   const [selectedFilter, setSelectedFilter] = useState(undefined)
   const [filterOptions, setFilterOptions] = useState(FILTEROPTIONS)
+  const [showAddDataModal, setShowAddDataModal] = useState(false)
+
+  const conditionsMap = {
+    1: 'D',
+    2: 'C',
+    3: 'B',
+    4: 'A'
+  }
 
   const HEADERS = [
     {
@@ -118,6 +127,11 @@ const Marketplace = ({createErrorAlert}) => {
       label: 'Partial Bath'
     },
     {
+      accessor: 'condition',
+      label: 'Condition',
+      mapper: (data) => conditionsMap[data]
+    },
+    {
       reactComponent: true,
       label: 'Actions',
       render: (item) => (
@@ -125,10 +139,10 @@ const Marketplace = ({createErrorAlert}) => {
           <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
             <i className="fas fa-link"></i>
           </a>
-          <a className='marketplace__table-icon'>
+          <a className='marketplace__table-icon' onClick={() => startAddDataFlow(item._id)}>
             <i className="fas fa-plus"></i>
           </a>
-          <a className='marketplace__table-icon' onClick={() => startRecommendationFlow(item._id)}>
+          <a className='marketplace__table-icon' onClick={() => startRecommendationFlow(item)}>
             <i className="fas fa-check"></i>
           </a>
           <a className='marketplace__table-icon' onClick={() => blacklistListing(item._id)}>
@@ -186,8 +200,19 @@ const Marketplace = ({createErrorAlert}) => {
     setShowSaveFilterModal(true)
   }
 
-  const startRecommendationFlow = (propertyId) => {
-    setShowRecommendationModal(true)
+  const startRecommendationFlow = (property) => {
+    setFocusedProperty(property._id)
+    if(property.condition) {
+      setShowRecommendationModal(true)
+    } else {
+      createErrorAlert('For recommend the property please add the condition of it')
+      setShowAddDataModal(true)
+    }
+    
+  }
+
+  const startAddDataFlow = (propertyId) => {
+    setShowAddDataModal(true)
     setFocusedProperty(propertyId)
   }
 
@@ -207,6 +232,19 @@ const Marketplace = ({createErrorAlert}) => {
     }
     await axios.post('/api/marketplace/ops/filters', data)
     fetchSavedFilters()
+  }
+  const submitAddDataModal = async (condition) => {
+    const data = {
+      condition
+    }
+    const newListings = listings.map((listing) => {
+      if(listing._id === focusedProperty) {
+        listing.condition = condition
+      } 
+      return listing
+    })
+    setListings(newListings)
+    await axios.post(`/api/marketplace/ops/listings/${focusedProperty}/addCondition`, data)
   }
 
   const handleFilterChange = (value) => {
@@ -295,6 +333,7 @@ const Marketplace = ({createErrorAlert}) => {
       />
       <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
+      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
     </div>
   )
 }

@@ -82,4 +82,10 @@ router.get('/filterOptions', async (req, res) => {
   }
 });
 
+router.post('/listings/:listingId/addCondition', async (req,res) => {
+  const {listingId} = req.params
+  const {condition} = req.body
+  await SalesListings.findByIdAndUpdate(listingId, {$set: {condition}})
+})
+
 module.exports = router
