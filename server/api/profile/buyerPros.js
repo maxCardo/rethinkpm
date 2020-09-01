@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../../middleware/auth')
+const {addIdxUser} = require('../../3ps/idx')
 
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const FilterModel = require('../../db/models/prospects/filters')
@@ -51,7 +52,7 @@ router.post('/', async (req, res) => {
 router.post("/addLead",auth, async (req, res) => {
     try {
         let recordObj = req.body
-        const { firstName, lastName, preApproved  } = req.body
+        const { firstName, lastName, preApproved, emails} = req.body
         recordObj.fullName = `${firstName} ${lastName}`
         recordObj.preApproved =  {status: preApproved}
         const record = new model(recordObj);
@@ -61,6 +62,12 @@ router.post("/addLead",auth, async (req, res) => {
             type: 'log'
         }
         await record.notes.push(newNote)
+        let email = emails.filter((email) => email.isPrimary)[0]
+        if (!email) {
+            email = emails[0]
+        }
+        const {newID} = await addIdxUser({firstName, lastName, email: email.address})
+        record.idxId = newID
         await record.save();
         res.status(200).send(record);
     } catch (err) {
