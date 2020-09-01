@@ -4,12 +4,17 @@ const { sendEmail } = require('../../3ps/email')
 const SalesListings = require('../../db/models/sales/SalesListings')
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const Pipeline = require('../../db/models/sales/Pipeline')
+const MarketFilter = require('../../db/models/sales/MarketFilter')
 
 const router = express.Router()
 
 router.use(auth)
 
-// @route: post /api/marketPlace/ops
+//filter options: refactor to get these from api
+const zipcodeOptions = require('../../config/supportData/zipcodes')
+const areaOptions = require('../../config/supportData/areas')
+
+// @route: post /api/marketPlace/ops/recommend
 // @desc: 
 // @ access: Public 
 router.post('/recommend', auth, async (req, res) => {
@@ -50,6 +55,57 @@ router.post('/recommend', auth, async (req, res) => {
         console.error(err);
         res.status(500).send('server error')
     }
+})
+
+// @route: post /api/marketPlace/ops/filters
+// @desc: 
+// @ access: Public 
+router.post('/filters', async (req, res) => {
+  const {name, filters} = req.body
+  const marketFilter = new MarketFilter({name, filters})
+  await marketFilter.save()
+  res.send({ok: true})
+})
+
+// @route: get /api/marketPlace/ops/filters
+// @desc: 
+// @ access: Public 
+router.get('/filters', async (req, res) => {
+  const filters = await MarketFilter.find({})
+  res.send({filters})
+})
+
+router.post('/filters/:filterId/blacklist', async (req, res) => {
+  const {filterId} = req.params;
+  const {listingId} = req.body;
+  const marketFilter = await MarketFilter.findById(filterId)
+  marketFilter.blacklist.push(listingId)
+  await marketFilter.save()
+})
+;
+
+
+
+
+// @route: GET /api/marketplace/ops/filterOptions
+// @desc: Get options for filter fields used by filter filtersModal comp (agentPros) 
+// @ access: Public * ToDo: update to make private
+router.get('/filterOptions', async (req, res) => {
+  const options = {}
+  try {
+      options.zip = zipcodeOptions
+      options.area = areaOptions
+      res.status(200).send(options);
+  } catch (error) {
+      console.error(error);
+      res.status(400).send('server error')
+  }
+});
+
+router.post('/listings/:listingId/addCondition', async (req,res) => {
+  const {listingId} = req.params
+  const {condition} = req.body
+  await SalesListings.findByIdAndUpdate(listingId, {$set: {condition}})
 })
 
 module.exports = router
