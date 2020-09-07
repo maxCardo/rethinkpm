@@ -69,7 +69,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/profile/rentPros' component={Profile} additionalProps={{ settings: routeSettings.profile.rentPros }} />
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
-            <PrivateRoute exact path='/marketplace' component={Marketplace} />
+            <PrivateRoute exact path='/marketplace' component={Marketplace} apiKey={routeSettings.marketplace.streetViewApiKey} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
           <Alert  />

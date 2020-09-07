@@ -3,7 +3,10 @@ import Header from './Header'
 import Pagination from './Pagination';
 import commonMappers from './commonMappers';
 import { filterData, getData } from "../../../util/commonFunctions";
+import {connect} from 'react-redux';
 import './style.css'
+import { openStreetView } from "../../../actions/marketplace";
+import {OPEN_STREET_VIEW, SET_INQUIRIES} from "../../../actions/type";
 
 //TODO: Default sortBy is not working
 export class Table extends Component {
@@ -139,6 +142,7 @@ export class Table extends Component {
                   key={`header-${index}`}
                 />
               ))}
+              <th className='text-center'>Street View</th>
             </tr>
           </thead>
           <tbody>
@@ -146,7 +150,9 @@ export class Table extends Component {
               <tr 
                 key={`row-${index}`} 
                 style={{cursor: this.props.onClickRow ? 'pointer' : ''}} 
-                onClick={this.props.onClickRow ? () => this.props.onClickRow(dataItem) : () => {}}
+                onClick={this.props.onClickRow ? () => this.props.onClickRow(dataItem) : () => {
+
+                }}
               >
                 {this.state.headers.map((header, index) => (
                   <td key={`dataItem-${index}`} className={header.className}>
@@ -156,6 +162,10 @@ export class Table extends Component {
                     }
                   </td>
                 ))}
+                {(dataItem.streetName) && ( <td className='text-center'>
+                  <i className="fas fa-eye" onClick={() =>  this.props.dispatch(openStreetView(dataItem.streetName, dataItem.streetNumber))} />
+                </td>)}
+
               </tr>
             ))) : (<tr><td colSpan={this.state.headers.length}>No results!</td></tr>)}
           </tbody>
@@ -217,8 +227,17 @@ export class Table extends Component {
     }
     this.changePage(this.state.pageIndex - 1)
   }
-  
+
+
 }
 
 
-export default Table
+const mapDispatchToProps = dispatch => {
+  return {
+    onOpenStreetView: (street, number) => dispatch(openStreetView(street, number)),
+    dispatch
+  }
+};
+
+
+export default connect(null, mapDispatchToProps)(Table)

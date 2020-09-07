@@ -5,6 +5,7 @@ import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
 import KpiBar from './KpiBar';
 import FilterModal from '../../core/filterModal/FilterModal';
+import StreetViewModal from "./StreetViewModal";
 
 const HEADERS = [
   {
@@ -18,6 +19,10 @@ const HEADERS = [
   {
     accessor: "streetName",
     label: "Address"
+  },
+  {
+    accessor: "streetNumber",
+    label: "streetNumber"
   },
   {
     accessor: 'listPrice',
@@ -117,6 +122,7 @@ const Marketplace = () => {
   const [filterString, setFilterString] = useState('')
   const [filters, setFilters] = useState(undefined)
   const [showFilterModal, setShowFilterModal] = useState(false)
+  const [showStreetViewModal, setShowStreetViewModal] = useState(true)
 
   const fetchData = async (cancelToken) => {
     setLoading(true)
@@ -198,6 +204,10 @@ const Marketplace = () => {
         handleClose={() => setShowFilterModal(false)}
         onSubmit={submitFilterModal}
       />
+      <StreetViewModal
+          show={showStreetViewModal}
+          handleClose={() => setShowStreetViewModal(false)}
+          apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
     </div>
   )
 }

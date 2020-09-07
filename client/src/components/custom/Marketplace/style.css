@@ -11,7 +11,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 5px;
   background: #fff;
   color: #6f9dd4;
   border-color: #fff;
@@ -21,7 +20,7 @@
   padding: 0 20px;
   transition: color 250ms, box-shadow 250ms;
   height: calc(1.5em + 0.75rem + 2px);
-  margin: 10px;
+  margin: 10px 10px 10px 5px;
 }
 
 .kpi-bar__container {
@@ -62,4 +61,24 @@
 
 .kpi-item__negative-variation {
   color: red;
+}
+
+/* StreetView Styles */
+.StreetView__modal .modal-xl {
+  max-width: 95%;
+  margin-left: 5%;
+}
+
+.StreetView__modal .modal-content {
+  margin: 0;
+  width: 95%;
+}
+
+.StreetView__modal .modal-body {
+  min-height: 76vh;
+  display: flex;
+  justify-content: space-between;
+}
+.StreetView__modal .modal-body > div:first-child {
+  width: 100vw!important;
 }
