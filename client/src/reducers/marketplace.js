@@ -7,8 +7,8 @@ export default function (state = initialState, action) {
         case OPEN_STREET_VIEW:
             return {
                 ...state,
-                success: payload,
-                loading: false,
+                ststreet: payload.street,
+                stnumber: payload.number,
                 streetViewOpen: true
             }
         case CLOSE_STREET_VIEW:

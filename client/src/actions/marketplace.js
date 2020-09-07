@@ -11,3 +11,15 @@ export const openStreetView = (street, number) => dispatch => {
         }
     });
 }
+
+export const closeStreetView = () => dispatch => {
+
+    dispatch({
+        type: CLOSE_STREET_VIEW,
+        payload: {
+            street: '',
+            number: '',
+            StreetViewModalOpen: false
+        }
+    });
+}

@@ -46,7 +46,7 @@ const HEADERS = [
     label: 'Actions',
     render: (item) => (
       <div>
-        <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
+        <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank" rel="noopener noreferrer">
           <i className="fas fa-link"></i>
         </a>
         <a className='marketplace__table-icon'>
@@ -165,7 +165,7 @@ const Marketplace = () => {
   return loading ? <Loading /> : (
     <div>
       <KpiBar />
-      <div className='searchContainer agentsSearchContainer'>
+      <div className='searchContainer propertySearchContainer'>
         <input 
           className='form-control searchInput' 
           tabIndex={0}
@@ -186,7 +186,7 @@ const Marketplace = () => {
         
       </div>
       <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
-        <div className="col-12" >
+        <div className="col-12 p-0" >
           <Table 
             pageSize={10}
             sorting={true}

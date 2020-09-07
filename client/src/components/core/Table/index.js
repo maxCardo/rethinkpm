@@ -6,7 +6,6 @@ import { filterData, getData } from "../../../util/commonFunctions";
 import {connect} from 'react-redux';
 import './style.css'
 import { openStreetView } from "../../../actions/marketplace";
-import {OPEN_STREET_VIEW, SET_INQUIRIES} from "../../../actions/type";
 
 //TODO: Default sortBy is not working
 export class Table extends Component {
@@ -142,7 +141,6 @@ export class Table extends Component {
                   key={`header-${index}`}
                 />
               ))}
-              <th className='text-center'>Street View</th>
             </tr>
           </thead>
           <tbody>
@@ -162,7 +160,8 @@ export class Table extends Component {
                     }
                   </td>
                 ))}
-                {(dataItem.streetName) && ( <td className='text-center'>
+                {(dataItem.streetName && dataItem.streetNumber) && (
+                    <td className='text-center'>
                   <i className="fas fa-eye" onClick={() =>  this.props.dispatch(openStreetView(dataItem.streetName, dataItem.streetNumber))} />
                 </td>)}
 
