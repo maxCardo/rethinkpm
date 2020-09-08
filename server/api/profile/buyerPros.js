@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
 router.post("/addLead",auth, async (req, res) => {
     try {
         let recordObj = req.body
-        const { firstName, lastName, preApproved, emails} = req.body
+        const { firstName, lastName, preApproved, email: emails} = req.body
         recordObj.fullName = `${firstName} ${lastName}`
         recordObj.preApproved =  {status: preApproved}
         const record = new model(recordObj);
