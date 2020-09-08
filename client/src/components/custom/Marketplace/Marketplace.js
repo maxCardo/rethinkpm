@@ -26,6 +26,66 @@ const FILTERFIELDS = {
     dataType:"array", 
     accessor:"type"
   },
+  listAge: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "List Age", 
+    dataType:"number", 
+    accessor:"listAge"
+  },
+  county: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "County", 
+    dataType:"array", 
+    accessor:"county"
+  },
+  zip: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Zipcode", 
+    dataType:"array", 
+    accessor:"zipcode"
+  },
+  schoolDistrict: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "School District", 
+    dataType:"array", 
+    accessor:"schoolDistrict"
+  },
+  listPrice: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Price", 
+    dataType:"number", 
+    accessor:"listPrice"
+  },
+  condition: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Condition", 
+    dataType:"array", 
+    accessor:"condition"
+  },
   numberOfBedrooms: {
     type: { 
       label: "Don't filter", 
@@ -44,25 +104,35 @@ const FILTERFIELDS = {
     value:"" , 
     name: "Number of bathrooms", 
     dataType:"number", 
-    accessor:"bathsFull"
+    accessor:"totalBaths"
   },
-  zip: {
+  tract: {
     type: { 
       label: "Don't filter", 
       value: "noFilter"
     }, 
     value:"" , 
-    name: "Zipcode", 
+    name: "Tract", 
+    dataType:"string", 
+    accessor:"tract"
+  },
+  opZone: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "OP Zone", 
     dataType:"array", 
-    accessor:"zipcode"
+    accessor:"opZone"
   },
-  area: {
+  rentTier: {
     type: { 
       label: "Don't filter", 
       value: "noFilter"
     }, 
     value:"" , 
-    name: "Area", 
+    name: "Rent Tier", 
     dataType:"array", 
     accessor:"area"
   },
