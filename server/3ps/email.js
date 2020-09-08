@@ -1,11 +1,9 @@
-//comes from maintenance request app
-
+const sgMail = require('@sendgrid/mail') 
 const nodemailer = require('nodemailer');
-const {smtpAcct, smtpPass, testEmail} = require('./../config/creds')
+const {smtpAcct, smtpPass, testEmail, sendGridKey} = require('./../config/creds')
 const { availabilityLink } = require('./calandly');
 
-// make email less secure
-//https://myaccount.google.com/lesssecureapps?pli=1
+sgMail.setApiKey(sendGridKey);
 
 let transporter = nodemailer.createTransport({
     host: "smtpout.secureserver.net",
@@ -16,6 +14,7 @@ let transporter = nodemailer.createTransport({
         pass: smtpPass
     }
 });
+
 
 const sendEmail = (to, subject, body, html) => {
     let sendTo;
@@ -72,6 +71,18 @@ const sendRecomendationEmail = (property, buyer, customMessage) => {
   sendEmail(buyerEmail.address, subject, customMessage, html)
 }
 
+const sendGridEmail = (to, subject, text, html) => {
+
+    const msg = {
+        to,
+        from: 'adamp@fifthgrant.com',
+        subject,
+        text,
+        html,
+    };
+    sgMail.send(msg);    
+    
+}
 
 
 module.exports = { sendEmail, sendFirstEmail, sendRecomendationEmail };

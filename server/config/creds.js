@@ -16,5 +16,6 @@ module.exports = {
   testEmail: process.env.TEST_EMAIL,
   idxPartnerID: process.env.IDX_PARTNER_ID,
   idxClientID: process.env.IDX_CLIENT_ID,
-  idxSearchID: process.env.IDX_SEARCH_ID
+  idxSearchID: process.env.IDX_SEARCH_ID,
+  sendGridKey: process.env.SENDGRID_API_KEY
 }
