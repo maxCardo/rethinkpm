@@ -138,12 +138,6 @@ const FILTERFIELDS = {
   },
 }
 
-const FILTEROPTIONS = {
-  type : [
-    {value: 'res', label: 'Residential'}
-  ]
-}
-
 const Marketplace = ({createErrorAlert}) => {
   
   const [loading, setLoading] = useState(false)
@@ -156,7 +150,7 @@ const Marketplace = ({createErrorAlert}) => {
   const [showSaveFilterModal, setShowSaveFilterModal] = useState(false);
   const [savedFilters, setSavedFilters] = useState([])
   const [selectedFilter, setSelectedFilter] = useState(undefined)
-  const [filterOptions, setFilterOptions] = useState(FILTEROPTIONS)
+  const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
 
   const conditionsMap = {
@@ -234,7 +228,7 @@ const Marketplace = ({createErrorAlert}) => {
   const loadFilterOptions = async (cancelToken) => {
     const res = await axios.get(`/api/marketplace/ops/filterOptions`, {cancelToken});
     const options = res.data
-    setFilterOptions(Object.assign({}, filterOptions, options))
+    setFilterOptions(options)
   }
 
   const fetchFilteredData = async (filters, blacklist) => {
