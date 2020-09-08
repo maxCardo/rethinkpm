@@ -71,7 +71,8 @@ const buyerProsSchema = new mongoose.Schema({
             listingId: String,
             Date: {type: Date, default: new Date()}
         }
-    ]
+    ],
+    idxId: String
 })
 
 module.exports = mongoose.model('buyerPros', buyerProsSchema)
