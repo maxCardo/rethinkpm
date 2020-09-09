@@ -200,7 +200,6 @@ router.post('/listings/filter', async (req, res) => {
         })
       }
 
-      console.log(filters)
       
 
       //create string query 
@@ -292,8 +291,6 @@ function convertFiltersToQuery(filters) {
           Object.assign(queryObj, {
               [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
           })
-      } else if (x.subField) {
-          Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
       } else {
           Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
       }
