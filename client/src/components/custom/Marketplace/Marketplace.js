@@ -234,7 +234,7 @@ const Marketplace = ({createErrorAlert}) => {
   const fetchFilteredData = async (filters, blacklist) => {
     setLoading(true)
     const data = {filters, blacklist}
-    const res = await axios.post(`/api/sales/listings/filter`, data);
+    const res = await axios.post(`/api/marketplace/ops/listings/filter`, data);
     const listings = res.data.record;
     const appliedFilters = res.data.filters
     console.log(listings)
