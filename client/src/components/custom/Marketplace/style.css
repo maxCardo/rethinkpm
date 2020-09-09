@@ -66,6 +66,10 @@
   margin: 0;
   justify-content: space-between;
 }
+.marketplace__filter-select {
+  width: 200px;
+  margin: 10px;
+}
 
 /* StreetView Styles */
 .StreetView__modal .modal-xl {
@@ -110,5 +114,5 @@ td .fa-eye {
 .StreetView__modal .real-btn:hover {
   color: #343a40;
   border-color: #fff;
-  box-shadow: 0px 0px 16px rgba(0,0,0,0.12), 0px 0px 6px rgba(0,0,0,0.24);
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.12), 0px 0px 6px rgba(0, 0, 0, 0.24);
 }
