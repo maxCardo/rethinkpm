@@ -3,9 +3,7 @@ import Header from './Header'
 import Pagination from './Pagination';
 import commonMappers from './commonMappers';
 import { filterData, getData } from "../../../util/commonFunctions";
-import {connect} from 'react-redux';
 import './style.css'
-import { openStreetView } from "../../../actions/marketplace";
 
 //TODO: Default sortBy is not working
 export class Table extends Component {
@@ -160,11 +158,6 @@ export class Table extends Component {
                     }
                   </td>
                 ))}
-                {(dataItem.streetName && dataItem.streetNumber) && (
-                    <td className='text-center'>
-                  <i className="fas fa-eye" onClick={() =>  this.props.dispatch(openStreetView(dataItem.streetName, dataItem.streetNumber))} />
-                </td>)}
-
               </tr>
             ))) : (<tr><td colSpan={this.state.headers.length}>No results!</td></tr>)}
           </tbody>
@@ -227,16 +220,7 @@ export class Table extends Component {
     this.changePage(this.state.pageIndex - 1)
   }
 
-
 }
 
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onOpenStreetView: (street, number) => dispatch(openStreetView(street, number)),
-    dispatch
-  }
-};
-
-
-export default connect(null, mapDispatchToProps)(Table)
+export default Table

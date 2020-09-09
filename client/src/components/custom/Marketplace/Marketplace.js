@@ -9,10 +9,10 @@ import FilterModal from '../../core/filterModal/FilterModal';
 import RecommendationModal from './RecommendationModal';
 import SaveFilterModal from './SaveFilterModal'
 import Select from 'react-select'
-import { array } from 'prop-types';
 import {createErrorAlert} from '../../../actions/alert';
 import AddDataModal from './AddDataModal';
 import StreetViewModal from "./StreetViewModal";
+import {openStreetView} from "../../../actions/marketplace";
 
 const FILTERFIELDS = {
   type: {
@@ -74,7 +74,7 @@ const FILTEROPTIONS = {
 }
 
 
-const Marketplace = ({createErrorAlert}) => {
+const Marketplace = ({createErrorAlert, openStreetView}) => {
   
   const [loading, setLoading] = useState(false)
   const [listings, setListings] = useState([])
@@ -137,18 +137,22 @@ const Marketplace = ({createErrorAlert}) => {
       label: 'Actions',
       render: (item) => (
         <div>
-          <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
+          <a className='action-buttons__button ' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank" rel="noopener noreferrer">
             <i className="fas fa-link"></i>
           </a>
-          <a className='marketplace__table-icon' onClick={() => startAddDataFlow(item._id)}>
+          <button className='action-buttons__button ' onClick={() => startAddDataFlow(item._id)}>
             <i className="fas fa-plus"></i>
-          </a>
-          <a className='marketplace__table-icon' onClick={() => startRecommendationFlow(item)}>
+          </button>
+          <button className='action-buttons__button ' onClick={() => startRecommendationFlow(item)}>
             <i className="fas fa-check"></i>
-          </a>
-          <a className='marketplace__table-icon' onClick={() => blacklistListing(item._id)}>
+          </button>
+          <button className='action-buttons__button ' onClick={() => blacklistListing(item._id)}>
             <i className="fas fa-times"></i>
-          </a>
+          </button>
+          {(item.streetName && item.streetNumber) && (
+              <button className='action-buttons__button ' onClick={() =>  openStreetView(item.streetName, item.streetNumber)}>
+                <i className="fas fa-eye" />
+              </button>)}
         </div>
       )
     }
@@ -343,4 +347,5 @@ const Marketplace = ({createErrorAlert}) => {
   )
 }
 
-export default connect(undefined, {createErrorAlert})(Marketplace)
+
+export default connect(undefined, {createErrorAlert, openStreetView})(Marketplace)

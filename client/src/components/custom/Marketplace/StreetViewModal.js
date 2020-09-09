@@ -1,23 +1,13 @@
-import React, {Fragment, useState, useEffect} from 'react'
+import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button} from 'react-bootstrap';
 import Loading from '../../core/LoadingScreen/Loading';
 import {StreetView} from 'react-google-map-street-view';
 import {closeStreetView} from "../../../actions/marketplace";
-import {CLOSE_STREET_VIEW} from "../../../actions/type";
 
 const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
 
     const loading = false;
-
-    const globalPath = 'google.maps';
-    const url = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
-
-    const googleMaps = {
-        globalPath,
-        url,
-        jsonp: true,
-    };
 
     return (
 
