@@ -144,7 +144,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             <i className="fas fa-plus"></i>
           </button>
           <button className='action-buttons__button ' onClick={() => startRecommendationFlow(item)}>
-            <i className="fas fa-check"></i>
+            <i className="fas fa-star"></i>
           </button>
           <button className='action-buttons__button ' onClick={() => blacklistListing(item._id)}>
             <i className="fas fa-times"></i>

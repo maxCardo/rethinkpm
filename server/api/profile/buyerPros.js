@@ -19,6 +19,15 @@ const model = BuyerPros
 
 router.use(auth)
 
+// @route: POST /api/profile/buyerPros;
+// @desc: POST new BuyerPros from postman
+// @ access: Public
+router.get('/', async (req, res) => {
+
+    let buyer = await model.find();
+    console.log(buyer)
+    res.status(200).send(buyer)
+})
 
 // @route: POST /api/profile/buyerPros;
 // @desc: POST new BuyerPros from postman

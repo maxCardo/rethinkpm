@@ -880,11 +880,22 @@
   min-height: 38px;
   font-size: 14px;
 }
-
 .profile-table-view__top-bar {
   display: flex;
   justify-content: space-between;
-  margin: 10px 20px;
+  margin: 10px;
+}
+
+.container-fluid {
+  padding: 0 10px;
+}
+.container-fluid > .col-12 {
+  padding: 0;
+}
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  min-width: 100px;
 }
 
 .profile-table-view__filters {

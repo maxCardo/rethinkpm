@@ -890,3 +890,8 @@ input[type=number]:focus,
   margin-bottom: 6px;
   margin-left: 4px;
 }
+
+.page-item.active .page-link {
+  background: #6f9dd4;
+  border-color: #6f9dd4;
+}

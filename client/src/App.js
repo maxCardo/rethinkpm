@@ -28,6 +28,7 @@ import { showNotification } from './notifications'
 import settings from './settings.json'
 import Alert from "./components/core/Alert";
 import Dash from "./components/custom/Dash"
+import ManageBuyers from "./components/custom/Marketplace/ManageBuyers";
 
 
 
@@ -70,6 +71,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
             <PrivateRoute exact path='/marketplace' component={Marketplace} apiKey={routeSettings.marketplace.streetViewApiKey} />
+            <PrivateRoute exact path='/manageBuyers' component={ManageBuyers} apiKey={routeSettings.marketplace.streetViewApiKey} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
           <Alert  />
