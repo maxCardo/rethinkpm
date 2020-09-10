@@ -196,6 +196,10 @@ const Marketplace = ({createErrorAlert}) => {
       mapper: (data) => conditionsMap[data]
     },
     {
+      accessor: 'listDate',
+      label: 'List Date',
+    },
+    {
       reactComponent: true,
       label: 'Actions',
       render: (item) => (
