@@ -240,12 +240,13 @@ function createFilter(data, filterName) {
   if(filterName === 'listAge') {
     const dateOne = new Date();
     dateOne.setDate(dateOne.getDate() - +data[filterName].value)
+    let dateTwo = undefined
     if(data[filterName].secondValue) {
-      const dateTwo = new Date();
+      dateTwo = new Date();
       dateTwo.setDate(dateTwo.getDate() - data[filterName].secondValue)
     }
     const transposeFilterType = {
-      'range': 'inverseRange',
+      'range': 'range',
       '==': '==',
       '!=': '!=',
       '>': '<',
@@ -254,7 +255,7 @@ function createFilter(data, filterName) {
       '<=': '>='
     }
     const operatorPerFilterType = {
-      'inverseRange': ['$gte', '$lte'],
+      'range': ['$lte', '$gte'],
       '==': '$eq',
       '!=': '$ne',
       '>': '$gt',
