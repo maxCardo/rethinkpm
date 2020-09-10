@@ -239,10 +239,10 @@ router.post('/listings/filter', async (req, res) => {
 function createFilter(data, filterName) {
   if(filterName === 'listAge') {
     const dateOne = new Date();
-    dateOne.setDate(dateOne.getDate() + +data[filterName].value)
+    dateOne.setDate(dateOne.getDate() - +data[filterName].value)
     if(data[filterName].secondValue) {
       const dateTwo = new Date();
-      dateTwo.setDate(dateTwo.getDate() + data[filterName].secondValue)
+      dateTwo.setDate(dateTwo.getDate() - data[filterName].secondValue)
     }
     const transposeFilterType = {
       'range': 'inverseRange',
