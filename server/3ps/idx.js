@@ -11,13 +11,6 @@ const globalHeader = {
     outputtype: 'json'
 }
 
-// @desc: get all idx users
-const getIdxUsers = async () => await axios({
-    url: 'https://api.idxbroker.com/leads/lead',
-    method: 'get',
-    headers: globalHeader
-})
-
 // @desc: create new idx users
 // *note: email must be real email or call will return 500
 const addIdxUser = async (record) => {
@@ -38,7 +31,6 @@ const addIdxUser = async (record) => {
 
     return res.data
 }
-
 
 // @desc: get user by idx id and return saved listings
 const getIdxSavedListings = async (userID) => await axios({
@@ -82,4 +74,4 @@ const getIdxSavedLinkRes = async (searchID) => await axios({
     headers: globalHeader
 })
 
-module.exports = {addIdxUser, addIdxListing}
+module.exports = {addIdxUser, addIdxListing, getIdxSavedListings}

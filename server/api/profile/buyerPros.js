@@ -9,6 +9,7 @@ const SalesListings = require('../../db/models/sales/SalesListings')
 const FilterModel = require('../../db/models/prospects/filters')
 const AudienceModel = require('../../db/models/prospects/audience')
 const NoteModel = require('../../db/models/common/Note')
+const {getIdxSavedListings} = require('../../3ps/idx');
 
 
 
@@ -36,7 +37,10 @@ router.post("/pipeline", async (req, res) => {
             const listing = await SalesListings.find({"_id": pipeline[i].deal});
             listings.push(listing[0]);
         }
+        // TODO: UPDATE BUYER PROFILE IN APP WITH NEW VALUES FROM FUNCTION
+        //let currentBuyerListings = await getIdxSavedListings(buyerId);
         let buyer = await model.findById(buyerId);
+
         res.status(200).send(listings);
     } catch (err) {
         console.error(err)

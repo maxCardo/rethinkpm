@@ -5,7 +5,6 @@ import {logout} from '../../actions/auth'
 import PropTypes from 'prop-types'
 import {loadUser} from '../../actions/auth';
 import {getCookie} from '../../util/cookies';
-import Tooltip from './Tooltip';
 import AgentsIcon from './NavbarIcons/AgentsIcon';
 import BuyersIcon from './NavbarIcons/BuyersIcon';
 import RentersIcon from './NavbarIcons/RentersIcon';

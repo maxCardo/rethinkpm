@@ -1,5 +1,4 @@
 import React, {Fragment, useState, useRef, useLayoutEffect} from 'react'
-import {connect} from 'react-redux'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap'
 import {checkBoxCheck} from '../../../../util/commonFunctions'
