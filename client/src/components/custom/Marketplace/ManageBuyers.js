@@ -16,7 +16,7 @@ import {openStreetView} from "../../../actions/marketplace";
 
 
 
-const ManageBuyer = ({createErrorAlert, openStreetView}) => {
+const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
 
     const [loading, setLoading] = useState(false)
     const [listings, setListings] = useState([])
@@ -24,6 +24,7 @@ const ManageBuyer = ({createErrorAlert, openStreetView}) => {
     const [showRecommendationModal, setShowRecommendationModal] = useState(false)
     const [focusedProperty, setFocusedProperty] = useState(undefined)
     const [showAddDataModal, setShowAddDataModal] = useState(false)
+    const [buyerListings, setBuyerListings] = useState([])
 
     const conditionsMap = {
         1: 'D',
@@ -89,10 +90,13 @@ const ManageBuyer = ({createErrorAlert, openStreetView}) => {
     const fetchData = async (cancelToken) => {
         setLoading(true)
         /*TODO: CHANGE TO API CALL WITH BUYER ID*/
-        const res = await axios.get(`/api/profile/buyerPros`, {cancelToken});
+        const res = await axios.post(`/api/profile/buyerPros/pipeline`, {
+            cancelToken,
+            buyerId: profile._id
+            });
         const listings = res.data;
-        console.log(listings);
-        setListings(listings)
+
+        setBuyerListings(listings);
         setLoading(false)
     }
 
@@ -133,21 +137,23 @@ const ManageBuyer = ({createErrorAlert, openStreetView}) => {
         return () => {
             source.cancel('Component unmounted');
         }
-    },[])
+
+        if (!buyerListings) {
+            fetchData(source.token)
+            console.log(buyerListings);
+        }
+
+    },[profile])
 
     return loading ? <Loading /> : (
         <div>
-            <KpiBar />
-
-            <div>
-            </div>
             <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
                 <div className="col-12 p-0" >
                     <Table
                         pageSize={10}
                         sorting={true}
                         fontSize={12}
-                        data={listings}
+                        data={buyerListings}
                         headers={HEADERS}
                     />
                 </div>

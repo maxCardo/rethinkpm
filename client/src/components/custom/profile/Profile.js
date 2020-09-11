@@ -14,7 +14,7 @@ import ProfileDetails from './profileDetails/ProfileDetails'
 import ProfileTableView from './ProfileTableView'
 import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
-
+import ManageBuyer from "../Marketplace/ManageBuyers";
 import AddLeadModal from "./addLead/AddLeadModal";
 
 
@@ -29,7 +29,9 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
         }
         if (settings.profileType && profileType.current !== settings.profileType) {
             profileType.current = (settings.profileType === 'agentPros') ? 'Agent' : (settings.profileType === 'buyerPros') ? 'Buyer' : 'Renter';
+            setTabKey('details');
         }
+        console.log(activeProfile);
     }, [settings, settings.profileType])
 
     const [chatWindow, tglChatWindow] = useState(false)
@@ -88,6 +90,12 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                 <Tab eventKey="filters" title="Filters">
                     <div>Manage Filters</div>
                 </Tab>
+
+                {(profileType.current === 'Buyer') && (
+                    <Tab eventKey="manageBuyers" title="Manage Buyer">
+                        <ManageBuyer profile={activeProfile} />
+                    </Tab>
+                )}
             </Tabs>
             <button className='action-buttons__button add-profile__button' onClick={() => tglAdd()}>
                 <i className='fas fa-plus'></i> &nbsp;Add {profileType.current}

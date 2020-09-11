@@ -1,4 +1,4 @@
-import { CLOSE_STREET_VIEW, OPEN_STREET_VIEW } from '../actions/type';
+import {CLOSE_STREET_VIEW, OPEN_STREET_VIEW, SET_MANAGED_BUYER} from '../actions/type';
 const initialState = {streetViewOpen: false};
 
 export default function (state = initialState, action) {
@@ -18,6 +18,12 @@ export default function (state = initialState, action) {
                 loading: false,
                 streetViewOpen: false
             }
+        case SET_MANAGED_BUYER:
+            return {
+                ...state,
+                managedBuyer: payload,
+                loading: false
+            };
 
         default:
             return state;

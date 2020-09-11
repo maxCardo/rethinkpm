@@ -3,6 +3,9 @@ const auth = require('../../middleware/auth')
 const {addIdxUser} = require('../../3ps/idx')
 
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
+
+const Pipeline = require('../../db/models/sales/Pipeline')
+const SalesListings = require('../../db/models/sales/SalesListings')
 const FilterModel = require('../../db/models/prospects/filters')
 const AudienceModel = require('../../db/models/prospects/audience')
 const NoteModel = require('../../db/models/common/Note')
@@ -19,15 +22,29 @@ const model = BuyerPros
 
 router.use(auth)
 
-// @route: POST /api/profile/buyerPros;
-// @desc: POST new BuyerPros from postman
-// @ access: Public
-router.get('/', async (req, res) => {
 
-    let buyer = await model.find();
-    console.log(buyer)
-    res.status(200).send(buyer)
-})
+// @route: GET /api/profile/buyerPros;
+// @desc: Add email address to profile
+// @ access: Public * ToDo: update to make private
+router.post("/pipeline", async (req, res) => {
+    try {
+        let buyerId =req.body.buyerId;
+        let pipeline = await Pipeline.find({ "buyer": buyerId});
+        let listings = [];
+
+        for (i = 0; i < pipeline.length; i++) {
+            const listing = await SalesListings.find({"_id": pipeline[i].deal});
+            listings.push(listing[0]);
+        }
+        let buyer = await model.findById(buyerId);
+            console.log(buyer);
+        res.status(200).send(listings);
+    } catch (err) {
+        console.error(err)
+        res.status(500).send(err);
+    }
+});
+
 
 // @route: POST /api/profile/buyerPros;
 // @desc: POST new BuyerPros from postman
