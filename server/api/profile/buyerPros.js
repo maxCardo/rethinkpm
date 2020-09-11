@@ -37,7 +37,6 @@ router.post("/pipeline", async (req, res) => {
             listings.push(listing[0]);
         }
         let buyer = await model.findById(buyerId);
-            console.log(buyer);
         res.status(200).send(listings);
     } catch (err) {
         console.error(err)

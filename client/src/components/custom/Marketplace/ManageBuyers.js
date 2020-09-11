@@ -72,12 +72,16 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
             reactComponent: true,
             label: 'Actions',
             render: (item) => (
+
                 <div>
                     <a className='action-buttons__button ' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank" rel="noopener noreferrer">
                         <i className="fas fa-link"></i>
                     </a>
                     <button className='action-buttons__button ' onClick={() => blacklistListing(item._id)}>
                         <i className="fas fa-times"></i>
+                    </button>
+                    <button className='action-buttons__button ' onClick={() => startRecommendationFlow(item)}>
+                        <i className="fas fa-star"></i>
                     </button>
                     {(item.streetName && item.streetNumber) && (
                         <button className='action-buttons__button ' onClick={() =>  openStreetView(item.streetName, item.streetNumber)}>
@@ -140,6 +144,7 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
 
         if (!buyerListings) {
             fetchData(source.token)
+            console.log("wtf");
             console.log(buyerListings);
         }
 

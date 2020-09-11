@@ -92,7 +92,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
                 </Tab>
 
                 {(profileType.current === 'Buyer') && (
-                    <Tab eventKey="manageBuyers" title="Manage Buyer">
+                    <Tab eventKey="manageBuyers" title="Manage Pipeline">
                         <ManageBuyer profile={activeProfile} />
                     </Tab>
                 )}
