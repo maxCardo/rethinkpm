@@ -201,10 +201,8 @@ router.post('/listings/filter', async (req, res) => {
       }
 
       
-
       //create string query 
       const queryObj = convertFiltersToQuery(filters)
-
       //query DB
       let record;
       if (req.body.page) {
@@ -295,6 +293,10 @@ function convertFiltersToQuery(filters) {
       } else {
           Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
       }
+  })
+  // Add status filter to only show the active records
+  Object.assign(queryObj, {
+    'mlsStatus': { '$eq': 'A' }
   })
   return queryObj
 }
