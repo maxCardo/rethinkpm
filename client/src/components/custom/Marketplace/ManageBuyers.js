@@ -167,7 +167,7 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
                 show={showStreetViewModal}
                 handleClose={() => setShowStreetViewModal(false)}
                 apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
-            <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
+            <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal} context='buyer'/>
         </div>
     )
 }

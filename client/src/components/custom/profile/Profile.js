@@ -31,7 +31,6 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
             profileType.current = (settings.profileType === 'agentPros') ? 'Agent' : (settings.profileType === 'buyerPros') ? 'Buyer' : 'Renter';
             setTabKey('details');
         }
-        console.log(activeProfile);
     }, [settings, settings.profileType])
 
     const [chatWindow, tglChatWindow] = useState(false)

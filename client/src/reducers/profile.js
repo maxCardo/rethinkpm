@@ -56,7 +56,8 @@ export default function (state = initialState, action) {
             profileList: state.profileList,
             filterOptions: state.filterOptions,
             activeFilter:state.activeFilter,
-            isFiltered: state.isFiltered
+            isFiltered: state.isFiltered,
+            activeProfile: state.activeProfile
           };
         case START_LOADING_PROFILE:
           return {

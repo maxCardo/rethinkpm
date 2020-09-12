@@ -21,7 +21,11 @@ export class InfiniteList extends Component {
         ).format(sum))
     }
 
-    onClick = (profile) => this.props.setActiveProfile(profile)
+    onClick = (profile) => {
+        this.props.setActiveProfile(profile)
+        console.log(profile);
+    }
+
 
 
     render() {
@@ -30,6 +34,7 @@ export class InfiniteList extends Component {
                 <div className="inf-scroll">
                     {this.props.data ? (
                         this.props.data.map((val) => {
+                            console.log(val)
                             return (
                                 <div onClick={() => this.onClick(val)} key={val._id} className="list__picker">
                                     <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span>
