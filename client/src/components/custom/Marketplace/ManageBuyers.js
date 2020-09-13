@@ -4,22 +4,19 @@ import axios from 'axios';
 import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
-import KpiBar from './KpiBar';
-import FilterModal from '../../core/filterModal/FilterModal';
 import RecommendationModal from './RecommendationModal';
-import SaveFilterModal from './SaveFilterModal'
-import Select from 'react-select'
 import {createErrorAlert} from '../../../actions/alert';
-import AddDataModal from './AddDataModal';
 import StreetViewModal from "./StreetViewModal";
-import {openStreetView} from "../../../actions/marketplace";
+import {openStreetView, syncManagedBuyer} from "../../../actions/marketplace";
+import AddDataModal from "./AddDataModal";
+import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 
 
-
-const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
+const ManageBuyer = ({createErrorAlert, openStreetView, profile, buyer}) => {
 
     const [loading, setLoading] = useState(false)
-    const [listings, setListings] = useState([])
+    const [listings, setListings] = useState(true)
+
     const [showStreetViewModal, setShowStreetViewModal] = useState(true)
     const [showRecommendationModal, setShowRecommendationModal] = useState(false)
     const [focusedProperty, setFocusedProperty] = useState(undefined)
@@ -96,7 +93,7 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
         /*TODO: CHANGE TO API CALL WITH BUYER ID*/
         const res = await axios.post(`/api/profile/buyerPros/pipeline`, {
             cancelToken,
-            buyerId: profile._id
+            buyerId: buyer ? buyer._id : profile._id
             });
         const listings = res.data;
 
@@ -132,6 +129,19 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
         }
     }
 
+    const submitAddDataModal = async (condition) => {
+        const data = {
+            condition
+        }
+        const newListings = listings.map((listing) => {
+            if(listing._id === focusedProperty) {
+                listing.condition = condition
+            }
+            return listing
+        })
+        setListings(newListings)
+        await axios.post(`/api/marketplace/ops/listings/${focusedProperty}/addCondition`, data)
+    }
 
 
     useEffect(() => {
@@ -148,11 +158,39 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
             console.log(buyerListings);
         }
 
-    },[profile])
+    },[buyer])
 
     return loading ? <Loading /> : (
         <div>
             <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
+                <div className="ManageBuyers-actions">
+                    <OverlayTrigger
+                        placement={'bottom'}
+                        overlay={
+                            <Tooltip id='sync-tooltip'>
+                                Open buyer list
+                            </Tooltip>
+                        }
+                    >
+                        <Button className='action-buttons__button ' onClick={console.log('shet')} >
+                            <i className="fas fa-list"></i>
+                        </Button>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger
+                        placement={'right'}
+                        overlay={
+                            <Tooltip id='sync-tooltip'>
+                                Get <strong>fresh</strong> data.
+                            </Tooltip>
+                        }
+                    >
+                        <Button className='action-buttons__button ' onClick={syncManagedBuyer(buyer)} >
+                            <i className="fas fa-sync-alt"></i>
+                        </Button>
+                    </OverlayTrigger>
+
+                </div>
                 <div className="col-12 p-0" >
                     <Table
                         pageSize={10}
@@ -167,10 +205,15 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile}) => {
                 show={showStreetViewModal}
                 handleClose={() => setShowStreetViewModal(false)}
                 apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
-            <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal} context='buyer'/>
+            <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal} context='buyer' profile={buyer}/>
+            <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
+
         </div>
     )
 }
 
+const mapStateToProps = state => ({
+    buyer: state.marketplace.managedBuyer,
+})
 
-export default connect(undefined, {createErrorAlert, openStreetView})(ManageBuyer)
+export default connect(mapStateToProps, {createErrorAlert, openStreetView, syncManagedBuyer})(ManageBuyer)

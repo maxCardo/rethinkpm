@@ -8,7 +8,8 @@ const globalHeader = {
     'Content-Type': 'application/x-www-form-urlencoded',
     accesskey: idxClientID,
     ancillarykey: idxPartnerID,
-    outputtype: 'json'
+    outputtype: 'json',
+    apiversion: '1.2.2'
 }
 
 // @desc: create new idx users
@@ -34,7 +35,14 @@ const addIdxUser = async (record) => {
 
 // @desc: get user by idx id and return saved listings
 const getIdxSavedListings = async (userID) => await axios({
-    url: `https://api.idxbroker.com/leads/property/${userID}`,
+    url: `https://api.idxbroker.com/leads/property/${userID}/`,
+    method: 'get',
+    headers: globalHeader
+})
+
+// @desc: get all idx users
+const getIdxUsers = async (userID) => await axios({
+    url: `https://api.idxbroker.com/leads/property/${userID}/`,
     method: 'get',
     headers: globalHeader
 })

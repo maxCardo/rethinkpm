@@ -44,7 +44,7 @@ export const setActiveProfile = profile => async dispatch => {
             type: SET_ACTIVE_PROFILE,
             payload: profile
         })
-        if (profile.hasOwnProperty("idxId")) {
+        if (profile.hasOwnProperty("idxId") || profile.type === 'buyerPros') {
             dispatch({
                 type: SET_MANAGED_BUYER,
                 payload: {

@@ -96,6 +96,11 @@ td:last-child > div {
   display: flex;
 }
 
+.ManageBuyers-actions {
+  padding: 15px 0;
+  display: flex;
+}
+
 /* StreetView Styles */
 .StreetView__modal .modal-xl {
   max-width: 95%;

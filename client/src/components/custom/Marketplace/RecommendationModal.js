@@ -3,7 +3,7 @@ import {Modal, Form, Button} from 'react-bootstrap';
 import Select from 'react-select';
 import axios from 'axios';
 
-const RecommendationModal = ({show, handleClose, handleSubmit, context}) => {
+const RecommendationModal = ({show, handleClose, handleSubmit, context, profile}) => {
   const [buyers, setBuyers] = useState([])
   const [selectedBuyers, setSelectedBuyers] = useState([])
   const [customMessage, setCustomMessage] = useState('')
@@ -46,11 +46,11 @@ const RecommendationModal = ({show, handleClose, handleSubmit, context}) => {
       <Modal.Body>
         <Form>
           <Select
-            isMulti={(context === 'buyer')}
-            defaultValue={(context === 'buyer') && { label: "Active Buyer", value: 0 }}
+            isMulti={!(context === 'buyer')}
+            defaultValue={(context === 'buyer' && profile) && { label:profile.fullName, value: 0 }}
             name="buyers"
             placeholder="Select Buyers..."
-            options={(context === 'buyer') ? [{label: 'Slave', value: 'Slave'}] : buyers}
+            options={(context === 'buyer') ? [] : buyers}
             onChange={handleSelectChange}
             isDisabled={(context === 'buyer')}
           />
