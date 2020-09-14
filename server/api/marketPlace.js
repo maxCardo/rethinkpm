@@ -14,6 +14,7 @@ const router = express.Router()
 // @ access: Public 
 router.post('/web/newuser', async (req, res) => {
     try {
+        console.log('web new user')
         postSlack({text:'new user route ran on app'})
         postSlack({text:req.body})
         //const idx_id = await addIdxUser({firstName:'API', lastName:'Testing', email:'adamp@fifthGrant.com'})
@@ -28,6 +29,7 @@ router.post('/web/newuser', async (req, res) => {
 // @ access: Public 
 router.post('/web/deal/view', async (req, res) => {
     try {
+        console.log('web deal view');
         postSlack({ text: 'view deal route ran on app' })
         postSlack({ text: req.body })
         res.status(200).send('success view')
@@ -41,6 +43,7 @@ router.post('/web/deal/view', async (req, res) => {
 // @ access: Public 
 router.post('/web/deal/like', async (req, res) => {
     try {
+        console.log('web deal like');
         postSlack({ text: 'like/unlike deal route ran on app' })
         postSlack({ text: req.body })
         res.status(200).send('success like')
