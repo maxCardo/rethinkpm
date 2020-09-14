@@ -1,4 +1,4 @@
-import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_MANAGED_BUYER, RESET_PROFILE_INFO, SET_ACTIVE_PROFILE} from './type';
+import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE} from './type';
 import {createErrorAlert} from "./alert";
 import axios from "axios";
 
@@ -39,11 +39,11 @@ export const closeStreetView = () => dispatch => {
 //Set Active profile for selected lead record.
 export const syncManagedBuyer = (buyer) => async dispatch => {
     try {
-        const res = await axios.post('/api/profile/buyerPros/pipeline/sync', buyer, config);
-        console.log(res.data)
+       // const res = await axios.post('/api/profile/buyerPros/pipeline/sync', buyer, config);
+        //console.log(res.data)
         console.log('this was sync managed')
 
-        const data = {...res.data}
+        //const data = {...res.data}
         // dispatch({
         //     type: SET_MANAGED_BUYER,
         //     payload: data
@@ -52,4 +52,17 @@ export const syncManagedBuyer = (buyer) => async dispatch => {
         dispatch(createErrorAlert(err.message, 'setManagedBuyer action'))
     }
 };
+
+
+export const getBuyerPipeline =  (id) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/marketplace/pipeline/${id}`);
+        dispatch({
+            type: SET_BUYER_PIPELINE,
+            payload: res.data
+        })    
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'Get Buyer Pipeline'))
+    }   
+}
 

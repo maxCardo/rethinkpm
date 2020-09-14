@@ -24,7 +24,7 @@ import {
     REMOVE_ALERT,
     ALERT_FAILURE,
     TOGGLE_ADD_LEAD,
-    UPDATE_PROFILE, SET_MANAGED_BUYER
+    UPDATE_PROFILE
 
 } from './type';
 import {createErrorAlert} from './alert'
@@ -43,15 +43,6 @@ export const setActiveProfile = profile => async dispatch => {
             type: SET_ACTIVE_PROFILE,
             payload: profile
         })
-        if (profile.hasOwnProperty("idxId") || profile.type === 'buyerPros') {
-            dispatch({
-                type: SET_MANAGED_BUYER,
-                payload: {
-                    ...profile,
-                    profileType: 'buyerPros'
-                }
-            })
-        }
     } catch (err) {
       dispatch(createErrorAlert(err.message, 'setActiveProfile action'))
     }
