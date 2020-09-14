@@ -36,7 +36,6 @@ const addIdxUser = async (record) => {
         headers: globalHeader
     })
 
-    console.log(res.data);
     return res.data
 }
 
@@ -83,4 +82,4 @@ const getIdxSavedLinkRes = async (searchID) => await axios({
     headers: globalHeader
 })
 
-module.exports = {addIdxUser}
+module.exports = {addIdxUser, addIdxListing}

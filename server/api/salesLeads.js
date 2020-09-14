@@ -2,7 +2,9 @@ const express = require('express');
 const {sendEmail} = require('../3ps/email')
 const AgentModel = require('../db/models/prospects/agentPros/agent')
 const OfficeModel = require('../db/models/sales/office')
-const SalesListings = require('../db/models/Ops/SalesListings')
+const SalesListings = require('../db/models/sales/SalesListings')
+const BuyerPros = require('../db/models/prospects/BuyerPros');
+const {sendRecomendationEmail} = require('../3ps/email')
 
 const router = express.Router();
 
@@ -130,6 +132,11 @@ router.post('/listings/filter', async (req, res) => {
           record.pop()
       }
 
+      const blacklist = req.body.blacklist
+      if(blacklist) {
+        record = record.filter((listing) => !blacklist.includes(listing._id.toString()))
+      }
+
       res.status(200).send({ record, filters, hasMore });
 
   } catch (error) {
@@ -154,6 +161,7 @@ function convertFiltersToQuery(filters) {
   })
   return queryObj
 }
+
 
 
 module.exports = router;
