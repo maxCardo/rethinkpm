@@ -14,7 +14,7 @@ import ProfileDetails from './profileDetails/ProfileDetails'
 import ProfileTableView from './ProfileTableView'
 import Chat from './profileComms/Chat'
 import Loading from '../../core/LoadingScreen/Loading'
-import ManageBuyer from "../Marketplace/ManageBuyers";
+import BuyerPipeline from "../Marketplace/BuyerPipeline";
 import AddLeadModal from "./addLead/AddLeadModal";
 
 
@@ -92,7 +92,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
 
                 {(profileType.current === 'Buyer') && (
                     <Tab eventKey="manageBuyers" title="Manage Pipeline">
-                        <ManageBuyer profile={activeProfile} />
+                        <BuyerPipeline profile={activeProfile} />
                     </Tab>
                 )}
             </Tabs>
