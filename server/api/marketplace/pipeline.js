@@ -23,6 +23,36 @@ router.get('/:id', async (req, res) => {
     res.status(500).send(err)
  }})
 
+// @route: Get api/marketplace/pipeline/trash
+// @desc: kill a deal on a buyer pipeline
+// @ access: Public
+router.post('/trash', async (req, res) => {
+    try {
+        //TODO: change status from recommend to dead
+        console.log('change status from recommend to dead');
+        let pipeline = await Pipeline.find({ "buyer": req.body.buyerId }).populate('deal')
+        // update idx buyer
+        res.status(200).send(pipeline)
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err)
+    }})
+
+// @route: Get api/marketplace/pipeline
+// @desc: like a deal on a buyer pipeline
+// @ access: Public
+router.post('/like', async (req, res) => {
+    try {
+        //TODO: change status from recommend to like
+        console.log('change status from recommend to liked');
+        let pipeline = await Pipeline.find({ "buyer": req.body.buyerId }).populate('deal')
+        // update idx buyer
+        res.status(200).send(pipeline)
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err)
+    }})
+
 //ToDo: I will refactor this in the future. 
 // @route: GET /api/marketplace/pipeline/sync;
 // @desc: Sync and update buyer pipeline deals with website

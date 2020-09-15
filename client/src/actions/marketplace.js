@@ -50,6 +50,7 @@ export const syncManagedBuyer = (buyer) => async dispatch => {
 };
 
 export const getBuyerPipeline =  (id) => async dispatch => {
+    console.log(id);
     try {
         const res = await axios.get(`/api/marketplace/pipeline/${id}`);
         dispatch({
@@ -62,5 +63,40 @@ export const getBuyerPipeline =  (id) => async dispatch => {
 }
 
 //change status on pipeline deal to dead
-//change status on pipeline deal from recomened to liked
+export const trashProperty =  (buyerId, propertyId) => async dispatch => {
+    try {
+        const data = {
+            buyerId,
+            propertyId
+        }
+        const res = await axios.post('/api/marketplace/pipeline/trash', data, config)
+        // get fresh data for pipeline
+        getBuyerPipeline(buyerId);
+        dispatch({
+            type: SET_BUYER_PIPELINE,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'Get Buyer Pipeline'))
+    }
+}
 
+//change status on pipeline deal from recomened to liked
+export const likeProperty =  (buyerId, propertyId) => async dispatch => {
+    try {
+        const data = {
+            buyerId,
+            propertyId
+        }
+        const res = await axios.post('/api/marketplace/pipeline/like', data, config)
+        // get fresh data for pipeline
+        getBuyerPipeline(buyerId);
+        dispatch({
+            type: SET_BUYER_PIPELINE,
+            payload: res.data
+        })
+
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'Get Buyer Pipeline'))
+    }
+}
