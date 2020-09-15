@@ -12,47 +12,35 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buy
 
     const [showStreetViewModal, setShowStreetViewModal] = useState(true)
 
-    const conditionsMap = {
-        1: 'D',
-        2: 'C',
-        3: 'B',
-        4: 'A'
-    }
-
     const HEADERS = [
         {
-            accessor: "propertyType",
+            accessor: "status",
+            label: "Status"
+        },
+        {
+            accessor: "deal.propertyType",
             label: "Type"
         },
         {
-            accessor: "county",
+            accessor: "deal.county",
             label: "Area"
         },
         {
-            accessor: "streetName",
+            accessor: "deal.streetName",
             label: "Address"
         },
         {
-            accessor: 'listPrice',
+            accessor: 'deal.listPrice',
             label: 'List Price',
             mapper: 'money'
         },
         {
-            accessor: 'bedrooms',
+            accessor: 'deal.bedrooms',
             label: 'Bedrooms'
         },
         {
-            accessor: 'bathsFull',
-            label: 'Full Bath'
-        },
-        {
-            accessor: 'bathsPartial',
-            label: 'Partial Bath'
-        },
-        {
-            accessor: 'condition',
-            label: 'Condition',
-            mapper: (data) => conditionsMap[data]
+            accessor: 'deal.totalBaths',
+            label: 'Bathrooms'
         },
         {
             reactComponent: true,
@@ -119,7 +107,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buy
               pageSize={10}
               sorting={true}
               fontSize={12}
-              data={buyerPipeline.map((record) => record.deal)}
+              data={buyerPipeline}
               headers={HEADERS}
             />
           </div>
