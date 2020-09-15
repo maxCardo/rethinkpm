@@ -50,7 +50,6 @@ export const syncManagedBuyer = (buyer) => async dispatch => {
 };
 
 export const getBuyerPipeline =  (id) => async dispatch => {
-    console.log(id);
     try {
         const res = await axios.get(`/api/marketplace/pipeline/${id}`);
         dispatch({

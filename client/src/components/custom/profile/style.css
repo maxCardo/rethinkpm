@@ -233,6 +233,10 @@
   border-bottom: none;
   padding: 0;
 }
+
+.profile-info__data-container .action-buttons__button {
+  font-size: 14px;
+}
 /*Initial width for profile__left-container when sidebars closed*/
 .agentProfile .profile__left-container {
   width: 100%;

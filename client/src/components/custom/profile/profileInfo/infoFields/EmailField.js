@@ -4,6 +4,7 @@ import {validateEmail} from '../../../../../util/commonFunctions'
 import {Button, Modal} from "react-bootstrap";
 import {tglAddEmailMod, updateEmail} from "../../../../../actions/profile";
 import PropTypes from 'prop-types';
+import IconButton from "../../../../core/IconButton";
 
 
 const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
@@ -68,28 +69,31 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                         ref={emailInput}
                 />
                 {!disableEdit && (!edit  ? (
-                    <button className='action-buttons__button singleFieldEdit' onClick={() => toggleEdit(true)}>
-                        <i className='fas fa-pencil-alt'></i>
-                    </button>
+                    <IconButton placement='bottom'
+                                tooltipContent='Edit primary email'
+                                id='edit-primary-email-tooltip'
+                                iconClass='fas fa-pencil-alt'
+                                btnClass='singleFieldEdit'
+                                onClickFunc={ () => toggleEdit(true) } />
                 ) : (
                     <Fragment>
-                        <button
-                            className='action-buttons__button ab__confirm singleFieldEdit'
-                            disabled={!emailValid}
-                            onClick={() => {
-                                editEmail !== email ? setConfModal(true) : toggleEdit(false)
-                            }}
-                        >
-                            <i className='fas fa-check'></i>
-                        </button>
-                        <button className='action-buttons__button ab__cancel singleFieldEdit'
-                                onClick={() => {
-                                    toggleEdit(false);
-                                    editEmailFunc(email)
-                                }}
-                        >
-                            <i className='fas fa-times'></i>
-                        </button>
+                        <IconButton placement='bottom'
+                                    tooltipContent='Confirm new primary email'
+                                    id='confirm-email-change-tooltip'
+                                    iconClass='fas fa-check'
+                                    isDisabled={!emailValid}
+                                    btnClass='singleFieldEdit btn-success'
+                                    onClickFunc={() => {
+                                        editEmail !== email ? setConfModal(true) : toggleEdit(false)
+                                    }}/>
+                        <IconButton placement='bottom'
+                                    tooltipContent='Cancel change'
+                                    iconClass='fas fa-times'
+                                    btnClass='ab_cancel singleFieldEdit'
+                                    onClickFunc={() => {
+                                        toggleEdit(false);
+                                        editEmailFunc(email)
+                                    }}/>
                     </Fragment>
                 ))}
 
