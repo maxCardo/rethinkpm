@@ -12,6 +12,7 @@ import {
     likeProperty
 } from "../../../actions/marketplace";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
+import IconButton from "../../core/IconButton";
 
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty, likeProperty, pipeline:{buyerPipeline, loading}}) => {
@@ -94,14 +95,8 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
           style={{ overflow: 'auto', maxHeight: '80vh' }}
         >
           <div className='ManageBuyers-actions'>
-            <OverlayTrigger
-              placement={'bottom'}
-              overlay={<Tooltip id='sync-tooltip'>Open buyer list</Tooltip>}
-            >
-                <Button className='action-buttons__button ' onClick={() => console.log('list button log')}>
-                <i className='fas fa-list'></i>
-              </Button>
-            </OverlayTrigger>
+              <IconButton placement='bottom' tooltipContent='Open <strong>buyer</strong> list' id='sync-tooltip' iconClass='fas fa-list' onClickFunc={() => console.log('show buyer list for agent')} />
+
             <OverlayTrigger
               placement={'right'}
               overlay={
