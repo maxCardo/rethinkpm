@@ -82,29 +82,29 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                                     id='confirm-email-change-tooltip'
                                     iconClass='fas fa-check'
                                     isDisabled={!emailValid}
-                                    btnClass='singleFieldEdit btn-success'
+                                    btnClass='ab__confirm singleFieldEdit'
                                     onClickFunc={() => {
                                         editEmail !== email ? setConfModal(true) : toggleEdit(false)
                                     }}/>
                         <IconButton placement='bottom'
                                     tooltipContent='Cancel change'
                                     iconClass='fas fa-times'
-                                    btnClass='ab_cancel singleFieldEdit'
+                                    btnClass='ab__cancel singleFieldEdit'
                                     onClickFunc={() => {
                                         toggleEdit(false);
                                         editEmailFunc(email)
                                     }}/>
                     </Fragment>
                 ))}
-
-                <button className='action-buttons__button addEmail'
-                        onClick={() => {
-                            toggleEdit(false);
-                            editEmailFunc(email);
-                            tglAddEmailMod(true)
-                        }}>
-                    <i className="fas fa-plus"></i>
-                </button>
+                <IconButton placement='bottom'
+                            tooltipContent='Add new email'
+                            iconClass='fas fa-plus'
+                            btnClass='addEmail'
+                            onClickFunc={() => {
+                                toggleEdit(false);
+                                editEmailFunc(email);
+                                tglAddEmailMod(true)
+                            }}/>
             </div>
 
             <Modal size='md' show={showConfModal} onHide={() => {
