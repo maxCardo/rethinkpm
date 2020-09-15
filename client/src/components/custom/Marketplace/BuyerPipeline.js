@@ -1,27 +1,16 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect} from 'react';
 import {connect} from 'react-redux'
-import axios from 'axios';
 import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
-import RecommendationModal from './RecommendationModal';
-import {createErrorAlert} from '../../../actions/alert';
 import StreetViewModal from "./StreetViewModal";
 import {openStreetView, syncManagedBuyer, getBuyerPipeline} from "../../../actions/marketplace";
-import AddDataModal from "./AddDataModal";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 
 
-const ManageBuyer = ({createErrorAlert, openStreetView, profile, getBuyerPipeline, pipeline}) => {
-
-    const [loading, setLoading] = useState(false)
-    const [listings, setListings] = useState(true)
+const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buyerPipeline, loading}}) => {
 
     const [showStreetViewModal, setShowStreetViewModal] = useState(true)
-    const [showRecommendationModal, setShowRecommendationModal] = useState(false)
-    const [focusedProperty, setFocusedProperty] = useState(undefined)
-    const [showAddDataModal, setShowAddDataModal] = useState(false)
-    const [buyerListings, setBuyerListings] = useState([])
 
     const conditionsMap = {
         1: 'D',
@@ -130,7 +119,7 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile, getBuyerPipelin
               pageSize={10}
               sorting={true}
               fontSize={12}
-              data={pipeline.map((record) => record.deal)}
+              data={buyerPipeline.map((record) => record.deal)}
               headers={HEADERS}
             />
           </div>
@@ -145,7 +134,7 @@ const ManageBuyer = ({createErrorAlert, openStreetView, profile, getBuyerPipelin
 }
 
 const mapStateToProps = state => ({
-    pipeline: state.marketplace.buyerPipeline
+    pipeline: state.marketplace
 })
 
-export default connect(mapStateToProps, {createErrorAlert, openStreetView, syncManagedBuyer, getBuyerPipeline})(ManageBuyer)
+export default connect(mapStateToProps, {openStreetView, getBuyerPipeline})(BuyerPipeline)

@@ -11,7 +11,7 @@ router.use(auth);
 
 
 // @route: Get api/marketplace/pipeline
-// @desc:
+// @desc: get pipeline deals for a buyerPros
 // @ access: Public
 router.get('/:id', async (req, res) => {
  try {
@@ -23,31 +23,11 @@ router.get('/:id', async (req, res) => {
     res.status(500).send(err)
  }})
 
-
-// @route: GET /api/profile/buyerPros;
-// @desc: Add email address to profile
+//ToDo: I will refactor this in the future. 
+// @route: GET /api/marketplace/pipeline/sync;
+// @desc: Sync and update buyer pipeline deals with website
 // @ access: Public * ToDo: update to make private
-router.post("/pipeline", async (req, res) => {
-    try {
-        let buyerId = req.body.buyerId;
-        let pipeline = await Pipeline.find({"buyer": buyerId});
-        let listings = [];
-
-        for (i = 0; i < pipeline.length; i++) {
-            let listing = await SalesListings.find({"_id": pipeline[i].deal});
-            listings.push(listing[0]);
-        }
-
-        res.status(200).send(listings);
-    } catch (err) {
-        console.error(err)
-        res.status(500).send(err);
-    }
-});
-// @route: GET /api/profile/buyerPros;
-// @desc: Add email address to profile
-// @ access: Public * ToDo: update to make private
-router.post("/pipeline/sync", async (req, res) => {
+router.post("/sync", async (req, res) => {
     try {
         let buyerId = req.body._id;
         let buyerIdxId = req.body.idxId;
