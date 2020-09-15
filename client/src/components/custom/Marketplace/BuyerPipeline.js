@@ -48,7 +48,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buy
             render: (item) => (
 
                 <div>
-                    <a className='action-buttons__button ' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank" rel="noopener noreferrer">
+                    <a className='action-buttons__button ' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`} target= "_blank" rel="noopener noreferrer">
                         <i className="fas fa-link"></i>
                     </a>
                     <button className='action-buttons__button ' onClick={() => console.log('x ?')}>
@@ -57,8 +57,8 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buy
                     <button className='action-buttons__button ' onClick={() => console.log('star')}>
                         <i className="fas fa-star"></i>
                     </button>
-                    {(item.streetName && item.streetNumber) && (
-                        <button className='action-buttons__button ' onClick={() =>  openStreetView(item.streetName, item.streetNumber)}>
+                    {(item.deal.streetName && item.deal.streetNumber) && (
+                        <button className='action-buttons__button ' onClick={() =>  openStreetView(item.deal.streetName, item.deal.streetNumber)}>
                             <i className="fas fa-eye" />
                         </button>)}
                 </div>
@@ -74,7 +74,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buy
     return loading ? (
       <Loading />
     ) : (
-      <div>
+      <div className='tableWithActions'>
         <div
           className='container-fluid'
           style={{ overflow: 'auto', maxHeight: '80vh' }}

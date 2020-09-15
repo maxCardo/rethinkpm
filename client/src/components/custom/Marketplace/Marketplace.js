@@ -282,7 +282,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   },[])
 
   return loading ? <Loading /> : (
-    <div>
+    <div className="tableWithActions">
       <KpiBar />
 
       <div>
