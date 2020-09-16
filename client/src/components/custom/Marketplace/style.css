@@ -120,10 +120,3 @@
 .StreetView__modal .modal-body > div:first-child {
   width: 100vw!important;
 }
-
-.action-buttons__button {
- cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}

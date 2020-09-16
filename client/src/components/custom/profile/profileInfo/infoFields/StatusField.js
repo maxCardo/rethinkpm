@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {updateStatus} from "../../../../../actions/profile";
 import PropTypes from "prop-types";
 import settings from '../../../../../settings';
-import IconButton from "../../../../core/IconButton";
+import IconButton from "../../../../core/IconButton/IconButton";
 
 const StatusField = ({updateStatus, data}) => {
 

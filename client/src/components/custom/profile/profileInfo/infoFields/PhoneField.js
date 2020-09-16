@@ -6,7 +6,7 @@ import {tglAddPhoneMod} from '../../../../../actions/profile'
 import {formatPhone} from '../../../../../util/commonFunctions'
 import PropTypes from "prop-types";
 import {updatePhone} from "../../../../../actions/profile";
-import IconButton from "../../../../core/IconButton";
+import IconButton from "../../../../core/IconButton/IconButton";
 
 //crate useEffect on load  to find primary number and set var
 //action/reducer/api EP for handling add and editPrime phone num

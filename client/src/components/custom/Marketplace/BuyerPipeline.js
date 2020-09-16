@@ -12,7 +12,7 @@ import {
     likeProperty
 } from "../../../actions/marketplace";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
-import IconButton from "../../core/IconButton";
+import IconButton from "../../core/IconButton/IconButton";
 
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty, likeProperty, pipeline:{buyerPipeline, loading}}) => {
@@ -66,6 +66,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
                                         tooltipContent='Like for buyer'
                                         id='like-tooltip'
                                         iconClass='fas fa-heart'
+                                        variant='action-button'
                                         onClickFunc={ () => likeProperty(profile._id, item.deal._id) } />
                         )}
                         {(item.deal.streetName && item.deal.streetNumber) && (
@@ -73,12 +74,14 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
                                         tooltipContent='Open street view'
                                         id='street-view-tooltip'
                                         iconClass='fas fa-eye'
+                                        variant='action-button'
                                         onClickFunc={ () =>  openStreetView(item.deal.streetName, item.deal.streetNumber) } />
                           )}
                         <IconButton placement='bottom'
                                     tooltipContent='Trash property from pipeline'
                                     id='trash-property-tooltip'
                                     iconClass='fas fa-trash'
+                                    variant='action-button'
                                     onClickFunc={ () => trashProperty(profile._id, item.deal._id) } />
                     </div>
                 )
@@ -104,11 +107,13 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
                           tooltipContent='Open buyer list'
                           id='list-tooltip'
                           iconClass='fas fa-list'
+                          variant='clean'
                           onClickFunc={() => console.log('show buyer list for agent')} />
               <IconButton placement='right'
                           tooltipContent='Get fresh data'
                           id='sync-tooltip'
                           iconClass='fas fa-sync-alt'
+                          variant='clean'
                           onClickFunc={() => syncManagedBuyer(profile._id)} />
           </div>
           <div className='col-12 p-0'>

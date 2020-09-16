@@ -9,7 +9,7 @@ import SaveFilterMod from './modals/saveFilterMod'
 import axios from 'axios'
 
 import {loadProfileList, loadSavedFilter, loadMoreDataProfileList, setFilter} from '../../../../actions/profile'
-import IconButton from "../../../core/IconButton";
+import IconButton from "../../../core/IconButton/IconButton";
 
 
 const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter, setFilter, isFiltered }) => {

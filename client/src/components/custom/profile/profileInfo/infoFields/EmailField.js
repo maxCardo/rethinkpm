@@ -4,7 +4,7 @@ import {validateEmail} from '../../../../../util/commonFunctions'
 import {Button, Modal} from "react-bootstrap";
 import {tglAddEmailMod, updateEmail} from "../../../../../actions/profile";
 import PropTypes from 'prop-types';
-import IconButton from "../../../../core/IconButton";
+import IconButton from "../../../../core/IconButton/IconButton";
 
 
 const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {

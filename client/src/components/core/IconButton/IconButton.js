@@ -1,7 +1,9 @@
 import React, {Fragment, useState} from 'react'
 import PropTypes from 'prop-types';
 import {Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
-import Ripple from "./Ripple";
+import Ripple from "../Ripple";
+
+import './style.css'
 
 const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, variant, href, btnClass, isDisabled}) => {
     const [cursorPos, setCursorPos] = useState({
@@ -34,10 +36,10 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
 
                     <i className={iconClass}></i>
                 </a>
-            ) : (
+            ) : (variant && variant === 'action-button') ? (
                 <Button variant='default'
                         style={{overflow: 'hidden'}}
-                        className={(variant === 'action-button') ? `action-buttons__button ${btnClass}` : btnClass}
+                        className={`action-buttons__button ${btnClass}`}
                         onClick={(e) => {
                             handleClick(e)
                             onClickFunc()
@@ -47,6 +49,30 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
                     <i className={iconClass}></i>
                     <Ripple cursorPos={cursorPos}/>
                 </Button>
+            ) : (variant && variant === 'transparent') ? (
+                <Button style={{overflow: 'hidden'}}
+                        className={`action-buttons__transparent ${btnClass}`}
+                        onClick={(e) => {
+                            handleClick(e)
+                            onClickFunc()
+                        }}
+                        disabled={isDisabled}>
+
+                    <i className={iconClass}></i>
+                    <Ripple cursorPos={cursorPos}/>
+                </Button>
+            ) : (
+                <button style={{overflow: 'hidden'}}
+                        className={btnClass}
+                        onClick={(e) => {
+                            handleClick(e)
+                            onClickFunc()
+                        }}
+                        disabled={isDisabled}>
+
+                    <i className={iconClass}></i>
+                    <Ripple cursorPos={cursorPos}/>
+                </button>
             )}
         </OverlayTrigger>
     );

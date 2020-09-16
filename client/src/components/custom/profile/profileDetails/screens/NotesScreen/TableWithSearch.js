@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Table from '../../../../../core/Table'
 import AddNoteModal from './AddNoteModel'
 import '../../../style.css'
-import IconButton from "../../../../../core/IconButton";
+import IconButton from "../../../../../core/IconButton/IconButton";
 
 export class TableWithSearch extends Component {
   constructor(props) {

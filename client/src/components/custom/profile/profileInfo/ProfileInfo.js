@@ -5,7 +5,7 @@ import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
 import AddPhoneModal from './AddPhoneModal'
 import AddEmailModal from './AddEmailModal'
-import IconButton from "../../../core/IconButton";
+import IconButton from "../../../core/IconButton/IconButton";
 
 //ToDo: in rentpros , pets not showing on ui. 
 
