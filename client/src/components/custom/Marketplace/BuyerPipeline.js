@@ -107,13 +107,13 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
                           tooltipContent='Open buyer list'
                           id='list-tooltip'
                           iconClass='fas fa-list'
-                          variant='clean'
+                          variant='transparent'
                           onClickFunc={() => console.log('show buyer list for agent')} />
               <IconButton placement='right'
                           tooltipContent='Get fresh data'
                           id='sync-tooltip'
                           iconClass='fas fa-sync-alt'
-                          variant='clean'
+                          variant='transparent'
                           onClickFunc={() => syncManagedBuyer(profile._id)} />
           </div>
           <div className='col-12 p-0'>
