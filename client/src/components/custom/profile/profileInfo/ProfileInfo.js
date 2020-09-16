@@ -77,11 +77,6 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                             variant='link'
                             href={ `mailto:${primaryEmail}` } />
                 <IconButton placement='top'
-                            tooltipContent='Open chat sidebar'
-                            id='chat-sidebar-tooltip'
-                            iconClass='fas fa-comments'
-                            onClickFunc={ () => tglChat() } />
-                <IconButton placement='top'
                             tooltipContent={`Edit ${profileName}`}
                             id='chat-sidebar-tooltip'
                             iconClass='fas fa-cogs'

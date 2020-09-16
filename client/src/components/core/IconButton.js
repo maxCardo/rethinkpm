@@ -1,7 +1,24 @@
-import React from 'react'
+import React, {Fragment, useState} from 'react'
 import {Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import Ripple from "./Ripple";
 
 const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, variant, href, btnClass, isDisabled}) => {
+    const [cursorPos, setCursorPos] = useState({
+        top: 0,
+        left: 0,
+        time: Date.now() // time indicates particular clicks
+    });
+
+    const handleClick = e => {
+        e.stopPropagation();
+        // Waves - Get Cursor Position
+        let cursorPos = {
+            top: e.clientY,
+            left: e.clientX,
+            time: Date.now() // time indicates particular clicks
+        };
+        setCursorPos(cursorPos);
+    };
 
     return (
         <OverlayTrigger
@@ -18,11 +35,16 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
                 </a>
             ) : (
                 <Button variant='default'
-                        className={`action-buttons__button ${btnClass}`}
-                        onClick={() => onClickFunc()}
+                        style={{overflow: 'hidden'}}
+                        className={(variant !== 'filter') ? `action-buttons__button ${btnClass}` : btnClass}
+                        onClick={(e) => {
+                            handleClick(e)
+                            onClickFunc()
+                        }}
                         disabled={isDisabled}>
 
                     <i className={iconClass}></i>
+                    <Ripple cursorPos={cursorPos}/>
                 </Button>
             )}
         </OverlayTrigger>
