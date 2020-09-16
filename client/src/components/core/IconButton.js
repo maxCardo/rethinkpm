@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from 'react'
+import PropTypes from 'prop-types';
 import {Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import Ripple from "./Ripple";
 
@@ -36,7 +37,7 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
             ) : (
                 <Button variant='default'
                         style={{overflow: 'hidden'}}
-                        className={(variant !== 'filter') ? `action-buttons__button ${btnClass}` : btnClass}
+                        className={(variant === 'action-button') ? `action-buttons__button ${btnClass}` : btnClass}
                         onClick={(e) => {
                             handleClick(e)
                             onClickFunc()
@@ -51,5 +52,10 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
     );
 }
 
+IconButton.propTypes = {
+    variant: PropTypes.string.isRequired,
+    iconClass: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+};
 
 export default IconButton;

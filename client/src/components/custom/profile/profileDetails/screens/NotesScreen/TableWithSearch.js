@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Table from '../../../../../core/Table'
 import AddNoteModal from './AddNoteModel'
 import '../../../style.css'
+import IconButton from "../../../../../core/IconButton";
 
 export class TableWithSearch extends Component {
   constructor(props) {
@@ -21,9 +22,12 @@ export class TableWithSearch extends Component {
     return (
       <div className='table-with-search__container'>
         <div className='table-with-search__controls-container'>
-          <Button variant='success' onClick={this.handleAdd}>
-            +
-          </Button>
+          <IconButton placement='bottom'
+                      tooltipContent='Add new note'
+                      iconClass='fas fa-plus'
+                      btnClass='btn-success'
+                      variant='clean'
+                      onClickFunc={this.handleAdd}/>
           <Form.Control className='table-with-search__search-input' onChange={this.handleSearch}/>
         </div>
         <div className='table-with-search__table'>

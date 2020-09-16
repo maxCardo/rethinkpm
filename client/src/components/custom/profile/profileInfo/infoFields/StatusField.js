@@ -83,6 +83,7 @@ const StatusField = ({updateStatus, data}) => {
                                 tooltipContent='Edit status'
                                 iconClass='fas fa-pencil-alt'
                                 btnClass='singleFieldEdit'
+                                variant='action-button'
                                 onClickFunc={() => toggleEditable(true)}
                     />
                 ) : (
@@ -91,12 +92,14 @@ const StatusField = ({updateStatus, data}) => {
                                     tooltipContent='Confirm status change'
                                     iconClass='fas fa-check'
                                     btnClass='ab__confirm singleFieldEdit'
+                                    variant='action-button'
                                     onClickFunc={() => setConfModal(true)}
                         />
                         <IconButton placement='bottom'
                                     tooltipContent='Cancel change'
                                     iconClass='fas fa-times'
                                     btnClass='ab__cancel singleFieldEdit'
+                                    variant='action-button'
                                     onClickFunc={() => {
                                         toggleEditable(false);
                                         setStatus(formatedStatus)

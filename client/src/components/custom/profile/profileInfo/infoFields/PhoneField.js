@@ -83,6 +83,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                                 tooltipContent='Edit primary phone'
                                 iconClass='fas fa-pencil-alt'
                                 btnClass='singleFieldEdit'
+                                variant='action-button'
                                 onClickFunc={() => {
                                     toggleEdit(true);
                                 }}/>
@@ -92,6 +93,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                                     tooltipContent='Confirm new primary phone'
                                     iconClass='fas fa-check'
                                     btnClass='ab__confirm singleFieldEdit'
+                                    variant='action-button'
                                     isDisabled={!phoneValid}
                                     onClickFunc={() => {
                                         /*TODO: Needs to be addressed when we consider formatting for entry*/
@@ -101,6 +103,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                                     tooltipContent='Cancel change'
                                     iconClass='fas fa-times'
                                     btnClass='ab__cancel singleFieldEdit'
+                                    variant='action-button'
                                     onClickFunc={() => {
                                         toggleEdit(false);
                                         editPhonefunc(phone)
@@ -110,6 +113,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                 <IconButton placement='top'
                             tooltipContent='Cancel change'
                             iconClass='fas fa-plus'
+                            variant='action-button'
                             btnClass='addPhoneNumber'
                             onClickFunc={() => {
                                 toggleEdit(false);

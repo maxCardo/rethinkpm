@@ -73,6 +73,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                                 tooltipContent='Edit primary email'
                                 id='edit-primary-email-tooltip'
                                 iconClass='fas fa-pencil-alt'
+                                variant='action-button'
                                 btnClass='singleFieldEdit'
                                 onClickFunc={ () => toggleEdit(true) } />
                 ) : (
@@ -82,6 +83,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                                     id='confirm-email-change-tooltip'
                                     iconClass='fas fa-check'
                                     isDisabled={!emailValid}
+                                    variant='action-button'
                                     btnClass='ab__confirm singleFieldEdit'
                                     onClickFunc={() => {
                                         editEmail !== email ? setConfModal(true) : toggleEdit(false)
@@ -89,6 +91,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                         <IconButton placement='bottom'
                                     tooltipContent='Cancel change'
                                     iconClass='fas fa-times'
+                                    variant='action-button'
                                     btnClass='ab__cancel singleFieldEdit'
                                     onClickFunc={() => {
                                         toggleEdit(false);
@@ -99,6 +102,7 @@ const EmailField = ({updateEmail, tglAddEmailMod, field, data}) => {
                 <IconButton placement='bottom'
                             tooltipContent='Add new email'
                             iconClass='fas fa-plus'
+                            variant='action-button'
                             btnClass='addEmail'
                             onClickFunc={() => {
                                 toggleEdit(false);

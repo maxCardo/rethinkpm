@@ -58,11 +58,13 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                             tooltipContent='Open list sidebar'
                             id='list-sidebar-tooltip'
                             iconClass='fas fa-user-tag'
+                            variant='action-button'
                             onClickFunc={ () => tglList() } />
                 <IconButton placement='top'
                             tooltipContent='Open chat sidebar'
                             id='chat-sidebar-tooltip'
                             iconClass='fas fa-comments'
+                            variant='action-button'
                             onClickFunc={ () => tglChat() } />
                 <IconButton placement='top'
                             tooltipContent={`Call ${profileName}`}
@@ -81,6 +83,7 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                             id='chat-sidebar-tooltip'
                             iconClass='fas fa-cogs'
                             btnClass='edit-profile__button'
+                            variant='action-button'
                             onClickFunc={ () => tglEdit() } />
 
             </div>
