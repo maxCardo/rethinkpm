@@ -85,14 +85,14 @@
   background: #fff;
   color: #6f9dd4;
 }
-td:last-child {
+.tableWithActions td:last-child {
   max-width: 220px;
   width: 1px;
 }
-td:last-child a:hover {
+.tableWithActions td:last-child a:hover {
   text-decoration: none !important;
 }
-td:last-child > div {
+.tableWithActions td:last-child > div {
   display: flex;
 }
 

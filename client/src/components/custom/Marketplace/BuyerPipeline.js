@@ -4,11 +4,17 @@ import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
 import StreetViewModal from "./StreetViewModal";
-import {openStreetView, syncManagedBuyer, getBuyerPipeline} from "../../../actions/marketplace";
+import {
+    openStreetView,
+    syncManagedBuyer,
+    getBuyerPipeline,
+    trashProperty,
+    likeProperty
+} from "../../../actions/marketplace";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 
 
-const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buyerPipeline, loading}}) => {
+const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty, likeProperty, pipeline:{buyerPipeline, loading}}) => {
 
     const [showStreetViewModal, setShowStreetViewModal] = useState(true)
 
@@ -45,24 +51,32 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buy
         {
             reactComponent: true,
             label: 'Actions',
-            render: (item) => (
+            render: (item) => {
+                console.log(item);
+                return (
+                    <div>
+                        <a className='action-buttons__button ' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`} target= "_blank" rel="noopener noreferrer">
+                            <i className="fas fa-link"></i>
+                        </a>
+                        {item.status && (
+                            <button className='action-buttons__button ' onClick={() => likeProperty(profile._id, item.deal._id)}>
+                                <i className="fas fa-heart"></i>
+                            </button>
+                        )}
 
-                <div>
-                    <a className='action-buttons__button ' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`} target= "_blank" rel="noopener noreferrer">
-                        <i className="fas fa-link"></i>
-                    </a>
-                    <button className='action-buttons__button ' onClick={() => console.log('x ?')}>
-                        <i className="fas fa-times"></i>
-                    </button>
-                    <button className='action-buttons__button ' onClick={() => console.log('star')}>
-                        <i className="fas fa-star"></i>
-                    </button>
-                    {(item.deal.streetName && item.deal.streetNumber) && (
-                        <button className='action-buttons__button ' onClick={() =>  openStreetView(item.deal.streetName, item.deal.streetNumber)}>
-                            <i className="fas fa-eye" />
-                        </button>)}
-                </div>
-            )
+                        <button className='action-buttons__button ' onClick={() => console.log('star')}>
+                            <i className="fas fa-star"></i>
+                        </button>
+                        {(item.deal.streetName && item.deal.streetNumber) && (
+                            <button className='action-buttons__button ' onClick={() =>  openStreetView(item.deal.streetName, item.deal.streetNumber)}>
+                                <i className="fas fa-eye" />
+                            </button>)}
+                        <button className='action-buttons__button ' onClick={() => trashProperty(profile._id, item.deal._id)}>
+                            <i className="fas fa-trash"></i>
+                        </button>
+                    </div>
+                )
+            }
         }
     ]
 
@@ -70,11 +84,11 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buy
       getBuyerPipeline(profile._id)
     },[profile])
 
-   
+
     return loading ? (
       <Loading />
     ) : (
-      <div>
+      <div className='tableWithActions'>
         <div
           className='container-fluid'
           style={{ overflow: 'auto', maxHeight: '80vh' }}
@@ -88,7 +102,6 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, pipeline:{buy
                 <i className='fas fa-list'></i>
               </Button>
             </OverlayTrigger>
-
             <OverlayTrigger
               placement={'right'}
               overlay={
@@ -125,4 +138,4 @@ const mapStateToProps = state => ({
     pipeline: state.marketplace
 })
 
-export default connect(mapStateToProps, {openStreetView, getBuyerPipeline})(BuyerPipeline)
+export default connect(mapStateToProps, {openStreetView, getBuyerPipeline, trashProperty, likeProperty})(BuyerPipeline)
