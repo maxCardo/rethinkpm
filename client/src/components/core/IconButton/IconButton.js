@@ -23,12 +23,14 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
         setCursorPos(cursorPos);
     };
 
+    const theVariant = (variant) ? variant : 'clean';
+
     return (
         <OverlayTrigger
             placement={placement}
             overlay={<Tooltip id={id}>{tooltipContent}</Tooltip>}
         >
-            {(variant && variant === 'link') ? (
+            {(theVariant === 'link') ? (
                 <a href={href}
                    className={`action-buttons__button ${btnClass === 'undefined' ? '' : btnClass}`}
                    target="_blank"
@@ -36,7 +38,7 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
 
                     <i className={iconClass}></i>
                 </a>
-            ) : (variant && variant === 'action-button') ? (
+            ) : (theVariant === 'action-button') ? (
                 <Button variant='default'
                         style={{overflow: 'hidden'}}
                         className={`action-buttons__button ${btnClass}`}
@@ -49,7 +51,7 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
                     <i className={iconClass}></i>
                     <Ripple cursorPos={cursorPos}/>
                 </Button>
-            ) : (variant && variant === 'transparent') ? (
+            ) : (theVariant === 'transparent') ? (
                 <Button style={{overflow: 'hidden'}}
                         className={`action-buttons__transparent ${btnClass}`}
                         onClick={(e) => {
@@ -63,7 +65,7 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
                 </Button>
             ) : (
                 <button style={{overflow: 'hidden'}}
-                        className={btnClass}
+                        className={'btn ' +btnClass}
                         onClick={(e) => {
                             handleClick(e)
                             onClickFunc()

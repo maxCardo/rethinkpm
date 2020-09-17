@@ -110,7 +110,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
                             tooltipContent='Create filter'
                             iconClass='fas fa-filter'
                             btnClass='profile-list__filter-icon'
-                            variant='filter'
+                            variant='clean'
                             onClickFunc={() => tglFilterMod(true)}/>
             </div>
             {isFiltered ? (
