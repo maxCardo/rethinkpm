@@ -25,6 +25,66 @@ const FILTERFIELDS = {
     dataType:"array",
     accessor:"type"
   },
+  listAge: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "List Age", 
+    dataType:"number", 
+    accessor:"listAge"
+  },
+  county: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "County", 
+    dataType:"array", 
+    accessor:"county"
+  },
+  zip: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Zipcode", 
+    dataType:"array", 
+    accessor:"zipcode"
+  },
+  schoolDistrict: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "School District", 
+    dataType:"array", 
+    accessor:"schoolDistrict"
+  },
+  listPrice: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Price", 
+    dataType:"number", 
+    accessor:"listPrice"
+  },
+  condition: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Condition", 
+    dataType:"array", 
+    accessor:"condition"
+  },
   numberOfBedrooms: {
     type: {
       label: "Don't filter",
@@ -39,30 +99,40 @@ const FILTERFIELDS = {
     type: {
       label: "Don't filter",
       value: "noFilter"
-    },
-    value:"" ,
-    name: "Number of bathrooms",
-    dataType:"number",
-    accessor:"bathsFull"
+    }, 
+    value:"" , 
+    name: "Number of bathrooms", 
+    dataType:"number", 
+    accessor:"totalBaths"
   },
-  zip: {
-    type: {
-      label: "Don't filter",
+  tract: {
+    type: { 
+      label: "Don't filter", 
       value: "noFilter"
-    },
-    value:"" ,
-    name: "Zipcode",
-    dataType:"array",
-    accessor:"zipcode"
+    }, 
+    value:"" , 
+    name: "Tract", 
+    dataType:"string", 
+    accessor:"tract"
   },
-  area: {
-    type: {
-      label: "Don't filter",
+  opZone: {
+    type: { 
+      label: "Don't filter", 
       value: "noFilter"
-    },
-    value:"" ,
-    name: "Area",
-    dataType:"array",
+    }, 
+    value:"" , 
+    name: "OP Zone", 
+    dataType:"array", 
+    accessor:"opZone"
+  },
+  rentTier: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Rent Tier", 
+    dataType:"array", 
     accessor:"area"
   },
 }
@@ -87,7 +157,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [showSaveFilterModal, setShowSaveFilterModal] = useState(false);
   const [savedFilters, setSavedFilters] = useState([])
   const [selectedFilter, setSelectedFilter] = useState(undefined)
-  const [filterOptions, setFilterOptions] = useState(FILTEROPTIONS)
+  const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
 
   const conditionsMap = {
@@ -133,6 +203,10 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       mapper: (data) => conditionsMap[data]
     },
     {
+      accessor: 'listDate',
+      label: 'List Date',
+    },
+    {
       reactComponent: true,
       label: 'Actions',
       render: (item) => (
@@ -168,13 +242,13 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const loadFilterOptions = async (cancelToken) => {
     const res = await axios.get(`/api/marketplace/ops/filterOptions`, {cancelToken});
     const options = res.data
-    setFilterOptions(Object.assign({}, filterOptions, options))
+    setFilterOptions(options)
   }
 
   const fetchFilteredData = async (filters, blacklist) => {
     setLoading(true)
     const data = {filters, blacklist}
-    const res = await axios.post(`/api/sales/listings/filter`, data);
+    const res = await axios.post(`/api/marketplace/ops/listings/filter`, data);
     const listings = res.data.record;
     const appliedFilters = res.data.filters
     console.log(listings)

@@ -13,6 +13,7 @@ router.use(auth)
 //filter options: refactor to get these from api
 const zipcodeOptions = require('../../config/supportData/zipcodes')
 const areaOptions = require('../../config/supportData/areas')
+const { filter } = require('../../config/supportData/areas')
 
 // @route: post /api/marketPlace/ops/recommend
 // @desc: 
@@ -81,8 +82,7 @@ router.post('/filters/:filterId/blacklist', async (req, res) => {
   const marketFilter = await MarketFilter.findById(filterId)
   marketFilter.blacklist.push(listingId)
   await marketFilter.save()
-})
-;
+});
 
 
 
@@ -95,12 +95,212 @@ router.get('/filterOptions', async (req, res) => {
   try {
       options.zip = zipcodeOptions
       options.area = areaOptions
+      options.condition = [
+        {
+          label: 'A',
+          value: 4
+        },
+        {
+          label: 'B',
+          value: 3
+        },
+        {
+          label: 'C',
+          value: 2
+        },
+        {
+          label: 'D',
+          value: 1
+        },
+      ]
+      options.opZone = [
+        {
+          label: 'true',
+          value: true
+        },
+        {
+          label: 'false',
+          value: false
+        },
+      ]
+      options.rentTier = [
+        {
+          label: "1",
+          value: "1"
+        },
+        {
+          label: "2",
+          value: "2"
+        },
+        {
+          label: "3",
+          value: "3"
+        },
+        {
+          label: "4",
+          value: "4"
+        },
+        {
+          label: "5",
+          value: "5"
+        },
+        {
+          label: "6",
+          value: "6"
+        },
+        {
+          label: "pittsburgh",
+          value: "pittsburgh"
+        },
+      ]
+      options.type = [
+        {
+          value: 'res', 
+          label: 'Residential'
+        },
+        {
+          value: 'smallMulti', 
+          label: 'Small Multi'
+        },
+        {
+          value: 'multiFamily', 
+          label: 'MultiFamily'
+        },
+        {
+          value: 'commercial', 
+          label: 'Commercial'
+        },
+      ]
       res.status(200).send(options);
   } catch (error) {
       console.error(error);
       res.status(400).send('server error')
   }
 });
+
+
+
+// @route: GET /api/marketplace/ops/listings/filter
+// @desc: Filter the listings
+// @ access: Public * ToDo: update to make private
+router.post('/listings/filter', async (req, res) => {
+  try {
+      const PAGESIZE = req.body.pageSize;
+      const data = req.body.filters
+      let filters = []
+      if(data.length) {
+        filters = data
+      } else {
+        const filterFields = Object.keys(req.body.filters);
+        //create filter object
+        filterFields.forEach((x) => {
+            if(data[x].type.value !== 'noFilter') {
+              filters.push(createFilter(data,x))
+            }
+        })
+      }
+
+      
+      //create string query 
+      const queryObj = convertFiltersToQuery(filters)
+      //query DB
+      let record;
+      if (req.body.page) {
+          if(PAGESIZE) {
+            record = await SalesListings.find(queryObj).skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
+          } else {
+            record = await SalesListings.find(queryObj)
+          }
+      } else {
+          record = await SalesListings.find(queryObj).limit(PAGESIZE + 1)
+      }
+      
+      let hasMore = false;
+      if (record.length > PAGESIZE) {
+          hasMore = true;
+          record.pop()
+      }
+
+      const blacklist = req.body.blacklist
+      if(blacklist) {
+        record = record.filter((listing) => !blacklist.includes(listing._id.toString()))
+      }
+
+      res.status(200).send({ record, filters, hasMore });
+
+  } catch (error) {
+      console.error(error);
+      res.status(400).send('server error')
+  }
+});
+
+function createFilter(data, filterName) {
+  if(filterName === 'listAge') {
+    const dateOne = new Date();
+    dateOne.setDate(dateOne.getDate() - +data[filterName].value)
+    let dateTwo = undefined
+    if(data[filterName].secondValue) {
+      dateTwo = new Date();
+      dateTwo.setDate(dateTwo.getDate() - data[filterName].secondValue)
+    }
+    const transposeFilterType = {
+      'range': 'range',
+      '==': '==',
+      '!=': '!=',
+      '>': '<',
+      '>=': '<=',
+      '<': '>',
+      '<=': '>='
+    }
+    const operatorPerFilterType = {
+      'range': ['$lte', '$gte'],
+      '==': '$eq',
+      '!=': '$ne',
+      '>': '$gt',
+      '>=': '$gte',
+      '<': '$lt',
+      '<=': '$lte'
+    }
+    const filterType = transposeFilterType[data[filterName].type.value]
+    const operator = operatorPerFilterType[filterType]
+    return {
+      field: 'listDate',
+      filterType: filterType,
+      operator: operator,
+      value: dateOne,
+      secondValue: data[filterName].secondValue ? dateTwo : ''
+    }
+  } else {
+    return {
+      field: data[filterName].accessor,
+      subField: data[filterName].subAccessor,
+      filterType: data[filterName].type.value,
+      operator: data[filterName].type.operator,
+      value: typeof (data[filterName].value) === 'string' ? data[filterName].value : data[filterName].value.map((y) => y.value),
+      secondValue: data[filterName].secondValue ? data[filterName].secondValue : ''
+    }
+  }
+}
+
+function convertFiltersToQuery(filters) {
+  //create string query 
+  const queryObj = {}
+  filters.map((x) => {
+      if (x.filterType === 'range') {
+          Object.assign(queryObj, {
+              [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
+          })
+      } else {
+          Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
+      }
+  })
+  // Add status filter to only show the active records
+  Object.assign(queryObj, {
+    'mlsStatus': { '$eq': 'A' }
+  })
+  return queryObj
+}
+
 
 router.post('/listings/:listingId/addCondition', async (req,res) => {
   const {listingId} = req.params
