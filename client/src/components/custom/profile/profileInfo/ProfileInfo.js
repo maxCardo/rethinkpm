@@ -5,6 +5,7 @@ import InfoField from './infoFields/InfoFields'
 import Loading from '../../../core/LoadingScreen/Loading'
 import AddPhoneModal from './AddPhoneModal'
 import AddEmailModal from './AddEmailModal'
+import IconButton from "../../../core/IconButton/IconButton";
 
 //ToDo: in rentpros , pets not showing on ui. 
 
@@ -53,22 +54,37 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
 
             {/* calls to action */}
             <div className='profile-info__actions-container'>
-                <button className='action-buttons__button' onClick={() => tglList()}>
-                    <i className='fas fa-user-tag'></i>
-                </button>
-                <button className='action-buttons__button' onClick={() => tglChat()}>
-                    <i className='fas fa-comments'></i>
-                </button>
-                <a className='action-buttons__button' href={`tel:${primaryPhone}`}>
-                    <i className='fas fa-phone'></i>
-                </a>
-                <a className='action-buttons__button' href={`mailto:${primaryEmail}`}>
-                    <i className='fas fa-envelope'></i>
-                </a>
-
-                <button className='action-buttons__button edit-profile__button' onClick={() => tglEdit()}>
-                    <i className='fas fa-cogs'></i>
-                </button>
+                <IconButton placement='top'
+                            tooltipContent='Open list sidebar'
+                            id='list-sidebar-tooltip'
+                            iconClass='fas fa-user-tag'
+                            variant='action-button'
+                            onClickFunc={ () => tglList() } />
+                <IconButton placement='top'
+                            tooltipContent='Open chat sidebar'
+                            id='chat-sidebar-tooltip'
+                            iconClass='fas fa-comments'
+                            variant='action-button'
+                            onClickFunc={ () => tglChat() } />
+                <IconButton placement='top'
+                            tooltipContent={`Call ${profileName}`}
+                            id='phone-tooltip'
+                            iconClass='fas fa-phone'
+                            variant='link'
+                            href={`tel:${primaryPhone}`}/>
+                <IconButton placement='top'
+                            tooltipContent={`Email ${profileName}`}
+                            id='email-tooltip'
+                            iconClass='fas fa-envelope'
+                            variant='link'
+                            href={ `mailto:${primaryEmail}` } />
+                <IconButton placement='top'
+                            tooltipContent={`Edit ${profileName}`}
+                            id='chat-sidebar-tooltip'
+                            iconClass='fas fa-cogs'
+                            btnClass='edit-profile__button'
+                            variant='action-button'
+                            onClickFunc={ () => tglEdit() } />
 
             </div>
             {/* modals */}

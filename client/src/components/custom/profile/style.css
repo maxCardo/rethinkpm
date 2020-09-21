@@ -233,6 +233,10 @@
   border-bottom: none;
   padding: 0;
 }
+
+.profile-info__data-container .action-buttons__button {
+  font-size: 14px;
+}
 /*Initial width for profile__left-container when sidebars closed*/
 .agentProfile .profile__left-container {
   width: 100%;
@@ -465,20 +469,6 @@
   position: absolute;
   bottom: 10px;
 }
-/*Icon button styling*/
-.action-buttons__button {
-  background: #fff;
-  color: #6f9dd4;
-  width: 30px;
-  height: 30px;
-  /*Icon button transition for hover and focus mutations*/
-  transition: color 225ms, box-shadow 225ms;
-}
-/*box shadow on hover and focus*/
-.action-buttons__button:hover,
-.action-buttons__button:focus {
-  box-shadow: 1px 1px 8px rgba(0,0,0,.227);
-}
 /*buttons farther from eachother*/
 .profile-info__actions-container .action-buttons__button {
   margin-right: 15px;
@@ -513,9 +503,9 @@
   box-shadow: 0px 0px 0 2px #2684ff !important;
 }
 /*width height and place icon in middle of button, buttons in ProfileInfo editable fields*/
-.singleFieldEdit,
-.addPhoneNumber,
-.addEmail {
+.singleFieldEdit.btn,
+.addPhoneNumber.btn,
+.addEmail.btn {
   width: 22px;
   height: 22px;
   display: flex;
@@ -527,15 +517,15 @@
   opacity: 0;
 }
 /*style for the edit profile button and placement in bottom right corner of PrifileInfo */
-.edit-profile__button,
-.add-profile__button {
+.edit-profile__button.btn,
+.add-profile__button.btn {
   position: absolute;
   display: flex;
   justify-content: center ;
   align-items: center;
   color: #343a40;
 }
-.edit-profile__button {
+.edit-profile__button.btn {
   right: 15px;
 }
 .add-profile__button {
@@ -607,24 +597,7 @@
   flex-grow: 1;
   margin: 0 10px 0 0;
 }
-/* color of icon in confirm change and cancel edit buttons*/
-.action-buttons__button.ab__cancel,
-.action-buttons__button.ab__confirm {
-  color: #fff;
-}
-/*background of cancel edit*/
-.action-buttons__button.ab__cancel {
-  background: #F44336;
-}
-/*background of confirm edit*/
-.action-buttons__button.ab__confirm {
-  background: #4CAF50;
-}
-/*darker when disabled*/
-.action-buttons__button.ab__confirm[disabled] {
-  background: #448947;
-  color: #ededed;
-}
+
 /*move imediate sibling button to right*/
 .agentStatusEdit + .singleFieldEdit {
   margin-left: auto;

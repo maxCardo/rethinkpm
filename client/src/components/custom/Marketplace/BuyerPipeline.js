@@ -12,6 +12,7 @@ import {
     likeProperty
 } from "../../../actions/marketplace";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
+import IconButton from "../../core/IconButton/IconButton";
 
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty, likeProperty, pipeline:{buyerPipeline, loading}}) => {
@@ -52,28 +53,36 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
             reactComponent: true,
             label: 'Actions',
             render: (item) => {
-                console.log(item);
                 return (
                     <div>
-                        <a className='action-buttons__button ' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`} target= "_blank" rel="noopener noreferrer">
-                            <i className="fas fa-link"></i>
-                        </a>
+                        <IconButton placement='bottom'
+                                    tooltipContent='Like for buyer'
+                                    id='link-tooltip'
+                                    iconClass='fas fa-link'
+                                    variant='link'
+                        href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`}/>
                         {item.status && (
-                            <button className='action-buttons__button ' onClick={() => likeProperty(profile._id, item.deal._id)}>
-                                <i className="fas fa-heart"></i>
-                            </button>
+                            <IconButton placement='bottom'
+                                        tooltipContent='Like for buyer'
+                                        id='like-tooltip'
+                                        iconClass='fas fa-heart'
+                                        variant='action-button'
+                                        onClickFunc={ () => likeProperty(profile._id, item.deal._id) } />
                         )}
-
-                        <button className='action-buttons__button ' onClick={() => console.log('star')}>
-                            <i className="fas fa-star"></i>
-                        </button>
                         {(item.deal.streetName && item.deal.streetNumber) && (
-                            <button className='action-buttons__button ' onClick={() =>  openStreetView(item.deal.streetName, item.deal.streetNumber)}>
-                                <i className="fas fa-eye" />
-                            </button>)}
-                        <button className='action-buttons__button ' onClick={() => trashProperty(profile._id, item.deal._id)}>
-                            <i className="fas fa-trash"></i>
-                        </button>
+                            <IconButton placement='bottom'
+                                        tooltipContent='Open street view'
+                                        id='street-view-tooltip'
+                                        iconClass='fas fa-eye'
+                                        variant='action-button'
+                                        onClickFunc={ () =>  openStreetView(item.deal.streetName, item.deal.streetNumber) } />
+                          )}
+                        <IconButton placement='bottom'
+                                    tooltipContent='Trash property from pipeline'
+                                    id='trash-property-tooltip'
+                                    iconClass='fas fa-trash'
+                                    variant='action-button'
+                                    onClickFunc={ () => trashProperty(profile._id, item.deal._id) } />
                     </div>
                 )
             }
@@ -94,26 +103,18 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
           style={{ overflow: 'auto', maxHeight: '80vh' }}
         >
           <div className='ManageBuyers-actions'>
-            <OverlayTrigger
-              placement={'bottom'}
-              overlay={<Tooltip id='sync-tooltip'>Open buyer list</Tooltip>}
-            >
-                <Button className='action-buttons__button ' onClick={() => console.log('list button log')}>
-                <i className='fas fa-list'></i>
-              </Button>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement={'right'}
-              overlay={
-                <Tooltip id='sync-tooltip'>
-                  Get <strong>fresh</strong> data.
-                </Tooltip>
-              }
-            >
-              <Button className='action-buttons__button ' onClick={syncManagedBuyer(profile._id)}>
-                <i className='fas fa-sync-alt'></i>
-              </Button>
-            </OverlayTrigger>
+              <IconButton placement='bottom'
+                          tooltipContent='Open buyer list'
+                          id='list-tooltip'
+                          iconClass='fas fa-list'
+                          variant='transparent'
+                          onClickFunc={() => console.log('show buyer list for agent')} />
+              <IconButton placement='right'
+                          tooltipContent='Get fresh data'
+                          id='sync-tooltip'
+                          iconClass='fas fa-sync-alt'
+                          variant='transparent'
+                          onClickFunc={() => syncManagedBuyer(profile._id)} />
           </div>
           <div className='col-12 p-0'>
             <Table
