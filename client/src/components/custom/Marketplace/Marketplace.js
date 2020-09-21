@@ -134,7 +134,7 @@ const FILTERFIELDS = {
     value:"" , 
     name: "Rent Tier", 
     dataType:"array", 
-    accessor:"area"
+    accessor:"rents.HA.tier"
   },
 }
 
