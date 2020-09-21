@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import {connect} from 'react-redux'
 import axios from 'axios';
 import Table from '../../core/Table';
+import IconButton from "../../core/IconButton/IconButton";
 import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
 import KpiBar from './KpiBar';
@@ -173,12 +174,13 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       label: "Type"
     },
     {
-      accessor: "county",
-      label: "Area"
+      accessor: 'listDate',
+      label: 'List Date',
+      mapper: 'date'
     },
     {
-      accessor: "streetName",
-      label: "Address"
+      accessor: "county",
+      label: "Area"
     },
     {
       accessor: 'listPrice',
@@ -186,16 +188,21 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       mapper: 'money'
     },
     {
+      reactComponent: true,
+      label: "Address",
+      render: (item) => (
+        <div>
+          <p>{item.streetNumber} {item.streetName}</p>
+        </div>
+      )
+    },
+    {
       accessor: 'bedrooms',
-      label: 'Bedrooms'
+      label: 'Bed'
     },
     {
-      accessor: 'bathsFull',
-      label: 'Full Bath'
-    },
-    {
-      accessor: 'bathsPartial',
-      label: 'Partial Bath'
+      accessor: 'totalBaths',
+      label: 'Bath'
     },
     {
       accessor: 'condition',
@@ -203,30 +210,43 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       mapper: (data) => conditionsMap[data]
     },
     {
-      accessor: 'listDate',
-      label: 'List Date',
-    },
-    {
       reactComponent: true,
       label: 'Actions',
       render: (item) => (
         <div>
-          <a className='action-buttons__button ' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank" rel="noopener noreferrer">
-            <i className="fas fa-link"></i>
-          </a>
-          <button className='action-buttons__button ' onClick={() => startAddDataFlow(item._id)}>
-            <i className="fas fa-plus"></i>
-          </button>
-          <button className='action-buttons__button ' onClick={() => startRecommendationFlow(item)}>
-            <i className="fas fa-star"></i>
-          </button>
-          <button className='action-buttons__button ' onClick={() => blacklistListing(item._id)}>
-            <i className="fas fa-times"></i>
-          </button>
+          <IconButton placement='bottom'
+            tooltipContent='View On Site'
+            id='link-tooltip'
+            iconClass='fas fa-link'
+            variant='link'
+            href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} 
+          />
           {(item.streetName && item.streetNumber) && (
-              <button className='action-buttons__button ' onClick={() =>  openStreetView(item.streetName, item.streetNumber)}>
-                <i className="fas fa-eye" />
-              </button>)}
+            <IconButton placement='bottom'
+              tooltipContent='Open street view'
+              id='street-view-tooltip'
+              iconClass='fas fa-eye'
+              variant='action-button'
+              onClickFunc={() => openStreetView(item.streetName, item.streetNumber)}
+          />)}
+          <IconButton placement='bottom'
+            tooltipContent='Input Listing Data'
+            iconClass='fas fa-plus'
+            variant='action-button'
+            onClickFunc={() => startAddDataFlow(item._id)} 
+          />
+          <IconButton placement='bottom'
+            tooltipContent='Recommend Deal'
+            iconClass='fas fa-star'
+            variant='action-button'
+            onClickFunc={() => startRecommendationFlow(item)}
+          />
+          <IconButton placement='bottom'
+            tooltipContent='Blacklist Deal'
+            iconClass='fas fa-trash'
+            variant='action-button'
+            onClickFunc={() => blacklistListing(item._id)}
+          />
         </div>
       )
     }
