@@ -5,7 +5,7 @@ import Ripple from "../Ripple";
 
 import './style.css'
 
-const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, variant, href, btnClass, isDisabled}) => {
+const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, variant, href, btnClass, isDisabled, fontSize}) => {
     const [cursorPos, setCursorPos] = useState({
         top: 0,
         left: 0,
@@ -25,6 +25,8 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
 
     const theVariant = (variant) ? variant : 'clean';
 
+    const iTag = <i className={iconClass} style={{fontSize: fontSize ? fontSize : 12}}></i>
+
     return (
         <OverlayTrigger
             placement={placement}
@@ -36,7 +38,7 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
                    target="_blank"
                    rel="noopener noreferrer">
 
-                    <i className={iconClass}></i>
+                    {iTag}
                 </a>
             ) : (theVariant === 'action-button') ? (
                 <Button variant='default'
@@ -48,7 +50,7 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
                         }}
                         disabled={isDisabled}>
 
-                    <i className={iconClass}></i>
+                    {iTag}
                     <Ripple cursorPos={cursorPos}/>
                 </Button>
             ) : (theVariant === 'transparent') ? (
@@ -60,7 +62,7 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
                         }}
                         disabled={isDisabled}>
 
-                    <i className={iconClass}></i>
+                    {iTag}
                     <Ripple cursorPos={cursorPos}/>
                 </Button>
             ) : (
@@ -72,7 +74,7 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
                         }}
                         disabled={isDisabled}>
 
-                    <i className={iconClass}></i>
+                    {iTag}
                     <Ripple cursorPos={cursorPos}/>
                 </button>
             )}
