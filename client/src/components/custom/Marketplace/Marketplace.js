@@ -379,48 +379,48 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     <div className="tableWithActions">
       <KpiBar />
 
-      <div>
-      </div>
-      <div className='searchContainer agentsSearchContainer'>
-        <div style={{display: 'flex'}}>
-          <Select
-            className="marketplace__filter-select"
-            onChange={handleFilterChange}
-            defaultValue="All"
-            options={savedFilters}
-            placeholder='Select Filter'
-            value={selectedFilter}
-          />
-          <input 
-            className='form-control searchInput' 
-            tabIndex={0}
-            onChange={(e) => setFilterString(e.target.value)} 
-            placeholder='Search' 
-          />
+      <div style={{maxHeight: '80vh', overflow: 'auto'}}>
+        <div className='searchContainer agentsSearchContainer'>
+          <div style={{display: 'flex'}}>
+            <Select
+              className="marketplace__filter-select"
+              onChange={handleFilterChange}
+              defaultValue="All"
+              options={savedFilters}
+              placeholder='Select Filter'
+              value={selectedFilter}
+            />
+            <input 
+              className='form-control searchInput' 
+              tabIndex={0}
+              onChange={(e) => setFilterString(e.target.value)} 
+              placeholder='Search' 
+            />
+          </div>
+          <div className='marketplace__filter-icons'>
+            {filters && !selectedFilter &&
+              <Fragment>
+                <button onClick={saveFilter}>Save filter</button>
+                <button onClick={clearFilter}>Clear filter</button>
+              </Fragment>
+            }
+            <button onClick={() => setShowFilterModal(true)}>
+              <i className="fas fa-filter"></i>
+            </button>
+          </div>
+          
         </div>
-        <div className='marketplace__filter-icons'>
-          {filters && !selectedFilter &&
-            <Fragment>
-              <button onClick={saveFilter}>Save filter</button>
-              <button onClick={clearFilter}>Clear filter</button>
-            </Fragment>
-          }
-          <button onClick={() => setShowFilterModal(true)}>
-            <i className="fas fa-filter"></i>
-          </button>
-        </div>
-        
-      </div>
-      <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
-        <div className="col-12 p-0" >
-          <Table 
-            pageSize={10}
-            sorting={true}
-            fontSize={12}
-            filter={filterString}
-            data={listings}
-            headers={HEADERS}
-          />
+        <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
+          <div className="col-12 p-0" >
+            <Table 
+              pageSize={10}
+              sorting={true}
+              fontSize={12}
+              filter={filterString}
+              data={listings}
+              headers={HEADERS}
+            />
+          </div>
         </div>
       </div>
       <FilterModal 
