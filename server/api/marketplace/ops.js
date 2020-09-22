@@ -236,7 +236,14 @@ router.post('/listings/filter', async (req, res) => {
       if(blacklist) {
         record = record.filter((listing) => !blacklist.includes(listing._id.toString()))
       }
-
+      //fill city with area if no city
+      record = await record.map((listing) => {
+        if (!listing.city) {
+          listing.city = listing.area
+        }
+        return listing 
+      })
+      console.log(record[0]);
       res.status(200).send({ record, filters, hasMore });
 
   } catch (error) {

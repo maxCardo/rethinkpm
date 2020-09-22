@@ -78,7 +78,14 @@ router.get('/offices', async(req,res) => {
 
 router.get('/listings', async (req,res) => {
   const listings = await SalesListings.find({mlsStatus: 'A'}).limit(100)
-  res.json(listings)
+  const listingsUpdated = await listing.map((listing) => {
+    if (!listing.city) {
+      listing.city = listing.area;
+    }
+    return listing;
+  });
+  console.log(listingsUpdated)
+  res.json(listingsUpdated)
 })
 
 router.get('/kpi/numberOfListings', async (req, res) => {

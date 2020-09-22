@@ -179,7 +179,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       mapper: 'date'
     },
     {
-      accessor: "county",
+      accessor: "city",
       label: "Area"
     },
     {
