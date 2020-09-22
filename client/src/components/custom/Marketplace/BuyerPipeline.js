@@ -5,17 +5,20 @@ import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
 import StreetViewModal from "./StreetViewModal";
 import {openStreetView,syncManagedBuyer,getBuyerPipeline,updateDeal} from "../../../actions/marketplace";
-import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
+import {FormCheck} from "react-bootstrap";
 import IconButton from "../../core/IconButton/IconButton";
 
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pipeline:{buyerPipeline, loading}}) => {
 
   const [showStreetViewModal, setShowStreetViewModal] = useState(true)
+  const [showDead, setShowDead] = useState(false)
+  const [data, setData] = useState()
 
     useEffect(() => {
       getBuyerPipeline(profile._id);
     }, [profile]);
+
 
   const HEADERS = [
     {
@@ -102,19 +105,24 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
         style={{ overflow: 'auto', maxHeight: '80vh' }}
       >
         <div className='ManageBuyers-actions'>
-            <IconButton placement='right'
-                        tooltipContent='Get fresh data'
-                        id='sync-tooltip'
-                        iconClass='fas fa-sync-alt'
-                        variant='transparent'
-                        onClickFunc={() => syncManagedBuyer(profile._id)} />
+          <IconButton
+            placement='right'
+            tooltipContent='Get fresh data'
+            id='sync-tooltip'
+            iconClass='fas fa-sync-alt'
+            variant='transparent'
+            onClickFunc={() => syncManagedBuyer(profile._id)}
+          />
+        </div>
+        <div>
+          <FormCheck label='Show Dead Deals' onClick={() => setShowDead(!showDead)} />
         </div>
         <div className='col-12 p-0'>
           <Table
             pageSize={10}
             sorting={true}
             fontSize={12}
-            data={buyerPipeline}
+            data={showDead === false ? buyerPipeline.filter((deal) => deal.status != 'dead') : buyerPipeline}
             headers={HEADERS}
           />
         </div>
