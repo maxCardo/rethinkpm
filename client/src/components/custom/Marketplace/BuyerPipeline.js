@@ -115,7 +115,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
           />
         </div>
         <div>
-          <FormCheck label='Show Dead Deals' onClick={() => setShowDead(!showDead)} />
+          <FormCheck label='Show Dead Deals' checked = {showDead} onClick={() => setShowDead(!showDead)} />
         </div>
         <div className='col-12 p-0'>
           <Table
