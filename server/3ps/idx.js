@@ -82,4 +82,4 @@ const getIdxSavedLinkRes = async (searchID) => await axios({
     headers: globalHeader
 })
 
-module.exports = {addIdxUser, addIdxListing, getIdxSavedListings}
+module.exports = {addIdxUser, addIdxListing, getIdxSavedListings, removeIdxListing}
