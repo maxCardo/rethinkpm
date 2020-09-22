@@ -33,13 +33,26 @@ router.put('/status', async (req, res) => {
         const {id,action} = req.body
         console.log(id, action);
         let deal = await Pipeline.findById(id).populate('deal', 'listNumber').populate('buyer', 'idxId')
-        deal.status = action
         if (action === 'liked') {
             const idxDealId = await addIdxListing(deal.buyer.idxId, deal.deal.listNumber)
-            deal.idxDealId = idxDealId   
+            deal.idxDealId = idxDealId
+            deal.history.push({
+              event: 'liked deal',
+              statusFrom: deal.status,
+              statusTo: 'liked',
+              note: 'agent manual liked deal from app',
+            });
+
         }else if (action === 'dead') {
-            removeIdxListing(deal.buyer.idxId, deal.idxDealId)            
+            removeIdxListing(deal.buyer.idxId, deal.idxDealId)
+            deal.history.push({
+              event: 'killed deal',
+              statusFrom: deal.status,
+              statusTo: 'dead',
+              note: 'agent manual killed deal from app',
+            });            
         }
+        deal.status = action;
         await deal.save()
         console.log(deal);
         res.status(200).send(deal)
