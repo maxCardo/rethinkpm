@@ -160,8 +160,8 @@ router.get('/filterOptions', async (req, res) => {
           value: "6"
         },
         {
-          label: "pittsburgh",
-          value: "pittsburgh"
+          label: "Pittsburgh",
+          value: "Pittsburgh"
         },
       ]
       options.type = [
