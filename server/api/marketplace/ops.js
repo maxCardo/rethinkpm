@@ -13,6 +13,9 @@ router.use(auth)
 //filter options: refactor to get these from api
 const zipcodeOptions = require('../../config/supportData/zipcodes')
 const areaOptions = require('../../config/supportData/areas')
+const conditionsOptions = require('../../config/supportData/conditions')
+const rentTierOptions = require('../../config/supportData/rentTiers')
+const propertyTypeOptions = require('../../config/supportData/propertyTypes')
 const { filter } = require('../../config/supportData/areas')
 
 // @route: post /api/marketPlace/ops/recommend
@@ -106,24 +109,7 @@ router.get('/filterOptions', async (req, res) => {
   try {
       options.zip = zipcodeOptions
       options.area = areaOptions
-      options.condition = [
-        {
-          label: 'A',
-          value: 4
-        },
-        {
-          label: 'B',
-          value: 3
-        },
-        {
-          label: 'C',
-          value: 2
-        },
-        {
-          label: 'D',
-          value: 1
-        },
-      ]
+      options.condition = conditionsOptions
       options.opZone = [
         {
           label: 'true',
@@ -134,54 +120,8 @@ router.get('/filterOptions', async (req, res) => {
           value: false
         },
       ]
-      options.rentTier = [
-        {
-          label: "1",
-          value: "1"
-        },
-        {
-          label: "2",
-          value: "2"
-        },
-        {
-          label: "3",
-          value: "3"
-        },
-        {
-          label: "4",
-          value: "4"
-        },
-        {
-          label: "5",
-          value: "5"
-        },
-        {
-          label: "6",
-          value: "6"
-        },
-        {
-          label: "Pittsburgh",
-          value: "Pittsburgh"
-        },
-      ]
-      options.type = [
-        {
-          value: 'res', 
-          label: 'Residential'
-        },
-        {
-          value: 'smallMulti', 
-          label: 'Small Multi'
-        },
-        {
-          value: 'multiFamily', 
-          label: 'MultiFamily'
-        },
-        {
-          value: 'commercial', 
-          label: 'Commercial'
-        },
-      ]
+      options.rentTier = rentTierOptions
+      options.type = propertyTypeOptions
       res.status(200).send(options);
   } catch (error) {
       console.error(error);
