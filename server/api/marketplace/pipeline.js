@@ -29,9 +29,7 @@ router.get('/:id', async (req, res) => {
 router.put('/status', async (req, res) => {
     try { 
         //TODO: change status from recommend to dead
-        console.log('change status from recommend to dead');
         const {id,action} = req.body
-        console.log(id, action);
         let deal = await Pipeline.findById(id).populate('deal', 'listNumber').populate('buyer', 'idxId')
         if (action === 'liked') {
             const idxDealId = await addIdxListing(deal.buyer.idxId, deal.deal.listNumber)
@@ -47,7 +45,6 @@ router.put('/status', async (req, res) => {
         });
         deal.status = action;
         await deal.save()
-        console.log(deal);
         res.status(200).send(deal)
     } catch (err) {
         console.error(err);

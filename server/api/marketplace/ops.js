@@ -30,7 +30,6 @@ router.post('/recommend', auth, async (req, res) => {
           //ToDo add beter workflow for recomendig a propety twice
             let deal = await Pipeline.findOne({buyer: buyer._id, deal: propertyId})
             if (!Object.keys(deal).length) {
-              console.log('if picked up');
               deal = await new Pipeline({
                 buyer: buyer._id,
                 agent: req.user,
@@ -183,7 +182,6 @@ router.post('/listings/filter', async (req, res) => {
         }
         return listing 
       })
-      console.log(record[0]);
       res.status(200).send({ record, filters, hasMore });
 
   } catch (error) {

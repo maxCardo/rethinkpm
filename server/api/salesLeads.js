@@ -84,7 +84,6 @@ router.get('/listings', async (req,res) => {
     }
     return listing;
   });
-  console.log(listingsUpdated)
   res.json(listingsUpdated)
 })
 

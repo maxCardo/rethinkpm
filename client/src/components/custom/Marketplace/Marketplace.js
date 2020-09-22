@@ -271,7 +271,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     const res = await axios.post(`/api/marketplace/ops/listings/filter`, data);
     const listings = res.data.record;
     const appliedFilters = res.data.filters
-    console.log(listings)
     setFilters(appliedFilters)
     setListings(listings)
     setLoading(false)
@@ -361,8 +360,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       setListings(listingsBlacklisted)
     }
   }
-
-
 
   useEffect(() => {
     const CancelToken = axios.CancelToken;
