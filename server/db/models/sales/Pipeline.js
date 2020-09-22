@@ -21,6 +21,7 @@ const pipelineSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    idxDealId: String, 
     history:[{
         event: String,
         statusTo: String,

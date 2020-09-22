@@ -2,7 +2,7 @@ const express = require('express');
 const auth = require('../../middleware/auth');
 const SalesListings = require('../../db/models/sales/SalesListings');
 const Pipeline = require('../../db/models/sales/Pipeline');
-const {addIdxListing} = require('../../3ps/idx')
+const {addIdxListing, removeIdxListing} = require('../../3ps/idx')
 
 
 const router = express.Router();
@@ -34,8 +34,14 @@ router.put('/status', async (req, res) => {
         console.log(id, action);
         let deal = await Pipeline.findById(id).populate('deal', 'listNumber').populate('buyer', 'idxId')
         deal.status = action
+        if (action === 'liked') {
+            const idxDealId = await addIdxListing(deal.buyer.idxId, deal.deal.listNumber)
+            deal.idxDealId = idxDealId   
+        }else if (action === 'dead') {
+            removeIdxListing(deal.buyer.idxId, deal.idxDealId)            
+        }
         await deal.save()
-        action === 'liked' && addIdxListing(deal.buyer.idxId, deal.deal.listNumber)
+        console.log(deal);
         res.status(200).send(deal)
     } catch (err) {
         console.error(err);
