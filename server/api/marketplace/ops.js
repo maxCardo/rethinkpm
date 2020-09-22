@@ -24,20 +24,32 @@ router.post('/recommend', auth, async (req, res) => {
         const property = await SalesListings.findById(propertyId)
         const buyers = await Promise.all(buyersId.map((buyerId) => BuyerPros.findById(buyerId)))
         buyers.forEach(async (buyer) => {
-            const deal = await new Pipeline({
+          //ToDo add beter workflow for recomendig a propety twice
+            let deal = await Pipeline.findOne({buyer: buyer._id, deal: propertyId})
+            if (!Object.keys(deal).length) {
+              console.log('if picked up');
+              deal = await new Pipeline({
                 buyer: buyer._id,
                 agent: req.user,
                 deal: propertyId,
                 status: 'recommend',
                 history: [
-                    {
-                        event: 'recommend',
-                        statusTo: 'recommend',
-
-                    }
-                ]
-            })
-            await deal.save()
+                  {
+                    event: 'recommend',
+                    statusTo: 'recommend',
+                  },
+                ],
+              });  
+            } else {
+              deal.status = 'recommend'
+              deal.history.push({
+                event: 'recommend',
+                statusTo: 'recommend',
+                statusFrom: deal.status,
+                note: 'property rerecomended from marketplace'
+              })
+            }
+            await deal.save();
             let buyerEmail = buyer.email.filter((email) => email.isPrimary)[0]
             if (!buyerEmail) {
                 buyerEmail = buyer.email[0]
@@ -48,7 +60,6 @@ router.post('/recommend', auth, async (req, res) => {
                 <p>${customMessage}</p>
                 <a href='http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${deal._id}&mode=recommend'>Property</a>
             `
-
             sendEmail(buyerEmail.address, subject, customMessage, html)
         })
         res.json({ ok: true })
