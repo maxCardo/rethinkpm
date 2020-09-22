@@ -2,8 +2,9 @@
 .action-buttons__button {
     background: #fff;
     color: #6f9dd4;
-    width: 30px;
-    height: 30px;
+    padding: 5px;
+    /* width: 30px;
+    height: 30px; */
     /*Icon button transition for hover and focus mutations*/
     transition: color 225ms, box-shadow 225ms;
 }
