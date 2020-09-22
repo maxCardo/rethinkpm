@@ -125,9 +125,10 @@ export class Table extends Component {
   }
 
   render() {
+    const fontSize = this.props.fontSize ? this.props.fontSize : 12;
     return (
       <div>
-        <table className={this.props.className + ' table table-striped'} style={{fontSize: this.props.fontSize}}>
+        <table className={this.props.className + ' table table-striped'} style={{fontSize: fontSize}}>
           <thead>
             <tr>
               {this.state.headers.map((header, index) => (
