@@ -1,4 +1,4 @@
-import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE} from './type';
+import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING} from './type';
 import {createErrorAlert} from "./alert";
 import axios from "axios";
 
@@ -62,19 +62,22 @@ export const getBuyerPipeline =  (id) => async dispatch => {
 }
 
 //change status on pipeline deal to dead
-export const trashProperty =  (buyerId, propertyId) => async dispatch => {
+export const updateDeal =  (id, action) => async dispatch => {
     try {
-        const data = {
-            buyerId,
-            propertyId
-        }
-        const res = await axios.post('/api/marketplace/pipeline/trash', data, config)
-        // get fresh data for pipeline
-        getBuyerPipeline(buyerId);
         dispatch({
-            type: SET_BUYER_PIPELINE,
+            type: SET_PIPELINE_LOADING
+        })
+        const data = {
+            id,
+            action
+        }
+        const res = await axios.put('/api/marketplace/pipeline/status', data, config)
+        console.log(res);
+        dispatch({
+            type: UPDATE_DEAL_STATUS,
             payload: res.data
         })
+        
     } catch (err) {
         dispatch(createErrorAlert(err.message, 'Get Buyer Pipeline'))
     }
@@ -83,6 +86,7 @@ export const trashProperty =  (buyerId, propertyId) => async dispatch => {
 //change status on pipeline deal from recomened to liked
 export const likeProperty =  (buyerId, propertyId) => async dispatch => {
     try {
+    
         const data = {
             buyerId,
             propertyId

@@ -4,14 +4,18 @@ import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
 import StreetViewModal from "./StreetViewModal";
-import {openStreetView,syncManagedBuyer,getBuyerPipeline,trashProperty,likeProperty} from "../../../actions/marketplace";
+import {openStreetView,syncManagedBuyer,getBuyerPipeline,updateDeal} from "../../../actions/marketplace";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 import IconButton from "../../core/IconButton/IconButton";
 
 
-const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty, likeProperty, pipeline:{buyerPipeline, loading}}) => {
+const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pipeline:{buyerPipeline, loading}}) => {
 
   const [showStreetViewModal, setShowStreetViewModal] = useState(true)
+
+    useEffect(() => {
+      getBuyerPipeline(profile._id);
+    }, [profile]);
 
   const HEADERS = [
     {
@@ -75,24 +79,19 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
                 id='like-tooltip'
                 iconClass='fas fa-heart'
                 variant='action-button'
-                onClickFunc={() => likeProperty(profile._id, item.deal._id)} />
+                onClickFunc={() => updateDeal(item._id, 'liked')} />
             )}  
             <IconButton placement='bottom'
               tooltipContent='Trash property from pipeline'
               id='trash-property-tooltip'
               iconClass='fas fa-trash'
               variant='action-button'
-              onClickFunc={() => trashProperty(profile._id, item.deal._id)} />
+              onClickFunc={() => updateDeal(item._id, 'dead')} />
           </div>
         )
       }
     }
   ]
-
-  useEffect(() => {
-    getBuyerPipeline(profile._id)
-  },[profile])
-
 
   return loading ? (
     <Loading />
@@ -103,12 +102,6 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, trashProperty
         style={{ overflow: 'auto', maxHeight: '80vh' }}
       >
         <div className='ManageBuyers-actions'>
-            <IconButton placement='bottom'
-                        tooltipContent='Open buyer list'
-                        id='list-tooltip'
-                        iconClass='fas fa-list'
-                        variant='transparent'
-                        onClickFunc={() => console.log('show buyer list for agent')} />
             <IconButton placement='right'
                         tooltipContent='Get fresh data'
                         id='sync-tooltip'
@@ -139,4 +132,4 @@ const mapStateToProps = state => ({
     pipeline: state.marketplace
 })
 
-export default connect(mapStateToProps, {openStreetView, getBuyerPipeline, trashProperty, likeProperty})(BuyerPipeline)
+export default connect(mapStateToProps, {openStreetView, getBuyerPipeline,updateDeal})(BuyerPipeline)

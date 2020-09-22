@@ -1,8 +1,8 @@
 const express = require('express');
 const auth = require('../../middleware/auth');
 const SalesListings = require('../../db/models/sales/SalesListings');
-const BuyerPros = require('../../db/models/prospects/BuyerPros');
 const Pipeline = require('../../db/models/sales/Pipeline');
+const {addIdxListing} = require('../../3ps/idx')
 
 
 const router = express.Router();
@@ -23,35 +23,25 @@ router.get('/:id', async (req, res) => {
     res.status(500).send(err)
  }})
 
-// @route: Get api/marketplace/pipeline/trash
-// @desc: kill a deal on a buyer pipeline
+ // @route: Put api/marketplace/pipeline/trash
+// @desc: update deal status
 // @ access: Public
-router.post('/trash', async (req, res) => {
-    try {
+router.put('/status', async (req, res) => {
+    try { 
         //TODO: change status from recommend to dead
         console.log('change status from recommend to dead');
-        let pipeline = await Pipeline.find({ "buyer": req.body.buyerId }).populate('deal')
-        // update idx buyer
-        res.status(200).send(pipeline)
+        const {id,action} = req.body
+        console.log(id, action);
+        let deal = await Pipeline.findById(id).populate('deal', 'listNumber').populate('buyer', 'idxId')
+        deal.status = action
+        await deal.save()
+        action === 'liked' && addIdxListing(deal.buyer.idxId, deal.deal.listNumber)
+        res.status(200).send(deal)
     } catch (err) {
         console.error(err);
         res.status(500).send(err)
     }})
 
-// @route: Get api/marketplace/pipeline
-// @desc: like a deal on a buyer pipeline
-// @ access: Public
-router.post('/like', async (req, res) => {
-    try {
-        //TODO: change status from recommend to like
-        console.log('change status from recommend to liked');
-        let pipeline = await Pipeline.find({ "buyer": req.body.buyerId }).populate('deal')
-        // update idx buyer
-        res.status(200).send(pipeline)
-    } catch (err) {
-        console.error(err);
-        res.status(500).send(err)
-    }})
 
 //ToDo: I will refactor this in the future. 
 // @route: GET /api/marketplace/pipeline/sync;
