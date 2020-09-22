@@ -419,6 +419,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
               filter={filterString}
               data={listings}
               headers={HEADERS}
+              sortBy="listDate"
+              sortDirection='desc'
             />
           </div>
         </div>
