@@ -6,15 +6,19 @@ const KpiItem = ({title, endpoint}) => {
   const [actualNumber, setActualNumber] = useState(0)
   const [porcentualChange, setPorcentualChange] = useState(0)
 
-  const fetchData = async () => {
-    const response = await axios.get(endpoint)
+  const fetchData = async (cancelToken) => {
+    const response = await axios.get(endpoint, {cancelToken})
     const {actualNumber, porcentualChange} = response.data
     setActualNumber(actualNumber)
     setPorcentualChange(porcentualChange)
   }
   
   useEffect(() => {
-    fetchData()
+    const source = CancelToken.source();
+    fetchData(source.token)
+    return () => {
+      source.cancel('Component unmounted');
+    }
   }, [endpoint])
 
   let variationBlock = ''

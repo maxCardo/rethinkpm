@@ -16,6 +16,9 @@ const areaOptions = require('../../config/supportData/areas')
 const conditionsOptions = require('../../config/supportData/conditions')
 const rentTierOptions = require('../../config/supportData/rentTiers')
 const propertyTypeOptions = require('../../config/supportData/propertyTypes')
+const countyOptions = require('../../config/supportData/counties').map(option => ({label: option, value: option}))
+const zoningOptions = require('../../config/supportData/zoning').map(option => ({label: option, value: option}))
+const schoolDistrictOptions = require('../../config/supportData/schoolDistricts').map(option => ({label: option, value: option}))
 const { filter } = require('../../config/supportData/areas')
 
 // @route: post /api/marketPlace/ops/recommend
@@ -121,6 +124,9 @@ router.get('/filterOptions', async (req, res) => {
       ]
       options.rentTier = rentTierOptions
       options.type = propertyTypeOptions
+      options.schoolDistrict = schoolDistrictOptions
+      options.county = countyOptions
+      options.zoning = zoningOptions
       res.status(200).send(options);
   } catch (error) {
       console.error(error);

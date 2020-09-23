@@ -136,6 +136,16 @@ const FILTERFIELDS = {
     dataType:"array", 
     accessor:"rents.HA.tier"
   },
+  zoning: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Zoning", 
+    dataType:"array", 
+    accessor:"zoning"
+  },
 }
 
 const FILTEROPTIONS = {
@@ -487,6 +497,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
               sortBy="listDate"
               sortDirection='desc'
             />
+            Number of records: {listings.length}
           </div>
         </div>
       </div>
