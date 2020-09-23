@@ -120,3 +120,24 @@
 .StreetView__modal .modal-body > div:first-child {
   width: 100vw!important;
 }
+
+.StreetView__modal .modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.marketplace .searchContainer {
+  margin: 0;
+}
+.Marketplace__address {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+.Marketplace__address div {
+  display: flex;
+  align-items: center;
+}
+.Marketplace__address p {
+  margin: 0;
+}

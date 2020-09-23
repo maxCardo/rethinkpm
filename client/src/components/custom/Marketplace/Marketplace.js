@@ -194,7 +194,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         <div>
           <p>{item.streetNumber} {item.streetName}</p>
         </div>
-      )
+      ),
+      className: "Marketplace__address"
     },
     {
       accessor: 'bedrooms',
@@ -373,7 +374,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   },[])
 
   return loading ? <Loading /> : (
-    <div className="tableWithActions">
+    <div className="tableWithActions marketplace">
       <KpiBar />
 
       <div style={{maxHeight: '80vh', overflow: 'auto'}}>
@@ -410,7 +411,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
           <div className="col-12 p-0" >
             <Table 
-              pageSize={10}
+              pageSize={20}
               sorting={true}
               fontSize={12}
               filter={filterString}

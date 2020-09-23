@@ -85,7 +85,8 @@ const IconButton = ({placement, tooltipContent, id, iconClass, onClickFunc, vari
 IconButton.propTypes = {
     variant: PropTypes.string.isRequired,
     iconClass: PropTypes.string.isRequired,
-    onClick: PropTypes.func,
+    tooltipContent: PropTypes.string.isRequired,
+    onClickFunc: PropTypes.func,
 };
 
 export default IconButton;
