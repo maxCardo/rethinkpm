@@ -82,4 +82,10 @@ const getIdxSavedLinkRes = async (searchID) => await axios({
     headers: globalHeader
 })
 
-module.exports = {addIdxUser, addIdxListing, getIdxSavedListings, removeIdxListing}
+const getIdxCountyData = async (searchID) => await axios({
+    url: `https://api.idxbroker.com/mls/counties/d504`,
+    method: 'get',
+    headers: globalHeader
+})
+
+module.exports = {addIdxUser, addIdxListing, getIdxSavedListings, removeIdxListing, getIdxCountyData}
