@@ -144,6 +144,11 @@ const FILTEROPTIONS = {
   ]
 }
 
+// Hook
+function useWindowSize() {
+
+}
+
 
 const Marketplace = ({createErrorAlert, openStreetView}) => {
   
@@ -160,6 +165,42 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [selectedFilter, setSelectedFilter] = useState(undefined)
   const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
+  const [tablePageSize, setTablePageSize] = useState(10)
+
+  // Hook
+  function useWindowSize() {
+    // Initialize state with undefined width/height so server and client renders match
+    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+    const [windowSize, setWindowSize] = useState({
+      width: undefined,
+      height: undefined,
+    });
+
+    useEffect(() => {
+      // Handler to call on window resize
+      function handleResize() {
+        // Set window width/height to state
+        /*eslint-disable*/
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }
+
+      // Add event listener
+      window.addEventListener("resize", handleResize);
+
+      // Call handler right away so state gets updated with initial window size
+      handleResize();
+
+      // Remove event listener on cleanup
+      return () => window.removeEventListener("resize", handleResize);
+    }, []); // Empty array ensures that effect is only run on mount
+
+    return windowSize;
+  }
+
+  const size = useWindowSize();
 
   const conditionsMap = {
     1: 'D',
@@ -246,6 +287,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             tooltipContent='Blacklist Deal'
             iconClass='fas fa-trash'
             variant='action-button'
+            /*DEMO: change icon color, should be made with separate class with hover,
+             focus etc states because it's a button, or even a separate variant if needed*/
+            btnClass='text-danger'
             needsConfirmation={true}
             onClickFunc={() => blacklistListing(item._id)}
           />
@@ -364,6 +408,19 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   }
 
   useEffect(() => {
+    const height = size.height;
+    let rowNumber;
+    if (height) {
+      rowNumber = Math.floor((height - 316) / 29);
+    } else {
+      rowNumber = 10;
+    }
+
+    setTablePageSize(rowNumber)
+
+  }, [size.height]); // Empty array ensures that effect is only run on mount
+
+  useEffect(() => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     fetchData(source.token)
@@ -411,8 +468,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         </div>
         <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
           <div className="col-12 p-0" >
-            <Table 
-              pageSize={20}
+            <Table
+                //derive pageSize from viewport height
+              pageSize={tablePageSize}
               sorting={true}
               fontSize={12}
               filter={filterString}
