@@ -429,6 +429,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
               sortBy="listDate"
               sortDirection='desc'
             />
+            Number of records: {listings.length}
           </div>
         </div>
       </div>
