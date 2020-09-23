@@ -246,7 +246,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             tooltipContent='Blacklist Deal'
             iconClass='fas fa-trash'
             variant='action-button'
-                      needsConfirmation={true}
+            needsConfirmation={true}
             onClickFunc={() => blacklistListing(item._id)}
           />
         </div>

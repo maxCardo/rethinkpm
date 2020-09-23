@@ -34,7 +34,9 @@
 .kpi-item__container {
   flex: 1;
   border-right: 1px solid #CCC;
-  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .kpi-item__title {
