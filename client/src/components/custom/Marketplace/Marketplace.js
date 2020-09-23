@@ -136,6 +136,16 @@ const FILTERFIELDS = {
     dataType:"array", 
     accessor:"rents.HA.tier"
   },
+  zoning: {
+    type: { 
+      label: "Don't filter", 
+      value: "noFilter"
+    }, 
+    value:"" , 
+    name: "Zoning", 
+    dataType:"array", 
+    accessor:"zoning"
+  },
 }
 
 const FILTEROPTIONS = {
