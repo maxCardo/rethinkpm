@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 export class MarketplaceIcon extends Component {
     render() {
         return (
-            <svg id="Layer_35" enable-background="new 0 0 64 64" height="512" viewBox="0 0 64 64" width="512"
+            <svg id="Layer_35" height="512" viewBox="0 0 64 64" width="512"
                  xmlns="http://www.w3.org/2000/svg">
                 <path d="m55 44c3.31 0 6 2.69 6 6v4c0 3.31-2.69 6-6 6h-18c-3.31 0-6-2.69-6-6v-10z" fill="#b4dd7f"/>
                 <path

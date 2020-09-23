@@ -407,20 +407,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   }
 
-  useEffect(() => {
-    const height = size.height;
-    let rowNumber;
-    if (height) {
-      rowNumber = Math.floor((height - 316) / 29);
-    } else {
-      rowNumber = 10;
-    }
-
-    setTablePageSize(rowNumber)
-
-  }, [size.height]); // Empty array ensures that effect is only run on mount
-
-  useEffect(() => {
+  const rerenderTable = () => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     fetchData(source.token)
@@ -429,6 +416,27 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     return () => {
       source.cancel('Component unmounted');
     }
+  }
+
+  useEffect(() => {
+    const height = size.height;
+    let rowNumber;
+
+    if (height) {
+      rowNumber = Math.floor((height - 316) / 29);
+    } else {
+      rowNumber = 10;
+    }
+
+    setTablePageSize(rowNumber)
+
+
+    return rerenderTable()
+
+  }, [size.height]); // Empty array ensures that effect is only run on mount
+
+  useEffect(() => {
+    return rerenderTable()
   },[])
 
   return loading ? <Loading /> : (

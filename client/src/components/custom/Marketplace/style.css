@@ -147,3 +147,7 @@
 .marketplace .kpi-bar__container + div {
   max-height: unset!important;
 }
+
+.marketplace .searchInput {
+margin-left: 0;
+}
