@@ -20,7 +20,7 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
                    closeStreetView()
                }}>
             <Modal.Header closeButton>
-                <Modal.Title>Property Details</Modal.Title>
+                <Modal.Title>{streetView ? 'Street' : 'Map'} View </Modal.Title>
             </Modal.Header>
             {loading ? <Loading/> : <Fragment>
                 <Modal.Body>
@@ -29,10 +29,11 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <IconButton onClickFunc={() => setStreetView(!streetView) }
-                                fontSize={16}
+                                fontSize={22}
+                                btnClass='modal__action-button'
                                 variant='action-button'
-                                iconClass='fas fa-marker'
-                                tooltipContent={`Change to ${streetView ? 'Street mode' : 'Map mode'}`} />
+                                iconClass='fas fa-map-marker'
+                                tooltipContent={`Change to ${streetView ? 'Map mode' : 'Street mode'}`} />
 
                     <Button className='real-btn' variant='2' onClick={() => {
                         closeStreetView()

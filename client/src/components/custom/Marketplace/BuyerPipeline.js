@@ -7,13 +7,15 @@ import StreetViewModal from "./StreetViewModal";
 import {openStreetView,syncManagedBuyer,getBuyerPipeline,updateDeal} from "../../../actions/marketplace";
 import {FormCheck} from "react-bootstrap";
 import IconButton from "../../core/IconButton/IconButton";
+import PropertyDetailsModal from "./PropertyDetailsModal";
 
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pipeline:{buyerPipeline, loading}}) => {
 
   const [showStreetViewModal, setShowStreetViewModal] = useState(true)
   const [showDead, setShowDead] = useState(false)
-  const [data, setData] = useState()
+  const [showPropertyDetailsModal, setShowPropertyDetailsModal] = useState(false)
+  const [iframeTarget, setIframeTarget] = useState('')
 
     useEffect(() => {
       getBuyerPipeline(profile._id);
@@ -63,6 +65,16 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
         return (
           <div>
             <IconButton placement='bottom'
+                        tooltipContent='View property details'
+                        id='property-details-tooltip'
+                        iconClass='fas fa-list'
+                        variant='action-button'
+                        onClickFunc={() => {
+                          setIframeTarget(`http://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`);
+                          setShowPropertyDetailsModal(true);
+                        }}
+            />
+            <IconButton placement='bottom'
               tooltipContent='Link on website'
               id='link-tooltip'
               iconClass='fas fa-link'
@@ -105,6 +117,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
         style={{ overflow: 'auto', maxHeight: '80vh' }}
       >
         <div className='ManageBuyers-actions'>
+          <FormCheck label='Show Dead Deals' checked = {showDead} onClick={() => setShowDead(!showDead)} />
           <IconButton
             placement='right'
             tooltipContent='Get fresh data'
@@ -113,9 +126,6 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
             variant='transparent'
             onClickFunc={() => syncManagedBuyer(profile._id)}
           />
-        </div>
-        <div>
-          <FormCheck label='Show Dead Deals' checked = {showDead} onClick={() => setShowDead(!showDead)} />
         </div>
         <div className='col-12 p-0'>
           <Table
@@ -132,6 +142,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
         handleClose={() => setShowStreetViewModal(false)}
         apiKey='AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o'
       />
+      <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal} handleClose={() => setShowPropertyDetailsModal(false)} />
     </div>
   );
 }

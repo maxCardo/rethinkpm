@@ -1,5 +1,5 @@
 import React from 'react';
-import {formatMoney, filterData, accessData} from '../../../../../util/commonFunctions'
+import {formatMoney, accessData} from '../../../../../util/commonFunctions'
 
 
 const SimpleField = ({field, data}) => {

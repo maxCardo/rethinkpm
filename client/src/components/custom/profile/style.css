@@ -476,6 +476,9 @@
   height: 32px;
   font-size: 16px;
 }
+.profile-info__actions-container .action-buttons__button:hover {
+  text-decoration: none;
+}
 /*first button closer to edge of container*/
 .action-buttons__button:first-child {
   margin-left: 0;

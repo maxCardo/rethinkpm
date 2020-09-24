@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, Fragment} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {connect} from 'react-redux'
 import qs from 'query-string'
 import {Tab, Tabs} from 'react-bootstrap'

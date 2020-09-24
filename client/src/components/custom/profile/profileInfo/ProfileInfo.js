@@ -51,7 +51,6 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                     </div>
                 ))}
             </div>
-
             {/* calls to action */}
             <div className='profile-info__actions-container'>
                 <IconButton placement='top'
@@ -90,7 +89,6 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                             variant='action-button'
                             fontSize={16}
                             onClickFunc={ () => tglEdit() } />
-
             </div>
             {/* modals */}
             <AddPhoneModal/>

@@ -88,7 +88,6 @@
   color: #6f9dd4;
 }
 .tableWithActions td:last-child {
-  max-width: 220px;
   width: 1px;
 }
 .tableWithActions td:last-child a:hover {
@@ -135,6 +134,7 @@
   display: flex;
   align-items: center;
   flex-grow: 1;
+  height: 42px;
 }
 .Marketplace__address div {
   display: flex;
@@ -150,6 +150,12 @@
 
 .marketplace .searchInput {
 margin-left: 0;
+}
+
+.marketplace .action-buttons__button {
+  margin: 5px;
+  min-height: 26px;
+  min-width: 26px;
 }
 
 .PropertyDetails__modal,
@@ -199,4 +205,14 @@ margin-left: 0;
   letter-spacing: 1px;
   margin-left: auto;
   padding-right: 32px;
+}
+
+.modal__action-button {
+  height: 42px;
+  width: 42px;
+}
+
+/* Hide full screen toggle because it's broken */
+.gm-control-active.gm-fullscreen-control {
+  display: none;
 }

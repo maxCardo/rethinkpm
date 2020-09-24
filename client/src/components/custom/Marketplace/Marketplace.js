@@ -441,7 +441,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     let rowNumber;
 
     if (height) {
-      rowNumber = Math.floor((height - 333) / 29);
+      rowNumber = Math.floor((height - 360) / 41);
     } else {
       rowNumber = 10;
     }
