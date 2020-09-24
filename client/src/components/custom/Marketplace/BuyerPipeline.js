@@ -63,7 +63,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
         return (
           <div>
             <IconButton placement='bottom'
-              tooltipContent='Like for buyer'
+              tooltipContent='Link on website'
               id='link-tooltip'
               iconClass='fas fa-link'
               variant='link'

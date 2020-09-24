@@ -151,3 +151,52 @@
 .marketplace .searchInput {
 margin-left: 0;
 }
+
+.PropertyDetails__modal,
+.PropertyDetails__modal .modal-dialog  {
+  margin: 0;
+  max-width: unset;
+}
+
+.PropertyDetails__modal .modal-dialog  {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.PropertyDetails__modal .modal-header,
+.PropertyDetails__modal .modal-body {
+  padding: 0;
+}
+.PropertyDetails__modal .modal-content {
+  margin: 0;
+  max-width: unset;
+  width: unset;
+  height: 110vh;
+  padding: 0;
+  border-radius: 0;
+}
+
+.PropertyDetails__modal .modal-header h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.PropertyDetails__modal button.close {
+  z-index: 5;
+  position: relative;
+  right: 6px;
+}
+.PropertyDetails__modal .navbar {
+   height: unset;
+ }
+
+/*IFRAME CORE CSS*/
+.PropertyDetails__modal .Iframe__title {
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-left: auto;
+  padding-right: 32px;
+}

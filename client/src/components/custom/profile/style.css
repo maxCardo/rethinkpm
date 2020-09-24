@@ -472,7 +472,9 @@
 /*buttons farther from eachother*/
 .profile-info__actions-container .action-buttons__button {
   margin-right: 15px;
-
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
 }
 /*first button closer to edge of container*/
 .action-buttons__button:first-child {

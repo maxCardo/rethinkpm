@@ -13,7 +13,6 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
 
     return (
 
-
         <Modal size='xl'
                className='StreetView__modal'
                show={modalOpen}
@@ -29,9 +28,7 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
                                 zoomLevel={10}/>
                 </Modal.Body>
                 <Modal.Footer>
-                    <IconButton onClickFunc={() => {
-                        console.log('wtf');
-                        setStreetView(!streetView)}}
+                    <IconButton onClickFunc={() => setStreetView(!streetView) }
                                 fontSize={16}
                                 variant='action-button'
                                 iconClass='fas fa-marker'
@@ -43,7 +40,6 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
                         Close
                     </Button>
                 </Modal.Footer>
-
             </Fragment>}
         </Modal>
     );

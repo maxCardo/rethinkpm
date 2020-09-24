@@ -14,6 +14,7 @@ import {createErrorAlert} from '../../../actions/alert';
 import AddDataModal from './AddDataModal';
 import StreetViewModal from "./StreetViewModal";
 import {openStreetView} from "../../../actions/marketplace";
+import PropertyDetailsModal from "./PropertyDetailsModal";
 
 const FILTERFIELDS = {
   type: {
@@ -154,12 +155,6 @@ const FILTEROPTIONS = {
   ]
 }
 
-// Hook
-function useWindowSize() {
-
-}
-
-
 const Marketplace = ({createErrorAlert, openStreetView}) => {
   
   const [loading, setLoading] = useState(false)
@@ -168,6 +163,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [filters, setFilters] = useState(undefined)
   const [showFilterModal, setShowFilterModal] = useState(false)
   const [showStreetViewModal, setShowStreetViewModal] = useState(true)
+  const [showPropertyDetailsModal, setShowPropertyDetailsModal] = useState(false)
   const [showRecommendationModal, setShowRecommendationModal] = useState(false)
   const [focusedProperty, setFocusedProperty] = useState(undefined)
   const [showSaveFilterModal, setShowSaveFilterModal] = useState(false);
@@ -176,6 +172,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
   const [tablePageSize, setTablePageSize] = useState(10)
+  const [iframeTarget, setIframeTarget] = useState('')
 
   // Hook
   function useWindowSize() {
@@ -266,6 +263,16 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       label: 'Actions',
       render: (item) => (
         <div>
+          <IconButton placement='bottom'
+            tooltipContent='View property details'
+            id='property-details-tooltip'
+            iconClass='fas fa-list'
+            variant='action-button'
+            onClickFunc={() => {
+              setIframeTarget(`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
+              setShowPropertyDetailsModal(true);
+            }}
+          />
           <IconButton placement='bottom'
             tooltipContent='View On Site'
             id='link-tooltip'
@@ -417,7 +424,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   }
 
-  const rerenderTable = () => {
+  const populateTable = () => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     fetchData(source.token)
@@ -428,12 +435,13 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   }
 
+  // Redraw table on window resize
   useEffect(() => {
     const height = size.height;
     let rowNumber;
 
     if (height) {
-      rowNumber = Math.floor((height - 316) / 29);
+      rowNumber = Math.floor((height - 333) / 29);
     } else {
       rowNumber = 10;
     }
@@ -441,12 +449,12 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setTablePageSize(rowNumber)
 
 
-    return rerenderTable()
+    return populateTable()
 
   }, [size.height]); // Empty array ensures that effect is only run on mount
 
   useEffect(() => {
-    return rerenderTable()
+    return populateTable()
   },[])
 
   return loading ? <Loading /> : (
@@ -512,6 +520,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
           show={showStreetViewModal}
           handleClose={() => setShowStreetViewModal(false)}
           apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
+      <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal} handleClose={() => setShowPropertyDetailsModal(false)} />
       <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
       <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
