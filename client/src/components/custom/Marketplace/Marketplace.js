@@ -24,7 +24,7 @@ const FILTERFIELDS = {
     value:"" ,
     name: "Type",
     dataType:"array",
-    accessor:"type"
+    accessor:"propertyType"
   },
   listAge: {
     type: { 

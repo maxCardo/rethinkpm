@@ -4,16 +4,8 @@ const propertyTypes = [
     label: 'Residential'
   },
   {
-    value: 'smallMulti', 
-    label: 'Small Multi'
-  },
-  {
-    value: 'multiFamily', 
+    value: 'multi', 
     label: 'MultiFamily'
-  },
-  {
-    value: 'commercial', 
-    label: 'Commercial'
   },
 ]
 
