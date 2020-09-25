@@ -14,6 +14,7 @@ import {createErrorAlert} from '../../../actions/alert';
 import AddDataModal from './AddDataModal';
 import StreetViewModal from "./StreetViewModal";
 import {openStreetView} from "../../../actions/marketplace";
+import DetailModal from './DetailModal'
 
 const FILTERFIELDS = {
   type: {
@@ -170,6 +171,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [selectedFilter, setSelectedFilter] = useState(undefined)
   const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
+  const [showDetailModal, setShowDetailModal] = useState(false) 
 
   const conditionsMap = {
     1: 'D',
@@ -250,6 +252,12 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             iconClass='fas fa-star'
             variant='action-button'
             onClickFunc={() => startRecommendationFlow(item)}
+          />
+          <IconButton placement='bottom'
+            tooltipContent='View Details'
+            iconClass='fas fa-list'
+            variant='action-button'
+            onClickFunc={() => startShowDetailFlow(item)}
           />
           <IconButton placement='bottom'
             tooltipContent='Blacklist Deal'
@@ -371,6 +379,11 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   }
 
+  const startShowDetailFlow = (item) => {
+    setFocusedProperty(item)
+    setShowDetailModal(true)
+  }
+
   useEffect(() => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
@@ -447,6 +460,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
       <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
+      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} />
     </div>
   )
 }
