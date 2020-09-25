@@ -77,7 +77,7 @@ router.get('/offices', async(req,res) => {
 })
 
 router.get('/listings', async (req,res) => {
-  const listings = await SalesListings.find({mlsStatus: 'A'}).limit(100)
+  const listings = await SalesListings.find({mlsStatus: 'A'}).sort([['listDate', -1]]).limit(100)
   const listingsUpdated = await listings.map((listing) => {
     if (!listing.city) {
       listing.city = listing.area;
