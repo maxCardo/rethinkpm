@@ -27,7 +27,7 @@ class Iframe extends Component {
 
     render () {
         const iframeStyle = {
-            width: '100vw',
+            width: '100%',
             height: '100vh',
             border: '0',
             position: 'absolute',
