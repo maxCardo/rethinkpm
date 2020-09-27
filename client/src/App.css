@@ -90,7 +90,14 @@
 }
 
 /* Global Styles */
-img
+.checkbox.path input[readonly] {
+  box-shadow: inset 0 0 0 2px gray;
+}
+input[readonly] + svg {
+  cursor: unset;
+  stroke: gray;
+  border: gray;
+}
 
 :root {
   --primary: #17a2b8;

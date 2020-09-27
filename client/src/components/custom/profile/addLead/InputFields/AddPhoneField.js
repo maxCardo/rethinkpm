@@ -83,7 +83,7 @@ const AddPhoneField = ({field, onChangeArray}) => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label className="checkbox path">
-                                <input type="checkbox" checked={formData && formData[index].okToText} name='okToText' onChange={(e) => onCheckChange(e, index)}/>
+                                <input type="checkbox" checked={formData && formData[index].okToText} name='okToText' readOnly={true}/>
                                 {checkBox} &nbsp; Ok to text
                             </Form.Label>
                         </Form.Group>
