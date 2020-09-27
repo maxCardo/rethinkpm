@@ -29,6 +29,7 @@ const AddPhoneField = ({field, onChangeArray}) => {
         let newFormData = formData;
         newFormData.map((record) => {
           record.isPrimary = false;
+          return record;
         });
         newFormData[index].isPrimary = true;
         setFormData([...newFormData]);

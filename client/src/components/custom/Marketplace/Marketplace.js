@@ -320,12 +320,12 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const submitFilterModal = async (selectedFilters) => {
     setSelectedFilter(undefined)
-    fetchFilteredData(selectedFilters)
+    fetchFilteredData(selectedFilters).then(r => {})
   }
 
   const clearFilter = () => {
     setFilters(undefined)
-    fetchData()
+    fetchData().then(r => {})
   }
 
   const saveFilter = () => {
@@ -354,7 +354,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       buyers: buyers,
       customMessage: customMessage
     }
-    axios.post('/api/marketplace/ops/recommend', data)
+    axios.post('/api/marketplace/ops/recommend', data).then(r => {})
   }
 
   const submitSaveFilterModal = async (name) => {
@@ -363,7 +363,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       filters
     }
     await axios.post('/api/marketplace/ops/filters', data)
-    fetchSavedFilters()
+    fetchSavedFilters().then(r => {})
   }
   const submitAddDataModal = async (condition) => {
     const data = {
@@ -382,7 +382,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const handleFilterChange = (value) => {
     const {name, value: {filters, blacklist}} = value
     setSelectedFilter(value)
-    fetchFilteredData(filters, blacklist)
+    fetchFilteredData(filters, blacklist).then(r => {})
   }
 
   const blacklistListing = (listingId) => {
@@ -390,7 +390,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       createErrorAlert('You need to save the filter before blacklisting a property')
       return;
     } else {
-      axios.post(`/api/marketplace/ops/filters/${selectedFilter.value._id}/blackList`, {listingId})
+      axios.post(`/api/marketplace/ops/filters/${selectedFilter.value._id}/blackList`, {listingId}).then(r => {})
       const listingsBlacklisted = listings.filter((listing) => listing._id !== listingId)
       setListings(listingsBlacklisted)
     }
@@ -399,9 +399,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const populateTable = () => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
-    fetchData(source.token)
-    loadFilterOptions(source.token)
-    fetchSavedFilters(source.token)
+    fetchData(source.token).then(r => {})
+    loadFilterOptions(source.token).then(r => {})
+    fetchSavedFilters(source.token).then(r => {})
     return () => {
       source.cancel('Component unmounted');
     }
@@ -439,7 +439,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   //EFFECT:  Populate table on mount
   useEffect(() => {
 
-    return populateTable()
+    populateTable()
 
   }, [])
 

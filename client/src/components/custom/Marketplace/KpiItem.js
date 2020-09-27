@@ -16,7 +16,11 @@ const KpiItem = ({title, endpoint}) => {
   useEffect(() => {
     const CancelToken = axios.CancelToken
     const source = CancelToken.source();
-    fetchData(source.token)
+    try {
+      fetchData(source.token).then(r => {}).catch(e => {})
+    } catch(e) {
+      console.error(e.message)
+    }
     return () => {
       source.cancel('Component unmounted');
     }

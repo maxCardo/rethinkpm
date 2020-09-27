@@ -22,13 +22,11 @@ import {
     UPDATE_ACTIVE_PROFILE_CHAT,
     ALERT_SUCCESS,
     REMOVE_ALERT,
-    ALERT_FAILURE,
     TOGGLE_ADD_LEAD,
     UPDATE_PROFILE
 
 } from './type';
 import {createErrorAlert} from './alert'
-import { Next } from 'react-bootstrap/PageItem';
 
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};

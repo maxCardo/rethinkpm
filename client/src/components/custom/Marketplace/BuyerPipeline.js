@@ -120,7 +120,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
         <div className='ManageBuyers-actions'>
           <Form.Group className='ManageBuyers__check-group'>
             <Form.Label className="checkbox path">
-              <input type="checkbox" checked={showDead} name='okToText' onClick={() => setShowDead(!showDead)}/>
+              <input type="checkbox" checked={showDead} name='okToText' onClick={() => setShowDead(!showDead)} onChange={() => {}}/>
               {checkBox} &nbsp; Show Dead Deals
             </Form.Label>
           </Form.Group>
