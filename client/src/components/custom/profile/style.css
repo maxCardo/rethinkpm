@@ -523,7 +523,7 @@
 }
 /*style for the edit profile button and placement in bottom right corner of PrifileInfo */
 .edit-profile__button.btn,
-.add-profile__button.btn {
+.add-profile__button {
   position: absolute;
   display: flex;
   justify-content: center ;
