@@ -776,6 +776,11 @@ table th {
   white-space: nowrap;
   margin: 3px;
 }
+
+label {
+  cursor: pointer;
+}
+
 /*REMOVE FOCUS OUTLINE*/
 textarea:focus,
 textarea.form-control:focus,

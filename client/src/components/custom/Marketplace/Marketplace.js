@@ -409,8 +409,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
 
   const containerTableHeight = () => {
-    if (document.getElementById('containerTable') && document.getElementById('containerTable').clientHeight) {
-      tableContainerHeight.current = document.getElementById('containerTable') && document.getElementById('containerTable').clientHeight;
+    const containerElement = document.querySelector('.containerTable')
+    if (containerElement && containerElement.clientHeight) {
+      tableContainerHeight.current = containerElement && containerElement.clientHeight;
     }
   }
 
@@ -486,7 +487,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
         </div>
         <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
-          <div className="col-12 p-0" id='containerTable'>
+          <div className="col-12 p-0 containerTable" id=''>
             <Table
               pageSize={tablePageSize}
               sorting={true}

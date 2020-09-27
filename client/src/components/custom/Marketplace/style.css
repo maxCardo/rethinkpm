@@ -224,3 +224,10 @@ margin-left: 0;
 .gm-control-active.gm-fullscreen-control {
   display: none;
 }
+
+.ManageBuyers__check-group {
+  margin-bottom: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}

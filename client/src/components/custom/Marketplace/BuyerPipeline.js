@@ -5,10 +5,10 @@ import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
 import StreetViewModal from "./StreetViewModal";
 import {openStreetView,syncManagedBuyer,getBuyerPipeline,updateDeal} from "../../../actions/marketplace";
-import {FormCheck} from "react-bootstrap";
+import {Form } from "react-bootstrap";
 import IconButton from "../../core/IconButton/IconButton";
 import PropertyDetailsModal from "./PropertyDetailsModal";
-
+import { checkBoxCheck } from "../../../util/commonFunctions";
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pipeline:{buyerPipeline, loading}}) => {
 
@@ -21,6 +21,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
       getBuyerPipeline(profile._id);
     }, [profile]);
 
+  const checkBox = checkBoxCheck();
 
   const HEADERS = [
     {
@@ -117,7 +118,12 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
         style={{ overflow: 'auto', maxHeight: '80vh' }}
       >
         <div className='ManageBuyers-actions'>
-          <FormCheck label='Show Dead Deals' checked = {showDead} onClick={() => setShowDead(!showDead)} />
+          <Form.Group className='ManageBuyers__check-group'>
+            <Form.Label className="checkbox path">
+              <input type="checkbox" checked={showDead} name='okToText' onClick={() => setShowDead(!showDead)}/>
+              {checkBox} &nbsp; Show Dead Deals
+            </Form.Label>
+          </Form.Group>
           <IconButton
             placement='right'
             tooltipContent='Get fresh data'
