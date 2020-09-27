@@ -190,6 +190,10 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       label: "Type"
     },
     {
+      accessor: 'listNumber',
+      label: "MLS ID"
+    },
+    {
       accessor: 'listDate',
       label: 'List Date',
       mapper: 'date'
@@ -212,6 +216,10 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         </div>
       ),
       className: "Marketplace__address"
+    },
+    {
+      label: 'Zip',
+      accessor: 'zipcode'
     },
     {
       accessor: 'bedrooms',
