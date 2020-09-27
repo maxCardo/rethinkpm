@@ -407,14 +407,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   }
 
-
-  const containerTableHeight = () => {
-    const containerElement = document.querySelector('.containerTable')
-    if (containerElement && containerElement.clientHeight) {
-      tableContainerHeight.current = containerElement && containerElement.clientHeight;
-    }
-  }
-
   //EFFECT:  Redraw table on window resize
   useEffect(() => {
     const height = size.height;
