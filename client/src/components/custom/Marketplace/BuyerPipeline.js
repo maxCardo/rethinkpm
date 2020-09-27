@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef, useReducer} from 'react';
 import {connect} from 'react-redux'
 import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
@@ -8,7 +8,7 @@ import {openStreetView,syncManagedBuyer,getBuyerPipeline,updateDeal} from "../..
 import {Form } from "react-bootstrap";
 import IconButton from "../../core/IconButton/IconButton";
 import PropertyDetailsModal from "./PropertyDetailsModal";
-import { checkBoxCheck } from "../../../util/commonFunctions";
+import {checkBoxCheck, useWindowSize} from "../../../util/commonFunctions";
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pipeline:{buyerPipeline, loading}}) => {
 
@@ -16,10 +16,40 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
   const [showDead, setShowDead] = useState(false)
   const [showPropertyDetailsModal, setShowPropertyDetailsModal] = useState(false)
   const [iframeTarget, setIframeTarget] = useState('')
+  const [tablePageSize, setTablePageSize] = useState(10)
+  const tableContainerHeight = useRef(null);
+  const size = useWindowSize();
 
     useEffect(() => {
       getBuyerPipeline(profile._id);
     }, [profile]);
+
+
+  //EFFECT:  Redraw table on window resize
+  useEffect(() => {
+    const height = size.height;
+    // 360 is sum of all heights of everything else that takes vertical space outside the container
+    const controlHeight = height - 280;
+    let rowNumber;
+
+    if (height) {
+      // 43 is height of row
+      rowNumber = Math.floor(controlHeight / 43);
+    } else {
+      rowNumber = 10;
+    }
+
+    if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
+      setTablePageSize(rowNumber)
+      tableContainerHeight.current = controlHeight;
+    } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
+      setTablePageSize(rowNumber)
+      tableContainerHeight.current = controlHeight;
+    } else {
+      console.log('effect did nothing')
+    }
+
+  }, [size.height]); // Empty array ensures that effect is only run on mount
 
   const checkBox = checkBoxCheck();
 
@@ -44,6 +74,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
     {
       reactComponent: true,
       label: "Address",
+      className: 'Marketplace__address',
       render: (item) => (
         <div>
           <p>{item.deal.streetNumber} {item.deal.streetName}</p>
@@ -115,7 +146,6 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
     <div className='tableWithActions'>
       <div
         className='container-fluid'
-        style={{ overflow: 'auto', maxHeight: '80vh' }}
       >
         <div className='ManageBuyers-actions'>
           <Form.Group className='ManageBuyers__check-group'>
@@ -135,7 +165,8 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
         </div>
         <div className='col-12 p-0'>
           <Table
-            pageSize={10}
+            key={tablePageSize}
+            pageSize={tablePageSize}
             sorting={true}
             fontSize={12}
             data={showDead === false ? buyerPipeline.filter((deal) => deal.status != 'dead') : buyerPipeline}
