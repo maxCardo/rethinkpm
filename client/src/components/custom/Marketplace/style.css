@@ -130,17 +130,17 @@
 .marketplace .searchContainer {
   margin: 0;
 }
-.Marketplace__address {
+td.Marketplace__address {
   display: flex;
   align-items: center;
   flex-grow: 1;
   height: 42px;
 }
-.Marketplace__address div {
+td.Marketplace__address div {
   display: flex;
   align-items: center;
 }
-.Marketplace__address p {
+td.Marketplace__address p {
   margin: 0;
 }
 
