@@ -14,7 +14,7 @@ const KpiItem = ({title, endpoint}) => {
   }
 
   useEffect(() => {
-    const CancelToken = axios.CancelToken;
+    const CancelToken = axios.CancelToken
     const source = CancelToken.source();
     fetchData(source.token)
     return () => {

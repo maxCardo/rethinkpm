@@ -196,9 +196,10 @@ margin-left: 0;
 .PropertyDetails__modal .modal-content {
   margin: 100px 80px;
   width: unset;
-  height: 110vh;
+  height: 84vh;
   padding: 0;
   position: relative;
+  overflow: hidden;
 }
 
 .PropertyDetails__modal .modal-header h2 {
