@@ -150,11 +150,11 @@ const FILTERFIELDS = {
   },
 }
 
-const FILTEROPTIONS = {
-  type: [
-    {value: 'res', label: 'Residential'}
-  ]
-}
+// const FILTEROPTIONS = {
+//   type: [
+//     {value: 'res', label: 'Residential'}
+//   ]
+// }
 
 const Marketplace = ({createErrorAlert, openStreetView}) => {
 
@@ -380,9 +380,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   }
 
   const handleFilterChange = (value) => {
-    const {name, value: {filters, blacklist}} = value
+    const {value: {filters, blacklist}} = value
     setSelectedFilter(value)
-    fetchFilteredData(filters, blacklist).then(r => {})
+    fetchFilteredData(filters, blacklist).then(r =>{}).catch(e => {})
   }
 
   const blacklistListing = (listingId) => {
@@ -435,13 +435,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   }, [size.height]); // Empty array ensures that effect is only run on mount
 
-
-  //EFFECT:  Populate table on mount
-  useEffect(() => {
-
-    populateTable()
-
-  }, [])
 
   return loading ? <Loading/> : (
     <div className="tableWithActions marketplace">

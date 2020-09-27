@@ -98,6 +98,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
           value: 'in',
           operator: '$in'
         },
+        // eslint-disable-next-line no-eval
         value: eval(queryList).map((status) => ({value: status}))
       }
     }
@@ -174,6 +175,7 @@ export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => a
           value: 'in',
           operator: '$in'
         },
+        // eslint-disable-next-line no-eval
         value: eval(queryList).map((status) => ({value: status}))
       }
     }
@@ -402,13 +404,12 @@ export const getFilterOptions = (profileType) => async dispatch => {
 export const saveFilter = (data, type, profileType) => async dispatch => {
     try {
         if(type === 'audience') {
-          const res = await axios.post(`/api/profile/${profileType}/audiences`, data, config);
+          await axios.post(`/api/profile/${profileType}/audiences`, data, config);
         } else {
-          const res = await axios.post(`/api/profile/${profileType}/filters`, data, config);
+          await axios.post(`/api/profile/${profileType}/filters`, data, config);
         }
     } catch (err) {
       dispatch(createErrorAlert(err.message, 'saveFilter action'))
-
     }
 }
 
