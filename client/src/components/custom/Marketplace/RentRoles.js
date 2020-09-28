@@ -4,16 +4,24 @@ import IconButton from '../../core/IconButton/IconButton'
 
 const headers = [
   {
-    label: 'Name',
-    accessor: 'name'
+    label: 'Unit Type',
+    accessor: 'unitType'
   },
   {
     label: 'Nº of Bedrooms',
     accessor: 'bedrooms'
   },
   {
-    label: 'Nº of bathrooms',
-    accessor: 'bathrooms'
+    label: 'Nº of full bathrooms',
+    accessor: 'bathsFull'
+  },
+  {
+    label: 'Nº of partial bathrooms',
+    accessor: 'bathsPartial'
+  },
+  {
+    label: 'Total Nº of bathrooms',
+    accessor: 'totalBaths'
   },
   {
     label: 'Size (sqft)',
@@ -21,7 +29,7 @@ const headers = [
   },
   {
     label: 'Nº of Units',
-    accessor: 'units'
+    accessor: 'numUnits'
   },
 ]
 const RentRoles = ({roles}) => {

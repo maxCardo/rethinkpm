@@ -30,25 +30,31 @@ const headers= [
 
 const roles=[
   {
-    name: 'single',
+    unitType: 'single',
     bedrooms: 1,
-    bathrooms: 1,
+    bathsFull: 1,
+    bathsPartial: 1,
+    totalBaths: 2,
     size: 100,
-    units: 10
+    numUnits: 10
   },
   {
-    name: 'small',
+    unitType: 'small',
     bedrooms: 2,
-    bathrooms: 1,
+    bathsFull: 1,
+    bathsPartial: 1,
+    totalBaths: 2,
     size: 200,
-    units: 10
+    numUnits: 10
   },
   {
-    name: 'family',
+    unitType: 'family',
     bedrooms: 4,
-    bathrooms: 2,
+    bathsFull: 2,
+    bathsPartial: 1,
+    totalBaths: 3,
     size: 600,
-    units: 10
+    numUnits: 10
   }
 ]
 
