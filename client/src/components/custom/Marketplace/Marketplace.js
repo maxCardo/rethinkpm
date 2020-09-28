@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import {Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import axios from 'axios';
 import Table from '../../core/Table';
@@ -14,6 +15,7 @@ import {createErrorAlert} from '../../../actions/alert';
 import AddDataModal from './AddDataModal';
 import StreetViewModal from "./StreetViewModal";
 import {openStreetView} from "../../../actions/marketplace";
+import {checkBoxCheck} from '../../../util/commonFunctions'
 
 const FILTERFIELDS = {
   type: {
@@ -179,6 +181,18 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   }
 
   const HEADERS = [
+    {
+      reactComponent: true,
+      label: 'Checked',
+      render: (item) => (
+        <div className="element-wrapper with--checkbox">
+          <label className="checkbox path" checked={true}  >
+            <input type="checkbox" name='useFilter' value={false} onChange={e => console.log(e)}/>
+            {checkBoxCheck()}
+          </label>
+        </div>
+      )
+    },
     {
       accessor: "propertyType",
       label: "Type"
