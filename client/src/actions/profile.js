@@ -98,7 +98,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
           value: 'in',
           operator: '$in'
         },
-        // eslint-disable-next-line no-eval
+        /* eslint-disable-next-line no-eval */
         value: eval(queryList).map((status) => ({value: status}))
       }
     }

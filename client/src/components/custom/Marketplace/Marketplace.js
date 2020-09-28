@@ -397,19 +397,20 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   }
 
-  const populateTable = () => {
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
-    fetchData(source.token).then(r => {})
-    loadFilterOptions(source.token).then(r => {})
-    fetchSavedFilters(source.token).then(r => {})
-    return () => {
-      source.cancel('Component unmounted');
-    }
-  }
-
   //EFFECT:  Redraw table on window resize
   useEffect(() => {
+
+    const populateTable = () => {
+      const CancelToken = axios.CancelToken;
+      const source = CancelToken.source();
+      fetchData(source.token).then(r => {})
+      loadFilterOptions(source.token).then(r => {})
+      fetchSavedFilters(source.token).then(r => {})
+      return () => {
+        source.cancel('Component unmounted');
+      }
+    }
+
     const height = size.height;
     // 360 is sum of all heights of everything else that takes vertical space outside the container
     const controlHeight = height - 360;
