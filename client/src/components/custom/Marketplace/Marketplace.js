@@ -229,6 +229,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     {
       reactComponent: true,
       label: 'Actions',
+      className: "Marketplace__actions",
       render: (item) => (
         <div>
           <IconButton placement='bottom'

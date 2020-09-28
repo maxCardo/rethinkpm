@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import {formatMoney} from "../../../util/commonFunctions";
 
 const KpiItem = ({title, endpoint}) => {
   const [actualNumber, setActualNumber] = useState(0)
@@ -52,7 +51,7 @@ const KpiItem = ({title, endpoint}) => {
   return (
     <div className='kpi-item__container'>
       <p className='kpi-item__number'>
-        {formatMoney(actualNumber)}
+        {actualNumber}
         {variationBlock}
       </p>
       <p className='kpi-item__title'>{title}</p>

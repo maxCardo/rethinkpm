@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useReducer} from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import {connect} from 'react-redux'
 import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
@@ -143,7 +143,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
   return loading ? (
     <Loading />
   ) : (
-    <div className='tableWithActions'>
+    <div className='tableWithActions buyerPipeline'>
       <div
         className='container-fluid'
       >

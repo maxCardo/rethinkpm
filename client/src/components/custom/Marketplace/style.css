@@ -152,11 +152,25 @@ td.Marketplace__address p {
 margin-left: 0;
 }
 
-.marketplace .action-buttons__button {
+.buyerPipeline th,
+.buyerPipeline td,
+.marketplace th,
+.marketplace td {
+  width: 100px;
+}
+.marketplace .Marketplace__address,
+.marketplace .Marketplace__actions,
+.buyerPipeline .Marketplace__address,
+.buyerPipeline .Marketplace__actions {
+  width: unset;
+}
+.marketplace .action-buttons__button,
+.buyerPipeline .action-buttons__button  {
   margin: 5px;
   min-height: 26px;
   min-width: 26px;
 }
+
 
 /*IFRAME CORE CSS*/
 .PropertyDetails__modal .Iframe__title {
