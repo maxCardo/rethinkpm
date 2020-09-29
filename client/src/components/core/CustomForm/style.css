@@ -1,0 +1,19 @@
+.CustomForm__button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.CustomForm .form-control:focus,
+.CustomForm .form-control:focus {
+    box-shadow: 0 0 0 1px #007bff;
+    border: 1px solid #007bff;
+}
+
+.CustomForm__button-container .btn {
+    border-radius: 2px;
+    box-shadow: 0 0 1px 0px rgba(0,0,0,.575);
+    transition: box-shadow 210ms, background 210ms;
+}
+.CustomForm__button-container .btn:hover {
+    box-shadow: 0 0 3px 1px rgba(0,0,0,.325);
+}
