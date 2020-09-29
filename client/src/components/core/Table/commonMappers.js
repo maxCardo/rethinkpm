@@ -10,7 +10,11 @@ function phone(data) {
 
 function date(data) {
   if(!data) return ''
-  return new Intl.DateTimeFormat().format(new Date(data))
+  try {
+    return new Intl.DateTimeFormat().format(new Date(data))
+  } catch(e) {
+    return ''
+  }
 }
 
 function money(data) {

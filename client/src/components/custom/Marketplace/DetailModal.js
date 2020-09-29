@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {Modal, Form, Button} from 'react-bootstrap';
 import VerticalTable from '../../core/VerticalTable/VerticalTable';
-import RentRoles from './RentRoles'
+import UnitSchedule from './UnitSchedule'
+
 
 const headers= [
   {
@@ -58,7 +59,8 @@ const roles=[
   }
 ]
 
-const AddDataModal = ({show, handleClose, data}) => {
+const DetailModal = ({show, handleClose, data}) => {
+  if(!data) return ''
   return (
     <Modal size='xl' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -66,8 +68,12 @@ const AddDataModal = ({show, handleClose, data}) => {
       </Modal.Header>
       <Modal.Body>
           <VerticalTable  headers={headers} data={data}/>
-          <h4>Rent roles</h4>
-          <RentRoles roles={roles}/>
+          {data.propertyType === 'multi' &&
+            <Fragment>
+              <h4>Unit Schedule</h4>
+              <UnitSchedule units={data.unitSch}/>
+            </Fragment>
+          }
       </Modal.Body>
       <Modal.Footer>
         <Button variant='secondary' onClick={handleClose}>
@@ -78,4 +84,4 @@ const AddDataModal = ({show, handleClose, data}) => {
   )
 }
 
-export default AddDataModal;
+export default DetailModal;

@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import Table from '../../core/Table'
 import IconButton from '../../core/IconButton/IconButton'
+import AddUnitSchModal from './AddUnitSchModal'
 
 const headers = [
   {
@@ -32,9 +33,11 @@ const headers = [
     accessor: 'numUnits'
   },
 ]
-const RentRoles = ({roles}) => {
+const UnitSchedule = ({units}) => {
+  const [showAddModal, setShowAddModal] = useState(false)
   const handleAdd = () => {
-    console.log('Add role')
+    console.log('add')
+    setShowAddModal(true)
   }
   return (
     <Fragment>
@@ -49,9 +52,10 @@ const RentRoles = ({roles}) => {
           onClickFunc={handleAdd}
         />
       </div>
-      <Table headers={headers} data={roles}/>
+      <Table headers={headers} data={units}/>
+      <AddUnitSchModal show={showAddModal} handleClose={() => setShowAddModal(false)}/>
     </Fragment>
   )
 }
 
-export default RentRoles;
+export default UnitSchedule;

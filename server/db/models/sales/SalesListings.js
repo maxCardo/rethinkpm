@@ -138,11 +138,14 @@ const salesListingsSchema = new mongoose.Schema({
     //manualy updated bi yearly for agent recruiment via csv from MLS site
     buyerAgentId: String, 
     buyerOfficeId: String,
-    rentRoles: [{
-      name: String,
-      bedrooms: Number,
-      bathrooms: Number,
-      size: Number
+    unitSch: [{
+      unitType: String,
+      bedrooms: Number,  
+      bathsFull: Number, 
+      bathsPartial: Number, 
+      totalBaths: Number,
+      size: Number, //sqft
+      numUnits: Number
     }]
     
 });
