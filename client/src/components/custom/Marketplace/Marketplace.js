@@ -150,11 +150,11 @@ const FILTERFIELDS = {
   },
 }
 
-const FILTEROPTIONS = {
-  type: [
-    {value: 'res', label: 'Residential'}
-  ]
-}
+// const FILTEROPTIONS = {
+//   type: [
+//     {value: 'res', label: 'Residential'}
+//   ]
+// }
 
 const Marketplace = ({createErrorAlert, openStreetView}) => {
 
@@ -237,6 +237,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     {
       reactComponent: true,
       label: 'Actions',
+      className: "Marketplace__actions",
       render: (item) => (
         <div>
           <IconButton placement='bottom'
@@ -328,12 +329,12 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const submitFilterModal = async (selectedFilters) => {
     setSelectedFilter(undefined)
-    fetchFilteredData(selectedFilters)
+    fetchFilteredData(selectedFilters).then(r => {})
   }
 
   const clearFilter = () => {
     setFilters(undefined)
-    fetchData()
+    fetchData().then(r => {})
   }
 
   const saveFilter = () => {
@@ -362,7 +363,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       buyers: buyers,
       customMessage: customMessage
     }
-    axios.post('/api/marketplace/ops/recommend', data)
+    axios.post('/api/marketplace/ops/recommend', data).then(r => {})
   }
 
   const submitSaveFilterModal = async (name) => {
@@ -371,7 +372,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       filters
     }
     await axios.post('/api/marketplace/ops/filters', data)
-    fetchSavedFilters()
+    fetchSavedFilters().then(r => {})
   }
   const submitAddDataModal = async (condition) => {
     const data = {
@@ -388,9 +389,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   }
 
   const handleFilterChange = (value) => {
-    const {name, value: {filters, blacklist}} = value
+    const {value: {filters, blacklist}} = value
     setSelectedFilter(value)
-    fetchFilteredData(filters, blacklist)
+    fetchFilteredData(filters, blacklist).then(r =>{}).catch(e => {})
   }
 
   const blacklistListing = (listingId) => {
@@ -398,25 +399,26 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       createErrorAlert('You need to save the filter before blacklisting a property')
       return;
     } else {
-      axios.post(`/api/marketplace/ops/filters/${selectedFilter.value._id}/blackList`, {listingId})
+      axios.post(`/api/marketplace/ops/filters/${selectedFilter.value._id}/blackList`, {listingId}).then(r => {})
       const listingsBlacklisted = listings.filter((listing) => listing._id !== listingId)
       setListings(listingsBlacklisted)
     }
   }
 
-  const populateTable = () => {
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
-    fetchData(source.token)
-    loadFilterOptions(source.token)
-    fetchSavedFilters(source.token)
-    return () => {
-      source.cancel('Component unmounted');
-    }
-  }
-
   //EFFECT:  Redraw table on window resize
   useEffect(() => {
+
+    const populateTable = () => {
+      const CancelToken = axios.CancelToken;
+      const source = CancelToken.source();
+      fetchData(source.token).then(r => {})
+      loadFilterOptions(source.token).then(r => {})
+      fetchSavedFilters(source.token).then(r => {})
+      return () => {
+        source.cancel('Component unmounted');
+      }
+    }
+
     const height = size.height;
     // 360 is sum of all heights of everything else that takes vertical space outside the container
     const controlHeight = height - 360;
@@ -443,13 +445,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   }, [size.height]); // Empty array ensures that effect is only run on mount
 
-
-  //EFFECT:  Populate table on mount
-  useEffect(() => {
-
-    return populateTable()
-
-  }, [])
 
   return loading ? <Loading/> : (
     <div className="tableWithActions marketplace">

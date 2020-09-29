@@ -72,8 +72,9 @@ export const logout = () => async dispatch => {
 }
 
 
-//not in play commented out api call 
+// TODO: comment was outdated, remove eslint comment when adding the post
 export const register = ({name, email,phone, password}) => async dispatch =>{
+    /* eslint-disable no-unused-vars*/
     const body = JSON.stringify({name, email,phone, password});
     const config = {headers:{'Content-Type': 'application/json'}}
 

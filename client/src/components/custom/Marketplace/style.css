@@ -130,17 +130,17 @@
 .marketplace .searchContainer {
   margin: 0;
 }
-.Marketplace__address {
+td.Marketplace__address {
   display: flex;
   align-items: center;
   flex-grow: 1;
   height: 42px;
 }
-.Marketplace__address div {
+td.Marketplace__address div {
   display: flex;
   align-items: center;
 }
-.Marketplace__address p {
+td.Marketplace__address p {
   margin: 0;
 }
 
@@ -152,11 +152,25 @@
 margin-left: 0;
 }
 
-.marketplace .action-buttons__button {
+.buyerPipeline th,
+.buyerPipeline td,
+.marketplace th,
+.marketplace td {
+  width: 100px;
+}
+.marketplace .Marketplace__address,
+.marketplace .Marketplace__actions,
+.buyerPipeline .Marketplace__address,
+.buyerPipeline .Marketplace__actions {
+  width: unset;
+}
+.marketplace .action-buttons__button,
+.buyerPipeline .action-buttons__button  {
   margin: 5px;
   min-height: 26px;
   min-width: 26px;
 }
+
 
 /*IFRAME CORE CSS*/
 .PropertyDetails__modal .Iframe__title {

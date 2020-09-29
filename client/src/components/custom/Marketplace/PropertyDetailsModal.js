@@ -27,7 +27,7 @@ const PropertyDetailsModal = ({  show, handleClose, iframeTarget }) => {
             </Modal.Header>
             {loading ? <Loading/> : <Fragment>
                 <Modal.Body>
-                    <Iframe onLoad={onLoadFunc} src={iframeTarget} />
+                    <Iframe onLoad={onLoadFunc} src={iframeTarget + '?source=fromApp'} />
                 </Modal.Body>
             </Fragment>}
         </Modal>
