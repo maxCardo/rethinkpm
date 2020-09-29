@@ -268,6 +268,15 @@ router.post('/listings/:listingId/addCondition', async (req,res) => {
   const {listingId} = req.params
   const {condition} = req.body
   await SalesListings.findByIdAndUpdate(listingId, {$set: {condition}})
+  res.json({ok: true})
 })
 
+router.post('/listings/:listingId/addUnitSch', async (req,res) => {
+  const {listingId} = req.params
+  const {unit} = req.body
+  const listing = await SalesListings.findById(listingId);
+  listing.unitSch.push(unit)
+  await listing.save()
+  res.json({ok: true})
+})
 module.exports = router

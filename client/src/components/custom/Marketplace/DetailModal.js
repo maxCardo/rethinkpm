@@ -71,7 +71,7 @@ const DetailModal = ({show, handleClose, data}) => {
           {data.propertyType === 'multi' &&
             <Fragment>
               <h4>Unit Schedule</h4>
-              <UnitSchedule units={data.unitSch}/>
+              <UnitSchedule units={data.unitSch} listingId={data._id}/>
             </Fragment>
           }
       </Modal.Body>

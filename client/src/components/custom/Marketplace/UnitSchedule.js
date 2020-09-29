@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react'
 import Table from '../../core/Table'
 import IconButton from '../../core/IconButton/IconButton'
 import AddUnitSchModal from './AddUnitSchModal'
+import axios from 'axios'
 
 const headers = [
   {
@@ -33,11 +34,17 @@ const headers = [
     accessor: 'numUnits'
   },
 ]
-const UnitSchedule = ({units}) => {
+const UnitSchedule = ({units, listingId}) => {
   const [showAddModal, setShowAddModal] = useState(false)
   const handleAdd = () => {
     console.log('add')
     setShowAddModal(true)
+  }
+  const submitAddUnit = (unit) => {
+    const data = {
+      unit
+    }
+    axios.post(`/listings/${listingId}/addUnitSch`, data)
   }
   return (
     <Fragment>
@@ -53,7 +60,7 @@ const UnitSchedule = ({units}) => {
         />
       </div>
       <Table headers={headers} data={units}/>
-      <AddUnitSchModal show={showAddModal} handleClose={() => setShowAddModal(false)}/>
+      <AddUnitSchModal show={showAddModal} handleClose={() => setShowAddModal(false)} handleSubmit={submitAddUnit}/>
     </Fragment>
   )
 }
