@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 
 const pipelineSchema = new mongoose.Schema({
+    active:{
+        type: Boolean,
+        default: true
+    }, 
     buyer: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'buyerPros'
     },
     agent: {
         type: mongoose.Schema.Types.ObjectId,
@@ -16,7 +21,9 @@ const pipelineSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    idxDealId: String, 
     history:[{
+        event: String,
         statusTo: String,
         statusFrom: String, 
         date:{
@@ -24,10 +31,10 @@ const pipelineSchema = new mongoose.Schema({
             default: Date.now()
         },
         note:String,
-    }],
-    lastActive: Date, 
+    }], 
     viewedOnSite: Boolean,
-    viewedInApp: Boolean
+    viewedInApp: Boolean,
+    liked: Boolean
 });
 
 

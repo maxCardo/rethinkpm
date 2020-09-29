@@ -22,9 +22,7 @@ import Marketplace from './components/custom/Marketplace/Marketplace'
 import {loadUser} from './actions/auth';
 import {receiveSMS} from './actions/profile'
 import { connect } from 'react-redux';
-import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
-import { showNotification } from './notifications'
 import settings from './settings.json'
 import Alert from "./components/core/Alert";
 import Dash from "./components/custom/Dash"
@@ -69,7 +67,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/profile/rentPros' component={Profile} additionalProps={{ settings: routeSettings.profile.rentPros }} />
             <PrivateRoute exact path='/profile/agentPros' component={Profile} additionalProps={{settings: routeSettings.profile.agentPros }} />
             <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
-            <PrivateRoute exact path='/marketplace' component={Marketplace} />
+            <PrivateRoute exact path='/marketplace' component={Marketplace} apiKey={routeSettings.marketplace.streetViewApiKey} />
             <Route exact path='/playground' component={Playground} />
           </Switch>
           <Alert  />

@@ -61,4 +61,57 @@ router.post('/idx_lead', (req,res) => {
 })
 
 
+// @route: Get /api/sales/agents
+// @desc: Get all agents
+// @ access: Private
+router.get('/agents', async (req,res) => {
+  const agents = await AgentModel.find({}).populate('office')
+  res.json(agents)
+})
+
+
+
+router.get('/offices', async(req,res) => {
+  const offices = await OfficeModel.find({})
+  res.json(offices)
+})
+
+router.get('/listings', async (req,res) => {
+  const listings = await SalesListings.find({mlsStatus: 'A'}).sort([['listDate', -1]]).limit(100)
+  const listingsUpdated = await listings.map((listing) => {
+    if (!listing.city) {
+      listing.city = listing.area;
+    }
+    return listing;
+  });
+  res.json(listingsUpdated)
+})
+
+router.get('/kpi/numberOfListings', async (req, res) => {
+  const actualNumber = 9000 + Math.floor(Math.random()*2000)
+  const pastNumber = 9000 + Math.floor(Math.random()*2000)
+  const porcentualChange = (((actualNumber - pastNumber) / pastNumber) * 100).toFixed(2)
+  res.json({actualNumber, porcentualChange})
+})
+
+
+function convertFiltersToQuery(filters) {
+  //create string query 
+  const queryObj = {}
+  filters.map((x) => {
+      if (x.filterType === 'range') {
+          Object.assign(queryObj, {
+              [x.field]: { [x.operator[0]]: x.value, [x.operator[1]]: x.secondValue }
+          })
+      } else if (x.subField) {
+          Object.assign(queryObj, { [`${x.field}.${x.subField}`]: { [x.operator]: x.value } })
+      } else {
+          Object.assign(queryObj, { [x.field]: { [x.operator]: x.value } })
+      }
+  })
+  return queryObj
+}
+
+
+
 module.exports = router;

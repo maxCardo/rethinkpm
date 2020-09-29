@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {Col, Form} from 'react-bootstrap';
 import Select from 'react-select';
 import { connect } from 'react-redux';

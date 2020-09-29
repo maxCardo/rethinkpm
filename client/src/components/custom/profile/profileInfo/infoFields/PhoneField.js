@@ -6,6 +6,7 @@ import {tglAddPhoneMod} from '../../../../../actions/profile'
 import {formatPhone} from '../../../../../util/commonFunctions'
 import PropTypes from "prop-types";
 import {updatePhone} from "../../../../../actions/profile";
+import IconButton from "../../../../core/IconButton/IconButton";
 
 //crate useEffect on load  to find primary number and set var
 //action/reducer/api EP for handling add and editPrime phone num
@@ -78,41 +79,47 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                     ref={phoneInput}
                 />
                 {!disableEdit && (!edit ? (
-                    <button className='action-buttons__button singleFieldEdit' onClick={() => toggleEdit(true)}>
-                        <i className='fas fa-pencil-alt'></i>
-                    </button>
+                    <IconButton placement='top'
+                                tooltipContent='Edit primary phone'
+                                iconClass='fas fa-pencil-alt'
+                                btnClass='singleFieldEdit'
+                                variant='action-button'
+                                onClickFunc={() => {
+                                    toggleEdit(true);
+                                }}/>
                 ) : (
                     <Fragment>
-                        <button
-                            className='action-buttons__button ab__confirm singleFieldEdit'
-                            disabled={!phoneValid}
-                            onClick={() => {
-                                /*TODO: Needs to be addressed when we consider formatting for entry*/
-                                editPhone !== phone ? setConfModal(true) : toggleEdit(false)
-                            }}
-                        >
-                            <i className='fas fa-check'></i>
-                        </button>
-                        <button className='action-buttons__button ab__cancel singleFieldEdit'
-                                onClick={() => {
-                                    toggleEdit(false);
-                                    editPhonefunc(phone)
-                                }}
-                        >
-                            <i className='fas fa-times'></i>
-                        </button>
+                        <IconButton placement='top'
+                                    tooltipContent='Confirm new primary phone'
+                                    iconClass='fas fa-check'
+                                    btnClass='ab__confirm singleFieldEdit'
+                                    variant='action-button'
+                                    isDisabled={!phoneValid}
+                                    onClickFunc={() => {
+                                        /*TODO: Needs to be addressed when we consider formatting for entry*/
+                                        editPhone !== phone ? setConfModal(true) : toggleEdit(false)
+                                    }}/>
+                        <IconButton placement='top'
+                                    tooltipContent='Cancel change'
+                                    iconClass='fas fa-times'
+                                    btnClass='ab__cancel singleFieldEdit'
+                                    variant='action-button'
+                                    onClickFunc={() => {
+                                        toggleEdit(false);
+                                        editPhonefunc(phone)
+                                    }}/>
                     </Fragment>
                 ))}
-                <button
-                    className='action-buttons__button addPhoneNumber'
-                    onClick={() => {
-                        toggleEdit(false);
-                        editPhonefunc(phone);
-                        tglAddPhoneMod(true)
-                    }}
-                >
-                    <i className='fas fa-plus'></i>
-                </button>
+                <IconButton placement='top'
+                            tooltipContent='Add new phone number'
+                            iconClass='fas fa-plus'
+                            variant='action-button'
+                            btnClass='addPhoneNumber'
+                            onClickFunc={() => {
+                                toggleEdit(false);
+                                editPhonefunc(phone);
+                                tglAddPhoneMod(true)
+                            }}/>
             </div>
 
             <Modal size='md' show={showConfModal} onHide={() => {

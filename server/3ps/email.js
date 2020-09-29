@@ -1,4 +1,4 @@
-const sgMail = require('@sendGrid/mail') 
+const sgMail = require('@sendgrid/mail') 
 const nodemailer = require('nodemailer');
 const {smtpAcct, smtpPass, testEmail, sendGridKey} = require('./../config/creds')
 const { availabilityLink } = require('./calandly');
@@ -57,6 +57,20 @@ const sendFirstEmail = (email, listing) => {
     sendEmail(email,subject,templet,html);
 }
 
+const sendRecomendationEmail = (property, buyer, customMessage) => {
+  let buyerEmail = buyer.email.filter((email) => email.isPrimary)[0]
+  if(!buyerEmail) {
+    buyerEmail = buyer.email[0]
+  }
+  const subject = `Property Recommendation`
+  const text = customMessage
+  const html = `
+    <p>${customMessage}</p>
+    <a href='http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${buyer._id}&mode=recommend'>Property</a>
+  `
+  sendEmail(buyerEmail.address, subject, customMessage, html)
+}
+
 const sendGridEmail = (to, subject, text, html) => {
 
     const msg = {
@@ -69,7 +83,6 @@ const sendGridEmail = (to, subject, text, html) => {
     sgMail.send(msg);    
     
 }
-
 
 module.exports = { sendEmail, sendFirstEmail };
 

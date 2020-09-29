@@ -21,8 +21,9 @@ export class InfiniteList extends Component {
         ).format(sum))
     }
 
-    onClick = (profile) => this.props.setActiveProfile(profile)
-
+    onClick = (profile) => {
+        this.props.setActiveProfile(profile)
+    }
 
     render() {
         return (

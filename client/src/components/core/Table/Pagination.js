@@ -20,7 +20,7 @@ export class Pagination extends Component {
     if(totalPages<=14) {
       return (
         [...new Array(totalPages).keys()].map((_, index) => (
-          <li key={index} className={`page-item ${index === actualIndex ? 'active' : ''}`} key={`page-item-${index}`}><button className="page-link" onClick={this.changePage.bind(this,index)}>{index+1}</button></li>
+          <li className={`page-item ${index === actualIndex ? 'active' : ''}`} key={`page-item-${index}`}><button className="page-link" onClick={this.changePage.bind(this,index)}>{index+1}</button></li>
         ))
       )
     } else if(actualIndex < 11){

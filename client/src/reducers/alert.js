@@ -1,4 +1,4 @@
-import {SET_ALERT, REMOVE_ALERT, ALERT_SUCCESS, ALERT_FAILURE} from '../actions/type';
+import { REMOVE_ALERT, ALERT_SUCCESS, ALERT_FAILURE } from '../actions/type';
 const initialState = {};
 
 export default function (state = initialState, action) {
