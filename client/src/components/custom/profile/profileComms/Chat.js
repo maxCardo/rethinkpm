@@ -8,7 +8,7 @@ import {getActiveChat, sendChat} from '../../../../actions/profile'
 
 const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat, sendChat, profileType}) => {
     const chatRef = useRef()
-    let phone
+
     useEffect(() => {
         getActiveChat(activeProfile._id)    
     }, [activeProfile])

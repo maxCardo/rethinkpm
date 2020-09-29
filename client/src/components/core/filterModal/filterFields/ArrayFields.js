@@ -1,13 +1,10 @@
 import React, {Fragment, useState, useRef, useLayoutEffect} from 'react'
-import {connect} from 'react-redux'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap'
 import {checkBoxCheck} from '../../../../util/commonFunctions'
 
 
 const ArrayFields = ({orderKey, filterFields, onChange, prop, options}) => {
-    console.log('Array Fields options for ', prop)
-    console.log(options)
     const [state, setState] = useState(filterFields)
     const [useFilter, setUseFilter] = useState(false)
     const {name, value} = filterFields

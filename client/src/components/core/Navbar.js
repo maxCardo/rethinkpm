@@ -5,12 +5,12 @@ import {logout} from '../../actions/auth'
 import PropTypes from 'prop-types'
 import {loadUser} from '../../actions/auth';
 import {getCookie} from '../../util/cookies';
-import Tooltip from './Tooltip';
 import AgentsIcon from './NavbarIcons/AgentsIcon';
 import BuyersIcon from './NavbarIcons/BuyersIcon';
 import RentersIcon from './NavbarIcons/RentersIcon';
 import ServicesIcon from './NavbarIcons/ServicesIcon';
 import CommunicationIcon from './NavbarIcons/CommunicationIcon';
+import MarketplaceIcon from "./NavbarIcons/MarketplaceIcon";
 
 const Navbar = ({auth: {isAuthenticated, loginInProgress}, logout}) => {
     useEffect(() => {
@@ -53,7 +53,7 @@ const Navbar = ({auth: {isAuthenticated, loginInProgress}, logout}) => {
             </li>
             <li>
                 <Link to='/marketplace'>
-                  <CommunicationIcon />
+                  <MarketplaceIcon />
                   <span>Marketplace</span>
                 </Link>
             </li>

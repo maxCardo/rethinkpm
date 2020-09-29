@@ -3,7 +3,7 @@ import {Modal, Form, Button} from 'react-bootstrap';
 import Select from 'react-select';
 import axios from 'axios';
 
-const RecommendationModal = ({show, handleClose, handleSubmit}) => {
+const RecommendationModal = ({show, handleClose, handleSubmit, context, profile}) => {
   const [buyers, setBuyers] = useState([])
   const [selectedBuyers, setSelectedBuyers] = useState([])
   const [customMessage, setCustomMessage] = useState('')
@@ -18,7 +18,7 @@ const RecommendationModal = ({show, handleClose, handleSubmit}) => {
   useEffect(() => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
-    loadBuyers(source.token)
+    loadBuyers(source.token).then(r => {}).catch(e => {})
     return () => {
       source.cancel('Component unmounted');
     }
@@ -46,11 +46,13 @@ const RecommendationModal = ({show, handleClose, handleSubmit}) => {
       <Modal.Body>
         <Form>
           <Select
-            isMulti
+            isMulti={!(context === 'buyer')}
+            defaultValue={(context === 'buyer' && profile) && { label:profile.fullName, value: 0 }}
             name="buyers"
             placeholder="Select Buyers..."
-            options={buyers}
+            options={(context === 'buyer') ? [] : buyers}
             onChange={handleSelectChange}
+            isDisabled={(context === 'buyer')}
           />
           <div style={{marginTop: 10}}>
             <Form.Control as="textarea" rows="3" placeholder="Write a custom message..." onChange={handleTextAreaChange}/>

@@ -1,29 +1,31 @@
-.agent-list__search-container {
+.profile-list__search-container {
   display: flex;
   margin: 10px;
   position: relative;
   align-items: stretch;
 }
 
-.agent-list__search-input {
+.profile-list__search-input {
   width: 80%;
 }
 
-.agent-list__filter-icon {
+.profile-list__filter-icon {
   width: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 5px;
+  border-radius: 0;
+  margin-right: 0;
 }
 
-.agent-list__filtering-options-container {
+.profile-list__filtering-options-container {
   margin: 10px;
   display: flex;
   justify-content: space-between;
 }
 
-.agent-list__filtering-options-container button {
+.profile-list__filtering-options-container button {
   padding: 0 20px
 }
 
@@ -85,8 +87,8 @@
 .modal input[type="text"] {
   margin: 2px;
 }
-.agent-list__filter-icon,
-.agent-list__filtering-options-container button {
+.profile-list__filter-icon,
+.profile-list__filtering-options-container button {
    background: #fff;
    color: #6f9dd4;
    border-color: #fff;
@@ -95,17 +97,17 @@
    outline: none;
   transition: color 250ms, box-shadow 250ms;
  }
-.agent-list__filter-icon:focus,
-.agent-list__filter-icon:hover,
-.agent-list__filtering-options-container button:focus,
-.agent-list__filtering-options-container button:hover {
+.profile-list__filter-icon:focus,
+.profile-list__filter-icon:hover,
+.profile-list__filtering-options-container button:focus,
+.profile-list__filtering-options-container button:hover {
   color: #333;
   box-shadow: 1px 1px 5px rgba(0,0,0,0.12), 1px 1px 4px rgba(0,0,0,0.24);
   border-style: solid;
   outline: none;
 }
-.agent-list__search-input:focus,
-.agent-list__search-input:active,
+.profile-list__search-input:focus,
+.profile-list__search-input:active,
 .numberField__group input:not([type="checkbox"]):focus,
 .numberField__group input:not([type="checkbox"]):active,
 .modal input[type="text"]:focus,

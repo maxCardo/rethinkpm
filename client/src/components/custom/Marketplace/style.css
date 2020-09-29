@@ -11,7 +11,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 5px;
   background: #fff;
   color: #6f9dd4;
   border-color: #fff;
@@ -21,7 +20,7 @@
   padding: 0 20px;
   transition: color 250ms, box-shadow 250ms;
   height: calc(1.5em + 0.75rem + 2px);
-  margin: 10px;
+  margin: 10px 10px 10px 5px;
 }
 
 .kpi-bar__container {
@@ -35,7 +34,9 @@
 .kpi-item__container {
   flex: 1;
   border-right: 1px solid #CCC;
-  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .kpi-item__title {
@@ -63,8 +64,184 @@
 .kpi-item__negative-variation {
   color: red;
 }
-
+.propertySearchContainer {
+  margin: 0;
+  justify-content: space-between;
+}
 .marketplace__filter-select {
   width: 200px;
   margin: 10px;
+}
+
+.marketplace__table-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.marketplace__table-icon:hover {
+  background: #fff;
+  color: #6f9dd4;
+}
+.tableWithActions td:last-child {
+  width: 1px;
+}
+.tableWithActions td:last-child a:hover {
+  text-decoration: none !important;
+}
+.tableWithActions td:last-child > div {
+  display: flex;
+}
+
+.ManageBuyers-actions {
+  padding: 15px 0;
+  display: flex;
+}
+
+/* StreetView Styles */
+.StreetView__modal .modal-xl {
+  max-width: 95%;
+  margin: 80px 0 0 5%;
+}
+
+.StreetView__modal .modal-content {
+  margin: 0;
+  width: 95%;
+}
+
+.StreetView__modal .modal-body {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+}
+.StreetView__modal .modal-body > div:first-child {
+  width: 100vw!important;
+}
+
+.StreetView__modal .modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.marketplace .searchContainer {
+  margin: 0;
+}
+td.Marketplace__address {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  height: 42px;
+}
+td.Marketplace__address div {
+  display: flex;
+  align-items: center;
+}
+td.Marketplace__address p {
+  margin: 0;
+}
+
+.marketplace .kpi-bar__container + div {
+  max-height: unset!important;
+}
+
+.marketplace .searchInput {
+margin-left: 0;
+}
+
+.buyerPipeline th,
+.buyerPipeline td,
+.marketplace th,
+.marketplace td {
+  width: 100px;
+}
+.marketplace .Marketplace__address,
+.marketplace .Marketplace__actions,
+.buyerPipeline .Marketplace__address,
+.buyerPipeline .Marketplace__actions {
+  width: unset;
+}
+.marketplace .action-buttons__button,
+.buyerPipeline .action-buttons__button  {
+  margin: 5px;
+  min-height: 26px;
+  min-width: 26px;
+}
+
+
+/*IFRAME CORE CSS*/
+.PropertyDetails__modal .Iframe__title {
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-left: auto;
+  padding-right: 32px;
+}
+
+.modal__action-button {
+  height: 42px;
+  width: 42px;
+}
+
+.PropertyDetails__modal,
+.PropertyDetails__modal .modal-dialog  {
+  margin: 0;
+  max-width: unset;
+}
+
+.PropertyDetails__modal .modal-dialog  {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.PropertyDetails__modal .modal-header,
+.PropertyDetails__modal .modal-body {
+  padding: 0;
+}
+
+.PropertyDetails__modal .modal-header {
+  position: relative;
+}
+
+.PropertyDetails__modal .modal-content {
+  margin: 100px 80px;
+  width: unset;
+  height: 84vh;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.PropertyDetails__modal .modal-header h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.PropertyDetails__modal .navbar {
+  height: unset;
+  position: absolute;
+}
+
+.PropertyDetails__modal button.close {
+  z-index: 5;
+  position: relative;
+  right: 6px;
+}
+
+
+/* Hide full screen toggle because it's broken */
+.gm-control-active.gm-fullscreen-control {
+  display: none;
+}
+
+.ManageBuyers__check-group {
+  margin-bottom: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }

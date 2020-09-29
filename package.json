@@ -32,6 +32,7 @@
     "node-cron": "^2.0.3",
     "nodemailer": "^6.3.0",
     "query-string": "^6.12.1",
+    "react-google-map-street-view": "^1.1.0",
     "react-popper-tooltip": "^3.1.0",
     "react-select": "^3.1.0",
     "react-spinners": "^0.8.1",

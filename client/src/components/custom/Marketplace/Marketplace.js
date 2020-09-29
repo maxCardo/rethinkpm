@@ -1,7 +1,8 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, {useState, useEffect, Fragment, useRef} from 'react';
 import {connect} from 'react-redux'
 import axios from 'axios';
 import Table from '../../core/Table';
+import IconButton from "../../core/IconButton/IconButton";
 import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
 import KpiBar from './KpiBar';
@@ -9,85 +10,172 @@ import FilterModal from '../../core/filterModal/FilterModal';
 import RecommendationModal from './RecommendationModal';
 import SaveFilterModal from './SaveFilterModal'
 import Select from 'react-select'
-import { array } from 'prop-types';
 import {createErrorAlert} from '../../../actions/alert';
 import AddDataModal from './AddDataModal';
-
-
+import StreetViewModal from "./StreetViewModal";
+import {openStreetView} from "../../../actions/marketplace";
+import PropertyDetailsModal from "./PropertyDetailsModal";
+import {useWindowSize} from "../../../util/commonFunctions";
 
 const FILTERFIELDS = {
   type: {
-    type: { 
-      label: "Don't filter", 
+    type: {
+      label: "Don't filter",
       value: "noFilter"
-    }, 
-    value:"" , 
-    name: "Type", 
-    dataType:"array", 
-    accessor:"type"
+    },
+    value: "",
+    name: "Type",
+    dataType: "array",
+    accessor: "propertyType"
   },
-  numberOfBedrooms: {
-    type: { 
-      label: "Don't filter", 
+  listAge: {
+    type: {
+      label: "Don't filter",
       value: "noFilter"
-    }, 
-    value:"" , 
-    name: "Number of bedrooms", 
-    dataType:"number", 
-    accessor:"bedrooms"
+    },
+    value: "",
+    name: "List Age",
+    dataType: "number",
+    accessor: "listAge"
   },
-  numberOfBathrooms: {
-    type: { 
-      label: "Don't filter", 
+  county: {
+    type: {
+      label: "Don't filter",
       value: "noFilter"
-    }, 
-    value:"" , 
-    name: "Number of bathrooms", 
-    dataType:"number", 
-    accessor:"bathsFull"
+    },
+    value: "",
+    name: "County",
+    dataType: "array",
+    accessor: "county"
   },
   zip: {
-    type: { 
-      label: "Don't filter", 
+    type: {
+      label: "Don't filter",
       value: "noFilter"
-    }, 
-    value:"" , 
-    name: "Zipcode", 
-    dataType:"array", 
-    accessor:"zipcode"
+    },
+    value: "",
+    name: "Zipcode",
+    dataType: "array",
+    accessor: "zipcode"
   },
-  area: {
-    type: { 
-      label: "Don't filter", 
+  schoolDistrict: {
+    type: {
+      label: "Don't filter",
       value: "noFilter"
-    }, 
-    value:"" , 
-    name: "Area", 
-    dataType:"array", 
-    accessor:"area"
+    },
+    value: "",
+    name: "School District",
+    dataType: "array",
+    accessor: "schoolDistrict"
+  },
+  listPrice: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Price",
+    dataType: "number",
+    accessor: "listPrice"
+  },
+  condition: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Condition",
+    dataType: "array",
+    accessor: "condition"
+  },
+  numberOfBedrooms: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Number of bedrooms",
+    dataType: "number",
+    accessor: "bedrooms"
+  },
+  numberOfBathrooms: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Number of bathrooms",
+    dataType: "number",
+    accessor: "totalBaths"
+  },
+  tract: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Tract",
+    dataType: "string",
+    accessor: "tract"
+  },
+  opZone: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "OP Zone",
+    dataType: "array",
+    accessor: "opZone"
+  },
+  rentTier: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Rent Tier",
+    dataType: "array",
+    accessor: "rents.HA.tier"
+  },
+  zoning: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Zoning",
+    dataType: "array",
+    accessor: "zoning"
   },
 }
 
-const FILTEROPTIONS = {
-  type : [
-    {value: 'res', label: 'Residential'}
-  ]
-}
+// const FILTEROPTIONS = {
+//   type: [
+//     {value: 'res', label: 'Residential'}
+//   ]
+// }
 
-const Marketplace = ({createErrorAlert}) => {
-  
+const Marketplace = ({createErrorAlert, openStreetView}) => {
+
   const [loading, setLoading] = useState(false)
   const [listings, setListings] = useState([])
   const [filterString, setFilterString] = useState('')
   const [filters, setFilters] = useState(undefined)
   const [showFilterModal, setShowFilterModal] = useState(false)
+  const [showStreetViewModal, setShowStreetViewModal] = useState(true)
+  const [showPropertyDetailsModal, setShowPropertyDetailsModal] = useState(false)
   const [showRecommendationModal, setShowRecommendationModal] = useState(false)
   const [focusedProperty, setFocusedProperty] = useState(undefined)
   const [showSaveFilterModal, setShowSaveFilterModal] = useState(false);
   const [savedFilters, setSavedFilters] = useState([])
   const [selectedFilter, setSelectedFilter] = useState(undefined)
-  const [filterOptions, setFilterOptions] = useState(FILTEROPTIONS)
+  const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
+  const [tablePageSize, setTablePageSize] = useState(10)
+  const [iframeTarget, setIframeTarget] = useState('')
+  const tableContainerHeight = useRef(null);
+  const size = useWindowSize();
 
   const conditionsMap = {
     1: 'D',
@@ -102,12 +190,17 @@ const Marketplace = ({createErrorAlert}) => {
       label: "Type"
     },
     {
-      accessor: "county",
-      label: "Area"
+      accessor: 'listNumber',
+      label: "MLS ID"
     },
     {
-      accessor: "streetName",
-      label: "Address"
+      accessor: 'listDate',
+      label: 'List Date',
+      mapper: 'date'
+    },
+    {
+      accessor: "city",
+      label: "Area"
     },
     {
       accessor: 'listPrice',
@@ -115,16 +208,26 @@ const Marketplace = ({createErrorAlert}) => {
       mapper: 'money'
     },
     {
+      reactComponent: true,
+      label: "Address",
+      render: (item) => (
+        <div>
+          <p>{item.streetNumber} {item.streetName}</p>
+        </div>
+      ),
+      className: "Marketplace__address"
+    },
+    {
+      label: 'Zip',
+      accessor: 'zipcode'
+    },
+    {
       accessor: 'bedrooms',
-      label: 'Bedrooms'
+      label: 'Bed'
     },
     {
-      accessor: 'bathsFull',
-      label: 'Full Bath'
-    },
-    {
-      accessor: 'bathsPartial',
-      label: 'Partial Bath'
+      accessor: 'totalBaths',
+      label: 'Bath'
     },
     {
       accessor: 'condition',
@@ -134,20 +237,56 @@ const Marketplace = ({createErrorAlert}) => {
     {
       reactComponent: true,
       label: 'Actions',
+      className: "Marketplace__actions",
       render: (item) => (
         <div>
-          <a className='marketplace__table-icon' href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`} target= "_blank">
-            <i className="fas fa-link"></i>
-          </a>
-          <a className='marketplace__table-icon' onClick={() => startAddDataFlow(item._id)}>
-            <i className="fas fa-plus"></i>
-          </a>
-          <a className='marketplace__table-icon' onClick={() => startRecommendationFlow(item)}>
-            <i className="fas fa-check"></i>
-          </a>
-          <a className='marketplace__table-icon' onClick={() => blacklistListing(item._id)}>
-            <i className="fas fa-times"></i>
-          </a>
+          <IconButton placement='bottom'
+                      tooltipContent='View property details'
+                      id='property-details-tooltip'
+                      iconClass='fas fa-list'
+                      variant='action-button'
+                      onClickFunc={() => {
+                        setIframeTarget(`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
+                        setShowPropertyDetailsModal(true);
+                      }}
+          />
+          <IconButton placement='bottom'
+                      tooltipContent='View On Site'
+                      id='link-tooltip'
+                      iconClass='fas fa-link'
+                      variant='link'
+                      href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
+          />
+          {(item.streetName && item.streetNumber) && (
+            <IconButton placement='bottom'
+                        tooltipContent='Open street view'
+                        id='street-view-tooltip'
+                        iconClass='fas fa-eye'
+                        variant='action-button'
+                        onClickFunc={() => openStreetView(item.streetName, item.streetNumber)}
+            />)}
+          <IconButton placement='bottom'
+                      tooltipContent='Input Listing Data'
+                      iconClass='fas fa-plus'
+                      variant='action-button'
+                      onClickFunc={() => startAddDataFlow(item._id)}
+          />
+          <IconButton placement='bottom'
+                      tooltipContent='Recommend Deal'
+                      iconClass='fas fa-star'
+                      variant='action-button'
+                      onClickFunc={() => startRecommendationFlow(item)}
+          />
+          <IconButton placement='bottom'
+                      tooltipContent='Blacklist Deal'
+                      iconClass='fas fa-trash'
+                      variant='action-button'
+            /*DEMO: change icon color, should be made with separate class with hover,
+             focus etc states because it's a button, or even a separate variant if needed*/
+                      btnClass='text-danger'
+                      needsConfirmation={true}
+                      onClickFunc={() => blacklistListing(item._id)}
+          />
         </div>
       )
     }
@@ -164,16 +303,15 @@ const Marketplace = ({createErrorAlert}) => {
   const loadFilterOptions = async (cancelToken) => {
     const res = await axios.get(`/api/marketplace/ops/filterOptions`, {cancelToken});
     const options = res.data
-    setFilterOptions(Object.assign({}, filterOptions, options))
+    setFilterOptions(options)
   }
 
   const fetchFilteredData = async (filters, blacklist) => {
     setLoading(true)
     const data = {filters, blacklist}
-    const res = await axios.post(`/api/sales/listings/filter`, data);
+    const res = await axios.post(`/api/marketplace/ops/listings/filter`, data);
     const listings = res.data.record;
     const appliedFilters = res.data.filters
-    console.log(listings)
     setFilters(appliedFilters)
     setListings(listings)
     setLoading(false)
@@ -181,19 +319,22 @@ const Marketplace = ({createErrorAlert}) => {
 
   const fetchSavedFilters = async (cancelToken) => {
     const res = await axios.get(`/api/marketplace/ops/filters`, {cancelToken});
-    const { filters } = res.data;
-    const savedFiltersOptions = filters.map((filter) => ({label: filter.name, value: {filters: filter.filters, _id: filter._id, blacklist: filter.blacklist}}))
+    const {filters} = res.data;
+    const savedFiltersOptions = filters.map((filter) => ({
+      label: filter.name,
+      value: {filters: filter.filters, _id: filter._id, blacklist: filter.blacklist}
+    }))
     setSavedFilters(savedFiltersOptions)
   }
 
   const submitFilterModal = async (selectedFilters) => {
     setSelectedFilter(undefined)
-    fetchFilteredData(selectedFilters)
+    fetchFilteredData(selectedFilters).then(r => {})
   }
 
   const clearFilter = () => {
     setFilters(undefined)
-    fetchData()
+    fetchData().then(r => {})
   }
 
   const saveFilter = () => {
@@ -202,13 +343,13 @@ const Marketplace = ({createErrorAlert}) => {
 
   const startRecommendationFlow = (property) => {
     setFocusedProperty(property._id)
-    if(property.condition) {
+    if (property.condition) {
       setShowRecommendationModal(true)
     } else {
       createErrorAlert('For recommend the property please add the condition of it')
       setShowAddDataModal(true)
     }
-    
+
   }
 
   const startAddDataFlow = (propertyId) => {
@@ -222,7 +363,7 @@ const Marketplace = ({createErrorAlert}) => {
       buyers: buyers,
       customMessage: customMessage
     }
-    axios.post('/api/marketplace/ops/recommend', data)
+    axios.post('/api/marketplace/ops/recommend', data).then(r => {})
   }
 
   const submitSaveFilterModal = async (name) => {
@@ -231,16 +372,16 @@ const Marketplace = ({createErrorAlert}) => {
       filters
     }
     await axios.post('/api/marketplace/ops/filters', data)
-    fetchSavedFilters()
+    fetchSavedFilters().then(r => {})
   }
   const submitAddDataModal = async (condition) => {
     const data = {
       condition
     }
     const newListings = listings.map((listing) => {
-      if(listing._id === focusedProperty) {
+      if (listing._id === focusedProperty) {
         listing.condition = condition
-      } 
+      }
       return listing
     })
     setListings(newListings)
@@ -248,94 +389,136 @@ const Marketplace = ({createErrorAlert}) => {
   }
 
   const handleFilterChange = (value) => {
-    const {name, value: { filters, blacklist }} = value
+    const {value: {filters, blacklist}} = value
     setSelectedFilter(value)
-    fetchFilteredData(filters, blacklist)
+    fetchFilteredData(filters, blacklist).then(r =>{}).catch(e => {})
   }
 
   const blacklistListing = (listingId) => {
-    if(!selectedFilter) {
+    if (!selectedFilter) {
       createErrorAlert('You need to save the filter before blacklisting a property')
       return;
     } else {
-      axios.post(`/api/marketplace/ops/filters/${selectedFilter.value._id}/blackList`, {listingId})
+      axios.post(`/api/marketplace/ops/filters/${selectedFilter.value._id}/blackList`, {listingId}).then(r => {})
       const listingsBlacklisted = listings.filter((listing) => listing._id !== listingId)
       setListings(listingsBlacklisted)
     }
   }
 
-
-
+  //EFFECT:  Redraw table on window resize
   useEffect(() => {
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
-    fetchData(source.token)
-    loadFilterOptions(source.token)
-    fetchSavedFilters(source.token)
-    return () => {
-      source.cancel('Component unmounted');
-    }
-  },[])
 
-  return loading ? <Loading /> : (
-    <div>
-      <KpiBar />
-      <div>
-      </div>
-      <div className='searchContainer agentsSearchContainer'>
-        <div style={{display: 'flex'}}>
-          <Select
-            className="marketplace__filter-select"
-            onChange={handleFilterChange}
-            defaultValue="All"
-            options={savedFilters}
-            placeholder='Select Filter'
-            value={selectedFilter}
-          />
-          <input 
-            className='form-control searchInput' 
-            tabIndex={0}
-            onChange={(e) => setFilterString(e.target.value)} 
-            placeholder='Search' 
-          />
-        </div>
-        <div className='marketplace__filter-icons'>
-          {filters && !selectedFilter &&
+    const populateTable = () => {
+      const CancelToken = axios.CancelToken;
+      const source = CancelToken.source();
+      fetchData(source.token).then(r => {})
+      loadFilterOptions(source.token).then(r => {})
+      fetchSavedFilters(source.token).then(r => {})
+      return () => {
+        source.cancel('Component unmounted');
+      }
+    }
+
+    const height = size.height;
+    // 360 is sum of all heights of everything else that takes vertical space outside the container
+    const controlHeight = height - 360;
+    let rowNumber;
+
+    if (height) {
+      // 43 is height of row
+      rowNumber = Math.floor(controlHeight / 43);
+    } else {
+      rowNumber = 10;
+    }
+
+    if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
+      setTablePageSize(rowNumber)
+      populateTable()
+      tableContainerHeight.current = controlHeight;
+    } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
+      setTablePageSize(rowNumber)
+      populateTable()
+      tableContainerHeight.current = controlHeight;
+    } else {
+      console.log('effect did nothing')
+    }
+
+  }, [size.height]); // Empty array ensures that effect is only run on mount
+
+
+  return loading ? <Loading/> : (
+    <div className="tableWithActions marketplace">
+      <KpiBar/>
+
+      <div style={{maxHeight: '80vh', overflow: 'auto'}}>
+        <div className='searchContainer agentsSearchContainer'>
+          <div style={{display: 'flex'}}>
+            <Select
+              className="marketplace__filter-select"
+              onChange={handleFilterChange}
+              defaultValue="All"
+              options={savedFilters}
+              placeholder='Select Filter'
+              value={selectedFilter}
+            />
+            <input
+              className='form-control searchInput'
+              tabIndex={0}
+              onChange={(e) => setFilterString(e.target.value)}
+              placeholder='Search'
+            />
+          </div>
+          <div className='marketplace__filter-icons'>
+            {filters && !selectedFilter &&
             <Fragment>
               <button onClick={saveFilter}>Save filter</button>
               <button onClick={clearFilter}>Clear filter</button>
             </Fragment>
-          }
-          <button onClick={() => setShowFilterModal(true)}>
-            <i className="fas fa-filter"></i>
-          </button>
+            }
+            <button onClick={() => setShowFilterModal(true)}>
+              <i className="fas fa-filter"></i>
+            </button>
+          </div>
+
         </div>
-        
-      </div>
-      <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
-        <div className="col-12" >
-          <Table 
-            pageSize={10}
-            sorting={true}
-            fontSize={12}
-            filter={filterString}
-            data={listings}
-            headers={HEADERS}
-          />
+        <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
+          <div className="col-12 p-0 containerTable" id=''>
+            <Table
+              pageSize={tablePageSize}
+              sorting={true}
+              fontSize={12}
+              filter={filterString}
+              data={listings}
+              headers={HEADERS}
+              sortBy="listDate"
+              sortDirection='desc'
+            />
+            Number of records: {listings.length}
+          </div>
         </div>
       </div>
-      <FilterModal 
-        show={showFilterModal} 
-        filterFields={FILTERFIELDS} 
-        options={filterOptions} 
+      <FilterModal
+        show={showFilterModal}
+        filterFields={FILTERFIELDS}
+        options={filterOptions}
         handleClose={() => setShowFilterModal(false)}
         onSubmit={submitFilterModal}
       />
-      <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
-      <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
-      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
+      <StreetViewModal
+        show={showStreetViewModal}
+        handleClose={() => setShowStreetViewModal(false)}
+        apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o"/>
+      <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal}
+                            handleClose={() => setShowPropertyDetailsModal(false)}/>
+      <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)}
+                           handleSubmit={submitRecommendationModal}/>
+      <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)}
+                       handleSubmit={submitSaveFilterModal}/>
+      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)}
+                    handleSubmit={submitAddDataModal}/>
     </div>
   )
 }
 
-export default connect(undefined, {createErrorAlert})(Marketplace)
+
+export default connect(undefined, {createErrorAlert, openStreetView})(Marketplace)

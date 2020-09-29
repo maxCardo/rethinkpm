@@ -4,7 +4,7 @@ import Screen from './screens/Screen'
 
 const ProfileDetails = ({settings: {screens, profileType}, activeProfile}) => {
     const [activeScreen, selectScreen] = useState('notes')
-    
+
 
     return (
         <div className='bottom-navigation__container'>
