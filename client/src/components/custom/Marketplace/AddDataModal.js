@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Modal, Form, Button} from 'react-bootstrap';
 import Select from 'react-select';
-import axios from 'axios';
 
 const AddDataModal = ({show, handleClose, handleSubmit}) => {
   const conditions = [

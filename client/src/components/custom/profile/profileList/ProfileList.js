@@ -111,6 +111,7 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
                             iconClass='fas fa-filter'
                             btnClass='profile-list__filter-icon'
                             variant='clean'
+                            fontSize={22}
                             onClickFunc={() => tglFilterMod(true)}/>
             </div>
             {isFiltered ? (

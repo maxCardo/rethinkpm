@@ -5,8 +5,6 @@ import {checkBoxCheck} from '../../../../util/commonFunctions'
 
 
 const ArrayFields = ({orderKey, filterFields, onChange, prop, options}) => {
-    console.log('Array Fields options for ', prop)
-    console.log(options)
     const [state, setState] = useState(filterFields)
     const [useFilter, setUseFilter] = useState(false)
     const {name, value} = filterFields

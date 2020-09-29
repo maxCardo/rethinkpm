@@ -31,11 +31,12 @@ const AddEmailField = ({field, form, onChangeArray}) => {
 
     const onCheckChange = (e, idx) => {
         let newFormData = formData
-        newFormData.map((record) => {
+        newFormData.forEach((record) => {
             record.isPrimary = false
         })
         newFormData[idx].isPrimary = true
         setFormData([...newFormData]);
+
     };
 
     const onClickAdd = () => {
@@ -47,7 +48,7 @@ const AddEmailField = ({field, form, onChangeArray}) => {
 
     const onClickDelete = (idx) => {
         let newFormData = formData;
-        if(newFormData[idx].isPrimary == true){
+        if(newFormData[idx].isPrimary === true){
             newFormData[0].isPrimary = true 
         }
         newFormData.splice(idx, 1);

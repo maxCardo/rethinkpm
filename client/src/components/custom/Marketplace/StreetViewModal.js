@@ -1,16 +1,17 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useState} from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button} from 'react-bootstrap';
 import Loading from '../../core/LoadingScreen/Loading';
 import {StreetView} from 'react-google-map-street-view';
 import {closeStreetView} from "../../../actions/marketplace";
+import IconButton from "../../core/IconButton/IconButton";
 
 const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
+    const [streetView, setStreetView] = useState(true);
 
     const loading = false;
 
     return (
-
 
         <Modal size='xl'
                className='StreetView__modal'
@@ -19,21 +20,27 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
                    closeStreetView()
                }}>
             <Modal.Header closeButton>
-                <Modal.Title>Property Details</Modal.Title>
+                <Modal.Title>{streetView ? 'Street' : 'Map'} View </Modal.Title>
             </Modal.Header>
             {loading ? <Loading/> : <Fragment>
                 <Modal.Body>
-                    <StreetView address={address + ', Pennsylvania'} APIkey={apiKey} streetView
+                    <StreetView address={address + ', Pennsylvania'} APIkey={apiKey} streetView={streetView}
                                 zoomLevel={10}/>
                 </Modal.Body>
                 <Modal.Footer>
+                    <IconButton onClickFunc={() => setStreetView(!streetView) }
+                                fontSize={22}
+                                btnClass='modal__action-button'
+                                variant='action-button'
+                                iconClass='fas fa-map-marker'
+                                tooltipContent={`Change to ${streetView ? 'Map mode' : 'Street mode'}`} />
+
                     <Button className='real-btn' variant='2' onClick={() => {
                         closeStreetView()
                     }}>
                         Close
                     </Button>
                 </Modal.Footer>
-
             </Fragment>}
         </Modal>
     );
