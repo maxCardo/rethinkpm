@@ -9,6 +9,16 @@
     border: 1px solid #007bff;
 }
 
+.CustomForm .form-control.invalid:focus {
+    box-shadow:  0 0 0 1px #F44336;
+    border-color:  #F44336;
+}
+
+.CustomForm .form-control.invalid:focus {
+    box-shadow:  0 0 0 1px #F44336;
+    border-color:  #F44336;
+}
+
 .CustomForm__button-container .btn {
     border-radius: 2px;
     box-shadow: 0 0 1px 0px rgba(0,0,0,.575);
