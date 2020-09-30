@@ -246,7 +246,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       iconClass='fas fa-list'
                       variant='action-button'
                       onClickFunc={() => {
-                        setIframeTarget(`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
+                        setIframeTarget(`https://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
                         setShowPropertyDetailsModal(true);
                       }}
           />
@@ -255,7 +255,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       id='link-tooltip'
                       iconClass='fas fa-link'
                       variant='link'
-                      href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
+                      href={`https://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
           />
           {(item.streetName && item.streetNumber) && (
             <IconButton placement='bottom'
