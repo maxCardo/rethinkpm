@@ -27,8 +27,8 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         const validPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
         if (phoneNumbers) {
-            phoneNumbers.forEach((item, index) => {
-                if (!!item.number.match(validPhone) === false && item.number != '') { phonesValid = false}
+            phoneNumbers.forEach((item) => {
+                if (!!item.number.match(validPhone) === false && item.number !== '') { phonesValid = false}
             });
         }
         
@@ -36,7 +36,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
         if (emails) {
             emails.forEach((item, index) => {
                 const valid = validateEmail(item.address)
-                if (!valid && item.address != '') {
+                if (!valid && (item.address !== '')) {
                     emailsValid = false
                 }
             });

@@ -190,6 +190,10 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       label: "Type"
     },
     {
+      accessor: 'listNumber',
+      label: "MLS ID"
+    },
+    {
       accessor: 'listDate',
       label: 'List Date',
       mapper: 'date'
@@ -212,6 +216,10 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         </div>
       ),
       className: "Marketplace__address"
+    },
+    {
+      label: 'Zip',
+      accessor: 'zipcode'
     },
     {
       accessor: 'bedrooms',
@@ -238,7 +246,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       iconClass='fas fa-list'
                       variant='action-button'
                       onClickFunc={() => {
-                        setIframeTarget(`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
+                        setIframeTarget(`https://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
                         setShowPropertyDetailsModal(true);
                       }}
           />
@@ -247,7 +255,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       id='link-tooltip'
                       iconClass='fas fa-link'
                       variant='link'
-                      href={`http://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
+                      href={`https://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
           />
           {(item.streetName && item.streetNumber) && (
             <IconButton placement='bottom'
@@ -397,19 +405,20 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   }
 
-  const populateTable = () => {
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
-    fetchData(source.token).then(r => {})
-    loadFilterOptions(source.token).then(r => {})
-    fetchSavedFilters(source.token).then(r => {})
-    return () => {
-      source.cancel('Component unmounted');
-    }
-  }
-
   //EFFECT:  Redraw table on window resize
   useEffect(() => {
+
+    const populateTable = () => {
+      const CancelToken = axios.CancelToken;
+      const source = CancelToken.source();
+      fetchData(source.token).then(r => {})
+      loadFilterOptions(source.token).then(r => {})
+      fetchSavedFilters(source.token).then(r => {})
+      return () => {
+        source.cancel('Component unmounted');
+      }
+    }
+
     const height = size.height;
     // 360 is sum of all heights of everything else that takes vertical space outside the container
     const controlHeight = height - 360;

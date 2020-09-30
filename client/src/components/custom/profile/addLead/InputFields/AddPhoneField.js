@@ -44,7 +44,7 @@ const AddPhoneField = ({field, onChangeArray}) => {
 
     const onClickDelete = (idx) => {
         let newFormData = formData;
-        if (newFormData[idx].isPrimary == true) {
+        if (newFormData[idx].isPrimary === true) {
           newFormData[0].isPrimary = true;
         }
         newFormData.splice(idx, 1);
