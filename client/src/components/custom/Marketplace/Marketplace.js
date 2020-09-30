@@ -182,18 +182,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const HEADERS = [
     {
-      reactComponent: true,
-      label: 'Checked',
-      render: (item) => (
-        <div className="element-wrapper with--checkbox">
-          <label className="checkbox path" checked={true}  >
-            <input type="checkbox" name='useFilter' value={false} onChange={e => console.log(e)}/>
-            {checkBoxCheck()}
-          </label>
-        </div>
-      )
-    },
-    {
       accessor: "propertyType",
       label: "Type"
     },
@@ -275,6 +263,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       )
     }
   ]
+
+  const [headers, setHeaders] = useState(HEADERS)
+  const [checkFlowActive, setCheckFlowActive] = useState(false)
   const fetchData = async (cancelToken) => {
     setLoading(true)
     const res = await axios.get(`/api/sales/listings`, {cancelToken});
@@ -396,6 +387,28 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   },[])
 
+  const toggleCheckFlow = () => {
+    const newHeaders = [...headers]
+    if(!  checkFlowActive) {
+      newHeaders.unshift({
+        reactComponent: true,
+        label: 'Checked',
+        render: (item) => (
+          <div className="element-wrapper with--checkbox">
+            <label className="checkbox path" checked={true}  >
+              <input type="checkbox" name='useFilter' value={false} onChange={e => console.log(e)}/>
+              {checkBoxCheck()}
+            </label>
+          </div>
+        )
+      })
+    } else {
+      newHeaders.shift()
+    }
+    setCheckFlowActive(!checkFlowActive)
+    setHeaders(newHeaders)
+  }
+
   return loading ? <Loading /> : (
     <div className="tableWithActions">
       <KpiBar />
@@ -428,6 +441,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             <button onClick={() => setShowFilterModal(true)}>
               <i className="fas fa-filter"></i>
             </button>
+            <button onClick={toggleCheckFlow}>
+              <i className="fas fa-check-square"></i>
+            </button>
           </div>
           
         </div>
@@ -439,7 +455,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
               fontSize={12}
               filter={filterString}
               data={listings}
-              headers={HEADERS}
+              headers={headers}
               sortBy="listDate"
               sortDirection='desc'
             />
