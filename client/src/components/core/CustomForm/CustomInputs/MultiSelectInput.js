@@ -1,16 +1,17 @@
-import {Form} from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import React from "react";
 import Select from "react-select";
-import {useForm, Controller} from "react-hook-form";
+import { useForm, Controller} from "react-hook-form";
 
-const ReactSelectInput = ({item, control}) => {
+const MultiSelectInput = ({item}) => {
+  const {register, handleSubmit, errors, control} = useForm()
 
   return (
-
     <Form.Group key={item.name} >
       <Controller
+        register={register}
         isMulti={true}
-        defaultValue={[{value: 'Select at least one', label: 'OMFG'}]}
+        defaultValue={item.value ? item.value : item.selected}
         name={item.name}
         as={Select}
         options={item.options}
@@ -21,4 +22,4 @@ const ReactSelectInput = ({item, control}) => {
   )
 }
 
-export default ReactSelectInput
+export default MultiSelectInput

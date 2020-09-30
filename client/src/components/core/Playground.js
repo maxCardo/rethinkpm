@@ -1,11 +1,9 @@
 import React from 'react';
-import {useForm} from "react-hook-form";
-import {Form, Container} from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import CustomForm from "./CustomForm/CustomForm";
+import {emailRegex, phoneRegex, urlRegex} from "../../util/commonFunctions";
 
 const Playground = () => {
-  const {register, handleSubmit, errors} = useForm();
-  const onSubmit = data => console.log(data);
 
 
   let INPUTS = [
@@ -13,7 +11,7 @@ const Playground = () => {
       label: 'Email Address',
       variation: 'email',
       name: 'emailAddress',
-      refObject: {required: true, pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/}
+      refObject: {required: true, pattern: emailRegex()}
     },
     {
       label: 'Full Name',
@@ -23,7 +21,7 @@ const Playground = () => {
       variation: 'phone',
       label: 'Phone',
       name: 'phone',
-      refObject: {required: true, pattern: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/}
+      refObject: {required: true, pattern: phoneRegex()}
     },
     {
       refObject: {required: true},
@@ -63,7 +61,8 @@ const Playground = () => {
         {value: "chocolate", label: "Chocolate"},
         {value: "strawberry", label: "Strawberry"},
         {value: "vanilla", label: "Vanilla"}
-      ]
+      ],
+      value: [{value: "chocolate", label: "Chocolate"}]
     },
     {
       variation: 'checkbox',
@@ -71,7 +70,7 @@ const Playground = () => {
       name: 'preference',
     },
     {
-      variation: 'react-select',
+      variation: 'multi-select',
       label: 'Phone Numbers',
       name: 'phoneNumbers',
       mapper: (data) => {
@@ -83,11 +82,19 @@ const Playground = () => {
         })
       }
     },
+    {
+      variation: 'url',
+      label: 'Link',
+      name: 'link',
+      refObject: {required: true, pattern: urlRegex()}
+    },
+    {
+      variation: 'range',
+      label: 'Price range',
+      name: 'priceRange',
+      refObject: {required: true, max: 5000000, min: 20000}
+    },
   ]
-
-  const getOptions = () => {
-
-  }
 
   //TODO: for testing purposes Agent object is used
   const editData = {
@@ -243,19 +250,26 @@ const Playground = () => {
             }
             if (INPUTS[idx].variation === 'react-select') {
               INPUTS[idx].options = mapData(INPUTS[idx].mapper, INPUTS[idx].data)
-              console.log('deshet');
               console.log(INPUTS[idx].options);
+            }
+            if (!INPUTS[idx].value && INPUTS[idx].variation === 'multi-select') {
+              INPUTS[idx].selected = mapData(INPUTS[idx].mapper, INPUTS[idx].data)
+              INPUTS[idx].options = mapData(INPUTS[idx].mapper, INPUTS[idx].data)
+
+            } else if (INPUTS[idx].variation === 'multi-select') {
+              INPUTS[idx].selected = INPUTS[idx].value;
             }
           }
         });
       }
     });
   }
-  editRecord();
+  // COMMENT OUT TO SEE EMPTY FORM
+  //editRecord();
 
   return (
     <Container>
-      <h2 className="form-title">Enter bla bla</h2>
+      <h2 className="form-title">Form Title</h2>
       <CustomForm inputs={INPUTS}/>
     </Container>
 

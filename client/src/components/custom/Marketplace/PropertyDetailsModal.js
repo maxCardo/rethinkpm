@@ -8,7 +8,7 @@ const PropertyDetailsModal = ({  show, handleClose, iframeTarget }) => {
     const loading = false;
 
     const onLoadFunc = () => {
-        console.log("From frame, needs to be extended to access html on frame.");
+        console.log("From frame, can be extended to access html on frame.");
     }
 
     return (

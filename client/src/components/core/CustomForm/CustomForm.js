@@ -1,22 +1,21 @@
 import React from 'react';
-import {useForm} from "react-hook-form";
+import {useForm, Controller} from "react-hook-form";
 import {Form, Container} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import './style.css'
 import EmailInput from "./CustomInputs/EmailInput";
 import PhoneInput from "./CustomInputs/PhoneInput";
 import SelectInput from "./CustomInputs/SelectInput";
-import ReactSelectInput from "./CustomInputs/ReactSelectInput";
 import CheckboxInput from "./CustomInputs/CheckboxInput";
-import MultiSelectInput from "./CustomInputs/MultiSelectInput";
-import AddPhoneField from "../../custom/profile/addLead/InputFields/AddPhoneField";
+import UrlInput from "./CustomInputs/UrlInput";
+import Select from "react-select";
 
 const CustomForm = ({inputs}) => {
 
   const {register, handleSubmit, errors, control} = useForm()
-  console.log(errors);
-  const onSubmit = data => console.log(data)
+  // console.log(errors);
 
+  const onSubmit = data => console.log(data)
 
 
   return (
@@ -26,13 +25,13 @@ const CustomForm = ({inputs}) => {
           switch (item.variation) {
             case 'email':
               return (
-              <EmailInput item={item}
-                          errors={errors && errors.email}
-                          register={register}
-                          key={item.name}
-                          defaultValue={item.data && item.data}
-              />
-            );
+                <EmailInput item={item}
+                            errors={errors && errors.email}
+                            register={register}
+                            key={item.name}
+                            defaultValue={item.data && item.data}
+                />
+              );
             case 'phone':
               return (
                 <PhoneInput item={item}
@@ -44,19 +43,48 @@ const CustomForm = ({inputs}) => {
               )
             case 'select':
               return (
-                <SelectInput item={item}  errors={errors && errors['name']} register={register} key={item.name} />
+                <SelectInput item={item} errors={errors && errors['name']} register={register} key={item.name}/>
               )
             case 'react-select':
               return (
-                <ReactSelectInput item={item}  errors={errors && errors['name']} register={register} key={item.name} control={control} />
+                <Form.Group key={item.name}>
+                  <Form.Label>{item.label}</Form.Label>
+                  <Controller
+
+                    register={register}
+                    defaultValue={{label: 'Please select...', value: 'nothing selected'}}
+                    name={item.name}
+                    options={item.options}
+                    as={Select}
+                    isClearable
+                    control={control}
+                    rules={{required: true}}
+                  />
+                </Form.Group>
               )
             case 'multi-select':
               return (
-                <MultiSelectInput  item={item}  errors={errors && errors['name']} register={register} key={item.name} control={control}  />
+                <Form.Group key={item.name}>
+                  <Form.Label>{item.label}</Form.Label>
+                  <Controller
+                    register={register}
+                    isMulti={true}
+                    defaultValue={item.value ? item.value : item.selected}
+                    name={item.name}
+                    as={Select}
+                    options={item.options}
+                    control={control}
+                    rules={{required: true}}
+                  />
+                </Form.Group>
               )
             case 'checkbox':
               return (
-                <CheckboxInput item={item}  errors={errors && errors['name']} register={register} key={item.name} />
+                <CheckboxInput item={item} errors={errors && errors['name']} register={register} key={item.name}/>
+              )
+            case 'url':
+              return (
+                <UrlInput item={item} errors={errors && errors['name']} register={register} key={item.name}/>
               )
             default:
               return (

@@ -123,3 +123,14 @@ export const  useWindowSize = () => {
 
   return windowSize;
 }
+
+/*REGEX for the forms*/
+export const emailRegex = () => {
+  return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+}
+export const urlRegex = () => {
+  return /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+}
+export const phoneRegex = () => {
+  return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+}
