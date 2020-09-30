@@ -444,6 +444,17 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             <button onClick={toggleCheckFlow}>
               <i className="fas fa-check-square"></i>
             </button>
+            {
+              checkFlowActive &&
+                <Fragment>
+                  <button onClick={toggleCheckFlow}>
+                    <i className="fas fa-file-csv"></i>
+                  </button>
+                  <button onClick={toggleCheckFlow}>
+                    <i className="fas fa-star"></i>
+                  </button>
+                </Fragment>
+            }
           </div>
           
         </div>
