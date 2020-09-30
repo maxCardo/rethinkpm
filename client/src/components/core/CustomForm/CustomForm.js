@@ -9,12 +9,14 @@ import SelectInput from "./CustomInputs/SelectInput";
 import ReactSelectInput from "./CustomInputs/ReactSelectInput";
 import CheckboxInput from "./CustomInputs/CheckboxInput";
 import MultiSelectInput from "./CustomInputs/MultiSelectInput";
+import AddPhoneField from "../../custom/profile/addLead/InputFields/AddPhoneField";
 
 const CustomForm = ({inputs}) => {
 
   const {register, handleSubmit, errors, control} = useForm()
   console.log(errors);
   const onSubmit = data => console.log(data)
+
 
 
   return (

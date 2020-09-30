@@ -8,17 +8,16 @@ const Playground = () => {
   const onSubmit = data => console.log(data);
 
 
-
   let INPUTS = [
     {
       label: 'Email Address',
       variation: 'email',
-      name: 'email',
+      name: 'emailAddress',
       refObject: {required: true, pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/}
     },
     {
-      label: 'Name',
-      name: 'name',
+      label: 'Full Name',
+      name: 'fullName',
     },
     {
       variation: 'phone',
@@ -71,27 +70,188 @@ const Playground = () => {
       label: 'Preference',
       name: 'preference',
     },
+    {
+      variation: 'react-select',
+      label: 'Phone Numbers',
+      name: 'phoneNumbers',
+      mapper: (data) => {
+        return data.map((item) => {
+          return {
+            label: item.number,
+            value: item.number
+          }
+        })
+      }
+    },
   ]
 
-  const editData = {
-    email: 'somemail@mail.com',
-    name: 'Bozidar Siljanoski',
-    phone: '078242826',
-    gender: 'shit'
+  const getOptions = () => {
+
   }
 
+  //TODO: for testing purposes Agent object is used
+  const editData = {
+    "zipCodes": [],
+    "areas": [],
+    "fullName": "Admin User",
+    "status": "new",
+    "_id": "5e8ddd2e3be1fc57a66bce20",
+    "agentId": "650401",
+    "lastName": "User",
+    "firstName": "Admin",
+    "emailAddress": "mailz@gmail.coom",
+    "officeId": "13418",
+    "sales": 0,
+    "__v": 35,
+    "phone": "",
+    "office": {
+      "_id": "5edfc3f54f6e27392eaa63db",
+      "officeId": "13418",
+      "name": "HOWARD HANNA",
+      "__v": 0
+    },
+    "notes": [
+      {
+        "date": "2020-05-19T15:18:37.984Z",
+        "_id": "5ec3f8cd1af24f12b42af4d2",
+        "content": "test one note",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-05-19T15:21:47.717Z",
+        "_id": "5ec3f98b1af24f12b42af4d3",
+        "content": "Testing add note to see what happens when a note with too many words is added, ",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-05-27T15:36:26.138Z",
+        "_id": "5ece88fa5e47da4d9cc8b754",
+        "content": "test adding note",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-05-27T15:36:55.792Z",
+        "_id": "5ece89175e47da4d9cc8b755",
+        "content": "again",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-06-02T14:31:56.558Z",
+        "_id": "5ed662dc776bcf510818908e",
+        "content": "test again",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-06-02T14:32:06.617Z",
+        "_id": "5ed662e6776bcf510818908f",
+        "content": "and again",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-06-02T14:32:15.081Z",
+        "_id": "5ed662ef776bcf5108189090",
+        "content": "and again",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-06-02T14:32:24.789Z",
+        "_id": "5ed662f8776bcf5108189091",
+        "content": "one more time",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-06-09T16:38:50.601Z",
+        "_id": "5edfbb1a4b9fd25578372539",
+        "content": "test",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-06-09T18:25:20.964Z",
+        "_id": "5edfd410a2ec8e4a9443dd57",
+        "content": "test",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      },
+      {
+        "date": "2020-06-09T19:07:36.164Z",
+        "_id": "5edfddf8ab98374d486bd8ca",
+        "content": "tetsingslknlklkdjsf",
+        "user": "5d4abb06d345d233a8ddb812",
+        "type": "note"
+      }
+    ],
+    "email": [
+      {
+        "_id": "5ed91540635d2f610097584c",
+        "address": "notPrime@test.com",
+        "isPrimary": false
+      },
+      {
+        "_id": "5ed9154d635d2f610097584d",
+        "address": "prime@test.com",
+        "isPrimary": true
+      }
+    ],
+    "phoneNumbers": [
+      {
+        "_id": "5ed9151066f1652a5c8a011e",
+        "number": "4125138992",
+        "isPrimary": false,
+        "okToText": true
+      },
+      {
+        "_id": "5ed9151d66f1652a5c8a011f",
+        "number": "4124445181",
+        "okToText": true,
+        "isPrimary": false
+      },
+      {
+        "_id": "5f6c15165206542f94713aec",
+        "number": "1111111111",
+        "okToText": true,
+        "isPrimary": true
+      },
+      {
+        "_id": "5f6c157356496c4084c8009e",
+        "number": "5551114445",
+        "isPrimary": false,
+        "okToText": true
+      }
+    ]
+  }
+
+  const mapData = (mapper, data) => mapper(data);
+
   const editRecord = () => {
-    INPUTS.map( (item, idx) => {
+    INPUTS.map((item, idx) => {
       if (item) {
-        Object.keys(editData).map(function(key, index) {
+        Object.keys(editData).map(function (key, index) {
           if (item.name === key) {
             INPUTS[idx].data = editData[key];
+            if (INPUTS[idx].mapper) {
+              INPUTS[idx].options = mapData(INPUTS[idx].mapper, editData[key]);
+
+            }
+            if (INPUTS[idx].variation === 'react-select') {
+              INPUTS[idx].options = mapData(INPUTS[idx].mapper, INPUTS[idx].data)
+              console.log('deshet');
+              console.log(INPUTS[idx].options);
+            }
           }
         });
       }
     });
   }
-  //editRecord();
+  editRecord();
 
   return (
     <Container>
