@@ -5,6 +5,7 @@ const SalesListings = require('../../db/models/sales/SalesListings')
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const Pipeline = require('../../db/models/sales/Pipeline')
 const MarketFilter = require('../../db/models/sales/MarketFilter')
+const requirePermission = require('../../middleware/requirePermission')
 
 const router = express.Router()
 
@@ -269,6 +270,25 @@ router.post('/listings/:listingId/addCondition', async (req,res) => {
   const {listingId} = req.params
   const {condition} = req.body
   await SalesListings.findByIdAndUpdate(listingId, {$set: {condition}})
+})
+
+router.get('/listings', async (req,res) => {
+  const listings = await SalesListings.find({mlsStatus: 'A'}).sort([['listDate', -1]]).limit(100)
+  const listingsUpdated = await listings.map((listing) => {
+    if (!listing.city) {
+      listing.city = listing.area;
+    }
+    return listing;
+  });
+  res.json(listingsUpdated)
+})
+
+
+router.get('/kpi/numberOfListings', async (req, res) => {
+  const actualNumber = 9000 + Math.floor(Math.random()*2000)
+  const pastNumber = 9000 + Math.floor(Math.random()*2000)
+  const porcentualChange = (((actualNumber - pastNumber) / pastNumber) * 100).toFixed(2)
+  res.json({actualNumber, porcentualChange})
 })
 
 module.exports = router

@@ -3,9 +3,11 @@ const auth = require('../../middleware/auth');
 const SalesListings = require('../../db/models/sales/SalesListings');
 const Pipeline = require('../../db/models/sales/Pipeline');
 const {addIdxListing, removeIdxListing} = require('../../3ps/idx')
+const requirePermission = require('../../middleware/requirePermission')
 
 
 const router = express.Router();
+
 
 router.use(auth)
 router.use(requirePermission('ACCESS_MARKETPLACE_BLOCK'))

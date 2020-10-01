@@ -1,10 +1,6 @@
 const express = require('express')
-const auth = require('../../middleware/auth')
-const requirePermission = require('../../middleware/requirePermission')
-
 
 const router = express.Router();
-
 
 //api routes
 router.use('/web', require('./website'))
