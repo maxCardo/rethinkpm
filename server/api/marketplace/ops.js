@@ -9,6 +9,7 @@ const MarketFilter = require('../../db/models/sales/MarketFilter')
 const router = express.Router()
 
 router.use(auth)
+router.use(requirePermission('ACCESS_MARKETPLACE_BLOCK'))
 
 //filter options: refactor to get these from api
 const zipcodeOptions = require('../../config/supportData/zipcodes')

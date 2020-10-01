@@ -7,7 +7,8 @@ const {addIdxListing, removeIdxListing} = require('../../3ps/idx')
 
 const router = express.Router();
 
-router.use(auth);
+router.use(auth)
+router.use(requirePermission('ACCESS_MARKETPLACE_BLOCK'))
 
 
 // @route: Get api/marketplace/pipeline
