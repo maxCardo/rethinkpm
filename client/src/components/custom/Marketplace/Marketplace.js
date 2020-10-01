@@ -448,8 +448,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     // 360 is sum of all heights of everything else that takes vertical space outside the container
     const controlHeight = height - 360;
     let rowNumber;
-
-    if (height) {
+    const disableResponsive = true
+    if (height && !disableResponsive) {
       // 43 is height of row
       rowNumber = Math.floor(controlHeight / 43);
     } else {
