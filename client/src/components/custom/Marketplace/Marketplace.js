@@ -255,12 +255,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             onClickFunc={() => startRecommendationFlow(item)}
           />
           <IconButton placement='bottom'
-            tooltipContent='View Details'
-            iconClass='fas fa-list'
-            variant='action-button'
-            onClickFunc={() => startShowDetailFlow(item)}
-          />
-          <IconButton placement='bottom'
             tooltipContent='Blacklist Deal'
             iconClass='fas fa-trash'
             variant='action-button'
@@ -465,6 +459,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
               sortBy="listDate"
               sortDirection='desc'
               version={version}
+              onClickRow={(item) => startShowDetailFlow(item)}
             />
             Number of records: {listings.length}
           </div>
