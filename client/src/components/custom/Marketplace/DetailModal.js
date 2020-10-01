@@ -59,7 +59,7 @@ const roles=[
   }
 ]
 
-const DetailModal = ({show, handleClose, data}) => {
+const DetailModal = ({show, handleClose, data, addUnitSchedule}) => {
   if(!data) return ''
   return (
     <Modal size='xl' show={show} onHide={handleClose}>
@@ -71,7 +71,7 @@ const DetailModal = ({show, handleClose, data}) => {
           {data.propertyType === 'multi' &&
             <Fragment>
               <h4>Unit Schedule</h4>
-              <UnitSchedule units={data.unitSch} listingId={data._id}/>
+              <UnitSchedule units={data.unitSch} listingId={data._id} addUnitSchedule={addUnitSchedule}/>
             </Fragment>
           }
       </Modal.Body>

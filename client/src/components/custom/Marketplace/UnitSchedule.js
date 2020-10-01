@@ -34,17 +34,16 @@ const headers = [
     accessor: 'numUnits'
   },
 ]
-const UnitSchedule = ({units, listingId}) => {
+const UnitSchedule = ({units, listingId, addUnitSchedule}) => {
   const [showAddModal, setShowAddModal] = useState(false)
+  const [data, setData] = useState(units)
   const handleAdd = () => {
     console.log('add')
     setShowAddModal(true)
   }
-  const submitAddUnit = (unit) => {
-    const data = {
-      unit
-    }
-    axios.post(`/listings/${listingId}/addUnitSch`, data)
+  const handleSubmit = (unit) => {
+    addUnitSchedule(unit)
+    setData([...units, unit])
   }
   return (
     <Fragment>
@@ -59,8 +58,8 @@ const UnitSchedule = ({units, listingId}) => {
           onClickFunc={handleAdd}
         />
       </div>
-      <Table headers={headers} data={units}/>
-      <AddUnitSchModal show={showAddModal} handleClose={() => setShowAddModal(false)} handleSubmit={submitAddUnit}/>
+      <Table headers={headers} data={data}/>
+      <AddUnitSchModal show={showAddModal} handleClose={() => setShowAddModal(false)} handleSubmit={handleSubmit}/>
     </Fragment>
   )
 }

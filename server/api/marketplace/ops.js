@@ -277,6 +277,6 @@ router.post('/listings/:listingId/addUnitSch', async (req,res) => {
   const listing = await SalesListings.findById(listingId);
   listing.unitSch.push(unit)
   await listing.save()
-  res.json({ok: true})
+  res.json(listing)
 })
 module.exports = router

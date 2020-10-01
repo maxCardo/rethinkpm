@@ -172,6 +172,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
   const [showDetailModal, setShowDetailModal] = useState(false) 
+  const [version, setVersion] = useState(0)
 
   const conditionsMap = {
     1: 'D',
@@ -384,6 +385,28 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setShowDetailModal(true)
   }
 
+  const addUnitSchedule = async (unit) => {
+    const listingId = focusedProperty._id;
+    const data = {
+      unit
+    }
+    const listingUpdated = (await axios.post(`/api/marketplace/ops/listings/${listingId}/addUnitSch`, data)).data
+    console.log('LISTING UPDATED')
+    console.log(listingUpdated)
+    const newListings = listings.map((listing) => {
+      if(listing._id === listingUpdated._id) {
+        return listingUpdated
+      } else {
+        return listing
+      }
+    })
+    console.log(newListings)
+    setListings(newListings)
+    setVersion(version+1)
+    console.log(listings)
+  }
+  console.log(listings)
+
   useEffect(() => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
@@ -441,6 +464,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
               headers={HEADERS}
               sortBy="listDate"
               sortDirection='desc'
+              version={version}
             />
             Number of records: {listings.length}
           </div>
@@ -460,7 +484,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
       <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
-      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} />
+      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule}/>
     </div>
   )
 }

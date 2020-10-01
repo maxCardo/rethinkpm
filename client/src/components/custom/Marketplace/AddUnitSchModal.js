@@ -14,7 +14,7 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit}) => {
       bedrooms,  
       bathsFull: fullBathrooms, 
       bathsPartial: partialBathrooms, 
-      totalBaths: fullBathrooms + partialBathrooms,
+      totalBaths: +fullBathrooms + +partialBathrooms,
       size, //sqft
       numUnits: units
     }

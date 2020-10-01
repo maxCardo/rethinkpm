@@ -79,11 +79,12 @@ export class Table extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    const version = props.version ? props.version : 0
 
     const pageSize = props.pageSize ? props.pageSize : Infinity;
     const headers = Table.processHeaders(props)
 
-    let canWeUsePreviousSortedData = state.sortedData.length && Table.compareArrays(state.rawData, props.data)
+    let canWeUsePreviousSortedData = (version === state.version) && state.sortedData.length && Table.compareArrays(state.rawData, props.data)
 
     let sortedData = canWeUsePreviousSortedData ? state.sortedData.slice() : props.data.slice();
 
@@ -105,7 +106,8 @@ export class Table extends Component {
         sortedData: sortedData,
         paginatedData: newPaginatedData,
         sortDirections: newSortDirections,
-        rawData: props.data.slice()
+        rawData: props.data.slice(),
+        version: version
       };
     } else {
       const newFilterString = props.filter ? props.filter : ''
@@ -119,7 +121,8 @@ export class Table extends Component {
         actualFilterString: newFilterString,
         headers: headers,
         sortDirections: newSortDirections,
-        rawData: props.data.slice()
+        rawData: props.data.slice(),
+        version: version
       }
     }
   }
