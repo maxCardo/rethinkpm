@@ -419,8 +419,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       unit
     }
     const listingUpdated = (await axios.post(`/api/marketplace/ops/listings/${listingId}/addUnitSch`, data)).data
-    console.log('LISTING UPDATED')
-    console.log(listingUpdated)
     const newListings = listings.map((listing) => {
       if(listing._id === listingUpdated._id) {
         return listingUpdated
@@ -428,12 +426,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         return listing
       }
     })
-    console.log(newListings)
     setListings(newListings)
     setVersion(version+1)
-    console.log(listings)
   }
-  console.log(listings)
 
   //EFFECT:  Redraw table on window resize
   useEffect(() => {
