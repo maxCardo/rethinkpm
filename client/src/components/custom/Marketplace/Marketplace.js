@@ -266,6 +266,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const [headers, setHeaders] = useState(HEADERS)
   const [checkFlowActive, setCheckFlowActive] = useState(false)
+  const [checkFlowList, setCheckFlowList] = useState([])
+
   const fetchData = async (cancelToken) => {
     setLoading(true)
     const res = await axios.get(`/api/sales/listings`, {cancelToken});
@@ -387,6 +389,17 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   },[])
 
+  const checkFlowListingToggle = (listing, checked) => {
+    console.log(checkFlowList)
+    let newCheckFlowList;
+    if(checked) {
+      newCheckFlowList = [...checkFlowList, listing] 
+    } else {
+      newCheckFlowList = checkFlowList.filter((listingInList) => listing._id != listingInList._id)
+    }
+    setCheckFlowList(newCheckFlowList)
+  }
+
   const toggleCheckFlow = () => {
     const newHeaders = [...headers]
     if(!  checkFlowActive) {
@@ -396,7 +409,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         render: (item) => (
           <div className="element-wrapper with--checkbox">
             <label className="checkbox path" checked={true}  >
-              <input type="checkbox" name='useFilter' value={false} onChange={e => console.log(e)}/>
+              <input type="checkbox" name='useFilter' defaultChecked={false} onChange={e => checkFlowListingToggle(item, e.target.checked)}/>
               {checkBoxCheck()}
             </label>
           </div>
@@ -408,6 +421,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setCheckFlowActive(!checkFlowActive)
     setHeaders(newHeaders)
   }
+
+
 
   return loading ? <Loading /> : (
     <div className="tableWithActions">
