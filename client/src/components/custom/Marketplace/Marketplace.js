@@ -534,6 +534,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
           show={showStreetViewModal}
           handleClose={() => setShowStreetViewModal(false)}
           apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
+      <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal}
+                          handleClose={() => setShowPropertyDetailsModal(false)}/>
       <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
       <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
