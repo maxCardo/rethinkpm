@@ -22,9 +22,7 @@ import Marketplace from './components/custom/Marketplace/Marketplace'
 import {loadUser} from './actions/auth';
 import {receiveSMS} from './actions/profile'
 import { connect } from 'react-redux';
-import {RECEIVE_MESSAGE} from './actions/type'
 import io from 'socket.io-client';
-import { showNotification } from './notifications'
 import settings from './settings.json'
 import Alert from "./components/core/Alert";
 import Dash from "./components/custom/Dash"

@@ -18,7 +18,7 @@ const RecommendationModal = ({show, handleClose, handleSubmit, context, profile}
   useEffect(() => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
-    loadBuyers(source.token)
+    loadBuyers(source.token).then(r => {}).catch(e => {})
     return () => {
       source.cancel('Component unmounted');
     }

@@ -111,7 +111,7 @@ const PhoneField = ({updatePhone, tglAddPhoneMod, data}) => {
                     </Fragment>
                 ))}
                 <IconButton placement='top'
-                            tooltipContent='Cancel change'
+                            tooltipContent='Add new phone number'
                             iconClass='fas fa-plus'
                             variant='action-button'
                             btnClass='addPhoneNumber'

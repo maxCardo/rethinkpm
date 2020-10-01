@@ -472,7 +472,12 @@
 /*buttons farther from eachother*/
 .profile-info__actions-container .action-buttons__button {
   margin-right: 15px;
-
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+}
+.profile-info__actions-container .action-buttons__button:hover {
+  text-decoration: none;
 }
 /*first button closer to edge of container*/
 .action-buttons__button:first-child {
@@ -500,7 +505,8 @@
 .form-control.searchInput:active,
 .addLossReason input:focus,
 .addLossReason input:active {
-  box-shadow: 0px 0px 0 2px #2684ff !important;
+  box-shadow: 0px 0px 0 1px #2684ff !important;
+  border: 1px solid #2684ff;
 }
 /*width height and place icon in middle of button, buttons in ProfileInfo editable fields*/
 .singleFieldEdit.btn,
@@ -518,7 +524,7 @@
 }
 /*style for the edit profile button and placement in bottom right corner of PrifileInfo */
 .edit-profile__button.btn,
-.add-profile__button.btn {
+.add-profile__button {
   position: absolute;
   display: flex;
   justify-content: center ;

@@ -32,7 +32,7 @@ router.post('/recommend', auth, async (req, res) => {
         buyers.forEach(async (buyer) => {
           //ToDo add beter workflow for recomendig a propety twice
             let deal = await Pipeline.findOne({buyer: buyer._id, deal: propertyId})
-            if (!Object.keys(deal).length) {
+            if (!deal) {
               deal = await new Pipeline({
                 buyer: buyer._id,
                 agent: req.user,

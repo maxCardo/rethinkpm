@@ -28,7 +28,7 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
             profileId.current = profile._id;
         }
 
-    }, [profile])
+    }, [profile, profileInfo])
 
     //ToDo: refactor settings.json to incorperate below lines of code
     const colHeader = ['', `${profileName} Info`, 'Profile Info', 'Communication Info']
@@ -51,7 +51,6 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                     </div>
                 ))}
             </div>
-
             {/* calls to action */}
             <div className='profile-info__actions-container'>
                 <IconButton placement='top'
@@ -59,24 +58,28 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                             id='list-sidebar-tooltip'
                             iconClass='fas fa-user-tag'
                             variant='action-button'
+                            fontSize={16}
                             onClickFunc={ () => tglList() } />
                 <IconButton placement='top'
                             tooltipContent='Open chat sidebar'
                             id='chat-sidebar-tooltip'
                             iconClass='fas fa-comments'
                             variant='action-button'
+                            fontSize={16}
                             onClickFunc={ () => tglChat() } />
                 <IconButton placement='top'
                             tooltipContent={`Call ${profileName}`}
                             id='phone-tooltip'
                             iconClass='fas fa-phone'
                             variant='link'
+                            fontSize={16}
                             href={`tel:${primaryPhone}`}/>
                 <IconButton placement='top'
                             tooltipContent={`Email ${profileName}`}
                             id='email-tooltip'
                             iconClass='fas fa-envelope'
                             variant='link'
+                            fontSize={16}
                             href={ `mailto:${primaryEmail}` } />
                 <IconButton placement='top'
                             tooltipContent={`Edit ${profileName}`}
@@ -84,8 +87,8 @@ const ProfileInfo = ({settings: {profileInfo, profileNamePlural}, profile, tglCh
                             iconClass='fas fa-cogs'
                             btnClass='edit-profile__button'
                             variant='action-button'
+                            fontSize={16}
                             onClickFunc={ () => tglEdit() } />
-
             </div>
             {/* modals */}
             <AddPhoneModal/>

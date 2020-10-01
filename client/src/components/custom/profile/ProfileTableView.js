@@ -94,9 +94,9 @@ export class ProfileTableView extends Component {
   toggleTableType() {
     const actualType = this.state.tableType
     let nextType = 'tabbed'
-    if(actualType == 'tabbed') {
+    if(actualType === 'tabbed') {
       nextType = 'separated'
-    } else if(actualType == 'separated') {
+    } else if(actualType === 'separated') {
       nextType = 'select'
     }
     this.setState({tableType: nextType})
@@ -121,6 +121,7 @@ export class ProfileTableView extends Component {
           value: 'in',
           operator: '$in'
         },
+        // eslint-disable no-eval
         value: eval(this.props.settings.statusSelect.selectedQuery).map((status) => ({value: status}))
       }
     }
