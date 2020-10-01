@@ -38,7 +38,6 @@ const UnitSchedule = ({units, listingId, addUnitSchedule}) => {
   const [showAddModal, setShowAddModal] = useState(false)
   const [data, setData] = useState(units)
   const handleAdd = () => {
-    console.log('add')
     setShowAddModal(true)
   }
   const handleSubmit = (unit) => {
