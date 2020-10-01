@@ -264,10 +264,10 @@ function convertFiltersToQuery(filters) {
 }
 
 
-router.post('/listings/:listingId/addCondition', async (req,res) => {
+router.post('/listings/:listingId/addData', async (req,res) => {
   const {listingId} = req.params
-  const {condition} = req.body
-  await SalesListings.findByIdAndUpdate(listingId, {$set: {condition}})
+  const {condition, numUnits} = req.body
+  await SalesListings.findByIdAndUpdate(listingId, {$set: {condition, numUnits}})
 })
 
 module.exports = router

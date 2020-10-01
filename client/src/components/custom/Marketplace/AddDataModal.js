@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Modal, Form, Button} from 'react-bootstrap';
 import Select from 'react-select';
 
-const AddDataModal = ({show, handleClose, handleSubmit}) => {
+const AddDataModal = ({show, handleClose, handleSubmit, property}) => {
   const conditions = [
     {
       label: 'A',
@@ -22,11 +22,17 @@ const AddDataModal = ({show, handleClose, handleSubmit}) => {
     },
   ]
   const [condition, setCondition] = useState(undefined)
+  const [numUnits, setNumUnits] = useState(undefined)
+  if(property && property.numUnits && !numUnits) {
+    setNumUnits(property.numUnits)
+  }
+  console.log('NUM UNITS')
+  console.log(numUnits)
   const handleSelectChange = ({value}) => {
     setCondition(value)
   }
   const onSubmit = () => {
-    handleSubmit(condition)
+    handleSubmit(condition, numUnits)
     handleClose()
   }
   return (
@@ -36,12 +42,25 @@ const AddDataModal = ({show, handleClose, handleSubmit}) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Select
-            name="condition"
-            placeholder="Select Condition..."
-            options={conditions}
-            onChange={handleSelectChange}
-          />
+          <Form.Group>
+            <Form.Label>
+              Condition:
+            </Form.Label>
+            <Select
+              name="condition"
+              placeholder="Select Condition..."
+              options={conditions}
+              onChange={handleSelectChange}
+            />
+          </Form.Group>
+          {property && property.propertyType == 'multi' &&
+            <Form.Group>
+              <Form.Label>
+                Nº of Units:
+              </Form.Label>
+              <Form.Control type='number' value={numUnits} onChange={(e) => setNumUnits(e.target.value)}/>
+            </Form.Group>
+          }
         </Form>
       </Modal.Body>
       <Modal.Footer>

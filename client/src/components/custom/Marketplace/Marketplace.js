@@ -352,9 +352,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   }
 
-  const startAddDataFlow = (propertyId) => {
+  const startAddDataFlow = (property) => {
+    setFocusedProperty(property)
     setShowAddDataModal(true)
-    setFocusedProperty(propertyId)
   }
 
   const submitRecommendationModal = (buyers, customMessage) => {
@@ -374,18 +374,20 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     await axios.post('/api/marketplace/ops/filters', data)
     fetchSavedFilters().then(r => {})
   }
-  const submitAddDataModal = async (condition) => {
+  const submitAddDataModal = async (condition, numUnits) => {
     const data = {
-      condition
+      condition,
+      numUnits
     }
     const newListings = listings.map((listing) => {
       if (listing._id === focusedProperty) {
         listing.condition = condition
-      }
+        listing.numUnits = numUnits
+      } 
       return listing
     })
     setListings(newListings)
-    await axios.post(`/api/marketplace/ops/listings/${focusedProperty}/addCondition`, data)
+    await axios.post(`/api/marketplace/ops/listings/${focusedProperty._id}/addData`, data)
   }
 
   const handleFilterChange = (value) => {
