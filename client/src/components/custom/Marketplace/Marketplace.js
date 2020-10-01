@@ -294,7 +294,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const fetchData = async (cancelToken) => {
     setLoading(true)
-    const res = await axios.get(`/api/sales/listings`, {cancelToken});
+    const res = await axios.get(`/api/marketplace/ops/listings`, {cancelToken});
     const listings = res.data;
     setListings(listings)
     setLoading(false)

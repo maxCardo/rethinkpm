@@ -10,6 +10,7 @@ const FilterModel = require('../../db/models/prospects/filters')
 const AudienceModel = require('../../db/models/prospects/audience')
 const NoteModel = require('../../db/models/common/Note')
 const {getIdxSavedListings, getIdxUsers} = require('../../3ps/idx');
+const requirePermission = require('../../middleware/requirePermission')
 
 
 //filter options: refactor to get these from api
@@ -21,6 +22,7 @@ const router = express.Router();
 const model = BuyerPros
 
 router.use(auth)
+router.use(requirePermission('ACCESS_BUYER_BLOCK'))
 
 // @route: POST /api/profile/buyerPros;
 // @desc: POST new BuyerPros from postman

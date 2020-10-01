@@ -1,7 +1,10 @@
 const mongoose  = require('mongoose');
+var cachegoose = require('cachegoose');
 const creds = require('../config/creds');
 
 const db = creds.mongoURI;
+
+cachegoose(mongoose)
 
 dbConnect = async () => {
   try {

@@ -4,35 +4,35 @@ import KpiItem from './KpiItem'
 const KPIS = [
       {
         title: 'Listings',
-        endpoint: '/api/sales/kpi/numberOfListings'
+        endpoint: '/api/marketplace/ops/kpi/numberOfListings'
       },
       {
         title: 'Days from active to contigent',
-        endpoint: '/api/sales/kpi/numberOfListings'
+        endpoint: '/api/marketplace/ops/kpi/numberOfListings'
       },
       {
         title: 'Avg sale price',
-        endpoint: '/api/sales/kpi/numberOfListings'
+        endpoint: '/api/marketplace/ops/kpi/numberOfListings'
       },
       {
         title: 'Households',
-        endpoint: '/api/sales/kpi/numberOfListings'
+        endpoint: '/api/marketplace/ops/kpi/numberOfListings'
       },
       {
         title: 'Median wages',
-        endpoint: '/api/sales/kpi/numberOfListings'
+        endpoint: '/api/marketplace/ops/kpi/numberOfListings'
       },
       {
         title: 'Other',
-        endpoint: '/api/sales/kpi/numberOfListings'
+        endpoint: '/api/marketplace/ops/kpi/numberOfListings'
       },
       {
         title: 'Other',
-        endpoint: '/api/sales/kpi/numberOfListings'
+        endpoint: '/api/marketplace/ops/kpi/numberOfListings'
       },
       {
         title: 'Other',
-        endpoint: '/api/sales/kpi/numberOfListings'
+        endpoint: '/api/marketplace/ops/kpi/numberOfListings'
       },
     ]
 

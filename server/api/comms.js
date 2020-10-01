@@ -11,12 +11,14 @@ const {outgoingSMS} = require('../3ps/sms')
 const {zumperParse, zillowBuyers, mlsListings} = require('../3ps/scrape_parse/emailParse')
 const getOwner = require('./chatOwner/getOwner')
 const auth = require('../middleware/auth')
+const requirePermission = require('../middleware/requirePermission')
 
 
 const router = express.Router();
 const upload = multer()
 
 router.use(auth)
+router.use(requirePermission('ACCESS_COMMUNICATION_BLOCK'))
 
 //store on DB in future may need to create type object for model names id sored as String in DB
 const activeNumber = [
