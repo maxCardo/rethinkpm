@@ -269,7 +269,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       tooltipContent='Input Listing Data'
                       iconClass='fas fa-plus'
                       variant='action-button'
-                      onClickFunc={() => startAddDataFlow(item._id)}
+                      onClickFunc={() => startAddDataFlow(item)}
           />
           <IconButton placement='bottom'
                       tooltipContent='Recommend Deal'
@@ -374,13 +374,14 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     await axios.post('/api/marketplace/ops/filters', data)
     fetchSavedFilters().then(r => {})
   }
-  const submitAddDataModal = async (condition, numUnits) => {
+  const submitAddDataModal = async (conditionObject, numUnits) => {
+    const condition = conditionObject.value;
     const data = {
       condition,
       numUnits
     }
     const newListings = listings.map((listing) => {
-      if (listing._id === focusedProperty) {
+      if (listing._id === focusedProperty._id) {
         listing.condition = condition
         listing.numUnits = numUnits
       } 
@@ -420,6 +421,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         source.cancel('Component unmounted');
       }
     }
+    populateTable()
 
     const height = size.height;
     // 360 is sum of all heights of everything else that takes vertical space outside the container
@@ -445,7 +447,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       console.log('effect did nothing')
     }
 
-  }, [size.height]); // Empty array ensures that effect is only run on mount
+  }, []); // Empty array ensures that effect is only run on mount
 
 
   return loading ? <Loading/> : (
@@ -516,7 +518,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                            handleSubmit={submitRecommendationModal}/>
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)}
                        handleSubmit={submitSaveFilterModal}/>
-      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)}
+      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} property={focusedProperty}
                     handleSubmit={submitAddDataModal}/>
     </div>
   )

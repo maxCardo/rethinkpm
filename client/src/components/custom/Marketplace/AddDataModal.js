@@ -23,20 +23,30 @@ const AddDataModal = ({show, handleClose, handleSubmit, property}) => {
   ]
   const [condition, setCondition] = useState(undefined)
   const [numUnits, setNumUnits] = useState(undefined)
-  if(property && property.numUnits && !numUnits) {
+  if(show && property && property.numUnits && !numUnits) {
     setNumUnits(property.numUnits)
+    
   }
-  console.log('NUM UNITS')
-  console.log(numUnits)
-  const handleSelectChange = ({value}) => {
-    setCondition(value)
+  if(show && property && property.condition && !condition) {
+    const conditionSelected = conditions.find((condition) => condition.value === property.condition)
+    setCondition(conditionSelected)
+  }
+
+
+  const handleSelectChange = (condition) => {
+    setCondition(condition)
   }
   const onSubmit = () => {
     handleSubmit(condition, numUnits)
+    closeModal()
+  }
+  const closeModal = () => {
     handleClose()
+    setCondition(undefined)
+    setNumUnits(undefined)
   }
   return (
-    <Modal size='xl' show={show} onHide={handleClose}>
+    <Modal size='xl' show={show} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Add Condition</Modal.Title>
       </Modal.Header>
@@ -49,6 +59,7 @@ const AddDataModal = ({show, handleClose, handleSubmit, property}) => {
             <Select
               name="condition"
               placeholder="Select Condition..."
+              defaultValue={condition}
               options={conditions}
               onChange={handleSelectChange}
             />
@@ -64,7 +75,7 @@ const AddDataModal = ({show, handleClose, handleSubmit, property}) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={handleClose}>
+        <Button variant='secondary' onClick={closeModal}>
           Close
         </Button>
         <Button variant='primary' onClick={onSubmit}>
