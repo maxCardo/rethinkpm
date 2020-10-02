@@ -443,31 +443,36 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         source.cancel('Component unmounted');
       }
     }
-    populateTable()
 
-    // const height = size.height;
-    // // 360 is sum of all heights of everything else that takes vertical space outside the container
-    // const controlHeight = height - 360;
-    // let rowNumber;
-    // if (height) {
-    //   // 43 is height of row
-    //   rowNumber = Math.floor(controlHeight / 43);
-    // } else {
-    //   rowNumber = 10;
-    // }
-    // if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
-    //   setTablePageSize(rowNumber)
-    //   populateTable()
-    //   tableContainerHeight.current = controlHeight;
-    // } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
-    //   setTablePageSize(rowNumber)
-    //   populateTable()
-    //   tableContainerHeight.current = controlHeight;
-    // } else {
-    //   console.log('effect did nothing')
-    // }
+    if(!listings.length) {
+      populateTable()
+    }
 
-  }, [/*size.height*/]); // Empty array ensures that effect is only run on mount
+    const height = size.height;
+    // 360 is sum of all heights of everything else that takes vertical space outside the container
+    const controlHeight = height - 360;
+    let rowNumber;
+    if (height) {
+      // 43 is height of row
+      rowNumber = Math.floor(controlHeight / 43);
+    } else {
+      rowNumber = 10;
+    }
+    if(tablePageSize !== rowNumber) {
+      if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
+        setTablePageSize(rowNumber)
+        setVersion(version+1)
+        tableContainerHeight.current = controlHeight;
+      } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
+        setTablePageSize(rowNumber)
+        setVersion(version+1)
+        tableContainerHeight.current = controlHeight;
+      } else {
+        console.log('effect did nothing')
+      }
+    }
+
+  }, [size.height]); // Empty array ensures that effect is only run on mount
 
 
   return loading ? <Loading/> : (

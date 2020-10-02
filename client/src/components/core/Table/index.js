@@ -12,7 +12,7 @@ export class Table extends Component {
     const headers = Table.processHeaders(props);
     this.filter = this.props.filter ? this.props.filter : ''
     this.sortDirectionsInitial = Table.resetSortDirections(headers, props.sortBy, props.sortDirection)
-    this.pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
+    const pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
     let sortedData = props.data.slice();
 
     if (props.sortBy) {
@@ -24,7 +24,7 @@ export class Table extends Component {
       sortDirections: this.sortDirectionsInitial.slice(),
       data: data,
       sortedData: sortedData,
-      paginatedData: data.slice(0, this.pageSize),
+      paginatedData: data.slice(0, this.props.pageSize),
       pageIndex: 0,
       actualFilterString: this.props.filter,
       headers,
@@ -168,10 +168,10 @@ export class Table extends Component {
           </tr>)}
           </tbody>
         </table>
-        {this.props.data.length > this.pageSize &&
+        {this.props.data.length > this.props.pageSize &&
         <Pagination
           actualIndex={this.state.pageIndex}
-          totalPages={Math.ceil(this.state.data.length / this.pageSize)}
+          totalPages={Math.ceil(this.state.data.length / this.props.pageSize)}
           changePage={this.changePage.bind(this)}
           fontSize={this.props.fontSize}
         />
@@ -201,13 +201,13 @@ export class Table extends Component {
       alreadySorted: true,
       sortDirections: newSortDirections,
       sortedData: data,
-      paginatedData: data.slice(0, this.pageSize),
+      paginatedData: data.slice(0, this.props.pageSize),
       pageIndex: 0
     })
   }
 
   changePage(index) {
-    const newPaginatedData = this.state.data.slice(this.pageSize * index, this.pageSize * (index + 1))
+    const newPaginatedData = this.state.data.slice(this.props.pageSize * index, this.props.pageSize * (index + 1))
     this.setState({pageIndex: index, paginatedData: newPaginatedData, alreadySorted: true})
   }
 
@@ -219,7 +219,7 @@ export class Table extends Component {
   }
 
   increasePage() {
-    if (this.state.pageIndex >= Math.ceil(this.state.data.length / this.pageSize)) {
+    if (this.state.pageIndex >= Math.ceil(this.state.data.length / this.props.pageSize)) {
       return;
     }
     this.changePage(this.state.pageIndex + 1)
@@ -232,6 +232,10 @@ export class Table extends Component {
     this.changePage(this.state.pageIndex - 1)
   }
 
+}
+
+Table.defaultProps ={
+  pageSize: Infinity
 }
 
 
