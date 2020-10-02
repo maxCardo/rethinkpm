@@ -267,7 +267,6 @@ function convertFiltersToQuery(filters) {
 router.post('/listings/:listingId/addData', async (req,res) => {
   const {listingId} = req.params
   const {condition, numUnits} = req.body
-  console.log(condition)
   const listing = await SalesListings.findById(listingId)
   listing.condition = condition
   listing.numUnits = numUnits
