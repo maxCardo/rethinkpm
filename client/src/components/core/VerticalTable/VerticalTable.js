@@ -43,7 +43,6 @@ export class VerticalTable extends Component {
   }
   static mapData(mapper, data) {
     if(typeof mapper == 'string') {
-      console.log(commonMappers(mapper)(data))
       return commonMappers(mapper)(data)
     }
     return mapper(data)
@@ -53,7 +52,6 @@ export class VerticalTable extends Component {
       const accessorsArray = accessor.split('.')
       let item = data;
       accessorsArray.forEach((accessor) => {
-        console.log(item)
         if (item) {
           item = item[accessor]
         }
