@@ -14,6 +14,7 @@ import {createErrorAlert} from '../../../actions/alert';
 import AddDataModal from './AddDataModal';
 import StreetViewModal from "./StreetViewModal";
 import {openStreetView} from "../../../actions/marketplace";
+import DetailModal from './DetailModal'
 import PropertyDetailsModal from "./PropertyDetailsModal";
 import {useWindowSize} from "../../../util/commonFunctions";
 
@@ -172,6 +173,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [selectedFilter, setSelectedFilter] = useState(undefined)
   const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
+  const [showDetailModal, setShowDetailModal] = useState(false) 
+  const [version, setVersion] = useState(0)
   const [tablePageSize, setTablePageSize] = useState(10)
   const [iframeTarget, setIframeTarget] = useState('')
   const tableContainerHeight = useRef(null);
@@ -408,6 +411,28 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
   }
 
+  const startShowDetailFlow = (item) => {
+    setFocusedProperty(item)
+    setShowDetailModal(true)
+  }
+
+  const addUnitSchedule = async (unit) => {
+    const listingId = focusedProperty._id;
+    const data = {
+      unit
+    }
+    const listingUpdated = (await axios.post(`/api/marketplace/ops/listings/${listingId}/addUnitSch`, data)).data
+    const newListings = listings.map((listing) => {
+      if(listing._id === listingUpdated._id) {
+        return listingUpdated
+      } else {
+        return listing
+      }
+    })
+    setListings(newListings)
+    setVersion(version+1)
+  }
+
   //EFFECT:  Redraw table on window resize
   useEffect(() => {
 
@@ -423,31 +448,29 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     }
     populateTable()
 
-    const height = size.height;
-    // 360 is sum of all heights of everything else that takes vertical space outside the container
-    const controlHeight = height - 360;
-    let rowNumber;
+    // const height = size.height;
+    // // 360 is sum of all heights of everything else that takes vertical space outside the container
+    // const controlHeight = height - 360;
+    // let rowNumber;
+    // if (height) {
+    //   // 43 is height of row
+    //   rowNumber = Math.floor(controlHeight / 43);
+    // } else {
+    //   rowNumber = 10;
+    // }
+    // if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
+    //   setTablePageSize(rowNumber)
+    //   populateTable()
+    //   tableContainerHeight.current = controlHeight;
+    // } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
+    //   setTablePageSize(rowNumber)
+    //   populateTable()
+    //   tableContainerHeight.current = controlHeight;
+    // } else {
+    //   console.log('effect did nothing')
+    // }
 
-    if (height) {
-      // 43 is height of row
-      rowNumber = Math.floor(controlHeight / 43);
-    } else {
-      rowNumber = 10;
-    }
-
-    if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
-      setTablePageSize(rowNumber)
-      populateTable()
-      tableContainerHeight.current = controlHeight;
-    } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
-      setTablePageSize(rowNumber)
-      populateTable()
-      tableContainerHeight.current = controlHeight;
-    } else {
-      console.log('effect did nothing')
-    }
-
-  }, []); // Empty array ensures that effect is only run on mount
+  }, [/*size.height*/]); // Empty array ensures that effect is only run on mount
 
 
   return loading ? <Loading/> : (
@@ -496,6 +519,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
               headers={HEADERS}
               sortBy="listDate"
               sortDirection='desc'
+              version={version}
+              onClickRow={(item) => startShowDetailFlow(item)}
             />
             Number of records: {listings.length}
           </div>
@@ -509,17 +534,16 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         onSubmit={submitFilterModal}
       />
       <StreetViewModal
-        show={showStreetViewModal}
-        handleClose={() => setShowStreetViewModal(false)}
-        apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o"/>
+          show={showStreetViewModal}
+          handleClose={() => setShowStreetViewModal(false)}
+          apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
       <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal}
-                            handleClose={() => setShowPropertyDetailsModal(false)}/>
-      <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)}
-                           handleSubmit={submitRecommendationModal}/>
-      <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)}
-                       handleSubmit={submitSaveFilterModal}/>
+                          handleClose={() => setShowPropertyDetailsModal(false)}/>
+      <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
+      <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
       <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} property={focusedProperty}
                     handleSubmit={submitAddDataModal}/>
+      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule}/>
     </div>
   )
 }
