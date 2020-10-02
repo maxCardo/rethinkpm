@@ -7,7 +7,7 @@ import UnitSchedule from './UnitSchedule'
 const rentTiers = {
   1: {
     eff: 550,
-    '1bd': 616,
+    '1BD': 616,
     '2BD': 759,
     '3BD': 968,
     '4BD': 1056,
@@ -80,15 +80,8 @@ const headers= [
   {
     label: 'Last Sold',
     accessor: 'lastSold',
-    mapper: (sold) => {
-      console.log(sold);
-      return `Price: ${sold.price} \n Date: ${sold.date}`
-    }
-  },
-  {
-    label: 'for',
-    accessor: 'lastSold.price',
-    className: 'child'
+    mapper: (sold) => `Price: ${sold.price}  Date: ${sold.date}`
+    
   },
   {
     label: 'opZone',
@@ -97,38 +90,14 @@ const headers= [
   {
     label: 'Rent Tier',
     accessor: 'rents.HA.tier'
+  },
+  {
+    label: 'Area Rents',
+    accessor: 'rents.HA.tier',
+    mapper: (tier) => `eff: ${rentTiers[tier].eff} | 1BD: ${rentTiers[tier]['1BD']} | 2BD: ${rentTiers[tier]['2BD']} | 3BD: ${rentTiers[tier]['3BD']} | 4BD: ${rentTiers[tier]['4BD']}` 
   }
 ] 
 
-const roles=[
-  {
-    unitType: 'single',
-    bedrooms: 1,
-    bathsFull: 1,
-    bathsPartial: 1,
-    totalBaths: 2,
-    size: 100,
-    numUnits: 10
-  },
-  {
-    unitType: 'small',
-    bedrooms: 2,
-    bathsFull: 1,
-    bathsPartial: 1,
-    totalBaths: 2,
-    size: 200,
-    numUnits: 10
-  },
-  {
-    unitType: 'family',
-    bedrooms: 4,
-    bathsFull: 2,
-    bathsPartial: 1,
-    totalBaths: 3,
-    size: 600,
-    numUnits: 10
-  }
-]
 
 const DetailModal = ({show, handleClose, data, addUnitSchedule}) => {
   if(!data) return ''
