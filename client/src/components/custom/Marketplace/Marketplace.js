@@ -266,7 +266,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const [headers, setHeaders] = useState(HEADERS)
   const [checkFlowActive, setCheckFlowActive] = useState(false)
-  const [checkFlowList, setCheckFlowList] = useState([])
+  let [checkFlowList, setCheckFlowList] = useState([])
 
   const fetchData = async (cancelToken) => {
     setLoading(true)
@@ -390,19 +390,22 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   },[])
 
   const checkFlowListingToggle = (listing, checked) => {
-    console.log(checkFlowList)
     let newCheckFlowList;
     if(checked) {
       newCheckFlowList = [...checkFlowList, listing] 
     } else {
-      newCheckFlowList = checkFlowList.filter((listingInList) => listing._id != listingInList._id)
+      newCheckFlowList = checkFlowList.filter((listingInList) => {
+        return listingInList._id !== listing._id
+      })
     }
+    checkFlowList = newCheckFlowList
     setCheckFlowList(newCheckFlowList)
   }
 
+
   const toggleCheckFlow = () => {
     const newHeaders = [...headers]
-    if(!  checkFlowActive) {
+    if(!checkFlowActive) {
       newHeaders.unshift({
         reactComponent: true,
         label: 'Checked',
