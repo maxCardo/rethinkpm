@@ -16,6 +16,7 @@ import AddDataModal from './AddDataModal';
 import StreetViewModal from "./StreetViewModal";
 import {openStreetView} from "../../../actions/marketplace";
 import {checkBoxCheck} from '../../../util/commonFunctions'
+import FileDownload from 'js-file-download'
 
 const FILTERFIELDS = {
   type: {
@@ -251,7 +252,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             tooltipContent='Recommend Deal'
             iconClass='fas fa-star'
             variant='action-button'
-            onClickFunc={() => startRecommendationFlow(item)}
+            onClickFunc={() => startRecommendationFlow([item])}
           />
           <IconButton placement='bottom'
             tooltipContent='Blacklist Deal'
@@ -314,15 +315,19 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setShowSaveFilterModal(true)
   }
 
-  const startRecommendationFlow = (property) => {
-    setFocusedProperty(property._id)
-    if(property.condition) {
+  const startRecommendationFlow = (properties) => {
+    setFocusedProperty(properties.map(property => property._id))
+    if(properties.length > 1) {
       setShowRecommendationModal(true)
     } else {
-      createErrorAlert('For recommend the property please add the condition of it')
-      setShowAddDataModal(true)
+      if(properties[0].condition) {
+        setShowRecommendationModal(true)
+      } else {
+        createErrorAlert('For recommend the property please add the condition of it')
+        setFocusedProperty(properties[0])
+        setShowAddDataModal(true)
+      }
     }
-    
   }
 
   const startAddDataFlow = (propertyId) => {
@@ -332,7 +337,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const submitRecommendationModal = (buyers, customMessage) => {
     const data = {
-      property: focusedProperty,
+      properties: focusedProperty,
       buyers: buyers,
       customMessage: customMessage
     }
@@ -425,6 +430,21 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setHeaders(newHeaders)
   }
 
+  const exportCsv = async () => {
+    const res = await axios.post(`/api/marketplace/ops/exportCsv`, {list: checkFlowList})
+    FileDownload(res.data, 'export.csv')
+  }
+
+  const recommendBatch = () => {
+    for(let listing of checkFlowList) {
+      if(!listing.condition) {
+        createErrorAlert('One or more properties are missing the condition')
+        return;
+      }
+    }
+    startRecommendationFlow(checkFlowList)
+  }
+
 
 
   return loading ? <Loading /> : (
@@ -459,20 +479,20 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             <button onClick={() => setShowFilterModal(true)}>
               <i className="fas fa-filter"></i>
             </button>
-            <button onClick={toggleCheckFlow}>
-              <i className="fas fa-check-square"></i>
-            </button>
             {
               checkFlowActive &&
                 <Fragment>
-                  <button onClick={toggleCheckFlow}>
+                  <button onClick={exportCsv}>
                     <i className="fas fa-file-csv"></i>
                   </button>
-                  <button onClick={toggleCheckFlow}>
+                  <button onClick={recommendBatch}>
                     <i className="fas fa-star"></i>
                   </button>
                 </Fragment>
             }
+            <button onClick={toggleCheckFlow}>
+              <i className="fas fa-check-square"></i>
+            </button>
           </div>
           
         </div>

@@ -5,6 +5,9 @@ const SalesListings = require('../../db/models/sales/SalesListings')
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const Pipeline = require('../../db/models/sales/Pipeline')
 const MarketFilter = require('../../db/models/sales/MarketFilter')
+const { parse } = require('json2csv');
+const fs = require('fs')
+const path = require('path')
 
 const router = express.Router()
 
@@ -268,6 +271,15 @@ router.post('/listings/:listingId/addCondition', async (req,res) => {
   const {listingId} = req.params
   const {condition} = req.body
   await SalesListings.findByIdAndUpdate(listingId, {$set: {condition}})
+})
+
+router.post('/exportCsv', async (req, res) => {
+  const {list} = req.body;
+  const csv = parse(list)
+  const dateNow = new Date()
+  const csvName = `export-${dateNow.toISOString()}.csv`
+  fs.writeFileSync(path.join(__dirname, `../../files/${csvName}`), csv)
+  res.download(path.join(__dirname, `../../files/${csvName}`))
 })
 
 module.exports = router
