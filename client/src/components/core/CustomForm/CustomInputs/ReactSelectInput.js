@@ -12,7 +12,7 @@ const ReactSelectInput = ({item}) => {
       <Form.Label>{item.label}</Form.Label>
       <Controller
         register={register}
-        defaultValue={{label: 'Please select...', value: 'nothing selected'}}
+        defaultValue={item.value}
         name={item.name}
         options={item.options}
         as={Select}

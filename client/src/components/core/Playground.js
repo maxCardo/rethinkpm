@@ -45,13 +45,14 @@ const Playground = () => {
     },
     {
       variation: 'react-select',
-      label: 'Reactive selections',
+      label: 'React select',
       name: 'reactselect',
       options: [
         {value: "chocolate", label: "Chocolate"},
         {value: "strawberry", label: "Strawberry"},
         {value: "vanilla", label: "Vanilla"}
-      ]
+      ],
+      value:  {value: "vanilla", label: "Vanilla"}
     },
     {
       variation: 'multi-select',
@@ -62,7 +63,7 @@ const Playground = () => {
         {value: "strawberry", label: "Strawberry"},
         {value: "vanilla", label: "Vanilla"}
       ],
-      value: [{value: "chocolate", label: "Chocolate"}]
+      value: []
     },
     {
       variation: 'checkbox',
@@ -73,6 +74,13 @@ const Playground = () => {
       variation: 'multi-select',
       label: 'Phone Numbers',
       name: 'phoneNumbers',
+      options: [
+        {value: "555555555", label: "5555555555"},
+        {value: "6666666", label: "666666"},
+        {value: "7777777", label: "7777777"}
+      ],
+      /*TODO: DELETE VALUE FIELD TO FILL FROM DB*/
+      value: [{value: "555555555", label: "5555555555"}],
       mapper: (data) => {
         return data.map((item) => {
           return {
@@ -239,7 +247,7 @@ const Playground = () => {
   const mapData = (mapper, data) => mapper(data);
 
   const editRecord = () => {
-    INPUTS.map((item, idx) => {
+    INPUTS.forEach((item, idx) => {
       if (item) {
         Object.keys(editData).map(function (key, index) {
           if (item.name === key) {
@@ -265,7 +273,7 @@ const Playground = () => {
     });
   }
   // COMMENT OUT TO SEE EMPTY FORM
-  //editRecord();
+  editRecord();
 
   return (
     <Container>
