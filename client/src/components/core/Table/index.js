@@ -113,10 +113,11 @@ export class Table extends Component {
       const newFilterString = props.filter ? props.filter : ''
       const newData = filterData(sortedData, newFilterString, headers)
       const pageIndex = state.pageIndex ? state.pageIndex : 0
+      const newPaginatedData = newData.slice(pageSize * pageIndex, pageSize * (pageIndex + 1))
       return {
         data: newData,
         sortedData: sortedData,
-        paginatedData: state.pageIndex ? state.paginatedData : newData.slice(0, pageSize),
+        paginatedData: newPaginatedData,
         pageIndex: pageIndex,
         actualFilterString: newFilterString,
         headers: headers,
