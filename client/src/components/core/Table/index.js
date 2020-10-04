@@ -107,12 +107,18 @@ export class Table extends Component {
         paginatedData: newPaginatedData,
         sortDirections: newSortDirections,
         rawData: props.data.slice(),
-        version: version
+        version: version,
+        pageSize: pageSize,
       };
     } else {
       const newFilterString = props.filter ? props.filter : ''
       const newData = filterData(sortedData, newFilterString, headers)
-      const pageIndex = state.pageIndex ? state.pageIndex : 0
+      let pageIndex = state.pageIndex ? state.pageIndex : 0
+      if(state.pageSize !== props.pageSize) {
+        const firstItemInPage = (pageIndex * state.pageSize) + 1;
+        const firstPageThatShowsItem = Math.floor(firstItemInPage / props.pageSize)
+        pageIndex = firstPageThatShowsItem
+      }
       const newPaginatedData = newData.slice(pageSize * pageIndex, pageSize * (pageIndex + 1))
       return {
         data: newData,
@@ -123,7 +129,8 @@ export class Table extends Component {
         headers: headers,
         sortDirections: newSortDirections,
         rawData: props.data.slice(),
-        version: version
+        version: version,
+        pageSize: pageSize,
       }
     }
   }
