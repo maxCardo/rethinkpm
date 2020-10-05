@@ -276,10 +276,7 @@ router.post('/listings/:listingId/addCondition', async (req,res) => {
 router.post('/exportCsv', async (req, res) => {
   const {list} = req.body;
   const csv = parse(list)
-  const dateNow = new Date()
-  const csvName = `export-${dateNow.toISOString()}.csv`
-  fs.writeFileSync(path.join(__dirname, `../../files/${csvName}`), csv)
-  res.download(path.join(__dirname, `../../files/${csvName}`))
+  res.send(csv)
 })
 
 module.exports = router
