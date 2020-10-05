@@ -272,7 +272,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       tooltipContent='Input Listing Data'
                       iconClass='fas fa-plus'
                       variant='action-button'
-                      onClickFunc={() => startAddDataFlow(item._id)}
+                      onClickFunc={() => startAddDataFlow(item)}
           />
           <IconButton placement='bottom'
                       tooltipContent='Recommend Deal'
@@ -355,9 +355,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   }
 
-  const startAddDataFlow = (propertyId) => {
+  const startAddDataFlow = (property) => {
+    setFocusedProperty(property)
     setShowAddDataModal(true)
-    setFocusedProperty(propertyId)
   }
 
   const submitRecommendationModal = (buyers, customMessage) => {
@@ -377,18 +377,21 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     await axios.post('/api/marketplace/ops/filters', data)
     fetchSavedFilters().then(r => {})
   }
-  const submitAddDataModal = async (condition) => {
+  const submitAddDataModal = async (conditionObject, numUnits) => {
+    const condition = conditionObject.value;
     const data = {
-      condition
+      condition,
+      numUnits
     }
     const newListings = listings.map((listing) => {
-      if (listing._id === focusedProperty) {
+      if (listing._id === focusedProperty._id) {
         listing.condition = condition
-      }
+        listing.numUnits = numUnits
+      } 
       return listing
     })
     setListings(newListings)
-    await axios.post(`/api/marketplace/ops/listings/${focusedProperty}/addCondition`, data)
+    await axios.post(`/api/marketplace/ops/listings/${focusedProperty._id}/addData`, data)
   }
 
   const handleFilterChange = (value) => {
@@ -538,7 +541,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                           handleClose={() => setShowPropertyDetailsModal(false)}/>
       <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
-      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
+      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} property={focusedProperty}
+                    handleSubmit={submitAddDataModal}/>
       <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule}/>
     </div>
   )
