@@ -424,6 +424,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   }
 
   const startShowDetailFlow = (item) => {
+    console.log(item)
     setFocusedProperty(item)
     setShowDetailModal(true)
   }
@@ -445,23 +446,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setVersion(version+1)
   }
 
-  //EFFECT:  Redraw table on window resize
-  useEffect(() => {
-
-    const populateTable = () => {
-      const CancelToken = axios.CancelToken;
-      const source = CancelToken.source();
-      fetchData(source.token).then(r => {})
-      loadFilterOptions(source.token).then(r => {})
-      fetchSavedFilters(source.token).then(r => {})
-      return () => {
-        source.cancel('Component unmounted');
-      }
-    }
-
-    if(!listings.length) {
-      populateTable()
-    }
   const checkFlowListingToggle = (listing, checked) => {
     let newCheckFlowList;
     if(checked) {
@@ -483,7 +467,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         reactComponent: true,
         label: 'Checked',
         render: (item) => (
-          <div className="element-wrapper with--checkbox">
+          <div className="element-wrapper with--checkbox" onClick={e => e.stopPropagation()}>
             <label className="checkbox path" checked={true}  >
               <input type="checkbox" name='useFilter' defaultChecked={false} onChange={e => checkFlowListingToggle(item, e.target.checked)}/>
               {checkBoxCheck()}
@@ -514,12 +498,23 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     startRecommendationFlow(checkFlowList)
   }
 
+    //EFFECT:  Redraw table on window resize
+  useEffect(() => {
 
+    const populateTable = () => {
+      const CancelToken = axios.CancelToken;
+      const source = CancelToken.source();
+      fetchData(source.token).then(r => {})
+      loadFilterOptions(source.token).then(r => {})
+      fetchSavedFilters(source.token).then(r => {})
+      return () => {
+        source.cancel('Component unmounted');
+      }
+    }
 
-  return loading ? <Loading /> : (
-    <div className="tableWithActions">
-      <KpiBar />
-
+    if(!listings.length) {
+      populateTable()
+    }
     const height = size.height;
     // 360 is sum of all heights of everything else that takes vertical space outside the container
     const controlHeight = height - 360;
@@ -546,8 +541,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   }, [size.height]); // Empty array ensures that effect is only run on mount
 
-
-  return loading ? <Loading/> : (
+  return loading ? <Loading /> : (
     <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
       <KpiBar/>
 
