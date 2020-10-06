@@ -61,7 +61,7 @@ router.post('/recommend', auth, async (req, res) => {
               })
             }
             await deal.save();
-            propertyLinks.push(`<a href='http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${deal._id}&mode=recommend'>Property</a>`)
+            propertyLinks.push(`<a href='http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${deal._id}&mode=recommend'>${property.streetNumber} ${property.streetName}</a>`)
           }
             let buyerEmail = buyer.email.filter((email) => email.isPrimary)[0]
             if (!buyerEmail) {
