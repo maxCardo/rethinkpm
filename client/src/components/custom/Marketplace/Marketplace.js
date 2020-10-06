@@ -425,6 +425,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       })
     } else {
       newHeaders.shift()
+      setCheckFlowList([])
     }
     setCheckFlowActive(!checkFlowActive)
     setHeaders(newHeaders)

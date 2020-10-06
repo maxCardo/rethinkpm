@@ -29,11 +29,14 @@ const { filter } = require('../../config/supportData/areas')
 // @ access: Public 
 router.post('/recommend', auth, async (req, res) => {
     try {
-        const { property: propertyId, buyers: buyersId, customMessage, agentId } = req.body
-        const property = await SalesListings.findById(propertyId)
+        const { properties, buyers: buyersId, customMessage, agentId } = req.body
+        const propertiesFetched = await Promise.all(properties.map((propertyId => SalesListings.findById(propertyId))))
         const buyers = await Promise.all(buyersId.map((buyerId) => BuyerPros.findById(buyerId)))
         buyers.forEach(async (buyer) => {
           //ToDo add beter workflow for recomendig a propety twice
+          const propertyLinks = []
+          for(let property of propertiesFetched) {
+            const propertyId = property._id
             let deal = await Pipeline.findOne({buyer: buyer._id, deal: propertyId})
             if (!deal) {
               deal = await new Pipeline({
@@ -58,6 +61,8 @@ router.post('/recommend', auth, async (req, res) => {
               })
             }
             await deal.save();
+            propertyLinks.push(`<a href='http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${deal._id}&mode=recommend'>Property</a>`)
+          }
             let buyerEmail = buyer.email.filter((email) => email.isPrimary)[0]
             if (!buyerEmail) {
                 buyerEmail = buyer.email[0]
@@ -66,7 +71,8 @@ router.post('/recommend', auth, async (req, res) => {
             const text = customMessage
             const html = `
                 <p>${customMessage}</p>
-                <a href='http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${deal._id}&mode=recommend'>Property</a>
+                ${propertyLinks.join('</br>')}
+  
             `
             sendEmail(buyerEmail.address, subject, customMessage, html)
         })
