@@ -273,10 +273,23 @@ function convertFiltersToQuery(filters) {
 }
 
 
-router.post('/listings/:listingId/addCondition', async (req,res) => {
+router.post('/listings/:listingId/addData', async (req,res) => {
   const {listingId} = req.params
-  const {condition} = req.body
-  await SalesListings.findByIdAndUpdate(listingId, {$set: {condition}})
+  const {condition, numUnits} = req.body
+  const listing = await SalesListings.findById(listingId)
+  listing.condition = condition
+  listing.numUnits = numUnits
+  await listing.save()
+  res.json(listing)
+})
+
+router.post('/listings/:listingId/addUnitSch', async (req,res) => {
+  const {listingId} = req.params
+  const {unit} = req.body
+  const listing = await SalesListings.findById(listingId);
+  listing.unitSch.push(unit)
+  await listing.save()
+  res.json(listing)
 })
 
 router.post('/exportCsv', async (req, res) => {

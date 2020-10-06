@@ -357,16 +357,18 @@
         "statusOptions": [
           {"value": "new", "label": "Buyer Lead"},
           {"value": "prospect", "label": "Buyer Prospect"},
-          {"value": "pending", "label": "Buyer Pending"}
+          {"value": "pending", "label": "Buyer Pending"},
+          {"value": "notInterested", "label": "Not Interested"}
+
         ],
         "statusSelect": {
           "options": [
             {
-              "value": "['new', 'prospect','pending','agent']",
+              "value": "['new', 'prospect','pending']",
               "label": "Active"
             },
             {
-              "value": "['prospect','pending','agent','new','notInterested']",
+              "value": "['prospect','pending','new','notInterested']",
               "label": "All"
             },
             {
@@ -391,10 +393,10 @@
             }
           ],
           "selected": {
-            "value": "active",
-            "label": "Active"
+            "value": "pending",
+            "label": "Pending"
           },
-          "selectedQuery": "['new','prospect', 'pending','applicant']"
+          "selectedQuery": "['pending']"
         },
         "profileInfo": [
           {
