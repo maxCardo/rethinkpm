@@ -275,7 +275,7 @@ const Playground = () => {
   const editRecord = () => {
     INPUTS.forEach((item, idx) => {
       if (item) {
-        Object.keys(editData).map(function (key, index) {
+        Object.keys(editData).forEach(function (key, index) {
           if (item.name === key) {
             INPUTS[idx].data = editData[key];
             if (INPUTS[idx].mapper) {

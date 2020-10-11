@@ -1,4 +1,5 @@
-import React, {Fragment} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
 const RadioInput = ({register, item}) => {
 
@@ -16,6 +17,11 @@ const RadioInput = ({register, item}) => {
     </div>
   )
 }
+
+RadioInput.propTypes = {
+  item: PropTypes.object.isRequired,
+  register: PropTypes.func.isRequired
+};
 
 export default RadioInput
 
