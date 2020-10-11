@@ -17,6 +17,7 @@ import {openStreetView} from "../../../actions/marketplace";
 import DetailModal from './DetailModal'
 import PropertyDetailsModal from "./PropertyDetailsModal";
 import {useWindowSize} from "../../../util/commonFunctions";
+import FullScreenTable from '../../core/FullScreenTable/FullScreenTable';
 
 const FILTERFIELDS = {
   type: {
@@ -272,7 +273,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       tooltipContent='Input Listing Data'
                       iconClass='fas fa-plus'
                       variant='action-button'
-                      onClickFunc={() => startAddDataFlow(item._id)}
+                      onClickFunc={() => startAddDataFlow(item)}
           />
           <IconButton placement='bottom'
                       tooltipContent='Recommend Deal'
@@ -355,9 +356,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   }
 
-  const startAddDataFlow = (propertyId) => {
+  const startAddDataFlow = (property) => {
+    setFocusedProperty(property)
     setShowAddDataModal(true)
-    setFocusedProperty(propertyId)
   }
 
   const submitRecommendationModal = (buyers, customMessage) => {
@@ -377,18 +378,21 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     await axios.post('/api/marketplace/ops/filters', data)
     fetchSavedFilters().then(r => {})
   }
-  const submitAddDataModal = async (condition) => {
+  const submitAddDataModal = async (conditionObject, numUnits) => {
+    const condition = conditionObject.value;
     const data = {
-      condition
+      condition,
+      numUnits
     }
     const newListings = listings.map((listing) => {
-      if (listing._id === focusedProperty) {
+      if (listing._id === focusedProperty._id) {
         listing.condition = condition
-      }
+        listing.numUnits = numUnits
+      } 
       return listing
     })
     setListings(newListings)
-    await axios.post(`/api/marketplace/ops/listings/${focusedProperty}/addCondition`, data)
+    await axios.post(`/api/marketplace/ops/listings/${focusedProperty._id}/addData`, data)
   }
 
   const handleFilterChange = (value) => {
@@ -443,38 +447,43 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         source.cancel('Component unmounted');
       }
     }
-    populateTable()
 
-    // const height = size.height;
-    // // 360 is sum of all heights of everything else that takes vertical space outside the container
-    // const controlHeight = height - 360;
-    // let rowNumber;
-    // if (height) {
-    //   // 43 is height of row
-    //   rowNumber = Math.floor(controlHeight / 43);
-    // } else {
-    //   rowNumber = 10;
-    // }
-    // if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
-    //   setTablePageSize(rowNumber)
-    //   populateTable()
-    //   tableContainerHeight.current = controlHeight;
-    // } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
-    //   setTablePageSize(rowNumber)
-    //   populateTable()
-    //   tableContainerHeight.current = controlHeight;
-    // } else {
-    //   console.log('effect did nothing')
-    // }
+    if(!listings.length) {
+      populateTable()
+    }
 
-  }, [/*size.height*/]); // Empty array ensures that effect is only run on mount
+    const height = size.height;
+    // 360 is sum of all heights of everything else that takes vertical space outside the container
+    const controlHeight = height - 360;
+    let rowNumber;
+    if (height) {
+      // 43 is height of row
+      rowNumber = Math.floor(controlHeight / 43);
+    } else {
+      rowNumber = 10;
+    }
+    if(tablePageSize !== rowNumber) {
+      if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
+        setTablePageSize(rowNumber)
+        setVersion(version+1)
+        tableContainerHeight.current = controlHeight;
+      } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
+        setTablePageSize(rowNumber)
+        setVersion(version+1)
+        tableContainerHeight.current = controlHeight;
+      } else {
+        console.log('effect did nothing')
+      }
+    }
+
+  }, [size.height]); // Empty array ensures that effect is only run on mount
 
 
   return loading ? <Loading/> : (
-    <div className="tableWithActions marketplace">
+    <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
       <KpiBar/>
 
-      <div style={{maxHeight: '80vh', overflow: 'auto'}}>
+      <div style={{flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column'}}>
         <div className='searchContainer agentsSearchContainer'>
           <div style={{display: 'flex'}}>
             <Select
@@ -505,9 +514,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
           </div>
 
         </div>
-        <div className="container-fluid" style={{overflow: 'auto', maxHeight: '80vh'}}>
-          <div className="col-12 p-0 containerTable" id=''>
-            <Table
+        <div className="container-fluid" style={{overflow: 'auto', display: 'flex', flexDirection:'column', flex: 1}}>
+          <div className="col-12 p-0 containerTable" id='' style={{display: 'flex', flexDirection: 'column', flex: 1}}>
+            <FullScreenTable
               pageSize={tablePageSize}
               sorting={true}
               fontSize={12}
@@ -538,7 +547,8 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                           handleClose={() => setShowPropertyDetailsModal(false)}/>
       <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
-      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} handleSubmit={submitAddDataModal} />
+      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} property={focusedProperty}
+                    handleSubmit={submitAddDataModal}/>
       <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule}/>
     </div>
   )

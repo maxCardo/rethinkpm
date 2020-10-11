@@ -67,7 +67,7 @@ const salesListingsSchema = new mongoose.Schema({
     totalBaths: Number,
     //update rethink comp
     address: String, //refactored refactored on front end to combine the streetNumber and  streetName
-    streetNumber: String, // IDX API: 
+    streetNumber: String, // IDX API:
     streetName: String, // IDX API:
     city: String, // IDX API:
     state: String, // IDX API:
@@ -78,19 +78,20 @@ const salesListingsSchema = new mongoose.Schema({
     latitude: Number, //IDX API:
     longitude: Number, //IDX API:
     status: String, //Set By Function: app level status n    ???
-    lotSize: Number, // County API: 
+    lotSize: Number, // County API:
     buildingSize: String, //not readily available on county api but is available on county site. scrape county front end? other option?  "FINISHEDLIVINGAREA" on county api?
     totalRooms: String,  //county api "TOTALROOMS" used for cost estimations
+    numUnits: Number, //get number of unit for multiFam deals
     zoning: String, //useCode available on County API but would need a map to see if this can be maped to zoneing , useDesc is another option
-    ownerOcc: Boolean, //use "HOMESTEADFLAG" on county API. if future can use to find repeat owners 
+    ownerOcc: Boolean, //use "HOMESTEADFLAG" on county API. if future can use to find repeat owners
     ownerAddress:{   //if not owner occ can grab this info off county API "CHANGENOTICEADDRESS..."
         address1: String,
         address2: String,
         city_state: String,
-        zip: String, 
+        zip: String,
     },
     lotBlock: String, //County API: "PARID"
-    tract: String, //Census API   
+    tract: String, //Census API
     opZone: Boolean, // In-house API or save data in app
     walkScore: Number, //from walkScore API
     lastSold:{ //from county API
@@ -100,7 +101,7 @@ const salesListingsSchema = new mongoose.Schema({
     rents: { //in-house rent API or save data in app
         HA: {
             tier: String,
-            rent: Number 
+            rent: Number
         },
         market: Number,
         multiFam: Number
@@ -113,7 +114,7 @@ const salesListingsSchema = new mongoose.Schema({
         {
             type: { //priceChange, statusUpdate, note, log etc
                 type: String,
-            }, 
+            },
             statusChange:{
                 to: String,
                 from: String
@@ -121,7 +122,7 @@ const salesListingsSchema = new mongoose.Schema({
             priceChange:{
                 to: String,
                 from: String
-            }, 
+            },
             content: {
                 type: String,
             },
@@ -136,7 +137,7 @@ const salesListingsSchema = new mongoose.Schema({
         },
     ],
     //manualy updated bi yearly for agent recruiment via csv from MLS site
-    buyerAgentId: String, 
+    buyerAgentId: String,
     buyerOfficeId: String,
     unitSch: [{
       unitType: String,
