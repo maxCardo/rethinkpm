@@ -1,5 +1,6 @@
 import {Form} from "react-bootstrap";
 import React, {useState} from "react";
+import PropTypes from "prop-types";
 
 const PhoneInput = ({item, errors, register, defaultValue}) => {
   const [valid, setValid] = useState(false);
@@ -30,5 +31,10 @@ const PhoneInput = ({item, errors, register, defaultValue}) => {
     </Form.Group>
   )
 }
+
+PhoneInput.propTypes = {
+  item: PropTypes.object.isRequired,
+  register: PropTypes.func.isRequired
+};
 
 export default PhoneInput

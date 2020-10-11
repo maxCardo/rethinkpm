@@ -1,5 +1,7 @@
 import {Form} from "react-bootstrap";
 import React from "react";
+import PropTypes from "prop-types";
+import PhoneInput from "./PhoneInput";
 
 const SelectInput = ({item, errors, register}) => {
 
@@ -21,5 +23,11 @@ const SelectInput = ({item, errors, register}) => {
     </Form.Group>
   )
 }
+
+SelectInput.propTypes = {
+  item: PropTypes.object.isRequired,
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.object
+};
 
 export default SelectInput

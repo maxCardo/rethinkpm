@@ -3,6 +3,11 @@
     justify-content: flex-end;
 }
 
+.CustomForm {
+    font-size: 1.25rem;
+
+}
+
 .CustomForm .form-control:focus,
 .CustomForm .form-control:focus {
     box-shadow: 0 0 0 1px #007bff;
@@ -26,4 +31,22 @@
 }
 .CustomForm__button-container .btn:hover {
     box-shadow: 0 0 3px 1px rgba(0,0,0,.325);
+}
+
+.radio-container {
+    display: flex;
+    flex-direction: column;
+}
+.formBox {
+    background: #fff;
+    padding: 22px 16px;
+    margin: 32px 0;
+    border-top: 4px solid #007bff;
+    border-radius: 6px;
+    box-shadow: 0 0 4px 1px rgba(0,0,0,.175);
+}
+
+.formContainer {
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
 }

@@ -2,6 +2,7 @@ import {Form} from "react-bootstrap";
 import React from "react";
 import Select from "react-select";
 import { useForm, Controller} from "react-hook-form";
+import PropTypes from "prop-types";
 
 const ReactSelectInput = ({item}) => {
   const {register, handleSubmit, errors, control} = useForm()
@@ -23,5 +24,12 @@ const ReactSelectInput = ({item}) => {
     </Form.Group>
   )
 }
+
+
+ReactSelectInput.propTypes = {
+  item: PropTypes.object.isRequired,
+  register: PropTypes.func.isRequired
+};
+
 
 export default ReactSelectInput

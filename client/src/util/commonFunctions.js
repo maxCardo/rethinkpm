@@ -134,3 +134,12 @@ export const urlRegex = () => {
 export const phoneRegex = () => {
   return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
 }
+
+export const ratingOptions = () => {
+  return [
+    {label: 'A:', value: 'a'},
+    {label: 'B:', value: 'b'},
+    {label: 'C:', value: 'c'},
+    {label: 'D:', value: 'd'},
+  ]
+}

@@ -27,6 +27,7 @@ import settings from './settings.json'
 import Alert from "./components/core/Alert";
 import Dash from "./components/custom/Dash"
 import TestVerticalTable from './components/custom/TestVerticalTable';
+import GoogleFormDemo from "./components/core/GoogleFormDemo";
 
 
 
@@ -70,6 +71,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
             <PrivateRoute exact path='/marketplace' component={Marketplace} apiKey={routeSettings.marketplace.streetViewApiKey} />
             <Route exact path='/playground' component={Playground} />
+            <Route exact path='/googleFormDemo' component={GoogleFormDemo} />
             <Route path='/vertical-table' component={TestVerticalTable} />
           </Switch>
           <Alert  />

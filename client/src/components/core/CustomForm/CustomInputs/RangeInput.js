@@ -18,3 +18,4 @@ const RangeInput = ({item, errors, register}) => {
 export default RangeInput
 
 
+P

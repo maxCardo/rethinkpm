@@ -1,6 +1,8 @@
 import {Form} from "react-bootstrap";
 import React from "react";
 import {urlRegex} from "../../../../util/commonFunctions";
+import PropTypes from "prop-types";
+import SelectInput from "./SelectInput";
 
 const UrlInput = ({item, errors, register}) => {
 
@@ -16,5 +18,11 @@ const UrlInput = ({item, errors, register}) => {
     </Form.Group>
   )
 }
+
+SelectInput.propTypes = {
+  item: PropTypes.object.isRequired,
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.object
+};
 
 export default UrlInput

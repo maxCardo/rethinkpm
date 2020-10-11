@@ -11,6 +11,7 @@ import UrlInput from "./CustomInputs/UrlInput";
 import Select from "react-select";
 import FileInput from "./CustomInputs/FileInput";
 import RadioInput from "./CustomInputs/RadioInput";
+import SubtitleBlock from "./SubtitleBlock";
 
 const CustomForm = ({inputs}) => {
   const {register, handleSubmit, errors, control} = useForm()
@@ -93,6 +94,8 @@ const CustomForm = ({inputs}) => {
               )
             case 'radio':
               return <RadioInput  item={item} errors={errors && errors['name']} register={register} key={item.name} />
+            case 'subtitle':
+              return <SubtitleBlock  item={item} key={item.name} />
             default:
               return (
                 <Form.Group key={`customForm-${index}`}>
