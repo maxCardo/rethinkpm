@@ -13,7 +13,6 @@ import FileInput from "./CustomInputs/FileInput";
 import RadioInput from "./CustomInputs/RadioInput";
 
 const CustomForm = ({inputs}) => {
-
   const {register, handleSubmit, errors, control} = useForm()
   // console.log(errors);
 
