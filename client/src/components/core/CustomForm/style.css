@@ -37,16 +37,32 @@
     display: flex;
     flex-direction: column;
 }
-.formBox {
+.formBox, .form-group {
     background: #fff;
     padding: 22px 16px;
     margin: 32px 0;
-    border-top: 4px solid #007bff;
     border-radius: 6px;
     box-shadow: 0 0 4px 1px rgba(0,0,0,.175);
+}
+
+.formBox {
+    border-top: 4px solid #007bff;
+
 }
 
 .formContainer {
     overflow-y: auto;
     max-height: calc(100vh - 100px);
+}
+.formContainer-sm {
+    max-width: 375px;
+    overflow-x: hidden;
+}
+
+.radio-container input {
+    margin-right: 6px;
+    width: 18px;
+    height: 18px;
+    position: relative;
+    top: 2px;
 }

@@ -90,19 +90,19 @@ const CustomForm = ({inputs}) => {
               )
             case 'file':
               return (
-                <FileInput  item={item} errors={errors && errors['name']} register={register} key={item.name} />
+                <FileInput item={item} errors={errors && errors['name']} register={register} key={item.name}/>
               )
             case 'radio':
-              return <RadioInput  item={item} errors={errors && errors['name']} register={register} key={item.name} />
+              return <RadioInput item={item} errors={errors && errors['name']} register={register} key={item.name}/>
             case 'subtitle':
-              return <SubtitleBlock  item={item} key={item.name} />
+              return <SubtitleBlock item={item} key={item.name}/>
             default:
               return (
                 <Form.Group key={`customForm-${index}`}>
-                  <Form.Label>{item.label}</Form.Label>
-                  <Form.Control type={item.variation} placeholder={item.name} name={item.name}
-                                defaultValue={item.data && item.data}
-                                ref={register(item.refObject ? item.refObject : {})}/>
+                  <Form.Label htmlFor={item.name}>{item.label}</Form.Label>
+                    <Form.Control id={item.name} type={item.variation} placeholder={'Insert ' + item.label} name={item.name}
+                                  ref={register(item.refObject ? item.refObject : {})}/>
+
                 </Form.Group>
               );
           }

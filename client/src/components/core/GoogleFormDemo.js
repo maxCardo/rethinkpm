@@ -70,90 +70,41 @@ const GoogleFormDemo = () => {
       name: 'roofConditions',
       options: ratingOptions()
     },
-    {
-      variation: 'react-select',
-      label: 'React select',
-      name: 'reactselect',
-      options: [
-        {value: "chocolate", label: "Chocolate"},
-        {value: "strawberry", label: "Strawberry"},
-        {value: "vanilla", label: "Vanilla"}
-      ],
-      value: {value: "vanilla", label: "Vanilla"}
-    },
-    {
-      variation: 'multi-select',
-      label: 'Select Multi',
-      name: 'multiselect',
-      options: [
-        {value: "chocolate", label: "Chocolate"},
-        {value: "strawberry", label: "Strawberry"},
-        {value: "vanilla", label: "Vanilla"}
-      ],
-      value: []
-    },
-    {
-      variation: 'checkbox',
-      label: 'Preference',
-      name: 'preference',
-    },
-    {
-      variation: 'multi-select',
-      label: 'Phone Numbers',
-      name: 'phoneNumbers',
-      options: [
-        {value: "555555555", label: "5555555555"},
-        {value: "6666666", label: "666666"},
-        {value: "7777777", label: "7777777"}
-      ],
-      /*TODO: DELETE VALUE FIELD TO FILL FROM DB*/
-      value: [{value: "555555555", label: "5555555555"}],
-      mapper: (data) => {
-        return data.map((item) => {
-          return {
-            label: item.number,
-            value: item.number
-          }
-        })
-      }
-    },
-    {
-      variation: 'url',
-      label: 'Link',
-      name: 'link',
-      refObject: {required: true, pattern: urlRegex()}
-    },
-    {
-      variation: 'range',
-      label: 'Price range',
-      name: 'priceRange',
-      refObject: {required: true, max: 5000000, min: 20000}
-    },
+    /*TODO: create a multiple file input?*/
     {
       variation: 'file',
-      label: 'Property Image',
-      name: 'fileUploaded',
+      label: 'Roof Pics',
+      name: 'roofPictures',
     },
     {
       variation: 'radio',
-      label: 'Select One',
-      name: 'radioSelected',
+      label: 'Sidewalk Condition',
+      name: 'sidewalkConditions',
+      options: ratingOptions()
+    },
+    {
+      label: 'Number of Windows',
+      name: 'sidewalkConditions',
+      options: ratingOptions()
+    },
+    {
+      variation: 'radio',
+      label: 'Window Condition',
+      name: 'windowConditions',
+      options: ratingOptions()
+    },
+    {
+      variation: 'radio',
+      label: 'Exterior Facade Type',
+      name: 'exteriorFacadeType',
       options: [
-        {
-          label: 'Radio Option 1',
-          value: 'option1'
-        },
-        {
-          label: 'Radio Option 2',
-          value: 'option2'
-        },
-        {
-          label: 'Radio Option 3',
-          value: 'option3'
-        }
+        {value: 'brick', label: 'Brick'},
+        {value: 'siding', label: 'Siding'},
+        {value: 'brickSiding', label: 'Brick/Siding'},
+        {value: 'other', label: 'Other'},
       ]
     },
-  ]
+  ];
 
   const mapData = (mapper, data) => mapper(data);
 

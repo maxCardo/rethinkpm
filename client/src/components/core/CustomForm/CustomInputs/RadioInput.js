@@ -4,13 +4,13 @@ import PropTypes from "prop-types";
 const RadioInput = ({register, item}) => {
 
   return (
-    <div className="radio-container">
+    <div className="form-group radio-container">
       <label htmlFor={item.value}>{item.label}</label>
       {item.options.map((option, index) => {
         return (
           <label htmlFor={item.name+option.value}>
-            {option.label}
             <input key={index} id={item.name+option.value} name={item.name+item.name} value={option.value} type="radio" ref={register}/>
+            {option.label}
           </label>
         );
       })}
@@ -24,6 +24,3 @@ RadioInput.propTypes = {
 };
 
 export default RadioInput
-
-
-

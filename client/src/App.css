@@ -907,3 +907,7 @@ input[type=number]:focus,
   background: #6f9dd4;
   border-color: #6f9dd4;
 }
+
+input[type=radio] {
+  cursor: pointer;
+}
