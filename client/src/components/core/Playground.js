@@ -102,6 +102,32 @@ const Playground = () => {
       name: 'priceRange',
       refObject: {required: true, max: 5000000, min: 20000}
     },
+    {
+      variation: 'file',
+      label: 'Property Image',
+      name: 'fileUploaded',
+      refObject: {required: true}
+    },
+    {
+      variation: 'radio',
+      label: 'Select One',
+      name: 'radioSelected',
+      refObject: {required: true},
+      options: [
+        {
+          label: 'Radio Option 1',
+          value: 'option1'
+        },
+        {
+          label: 'Radio Option 2',
+          value: 'option2'
+        },
+        {
+          label: 'Radio Option 3',
+          value: 'option3'
+        }
+      ]
+    },
   ]
 
   //TODO: for testing purposes Agent object is used

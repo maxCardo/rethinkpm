@@ -9,6 +9,8 @@ import SelectInput from "./CustomInputs/SelectInput";
 import CheckboxInput from "./CustomInputs/CheckboxInput";
 import UrlInput from "./CustomInputs/UrlInput";
 import Select from "react-select";
+import FileInput from "./CustomInputs/FileInput";
+import RadioInput from "./CustomInputs/RadioInput";
 
 const CustomForm = ({inputs}) => {
 
@@ -86,6 +88,12 @@ const CustomForm = ({inputs}) => {
               return (
                 <UrlInput item={item} errors={errors && errors['name']} register={register} key={item.name}/>
               )
+            case 'file':
+              return (
+                <FileInput  item={item} errors={errors && errors['name']} register={register} key={item.name} />
+              )
+            case 'radio':
+              return <RadioInput  item={item} errors={errors && errors['name']} register={register} key={item.name} />
             default:
               return (
                 <Form.Group key={`customForm-${index}`}>
