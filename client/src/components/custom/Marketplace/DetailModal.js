@@ -80,7 +80,7 @@ const headers= [
   {
     label: 'Last Sold',
     accessor: 'lastSold',
-    mapper: (sold) => `Price: ${sold.price}  Date: ${sold.date}`
+    mapper: (sold) => sold ? `Price: ${sold.price}  Date: ${sold.date}` : ''
     
   },
   {
@@ -94,7 +94,7 @@ const headers= [
   {
     label: 'Area Rents',
     accessor: 'rents.HA.tier',
-    mapper: (tier) => `eff: ${rentTiers[tier].eff} | 1BD: ${rentTiers[tier]['1BD']} | 2BD: ${rentTiers[tier]['2BD']} | 3BD: ${rentTiers[tier]['3BD']} | 4BD: ${rentTiers[tier]['4BD']}` 
+    mapper: (tier) => tier ? `eff: ${rentTiers[tier].eff} | 1BD: ${rentTiers[tier]['1BD']} | 2BD: ${rentTiers[tier]['2BD']} | 3BD: ${rentTiers[tier]['3BD']} | 4BD: ${rentTiers[tier]['4BD']}` : '' 
   }
 ] 
 
