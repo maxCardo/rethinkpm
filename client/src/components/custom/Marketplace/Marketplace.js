@@ -1,4 +1,5 @@
 import React, {useState, useEffect, Fragment, useRef} from 'react';
+import {Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import axios from 'axios';
 import Table from '../../core/Table';
@@ -18,6 +19,8 @@ import DetailModal from './DetailModal'
 import PropertyDetailsModal from "./PropertyDetailsModal";
 import {useWindowSize} from "../../../util/commonFunctions";
 import FullScreenTable from '../../core/FullScreenTable/FullScreenTable';
+import {checkBoxCheck} from '../../../util/commonFunctions'
+import FileDownload from 'js-file-download'
 
 const FILTERFIELDS = {
   type: {
@@ -276,10 +279,10 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       onClickFunc={() => startAddDataFlow(item)}
           />
           <IconButton placement='bottom'
-                      tooltipContent='Recommend Deal'
-                      iconClass='fas fa-star'
-                      variant='action-button'
-                      onClickFunc={() => startRecommendationFlow(item)}
+            tooltipContent='Recommend Deal'
+            iconClass='fas fa-star'
+            variant='action-button'
+            onClickFunc={() => startRecommendationFlow([item])}
           />
           <IconButton placement='bottom'
                       tooltipContent='Blacklist Deal'
@@ -295,6 +298,10 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       )
     }
   ]
+
+  const [headers, setHeaders] = useState(HEADERS)
+  const [checkFlowActive, setCheckFlowActive] = useState(false)
+  let [checkFlowList, setCheckFlowList] = useState([])
 
   const fetchData = async (cancelToken) => {
     setLoading(true)
@@ -345,15 +352,19 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setShowSaveFilterModal(true)
   }
 
-  const startRecommendationFlow = (property) => {
-    setFocusedProperty(property._id)
-    if (property.condition) {
+  const startRecommendationFlow = (properties) => {
+    setFocusedProperty(properties.map(property => property._id))
+    if(properties.length > 1) {
       setShowRecommendationModal(true)
     } else {
-      createErrorAlert('For recommend the property please add the condition of it')
-      setShowAddDataModal(true)
+      if(properties[0].condition) {
+        setShowRecommendationModal(true)
+      } else {
+        createErrorAlert('For recommend the property please add the condition of it')
+        setFocusedProperty(properties[0])
+        setShowAddDataModal(true)
+      }
     }
-
   }
 
   const startAddDataFlow = (property) => {
@@ -363,7 +374,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const submitRecommendationModal = (buyers, customMessage) => {
     const data = {
-      property: focusedProperty,
+      properties: focusedProperty,
       buyers: buyers,
       customMessage: customMessage
     }
@@ -413,6 +424,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   }
 
   const startShowDetailFlow = (item) => {
+    console.log(item)
     setFocusedProperty(item)
     setShowDetailModal(true)
   }
@@ -434,7 +446,59 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setVersion(version+1)
   }
 
-  //EFFECT:  Redraw table on window resize
+  const checkFlowListingToggle = (listing, checked) => {
+    let newCheckFlowList;
+    if(checked) {
+      newCheckFlowList = [...checkFlowList, listing] 
+    } else {
+      newCheckFlowList = checkFlowList.filter((listingInList) => {
+        return listingInList._id !== listing._id
+      })
+    }
+    checkFlowList = newCheckFlowList
+    setCheckFlowList(newCheckFlowList)
+  }
+
+
+  const toggleCheckFlow = () => {
+    const newHeaders = [...headers]
+    if(!checkFlowActive) {
+      newHeaders.unshift({
+        reactComponent: true,
+        label: 'Checked',
+        render: (item) => (
+          <div className="element-wrapper with--checkbox" onClick={e => e.stopPropagation()}>
+            <label className="checkbox path" checked={true}  >
+              <input type="checkbox" name='useFilter' defaultChecked={false} onChange={e => checkFlowListingToggle(item, e.target.checked)}/>
+              {checkBoxCheck()}
+            </label>
+          </div>
+        )
+      })
+    } else {
+      newHeaders.shift()
+      setCheckFlowList([])
+    }
+    setCheckFlowActive(!checkFlowActive)
+    setHeaders(newHeaders)
+  }
+
+  const exportCsv = async () => {
+    const res = await axios.post(`/api/marketplace/ops/exportCsv`, {list: checkFlowList})
+    FileDownload(res.data, 'export.csv')
+  }
+
+  const recommendBatch = () => {
+    for(let listing of checkFlowList) {
+      if(!listing.condition) {
+        createErrorAlert('One or more properties are missing the condition')
+        return;
+      }
+    }
+    startRecommendationFlow(checkFlowList)
+  }
+
+    //EFFECT:  Redraw table on window resize
   useEffect(() => {
 
     const populateTable = () => {
@@ -451,7 +515,6 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     if(!listings.length) {
       populateTable()
     }
-
     const height = size.height;
     // 360 is sum of all heights of everything else that takes vertical space outside the container
     const controlHeight = height - 360;
@@ -478,8 +541,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   }, [size.height]); // Empty array ensures that effect is only run on mount
 
-
-  return loading ? <Loading/> : (
+  return loading ? <Loading /> : (
     <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
       <KpiBar/>
 
@@ -511,6 +573,20 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             <button onClick={() => setShowFilterModal(true)}>
               <i className="fas fa-filter"></i>
             </button>
+            {
+              checkFlowActive &&
+                <Fragment>
+                  <button onClick={exportCsv}>
+                    <i className="fas fa-file-csv"></i>
+                  </button>
+                  <button onClick={recommendBatch}>
+                    <i className="fas fa-star"></i>
+                  </button>
+                </Fragment>
+            }
+            <button onClick={toggleCheckFlow}>
+              <i className="fas fa-check-square"></i>
+            </button>
           </div>
 
         </div>
@@ -522,7 +598,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
               fontSize={12}
               filter={filterString}
               data={listings}
-              headers={HEADERS}
+              headers={headers}
               sortBy="listDate"
               sortDirection='desc'
               version={version}
