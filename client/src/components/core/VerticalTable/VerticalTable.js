@@ -37,7 +37,7 @@ export class VerticalTable extends Component {
       }
       return {
         property: header.label,
-        value: value
+        value: ''+value
       }
     }
   }
@@ -56,9 +56,9 @@ export class VerticalTable extends Component {
           item = item[accessor]
         }
       })
-      return '' + item
+      return item
     } else {
-      return '' + data[accessor]
+      return data[accessor]
     }
   }
   render() {
