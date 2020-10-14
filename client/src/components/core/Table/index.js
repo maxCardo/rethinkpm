@@ -12,7 +12,6 @@ export class Table extends Component {
     const headers = Table.processHeaders(props);
     this.filter = this.props.filter ? this.props.filter : ''
     this.sortDirectionsInitial = Table.resetSortDirections(headers, props.sortBy, props.sortDirection)
-    const pageSize = this.props.pageSize ? this.props.pageSize : Infinity;
     let sortedData = props.data.slice();
 
     if (props.sortBy) {
@@ -26,6 +25,7 @@ export class Table extends Component {
       sortedData: sortedData,
       paginatedData: data.slice(0, this.props.pageSize),
       pageIndex: 0,
+      pageSize: props.pageSize,
       actualFilterString: this.props.filter,
       headers,
       alreadySorted: false,
@@ -131,7 +131,7 @@ export class Table extends Component {
         const firstPageThatShowsItem = Math.floor(firstItemInPage / props.pageSize)
         pageIndex = firstPageThatShowsItem
       }
-      const newPaginatedData = pageSize === Infinity ? newData : newData.slice(pageSize * pageIndex, pageSize * (pageIndex + 1))
+      const newPaginatedData = pageSize === Infinity ? newData : newData.slice(pageSize * pageIndex, pageSize * (pageIndex + 1));
       return {
         data: newData,
         sortedData: sortedData,
