@@ -22,7 +22,7 @@ const AddCollectionField = ({field, onChangeArray, passIndex, settings, zipcodes
 
     useEffect(() => {
         onChangeArray(key, selected.map((x) => {return {name: x.value}}))
-    }, [selected]);
+    }, [selected, key, onChangeArray]);
 
     return (
         <Col lg={12}>

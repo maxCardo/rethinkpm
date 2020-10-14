@@ -22,7 +22,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
 
     useEffect(() => {
       getBuyerPipeline(profile._id);
-    }, [profile]);
+    }, [profile, getBuyerPipeline]);
 
 
   //EFFECT:  Redraw table on window resize
@@ -169,7 +169,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
             pageSize={tablePageSize}
             sorting={true}
             fontSize={12}
-            data={showDead === false ? buyerPipeline.filter((deal) => deal.status != 'dead') : buyerPipeline}
+            data={showDead === false ? buyerPipeline.filter((deal) => deal.status !== 'dead') : buyerPipeline}
             headers={HEADERS}
           />
         </div>

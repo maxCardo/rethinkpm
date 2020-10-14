@@ -1,5 +1,5 @@
-import React, {useState, useEffect, Fragment} from 'react';
-import {Modal, Form, Button} from 'react-bootstrap';
+import React, { Fragment } from 'react';
+import {Modal, Button} from 'react-bootstrap';
 import VerticalTable from '../../core/VerticalTable/VerticalTable';
 import UnitSchedule from './UnitSchedule'
 

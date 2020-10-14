@@ -1,8 +1,6 @@
 import React, {useState, useEffect, Fragment, useRef} from 'react';
-import {Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import axios from 'axios';
-import Table from '../../core/Table';
 import IconButton from "../../core/IconButton/IconButton";
 import Loading from '../../core/LoadingScreen/Loading';
 import './style.css';
@@ -538,7 +536,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       }
     }
 
-  }, [size.height]); // Empty array ensures that effect is only run on mount
+  }, [size.height, listings.length, tablePageSize, version]); // Empty array ensures that effect is only run on mount
 
   return loading ? <Loading /> : (
     <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>

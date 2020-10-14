@@ -61,7 +61,7 @@ const AddPhoneField = ({field, onChangeArray}) => {
 
         onChangeArray(field.accessor, formData);
 
-    }, [field.accessor, formData]);
+    }, [field.accessor, formData, onChangeArray]);
 
     const checkBox = checkBoxCheck();
 

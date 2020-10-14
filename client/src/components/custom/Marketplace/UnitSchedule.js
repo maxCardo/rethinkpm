@@ -2,7 +2,6 @@ import React, { Fragment, useState } from 'react'
 import Table from '../../core/Table'
 import IconButton from '../../core/IconButton/IconButton'
 import AddUnitSchModal from './AddUnitSchModal'
-import axios from 'axios'
 
 const headers = [
   {

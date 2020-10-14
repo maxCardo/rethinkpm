@@ -1,7 +1,5 @@
-import React, {Fragment, useState, useEffect} from 'react'
-import {connect} from 'react-redux'
+import React, {Fragment, useState} from 'react'
 import {Modal, Form, Button} from 'react-bootstrap';
-import {submitFilterModal, getFilterOptions} from '../../../actions/profile'
 import FilterFields from './filterFields/FilterFields'
 import Loading from '../LoadingScreen/Loading'
 
@@ -16,7 +14,7 @@ const FilterModal = ({show, handleClose, filterFields, onSubmit, options}) => {
 
     const onSubmitFunction = (data, type) => {
         Object.keys(data).forEach((item) => {
-            if(`${data[item]['type']['value']}` === "in" && data[item]['value'] === "" || data[item]['value'].length === 0) {
+            if((`${data[item]['type']['value']}` === "in" && data[item]['value'] === "") || data[item]['value'].length === 0) {
                 data[item]['type'] = {label: "Don't filter", value: 'noFilter'};
             }
 

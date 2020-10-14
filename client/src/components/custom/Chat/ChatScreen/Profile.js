@@ -50,7 +50,7 @@ export class Profile extends Component {
     this.setState({name, notes, loading: false})
   }
   render() {
-    if(this.props.chatId != this.state.chatRendered ) {
+    if(this.props.chatId !== this.state.chatRendered ) {
       this.renderNewProfile()
     }
     return (

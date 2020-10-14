@@ -23,7 +23,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
 
   useEffect(() => {
     //added to allow for reuse of profile component when redux data is orginized by component
-    if (!activeProfile.profile || activeProfile.profileType !== settings.profileType) {
+    if ((!activeProfile || !activeProfile._id) || (activeProfile.profileType && activeProfile.profileType !== settings.profileType)) {
       const backUpProfile = qs.parse(search).profile
       backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
     }
@@ -31,7 +31,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
       profileType.current = (settings.profileType === 'agentPros') ? 'Agent' : (settings.profileType === 'buyerPros') ? 'Buyer' : 'Renter';
       setTabKey('details');
     }
-  }, [settings, settings.profileType])
+  }, [settings, settings.profileType, activeProfile, activeProfile.profileType, loadBackUpProfile, loadProfileDefault, search])
 
   const [chatWindow, tglChatWindow] = useState(false)
   const [listWindow, tglListWindow] = useState(true)

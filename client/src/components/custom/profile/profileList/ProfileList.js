@@ -33,11 +33,11 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
       axios.get(`/api/profile/${profileType}/filters`).then((res) => {
         setSavedFilters(res.data)
       })
-    }, [])
+    }, [profileType])
 
     useEffect(() => {
         loadProfileList(profileType, selectedQuery)
-    }, [profileType])
+    }, [profileType, loadProfileList, selectedQuery])
 
     const loadNextPage = () => {
       loadMoreDataProfileList(profileType, selectStatus.selected.value, listPage + 1)
@@ -59,9 +59,9 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
             label: 'Filters',
             options: savedFilters.map((filter) => ({ value: filter._id, label: filter.name, filter: true, filterType: 'filter' }))
         })
-        setStatus({...selectStatus, options: optionsObj})  
+        setStatus(prevStatus => ({...prevStatus, options: optionsObj}))
       }
-    }, [audiences, savedFilters])
+    }, [audiences, savedFilters, options])
 
     const setListByStatus = (v) => {
         if(v.filter){

@@ -24,7 +24,7 @@ const SalesScreen = ({pastSales, activeProfile, profileType, loadProfileSales}) 
             setLoading(false)
         }
         fetchData()
-    }, [activeProfile])
+    }, [activeProfile, loadProfileSales, profileType])
 
     return (
         loading ? <Loading/> : <Fragment>

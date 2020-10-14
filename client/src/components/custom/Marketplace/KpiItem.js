@@ -5,14 +5,15 @@ const KpiItem = ({title, endpoint}) => {
   const [actualNumber, setActualNumber] = useState(0)
   const [porcentualChange, setPorcentualChange] = useState(0)
 
-  const fetchData = async (cancelToken) => {
-    const response = await axios.get(endpoint, {cancelToken})
-    const {actualNumber, porcentualChange} = response.data
-    setActualNumber(actualNumber)
-    setPorcentualChange(porcentualChange)
-  }
+  
 
   useEffect(() => {
+    const fetchData = async (cancelToken) => {
+      const response = await axios.get(endpoint, {cancelToken})
+      const {actualNumber, porcentualChange} = response.data
+      setActualNumber(actualNumber)
+      setPorcentualChange(porcentualChange)
+    }
     const CancelToken = axios.CancelToken
     const source = CancelToken.source();
     try {

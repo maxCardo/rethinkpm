@@ -16,7 +16,7 @@ const AddStatusField = ({field, onChangeArray, passIndex, profile, settings}) =>
 
     useEffect(() => {
         onChangeArray(field.accessor, selected.value);
-    }, [selected]);
+    }, [selected, onChangeArray, field.accessor]);
 
     return (
         <Col lg={12}>

@@ -64,7 +64,7 @@ const AddDataModal = ({show, handleClose, handleSubmit, property}) => {
               onChange={handleSelectChange}
             />
           </Form.Group>
-          {property && property.propertyType == 'multi' &&
+          {property && property.propertyType === 'multi' &&
             <Form.Group>
               <Form.Label>
                 Nº of Units:
