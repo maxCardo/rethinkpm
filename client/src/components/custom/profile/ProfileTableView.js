@@ -122,6 +122,7 @@ export class ProfileTableView extends Component {
           operator: '$in'
         },
         // eslint-disable no-eval
+        // eslint-disable-next-line
         value: eval(this.props.settings.statusSelect.selectedQuery).map((status) => ({value: status}))
       }
     }

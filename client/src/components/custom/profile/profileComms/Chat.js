@@ -11,7 +11,7 @@ const Chat = ({activeChat:{chat, loading}, activeProfile, getActiveChat, sendCha
 
     useEffect(() => {
         getActiveChat(activeProfile._id)    
-    }, [activeProfile])
+    }, [activeProfile, getActiveChat])
 
     const onSend = (data) => {
       activeProfile.profileType = profileType
