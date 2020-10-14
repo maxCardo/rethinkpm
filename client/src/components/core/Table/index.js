@@ -131,7 +131,7 @@ export class Table extends Component {
         const firstPageThatShowsItem = Math.floor(firstItemInPage / props.pageSize)
         pageIndex = firstPageThatShowsItem
       }
-      const newPaginatedData = newData.slice(pageSize * pageIndex, pageSize * (pageIndex + 1))
+      const newPaginatedData = pageSize === Infinity ? newData : newData.slice(pageSize * pageIndex, pageSize * (pageIndex + 1))
       return {
         data: newData,
         sortedData: sortedData,
