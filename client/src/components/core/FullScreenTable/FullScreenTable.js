@@ -7,6 +7,7 @@ const FullScreenTable = (props) => {
   const [pageSize, setPageSize] = useState(10)
   const [refreshCounter, setRefreshCounter] = useState(0)
   const screen = useWindowSize();
+  const clientHeight = container.current && container.current.clientHeight
   useEffect(() => {
     if(container.current) {
       const containerHeight = container.current.clientHeight
@@ -18,7 +19,7 @@ const FullScreenTable = (props) => {
         setRefreshCounter(refreshCounter + 1)
       }
     }
-  }, [container.current, container.current && container.current.clientHeight, refreshCounter]);
+  }, [clientHeight, refreshCounter, screen.height]);
 
   return (
     <div style={{flex: 1}} ref={container}>
