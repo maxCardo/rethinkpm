@@ -57,6 +57,7 @@ const AddLeadModal = ({profile: {_id, profileType}, addLeadSubmit, tglAddLeadMod
     }
 
     const onHide = e => {
+        console.log('hide')
         tglAddLeadMod(false);
         setFormData({});
         setValid(false);
