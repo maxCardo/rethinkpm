@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useRef, useLayoutEffect} from 'react'
+import React, {Fragment, useState, useRef, useLayoutEffect, useEffect} from 'react'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap'
 import {checkBoxCheck} from '../../../../util/commonFunctions'
@@ -11,13 +11,16 @@ const ArrayFields = ({orderKey, filterFields, onChange, prop, options}) => {
     const selectInput = useRef(null);
 
     const callChange = (property, value) => {
-        setState((prevState) => {
+      setState((prevState) => {
         const newState = Object.assign({}, prevState)
         newState[property] = value
-        onChange(prop, newState)
         return newState
       })      
     }
+
+    useEffect(() => {
+      onChange(prop, state)
+    }, [state])
 
     useLayoutEffect(() => {
         (state.type.value && (state.type.value !== 'noFilter') && (state.value === '' || state.value === null)) && selectInput.current.focus();
