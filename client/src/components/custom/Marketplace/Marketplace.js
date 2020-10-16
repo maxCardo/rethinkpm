@@ -183,10 +183,15 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const size = useWindowSize();
 
   const conditionsMap = {
-    1: 'D',
-    2: 'C',
-    3: 'B',
-    4: 'A'
+    1: 'D-',
+    2: 'D',
+    3: 'C-',
+    4: 'C',
+    5: 'B-',
+    6: 'B',
+    7: 'A-',
+    8: 'A',
+    0: 'N/A'
   }
 
   const HEADERS = [
