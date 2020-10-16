@@ -18,7 +18,23 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit}) => {
       size, //sqft
       numUnits: units
     }
+
+    resetData()
     handleSubmit(info)
+    handleClose()
+  }
+
+  const resetData = () => {
+    setUnitType('')
+    setBedrooms(0)
+    setFullBathrooms(0)
+    setPartialBathrooms(0)
+    setSize(0)
+    setUnits(0)
+  }
+
+  const onClose = () => {
+    resetData()
     handleClose()
   }
 
@@ -56,7 +72,7 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit}) => {
           </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={handleClose}>
+        <Button variant='secondary' onClick={onClose}>
           Close
         </Button>
         <Button variant='primary' onClick={onSubmit}>
