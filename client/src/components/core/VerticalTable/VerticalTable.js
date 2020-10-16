@@ -3,6 +3,10 @@ import Table from '../Table'
 import commonMappers from '../Table/commonMappers'
 
 export class VerticalTable extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
   static getDerivedStateFromProps(props, state) {
     const headers = props.headers;
     const data = props.data;
