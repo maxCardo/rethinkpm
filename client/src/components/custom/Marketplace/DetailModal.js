@@ -70,33 +70,54 @@ const rentTiers = {
   }
 }
 
-const headers= [
+const headers = [
   {
     label: 'List Date',
     accessor: 'listDate',
-    mapper: 'date'
+    mapper: 'date',
   },
-
+  {
+    label: 'County',
+    accessor: 'county',
+  },
   {
     label: 'Last Sold',
     accessor: 'lastSold',
-    mapper: (sold) => sold ? `Price: ${sold.price}  Date: ${sold.date}` : ''
-    
+    mapper: (sold) => (sold ? `Price: ${sold.price}  Date: ${sold.date}` : ''),
+  },
+  {
+    label: 'SqFt',
+    accessor: 'buildingSize',
+  },
+  {
+    label: 'Zoneing',
+    accessor: 'zoning',
+  },
+  {
+    label: 'Num Units',
+    accessor: 'numUnits',
   },
   {
     label: 'opZone',
-    accessor: 'opZone'
+    accessor: 'opZone',
   },
   {
     label: 'Rent Tier',
-    accessor: 'rents.HA.tier'
+    accessor: 'rents.HA.tier',
   },
   {
     label: 'Area Rents',
     accessor: 'rents.HA.tier',
-    mapper: (tier) => tier ? `eff: ${rentTiers[tier].eff} | 1BD: ${rentTiers[tier]['1BD']} | 2BD: ${rentTiers[tier]['2BD']} | 3BD: ${rentTiers[tier]['3BD']} | 4BD: ${rentTiers[tier]['4BD']}` : '' 
+    mapper: (tier) =>
+      tier
+        ? `eff: ${rentTiers[tier].eff} | 1BD: ${rentTiers[tier]['1BD']} | 2BD: ${rentTiers[tier]['2BD']} | 3BD: ${rentTiers[tier]['3BD']} | 4BD: ${rentTiers[tier]['4BD']}`
+        : '',
+  },
+  {
+    label: 'Owner Ocupied?',
+    accessor: 'ownerOcc',
   }
-] 
+]; 
 
 
 const DetailModal = ({show, handleClose, data, addUnitSchedule}) => {
