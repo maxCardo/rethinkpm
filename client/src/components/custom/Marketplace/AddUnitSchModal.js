@@ -11,13 +11,13 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
 
   useEffect(() => {
     if(editingUnitSch) {
-      console.log(editingUnitSch)
       setUnitType(editingUnitSch.unitType)
       setBedrooms(editingUnitSch.bedrooms)
       setFullBathrooms(editingUnitSch.bathsFull)
       setPartialBathrooms(editingUnitSch.bathsPartial)
       setSize(editingUnitSch.size)
       setUnits(editingUnitSch.numUnits)
+
     }
   }, [editingUnitSch])
 
