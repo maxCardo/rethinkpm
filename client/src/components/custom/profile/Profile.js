@@ -31,7 +31,7 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
       profileType.current = (settings.profileType === 'agentPros') ? 'Agent' : (settings.profileType === 'buyerPros') ? 'Buyer' : 'Renter';
       setTabKey('details');
     }
-  }, [settings, settings.profileType, activeProfile, activeProfile.profileType, loadBackUpProfile, loadProfileDefault, search])
+  }, [settings, settings.profileType])
 
   const [chatWindow, tglChatWindow] = useState(false)
   const [listWindow, tglListWindow] = useState(true)
