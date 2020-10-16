@@ -446,6 +446,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
         return listing
       }
     })
+    setFocusedProperty(listingUpdated)
     setListings(newListings)
     setVersion(version+1)
   }
