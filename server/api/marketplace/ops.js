@@ -292,6 +292,23 @@ router.post('/listings/:listingId/addUnitSch', async (req,res) => {
   res.json(listing)
 })
 
+router.post('/listings/:listingId/modifyUnitSch', async (req,res) => {
+  const {listingId} = req.params
+  const {unit, id} = req.body
+  const listing = await SalesListings.findById(listingId);
+  const newUnitSch = listing.unitSch.map((unitSch) => {
+    if(unitSch._id == id) {
+      return unit
+    } else {
+      return unitSch
+    }
+  })
+  console.log(newUnitSch)
+  listing.unitSch = newUnitSch
+  await listing.save()
+  res.json(listing)
+})
+
 router.post('/exportCsv', async (req, res) => {
   const {list} = req.body;
   const csv = parse(list)

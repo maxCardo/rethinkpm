@@ -1,13 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal, Form, Button} from 'react-bootstrap';
 
-const AddUnitSchModal = ({show, handleClose, handleSubmit}) => {
+const AddUnitSchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
   const [unitType, setUnitType] = useState('')
   const [bedrooms, setBedrooms] = useState(0)
   const [fullBathrooms, setFullBathrooms] = useState(0)
   const [partialBathrooms, setPartialBathrooms] = useState(0)
   const [size, setSize] = useState(0)
   const [units, setUnits] = useState(0)
+
+  useEffect(() => {
+    if(editingUnitSch) {
+      console.log(editingUnitSch)
+      setUnitType(editingUnitSch.unitType)
+      setBedrooms(editingUnitSch.bedrooms)
+      setFullBathrooms(editingUnitSch.bathsFull)
+      setPartialBathrooms(editingUnitSch.bathsPartial)
+      setSize(editingUnitSch.size)
+      setUnits(editingUnitSch.numUnits)
+    }
+  }, [editingUnitSch])
+
   const onSubmit = () => {
     const info = {
       unitType,
@@ -20,7 +33,11 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit}) => {
     }
 
     resetData()
-    handleSubmit(info)
+    if(editingUnitSch) {
+      handleSubmit(info, editingUnitSch._id)
+    } else {
+      handleSubmit(info)
+    }
     handleClose()
   }
 

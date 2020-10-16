@@ -120,19 +120,19 @@ const headers = [
 ]; 
 
 
-const DetailModal = ({show, handleClose, data, addUnitSchedule}) => {
+const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule}) => {
   if(!data) return ''
   return (
-    <Modal size='xl' show={show} onHide={handleClose}>
+    <Modal size='xl' show={show} onHide={handleClose} style={{width: '100%'}}>
       <Modal.Header closeButton>
         <Modal.Title>Details</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body >
           <VerticalTable  headers={headers} data={data}/>
           {data.propertyType === 'multi' &&
             <Fragment>
               <h4>Unit Schedule</h4>
-              <UnitSchedule units={data.unitSch} listingId={data._id} addUnitSchedule={addUnitSchedule}/>
+              <UnitSchedule units={data.unitSch} listingId={data._id} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule}/>
             </Fragment>
           }
       </Modal.Body>

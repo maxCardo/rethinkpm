@@ -451,6 +451,25 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setVersion(version+1)
   }
 
+  const modifyUnitSchedule = async (unit, id) => {
+    const listingId = focusedProperty._id;
+    const data = {
+      unit,
+      id
+    }
+    const listingUpdated = (await axios.post(`/api/marketplace/ops/listings/${listingId}/modifyUnitSch`, data)).data
+    const newListings = listings.map((listing) => {
+      if(listing._id === listingUpdated._id) {
+        return listingUpdated
+      } else {
+        return listing
+      }
+    })
+    setFocusedProperty(listingUpdated)
+    setListings(newListings)
+    setVersion(version+1)
+  }
+
   const checkFlowListingToggle = (listing, checked) => {
     let newCheckFlowList;
     if(checked) {
@@ -632,7 +651,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
       <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} property={focusedProperty}
                     handleSubmit={submitAddDataModal}/>
-      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule}/>
+      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule}/>
     </div>
   )
 }
