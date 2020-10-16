@@ -10,7 +10,7 @@ const RecommendationModal = ({show, handleClose, handleSubmit}) => {
   }
 
   return (
-    <Modal size='xl' show={show} onHide={handleClose}>
+    <Modal size='lg' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Save Filter</Modal.Title>
       </Modal.Header>

@@ -123,7 +123,7 @@ const headers = [
 const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule}) => {
   if(!data) return ''
   return (
-    <Modal size='xl' show={show} onHide={handleClose} style={{width: '100%'}}>
+    <Modal size='xl' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Details</Modal.Title>
       </Modal.Header>

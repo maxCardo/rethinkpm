@@ -13,7 +13,7 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
 
     return (
 
-        <Modal size='xl'
+        <Modal size='lg'
                className='StreetView__modal'
                show={modalOpen}
                onHide={() => {

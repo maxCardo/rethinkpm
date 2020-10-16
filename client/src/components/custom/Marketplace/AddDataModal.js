@@ -62,7 +62,7 @@ const AddDataModal = ({show, handleClose, handleSubmit, property}) => {
     setNumUnits(undefined)
   }
   return (
-    <Modal size='xl' show={show} onHide={closeModal}>
+    <Modal size='lg' show={show} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Add Condition</Modal.Title>
       </Modal.Header>

@@ -60,7 +60,7 @@ const AddPhoneModal = ({profile: {_id, profileType}, addPhoneNumSubmit, tglAddPh
 
     return (
         <Fragment>
-            <Modal size='xl' show={showMod} onHide={onHide}>
+            <Modal size='lg' show={showMod} onHide={onHide}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add a phone number</Modal.Title>
                 </Modal.Header>

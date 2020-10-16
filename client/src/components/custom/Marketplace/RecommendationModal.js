@@ -39,7 +39,7 @@ const RecommendationModal = ({show, handleClose, handleSubmit, context, profile}
   }
 
   return (
-    <Modal size='xl' show={show} onHide={handleClose}>
+    <Modal size='lg' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Recommend Property</Modal.Title>
       </Modal.Header>

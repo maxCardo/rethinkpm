@@ -13,7 +13,7 @@ const PropertyDetailsModal = ({  show, handleClose, iframeTarget }) => {
 
     return (
 
-        <Modal size='xl'
+        <Modal size='lg'
                className='PropertyDetails__modal'
                show={show}
                onHide={() => {

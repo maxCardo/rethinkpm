@@ -23,7 +23,7 @@ const FilterModal = ({show, handleClose, filterFields, onSubmit, options}) => {
     };
 
     return (
-      <Modal size='xl' show={show} onHide={()=> {handleClose(); setState(filterFields)}}>
+      <Modal size='lg' show={show} onHide={()=> {handleClose(); setState(filterFields)}}>
         <Modal.Header closeButton>
           <Modal.Title>Create filter</Modal.Title>
         </Modal.Header>

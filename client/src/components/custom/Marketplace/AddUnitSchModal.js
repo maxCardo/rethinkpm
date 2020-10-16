@@ -56,7 +56,7 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
   }
 
   return (
-    <Modal size='xl' show={show} onHide={handleClose}>
+    <Modal size='lg' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Add Unit Schedule</Modal.Title>
       </Modal.Header>
