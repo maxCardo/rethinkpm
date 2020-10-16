@@ -77,9 +77,15 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule}) =
   const handleAdd = () => {
     setShowAddModal(true)
   }
+
+  const handleClose = () => {
+    setFocusedUnitSch(undefined);
+    setShowAddModal(false);
+  }
   const handleSubmit = (unit, id) => {
     if(id) {
       modifyUnitSchedule(unit, id)
+      setFocusedUnitSch(undefined);
     } else {
       addUnitSchedule(unit)
     }
@@ -99,7 +105,7 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule}) =
         />
       </div>
       <Table headers={headers} data={data}/>
-      <AddUnitSchModal show={showAddModal} handleClose={() => setShowAddModal(false)} handleSubmit={handleSubmit} editingUnitSch={focusedUnitSch} />
+      <AddUnitSchModal show={showAddModal} handleClose={handleClose} handleSubmit={handleSubmit} editingUnitSch={focusedUnitSch} />
     </Fragment>
   )
 }
