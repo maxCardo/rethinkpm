@@ -347,6 +347,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   }
 
   const clearFilter = () => {
+    setSelectedFilter(undefined)
     setFilters(undefined)
     fetchData().then(r => {})
   }
@@ -411,8 +412,9 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 
   const handleFilterChange = (value) => {
     const {value: {filters, blacklist}} = value
-    setSelectedFilter(value)
-    fetchFilteredData(filters, blacklist).then(r =>{}).catch(e => {})
+    setSelectedFilter(value);
+    setFilters(filters);
+    fetchFilteredData(filters, blacklist).then(r =>{}).catch(e => {});
   }
 
   const blacklistListing = (listingId) => {
@@ -566,9 +568,11 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
             />
           </div>
           <div className='marketplace__filter-icons'>
-            {filters && !selectedFilter &&
+            {filters &&
             <Fragment>
-              <button onClick={saveFilter}>Save filter</button>
+              {!selectedFilter &&
+                <button onClick={saveFilter}>Save filter</button>
+              }
               <button onClick={clearFilter}>Clear filter</button>
             </Fragment>
             }
