@@ -4,7 +4,7 @@ import IconButton from '../../core/IconButton/IconButton'
 import AddUnitSchModal from './AddUnitSchModal'
 
 
-const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule}) => {
+const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule}) => {
   const [showAddModal, setShowAddModal] = useState(false)
   const [data, setData] = useState(units)
   const [focusedUnitSch, setFocusedUnitSch] = useState(undefined)
@@ -66,7 +66,7 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule}) =
             iconClass='fas fa-trash'
             variant='action-button'
             onClickFunc={() => {
-              console.log('delete')
+              deleteUnitSchedule(item._id)
             }}
           />
         </div>

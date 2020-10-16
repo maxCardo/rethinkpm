@@ -120,7 +120,7 @@ const headers = [
 ]; 
 
 
-const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule}) => {
+const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule}) => {
   if(!data) return ''
   return (
     <Modal size='xl' show={show} onHide={handleClose}>
@@ -132,7 +132,7 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
           {data.propertyType === 'multi' &&
             <Fragment>
               <h4>Unit Schedule</h4>
-              <UnitSchedule units={data.unitSch} listingId={data._id} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule}/>
+              <UnitSchedule units={data.unitSch} listingId={data._id} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule}/>
             </Fragment>
           }
       </Modal.Body>

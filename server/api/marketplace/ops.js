@@ -303,7 +303,16 @@ router.post('/listings/:listingId/modifyUnitSch', async (req,res) => {
       return unitSch
     }
   })
-  console.log(newUnitSch)
+  listing.unitSch = newUnitSch
+  await listing.save()
+  res.json(listing)
+})
+
+router.post('/listings/:listingId/deleteUnitSch', async (req,res) => {
+  const {listingId} = req.params
+  const {id} = req.body
+  const listing = await SalesListings.findById(listingId);
+  const newUnitSch = listing.unitSch.filter((unitSch) => unitSch._id != id)
   listing.unitSch = newUnitSch
   await listing.save()
   res.json(listing)
