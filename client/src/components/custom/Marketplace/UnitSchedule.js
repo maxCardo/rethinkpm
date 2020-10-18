@@ -49,7 +49,7 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, de
       label: 'Actions',
       reactComponent: true,
       render: (item) => (
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
           <IconButton 
             placement='bottom'
             tooltipContent='Set Rent'
@@ -125,7 +125,7 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, de
           onClickFunc={handleAdd}
         />
       </div>
-      <Table headers={headers} data={data} version={version}/>
+      <Table headers={headers} data={data} version={version} scrolling={true} maxHeight='200px' />
       <AddUnitSchModal show={showAddModal} handleClose={handleModalClose} handleSubmit={handleAddUnitSubmit} editingUnitSch={focusedUnitSch} />
       <SetRentModal show={showRentModal} handleClose={handleModalClose} handleSubmit={handleSetRentSubmit} editingUnitSch={focusedUnitSch}/>
     </Fragment>
