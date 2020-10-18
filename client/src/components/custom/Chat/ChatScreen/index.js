@@ -69,7 +69,6 @@ export class ChatScreen extends Component {
     if(this.props.inquiries && this.props.inquiries.length) {
       activeChat = this.props.chats[this.state.activeChat]
     }
-    console.log(this.props.chats)
     return (
       <div className='container-fluid h-100'>
         <div className='row h-100'>
