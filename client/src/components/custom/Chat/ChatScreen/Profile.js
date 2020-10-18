@@ -49,10 +49,17 @@ export class Profile extends Component {
     const {name, notes} = res.data
     this.setState({name, notes, loading: false})
   }
-  render() {
+  componentDidMount() {
     if(this.props.chatId !== this.state.chatRendered ) {
       this.renderNewProfile()
     }
+  }
+  componentDidUpdate() {
+    if(this.props.chatId !== this.state.chatRendered ) {
+      this.renderNewProfile()
+    }
+  }
+  render() {
     return (
       <LoadingScreen loading={this.state.loading}>
         <div className='profile__container'>
