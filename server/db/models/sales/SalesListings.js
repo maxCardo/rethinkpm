@@ -146,7 +146,7 @@ const salesListingsSchema = new mongoose.Schema({
       bathsPartial: Number, 
       totalBaths: Number,
       size: Number, //sqft
-      numUnits: Number
+      rent: Number
     }]
     
 });

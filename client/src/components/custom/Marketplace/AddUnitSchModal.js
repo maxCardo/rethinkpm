@@ -34,7 +34,7 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
 
     resetData()
     if(editingUnitSch) {
-      handleSubmit(info, editingUnitSch._id)
+      handleSubmit(info, editingUnitSch.unitType)
     } else {
       handleSubmit(info)
     }
