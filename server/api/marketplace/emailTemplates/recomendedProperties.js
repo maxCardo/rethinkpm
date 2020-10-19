@@ -6,6 +6,9 @@ const formatMoney = (data) => {
 }
 
 const emailTemplate = (properties, message) => {
+   
+  console.log('generating templet');
+  //console.log(properties);
   const propertyTemplate = properties.map(property => {
     return `<div style="background-color:transparent;overflow:hidden" class="recommendedProperty"><div class="block-grid two-up"
                      style="min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">
@@ -40,7 +43,7 @@ const emailTemplate = (properties, message) => {
                                         <![endif]-->
                                         <div style="font-size:1px;line-height:5px">&nbsp;</div>
                                         <img class="center fullwidthOnMobile autowidth" align="middle" border="0"
-                                             src="${property.deal.images.length ? property.deal.images[0]: 'https://fifthgrant.com/images/mediumsmall.png'}"
+                                             src="${property.images.length ? property.images[0]: 'https://fifthgrant.com/images/mediumsmall.png'}"
                                              alt="Suggestion 1" title="Suggestion first"
                                              style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 260px; display: block;"
                                              width="260">
@@ -75,8 +78,8 @@ const emailTemplate = (properties, message) => {
                                     <div style="color:#555555;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;line-height:1.2;padding-top:0;padding-right:15px;padding-bottom:0;padding-left:20px;">
                                         <div style="line-height: 1.2; font-size: 12px; color: #555555; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; mso-line-height-alt: 14px;">
                                             <p style="font-size: 24px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 29px; margin: 0;">
-                                                <span style="font-size: 18px;">${property.deal ? formatMoney(property.deal.listPrice) : 'price data corrupted'}</span> <span
-                                                    style="color: green; font-size: 14px;">${property.active && 'active'}</span></p>
+                                                <span style="font-size: 18px;">${property ? formatMoney(property.listPrice) : 'price data corrupted'}</span> <span
+                                                    style="color: green; font-size: 14px;">${property.mlsStatus}</span></p>
                                         </div>
                                     </div>
                                     <!--[if mso]></td></tr></table><![endif]-->
@@ -94,39 +97,39 @@ const emailTemplate = (properties, message) => {
                                                 <tr style="vertical-align: top;" valign="top">
                                                     <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                         valign="top">
-                                                        Property Address:${property.deal.streetNumber} ${property.deal.streetName},  ${property.deal.city}, ${property.deal.state}
+                                                        Property Address:${property.streetNumber} ${property.streetName},  ${property.city}, ${property.state}
                                                         
                                                     </td>
                                                 </tr>
                                                 <tr style="vertical-align: top;" valign="top">
                                                     <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                         valign="top">
-                                                        <b>County:</b> ${property.deal.county}, <b>Zip:</b> ${property.deal.zipcode}, <b>School District:</b> ${property.deal.schoolDistrict}
+                                                        <b>County:</b> ${property.county}, <b>Zip:</b> ${property.zipcode}, <b>School District:</b> ${property.schoolDistrict}
                                                     </td>
                                                 </tr>
                                                 <tr style="vertical-align: top;" valign="top">
                                                     <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                         valign="top">
-                                                        ${property.deal.totalRooms ? '<b>Total Rooms:</b> ' + property.deal.totalRooms + ', ' : ''} ${property.deal.bathsFull ? ' <b>Full Baths:</b> ' + property.deal.bathsFull + ', ' : ''} ${property.deal.bathsPartial ? ' <b>Parial Baths:</b> ' + property.deal.bathsPartial + ', ' : ''}${property.deal.bedrooms ? ' <b>Bedrooms:</b> ' + property.deal.bedrooms + ', ' : ''}${property.deal.acres ? ' <b>Acres:</b> ' + property.deal.acres + ', ' : ''}
+                                                        ${property.totalRooms ? '<b>Total Rooms:</b> ' + property.totalRooms + ', ' : ''} ${property.bathsFull ? ' <b>Full Baths:</b> ' + property.bathsFull + ', ' : ''} ${property.bathsPartial ? ' <b>Parial Baths:</b> ' + property.bathsPartial + ', ' : ''}${property.bedrooms ? ' <b>Bedrooms:</b> ' + property.bedrooms + ', ' : ''}${property.acres ? ' <b>Acres:</b> ' + property.acres + ', ' : ''}
                                                     </td>
                                                 </tr>
                                                 <tr style="vertical-align: top;" valign="top">
                                                     <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                         valign="top">
-                                                        Property Type: ${property.deal.propertyType === "multi" ? "Residential, Multi-Unit Residential" : ""}${property.deal.propertyType === "res" ? "Residential, Single Family Residence" : ""}
+                                                        Property Type: ${property.propertyType === "multi" ? "Residential, Multi-Unit Residential" : ""}${property.propertyType === "res" ? "Residential, Single Family Residence" : ""}
                                                     </td>
                                                 </tr>
                                                 <tr style="vertical-align: top;" valign="top">
                                                     <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                         valign="top">
-                                                        Active / MLS #${property.deal.listNumber}
+                                                        Active / MLS #${property.listNumber}
                                                     </td>
                                                 </tr>
                                                 <tr style="vertical-align: top;" valign="top">
                                                     <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                         valign="top">
                                                         <a target="_blank" style="display: block;max-width: 80px; margin-left: auto; margin-right: 0; color: rgba(0,0,0,0) !important; padding: 8px 16px; background-size: contain; background: url('http://localhost:3000/emailAssets/readmorebtnbg.png') no-repeat center center; position: relative;height: 24px; color: white; "
-                                                           href="http://cardo.idxbroker.com/idx/details/listing/d504/${property.deal.listNumber}?bid=${property.deal._id}&mode=recommend">More Details</a>
+                                                           href="http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${property._id}&mode=recommend">More Details</a>
                                                     </td>
                                                 </tr>
                                                 </tbody>
