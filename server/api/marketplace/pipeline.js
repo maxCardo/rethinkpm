@@ -5,7 +5,7 @@ const SalesListings = require('../../db/models/sales/SalesListings');
 const Pipeline = require('../../db/models/sales/Pipeline');
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const {addIdxListing, removeIdxListing} = require('../../3ps/idx')
-const {emailTemplate} = require('./emailTemplates/recomendedProperties')
+const {emailTemplate} = require('../../templets/recommendProps')
 
 
 const router = express.Router();
