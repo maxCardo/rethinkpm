@@ -625,17 +625,18 @@ const AGENT = {
 
 const MESSAGE = 'This message should come from the form'
 
-// @route: Get api/marketplace/testRecommend
-// @desc: get pipeline deals for a buyerPros
+// @route: POST api/marketplace/testRecommend
+// @desc: recomend propertie(s) to buyer(s) with email templet
 // @ access: Public
-router.get('/testRecommend', async (req, res) => {
+router.post('/testRecommend', async (req, res) => {
 
-    const html = emailTemplate(PROPERTIES, BUYER, AGENT, MESSAGE);
+    const {properties, buyers, customMessage} = req.body
+    const html = emailTemplate(properties, customMessage);
 
     //sendEmail('bushavio@gmail.com', 'Testing Email Design', 'WHERE DOES THIS SHOW', html);
 
     try {
-        let pipeline = await Pipeline.find({}).populate('deal')
+        //let pipeline = await Pipeline.find({}).populate('deal')
         res.status(200).send(html)
     } catch (err) {
         console.error(err);

@@ -5,7 +5,7 @@ const formatMoney = (data) => {
   ).format(data))
 }
 
-const emailTemplate = (properties, buyer, agent, message) => {
+const emailTemplate = (properties, message) => {
   const propertyTemplate = properties.map(property => {
     return `<div style="background-color:transparent;overflow:hidden" class="recommendedProperty"><div class="block-grid two-up"
                      style="min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">

@@ -382,7 +382,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       buyers: buyers,
       customMessage: customMessage
     }
-    axios.post('/api/marketplace/ops/recommend', data).then(r => {})
+    axios.post('/api/marketplace/pipeline/testRecommend', data).then(r => {})
   }
 
   const submitSaveFilterModal = async (name) => {
