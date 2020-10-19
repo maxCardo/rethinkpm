@@ -289,7 +289,7 @@ const emailTemplate = (properties, message) => {
     </style>
 </head>
 
-<body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #f4f4f4;">
+<body class="clean-body" style="margin: 0; padding: 0;padding-top: 40px; -webkit-text-size-adjust: 100%; background-color: #f4f4f4;">
 <!--[if IE]>
 <div class="ie-browser"><![endif]-->
 <table class="nl-container"
@@ -301,7 +301,7 @@ const emailTemplate = (properties, message) => {
             <!--[if (mso)|(IE)]>
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td align="center" style="background-color:#f5eded"><![endif]-->
+                    <td align="center" style="background-color:#f4f4f4; padding-top: 40px;"><![endif]-->
             <div style="background-color:transparent;overflow:hidden">
                 <div class="block-grid "
                      style="min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: transparent;">
@@ -319,7 +319,7 @@ const emailTemplate = (properties, message) => {
                             valign="top">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                    <td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;">
+                                    <td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px; text-align: center;">
                         <![endif]-->
                         <div class="col num12"
                              style="min-width: 320px; max-width: 600px; display: table-cell; vertical-align: top; width: 600px;">
@@ -334,7 +334,7 @@ const emailTemplate = (properties, message) => {
                                             <tr style="line-height:0px">
                                                 <td style="padding-right: 0px;padding-left: 0px;" align="center">
                                         <![endif]--><img class="center autowidth" align="center" border="0"
-                                                         src="http://localhost:3000/emailAssets/header_top2.png"
+                                                         src="https://fifthgrant.com/images/email-templates/recommendTemplate-header_top2.png"
                                                          alt="Alternate text" title="Alternate text"
                                                          style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 600px; display: block;"
                                                          width="600">
@@ -501,7 +501,7 @@ const emailTemplate = (properties, message) => {
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
                                                             height="0" valign="top"><a href="tel:+4124445181" style="max-width: 48px;color: #0068a5;margin-left: auto; margin-right: 10px;margin-top: 10px;margin-bottom: 10px; display: block;">
-                                                            <img src="http://localhost:3000/emailAssets/call-btn.png" alt="Call Adam">
+                                                            <img src="https://fifthgrant.com/images/email-templates/recommendTemplate-call-btn.png" alt="Call Adam">
 </a></td>
                                                     </tr>
                                                     </tbody>
