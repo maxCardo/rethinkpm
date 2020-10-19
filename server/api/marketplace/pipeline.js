@@ -67,7 +67,6 @@ router.post('/testRecommend', async (req, res) => {
     }
 })
 
-
 // @route: POST api/marketplace/pipeline/testRecommend
 // @desc: serve up recomend email templet for testing with sample data
 // @ access: Public
@@ -77,7 +76,6 @@ router.get('/testRecommend', async (req, res) => {
     const html = await emailTemplate(properties, customMessage);
     res.send(html)
 })
-
 
 // @route: Get api/marketplace/pipeline
 // @desc: get pipeline deals for a buyerPros
@@ -89,7 +87,8 @@ router.get('/', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send(err)
-    }})
+    }
+})
 
 // @route: Get api/marketplace/pipeline
 // @desc: get pipeline deals for a buyerPros
@@ -130,7 +129,8 @@ router.put('/status', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send(err)
-    }})
+    }
+})
 
 //ToDo: I will refactor this in the future. 
 // @route: GET /api/marketplace/pipeline/sync;
