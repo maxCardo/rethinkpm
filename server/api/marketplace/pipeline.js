@@ -71,7 +71,7 @@ router.post('/testRecommend', async (req, res) => {
 // @desc: serve up recomend email templet for testing with sample data
 // @ access: Public
 router.get('/testRecommend', async (req, res) => {
-    const properties = await SalesListings.find().limit(3)
+    const properties = await SalesListings.find().sort([['listDate', -1]]).limit(5)
     const customMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation"
     const html = await emailTemplate(properties, customMessage);
     res.send(html)
