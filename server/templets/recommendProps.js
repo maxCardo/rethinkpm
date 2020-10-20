@@ -152,7 +152,7 @@ const emailTemplate = (properties, message) => {
                                         <div style="line-height: 1.2; font-size: 12px; color: #555555; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; mso-line-height-alt: 14px;">
                                             <p style="font-size: 24px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 29px; margin: 0;">
                                                 <span style="font-size: 18px;">${property ? formatMoney(property.listPrice) : 'price data corrupted'}</span> <span
-                                                    style="color: green; font-size: 14px;">${property.mlsStatus}</span></p>
+                                                    style="color: green; font-size: 14px;">${mlsStatus[property.mlsStatus]}</span></p>
                                         </div>
                                     </div>
                                     <!--[if mso]></td></tr></table><![endif]-->
