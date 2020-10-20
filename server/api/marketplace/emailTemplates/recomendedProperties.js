@@ -94,44 +94,37 @@ const emailTemplate = (properties, message) => {
                                                    style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"
                                                    valign="top">
                                                 <tbody>
-                                                <tr style="vertical-align: top;" valign="top">
-                                                    <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                        valign="top">
-                                                        Property Address:${property.streetNumber} ${property.streetName},  ${property.city}, ${property.state}
-                                                        
-                                                    </td>
-                                                </tr>
-                                                <tr style="vertical-align: top;" valign="top">
-                                                    <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                        valign="top">
-                                                        <b>County:</b> ${property.county}, <b>Zip:</b> ${property.zipcode}, <b>School District:</b> ${property.schoolDistrict}
-                                                    </td>
-                                                </tr>
-                                                <tr style="vertical-align: top;" valign="top">
-                                                    <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                        valign="top">
-                                                        ${property.totalRooms ? '<b>Total Rooms:</b> ' + property.totalRooms + ', ' : ''} ${property.bathsFull ? ' <b>Full Baths:</b> ' + property.bathsFull + ', ' : ''} ${property.bathsPartial ? ' <b>Parial Baths:</b> ' + property.bathsPartial + ', ' : ''}${property.bedrooms ? ' <b>Bedrooms:</b> ' + property.bedrooms + ', ' : ''}${property.acres ? ' <b>Acres:</b> ' + property.acres + ', ' : ''}
-                                                    </td>
-                                                </tr>
-                                                <tr style="vertical-align: top;" valign="top">
-                                                    <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                        valign="top">
-                                                        Property Type: ${property.propertyType === "multi" ? "Residential, Multi-Unit Residential" : ""}${property.propertyType === "res" ? "Residential, Single Family Residence" : ""}
-                                                    </td>
-                                                </tr>
-                                                <tr style="vertical-align: top;" valign="top">
-                                                    <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                        valign="top">
-                                                        Active / MLS #${property.listNumber}
-                                                    </td>
-                                                </tr>
-                                                <tr style="vertical-align: top;" valign="top">
-                                                    <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                        valign="top">
-                                                        <a target="_blank" style="display: block;max-width: 80px; margin-left: auto; margin-right: 0; color: rgba(0,0,0,0) !important; padding: 8px 16px; background-size: contain; background: url('http://localhost:3000/emailAssets/readmorebtnbg.png') no-repeat center center; position: relative;height: 24px; color: white; "
-                                                           href="http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${property._id}&mode=recommend">More Details</a>
-                                                    </td>
-                                                </tr>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            ${property.streetNumber} ${property.streetName} ${property.city}, ${property.state} ${property.zipcode}   
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            ${property.bedrooms} Bedrooms ${property.totalBaths} Baths ${property.buildingSize ? ' | SqFt: ' + property.buildingSize : ''}
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            ${property.propertyType === "multi" ? "Multi-Unit | " + property.numUnits + " Units | Zoning: "+ property.zoning  : ""} ${property.propertyType === "res" ? "Residential, Single Family Residence" : ""}
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            Rent Tier: ${property.rents.HA.tier} | Area Rents: ${property.rents.HA.tier ?  `eff: ${rentTiers[property.rents.HA.tier].eff} | 1BD: ${rentTiers[property.rents.HA.tier]['1BD']} | 2BD: ${rentTiers[property.rents.HA.tier]['2BD']} | 3BD: ${rentTiers[property.rents.HA.tier]['3BD']} | 4BD: ${rentTiers[property.rents.HA.tier]['4BD']}` : 'N/A'}
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            <a target="_blank" style="display: block;max-width: 80px; margin-left: auto; margin-right: 0; color: rgba(0,0,0,0) !important; padding: 8px 16px; background-size: contain; background: url('http://localhost:3000/emailAssets/readmorebtnbg.png') no-repeat center center; position: relative;height: 24px; color: white; "
+                                                            href="http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${property._id}&mode=recommend">More Details</a>
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -153,141 +146,138 @@ const emailTemplate = (properties, message) => {
     templateString += item
   });
 
-  return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
-      xmlns:o="urn:schemas-microsoft-com:office:office">
+  return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+            <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+                <head>
+                    <!--[if gte mso 9]>
+                        <xml>
+                            <o:OfficeDocumentSettings>
+                            <o:AllowPNG/>
+                            <o:PixelsPerInch>96</o:PixelsPerInch>
+                            </o:OfficeDocumentSettings>
+                    </xml><![endif]-->
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                    <meta name="viewport" content="width=device-width">
+                    <!--[if !mso]><!-->
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <!--<![endif]-->
+                    <title></title>
+                    <!--[if !mso]><!-->
+                    <!--<![endif]-->
+                    <style type="text/css">
+                        body {
+                            margin: 0;
+                            padding: 0;
+                        }
 
-<head>
-    <!--[if gte mso 9]>
-    <xml>
-        <o:OfficeDocumentSettings>
-            <o:AllowPNG/>
-            <o:PixelsPerInch>96</o:PixelsPerInch>
-        </o:OfficeDocumentSettings>
-    </xml><![endif]-->
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width">
-    <!--[if !mso]><!-->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!--<![endif]-->
-    <title></title>
-    <!--[if !mso]><!-->
-    <!--<![endif]-->
-    <style type="text/css">
-        body {
-            margin: 0;
-            padding: 0;
-        }
+                        table,
+                        td,
+                        tr {
+                            vertical-align: top;
+                            border-collapse: collapse;
+                        }
 
-        table,
-        td,
-        tr {
-            vertical-align: top;
-            border-collapse: collapse;
-        }
+                        * {
+                            line-height: inherit;
+                        }
 
-        * {
-            line-height: inherit;
-        }
+                        a[x-apple-data-detectors=true] {
+                            color: inherit !important;
+                            text-decoration: none !important;
+                        }
+                    </style>
+                    <style type="text/css" id="media-query">
+                        @media (max-width: 620px) {
 
-        a[x-apple-data-detectors=true] {
-            color: inherit !important;
-            text-decoration: none !important;
-        }
-    </style>
-    <style type="text/css" id="media-query">
-        @media (max-width: 620px) {
+                            .block-grid,
+                            .col {
+                                min-width: 320px !important;
+                                max-width: 100% !important;
+                                display: block !important;
+                            }
 
-            .block-grid,
-            .col {
-                min-width: 320px !important;
-                max-width: 100% !important;
-                display: block !important;
-            }
+                            .block-grid {
+                                width: 100% !important;
+                            }
 
-            .block-grid {
-                width: 100% !important;
-            }
+                            .col {
+                                width: 100% !important;
+                            }
 
-            .col {
-                width: 100% !important;
-            }
+                            .col > div {
+                                margin: 0 auto;
+                            }
 
-            .col > div {
-                margin: 0 auto;
-            }
+                            img.fullwidth,
+                            img.fullwidthOnMobile {
+                                max-width: 100% !important;
+                            }
 
-            img.fullwidth,
-            img.fullwidthOnMobile {
-                max-width: 100% !important;
-            }
+                            .no-stack .col {
+                                min-width: 0 !important;
+                                display: table-cell !important;
+                            }
 
-            .no-stack .col {
-                min-width: 0 !important;
-                display: table-cell !important;
-            }
+                            .no-stack.two-up .col {
+                                width: 50% !important;
+                            }
 
-            .no-stack.two-up .col {
-                width: 50% !important;
-            }
+                            .no-stack .col.num2 {
+                                width: 16.6% !important;
+                            }
 
-            .no-stack .col.num2 {
-                width: 16.6% !important;
-            }
+                            .no-stack .col.num3 {
+                                width: 25% !important;
+                            }
 
-            .no-stack .col.num3 {
-                width: 25% !important;
-            }
+                            .no-stack .col.num4 {
+                                width: 33% !important;
+                            }
 
-            .no-stack .col.num4 {
-                width: 33% !important;
-            }
+                            .no-stack .col.num5 {
+                                width: 41.6% !important;
+                            }
 
-            .no-stack .col.num5 {
-                width: 41.6% !important;
-            }
+                            .no-stack .col.num6 {
+                                width: 50% !important;
+                            }
 
-            .no-stack .col.num6 {
-                width: 50% !important;
-            }
+                            .no-stack .col.num7 {
+                                width: 58.3% !important;
+                            }
 
-            .no-stack .col.num7 {
-                width: 58.3% !important;
-            }
+                            .no-stack .col.num8 {
+                                width: 66.6% !important;
+                            }
 
-            .no-stack .col.num8 {
-                width: 66.6% !important;
-            }
+                            .no-stack .col.num9 {
+                                width: 75% !important;
+                            }
 
-            .no-stack .col.num9 {
-                width: 75% !important;
-            }
+                            .no-stack .col.num10 {
+                                width: 83.3% !important;
+                            }
 
-            .no-stack .col.num10 {
-                width: 83.3% !important;
-            }
+                            .video-block {
+                                max-width: none !important;
+                            }
 
-            .video-block {
-                max-width: none !important;
-            }
+                            .mobile_hide {
+                                min-height: 0px;
+                                max-height: 0px;
+                                max-width: 0px;
+                                display: none;
+                                overflow: hidden;
+                                font-size: 0px;
+                            }
 
-            .mobile_hide {
-                min-height: 0px;
-                max-height: 0px;
-                max-width: 0px;
-                display: none;
-                overflow: hidden;
-                font-size: 0px;
-            }
-
-            .desktop_hide {
-                display: block !important;
-                max-height: none !important;
-            }
-        }
-    </style>
-</head>
+                            .desktop_hide {
+                                display: block !important;
+                                max-height: none !important;
+                            }
+                        }
+                    </style>
+                </head>
 
 <body class="clean-body" style="margin: 0; padding: 0;padding-top: 40px; -webkit-text-size-adjust: 100%; background-color: #f4f4f4;">
 <!--[if IE]>
@@ -498,12 +488,12 @@ const emailTemplate = (properties, message) => {
                                                        style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-top: 0px solid transparent; height: 0px; width: 100%;"
                                                        align="center" role="presentation" height="0" valign="top">
                                                     <tbody>
-                                                    <tr style="vertical-align: top;" valign="top">
-                                                        <td style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
-                                                            height="0" valign="top"><a href="tel:+4124445181" style="max-width: 48px;color: #0068a5;margin-left: auto; margin-right: 10px;margin-top: 10px;margin-bottom: 10px; display: block;">
-                                                            <img src="https://fifthgrant.com/images/email-templates/recommendTemplate-call-btn.png" alt="Call Adam">
-</a></td>
-                                                    </tr>
+                                                        <tr style="vertical-align: top;" valign="top">
+                                                            <td style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;"
+                                                                height="0" valign="top"><a href="tel:+4124445181" style="max-width: 48px;color: #0068a5;margin-left: auto; margin-right: 10px;margin-top: 10px;margin-bottom: 10px; display: block;">
+                                                                <img src="https://fifthgrant.com/images/email-templates/recommendTemplate-call-btn.png" alt="Call Adam">
+                                                            </a></td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </td>
@@ -553,7 +543,7 @@ const emailTemplate = (properties, message) => {
                                     <div style="color:#757575;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                         <div style="line-height: 1.2; font-size: 12px; color: #757575; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; mso-line-height-alt: 14px;">
                                             <p style="font-size: 12px; line-height: 1.2; word-break: break-word; text-align: center; mso-line-height-alt: 14px; margin: 0;">
-                                                <span style="font-size: 12px;">Some msg here, work hours, address, phone link to Agent?.</span>
+                                                <span style="font-size: 12px;">...</span>
                                             </p>
                                         </div>
                                     </div>
