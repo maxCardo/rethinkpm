@@ -9,6 +9,7 @@ import {Form } from "react-bootstrap";
 import IconButton from "../../core/IconButton/IconButton";
 import PropertyDetailsModal from "./PropertyDetailsModal";
 import {checkBoxCheck, useWindowSize} from "../../../util/commonFunctions";
+import { afterMain } from '@popperjs/core';
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pipeline:{buyerPipeline, loading}}) => {
 
@@ -53,42 +54,74 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
 
   const checkBox = checkBoxCheck();
 
+  const testingCellClick = (x) => {
+    console.log('testing...: ', x);
+  }
+
+  const conditionsMap = {
+    1: 'D-',
+    2: 'D',
+    3: 'C-',
+    4: 'C',
+    5: 'B-',
+    6: 'B',
+    7: 'A-',
+    8: 'A',
+    0: 'N/A',
+  };
+  
+
   const HEADERS = [
     {
-      accessor: "status",
-      label: "Status"
+      accessor: 'status',
+      label: 'Status',
     },
     {
-      accessor: "deal.propertyType",
-      label: "Type"
+      accessor: 'deal.propertyType',
+      label: 'Type',
     },
     {
-      accessor: "deal.county",
-      label: "Area"
+      accessor: 'deal.listDate',
+      label: 'List Date',
+      mapper: 'date',
+    },
+    {
+      accessor: 'deal.city',
+      label: 'Area',
     },
     {
       accessor: 'deal.listPrice',
       label: 'List Price',
-      mapper: 'money'
+      mapper: 'money',
     },
     {
       reactComponent: true,
-      label: "Address",
+      label: 'Address',
       className: 'Marketplace__address',
       render: (item) => (
         <div>
-          <p>{item.deal.streetNumber} {item.deal.streetName}</p>
+          <p>
+            {item.deal.streetNumber} {item.deal.streetName}
+          </p>
         </div>
-      )
+      ),
     },
-
+    {
+      label: 'Zip',
+      accessor: 'deal.zipcode',
+    },
     {
       accessor: 'deal.bedrooms',
-      label: 'Bedrooms'
+      label: 'Bedrooms',
     },
     {
       accessor: 'deal.totalBaths',
-      label: 'Bathrooms'
+      label: 'Bathrooms',
+    },
+    {
+      accessor: 'deal.condition',
+      label: 'Condition',
+      mapper: (data) => conditionsMap[data],
     },
     {
       reactComponent: true,
@@ -96,49 +129,62 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
       render: (item) => {
         return (
           <div>
-            <IconButton placement='bottom'
-                        tooltipContent='View property details'
-                        id='property-details-tooltip'
-                        iconClass='fas fa-list'
-                        variant='action-button'
-                        onClickFunc={() => {
-                          setIframeTarget(`https://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`);
-                          setShowPropertyDetailsModal(true);
-                        }}
+            <IconButton
+              placement='bottom'
+              tooltipContent='View property details'
+              id='property-details-tooltip'
+              iconClass='fas fa-list'
+              variant='action-button'
+              onClickFunc={() => {
+                setIframeTarget(
+                  `https://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`
+                );
+                setShowPropertyDetailsModal(true);
+              }}
             />
-            <IconButton placement='bottom'
+            <IconButton
+              placement='bottom'
               tooltipContent='Link on website'
               id='link-tooltip'
               iconClass='fas fa-link'
               variant='link'
-              href={`https://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`} />
-            {(item.deal.streetName && item.deal.streetNumber) && (
-              <IconButton placement='bottom'
+              href={`https://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`}
+            />
+            {item.deal.streetName && item.deal.streetNumber && (
+              <IconButton
+                placement='bottom'
                 tooltipContent='Open street view'
                 id='street-view-tooltip'
                 iconClass='fas fa-eye'
                 variant='action-button'
-                onClickFunc={() => openStreetView(item.deal.streetName, item.deal.streetNumber)} />
+                onClickFunc={() =>
+                  openStreetView(item.deal.streetName, item.deal.streetNumber)
+                }
+              />
             )}
             {item.status && (
-              <IconButton placement='bottom'
+              <IconButton
+                placement='bottom'
                 tooltipContent='Like for buyer'
                 id='like-tooltip'
                 iconClass='fas fa-heart'
                 variant='action-button'
-                onClickFunc={() => updateDeal(item._id, 'liked')} />
-            )}  
-            <IconButton placement='bottom'
+                onClickFunc={() => updateDeal(item._id, 'liked')}
+              />
+            )}
+            <IconButton
+              placement='bottom'
               tooltipContent='Trash property from pipeline'
               id='trash-property-tooltip'
               iconClass='fas fa-trash'
               variant='action-button'
-              onClickFunc={() => updateDeal(item._id, 'dead')} />
+              onClickFunc={() => updateDeal(item._id, 'dead')}
+            />
           </div>
-        )
-      }
-    }
-  ]
+        );
+      },
+    },
+  ];
 
   return loading ? (
     <Loading />
@@ -171,6 +217,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
             fontSize={12}
             data={showDead === false ? buyerPipeline.filter((deal) => deal.status !== 'dead') : buyerPipeline}
             headers={HEADERS}
+            onClickRow={(item) => testingCellClick(item)}
           />
         </div>
       </div>
