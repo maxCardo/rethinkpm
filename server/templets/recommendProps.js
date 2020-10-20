@@ -184,7 +184,7 @@ const emailTemplate = (properties, message) => {
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
-                                                            ${property.propertyType === "multi" ? "Multi-Unit | " + property.numUnits + " Units | Zoning: "+ property.zoning  : ""} ${property.propertyType === "res" ? "Residential | Zoning: "+ property.zoning : ""}
+                                                            ${property.propertyType === "multi" ? "Multi-Unit | Zoning: "+ property.zoning+ '<br>' + property.numUnits + ' Units | ' + property.buildingSize+ ' SqFt'   : ""} ${property.propertyType === "res" ? "Residential | Zoning: "+ property.zoning : ""}
                                                         </td>
                                                     </tr>
                                                     <tr style="vertical-align: top;" valign="top">
