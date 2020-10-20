@@ -429,6 +429,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   }
 
   const startShowDetailFlow = (item) => {
+    console.log(item);
     setFocusedProperty(item)
     setShowDetailModal(true)
   }
