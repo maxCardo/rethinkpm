@@ -26,7 +26,7 @@ const { filter } = require('../../config/supportData/areas')
 
 // @route: post /api/marketPlace/ops/recommend
 // @desc: 
-// @ access: Public 
+// @ access: Public
 router.post('/recommend', auth, async (req, res) => {
     try {
         const { properties, buyers: buyersId, customMessage, agentId } = req.body
@@ -50,7 +50,7 @@ router.post('/recommend', auth, async (req, res) => {
                     statusTo: 'recommend',
                   },
                 ],
-              });  
+              });
             } else {
               deal.status = 'recommend'
               deal.history.push({
@@ -69,11 +69,7 @@ router.post('/recommend', auth, async (req, res) => {
             }
             const subject = `Property Recommendation`
             const text = customMessage
-            const html = `
-                <p>${customMessage}</p>
-                ${propertyLinks.join('</br>')}
-  
-            `
+            const html =
             sendEmail(buyerEmail.address, subject, customMessage, html)
         })
         res.json({ ok: true })
