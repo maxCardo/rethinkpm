@@ -283,22 +283,46 @@ router.post('/listings/:listingId/addUnitSch', async (req,res) => {
   const {listingId} = req.params
   const {unit} = req.body
   const listing = await SalesListings.findById(listingId);
-  listing.unitSch.push(unit)
+  for(let i = 0; i < unit.numUnits; i++) {
+    listing.unitSch.push(unit)
+  }
   await listing.save()
   res.json(listing)
 })
 
 router.post('/listings/:listingId/modifyUnitSch', async (req,res) => {
   const {listingId} = req.params
-  const {unit, id} = req.body
+  const {unit, unitType} = req.body
   const listing = await SalesListings.findById(listingId);
-  const newUnitSch = listing.unitSch.map((unitSch) => {
-    if(unitSch._id == id) {
-      return unit
-    } else {
-      return unitSch
+  let changeInTheNumUnits = false
+  for(let i = 0; i < listing.unitSch.length; i++) {
+    const unitSch = listing.unitSch[i]
+    if(unitSch.unitType === unitType) {
+      if(unitSch.numUnits !== unit.numUnits) {
+        changeInTheNumUnits = true
+      }
+      break;
     }
-  })
+  }
+  let newUnitSch = listing.unitSch
+  if(changeInTheNumUnits) {
+    newUnitSch = newUnitSch.filter((unitSch) => unitSch.unitType != unitType)
+    for(let i = 0; i < unit.numUnits; i++) {
+      newUnitSch.push(unit)
+    }
+  } else {
+    newUnitSch = newUnitSch.map((unitSch) => {
+      if(unitSch.unitType == unitType) {
+        const newUnit = {
+          rent: unitSch.rent,
+          ...unit 
+        }
+        return newUnit
+      } else {
+        return unitSch
+      }
+    })
+  }
   listing.unitSch = newUnitSch
   await listing.save()
   res.json(listing)
@@ -306,9 +330,24 @@ router.post('/listings/:listingId/modifyUnitSch', async (req,res) => {
 
 router.post('/listings/:listingId/deleteUnitSch', async (req,res) => {
   const {listingId} = req.params
-  const {id} = req.body
+  const {unitType} = req.body
   const listing = await SalesListings.findById(listingId);
-  const newUnitSch = listing.unitSch.filter((unitSch) => unitSch._id != id)
+  const newUnitSch = listing.unitSch.filter((unitSch) => unitSch.unitType != unitType)
+  listing.unitSch = newUnitSch
+  await listing.save()
+  res.json(listing)
+})
+
+router.post('/listings/:listingId/setRent', async (req,res) => {
+  const {listingId} = req.params
+  const {rent, unitSchId} = req.body
+  const listing = await SalesListings.findById(listingId);
+  const newUnitSch = listing.unitSch.map((unitSch) => {
+    if(unitSch._id == unitSchId) {
+      unitSch.rent = rent
+    }
+    return unitSch
+  })
   listing.unitSch = newUnitSch
   await listing.save()
   res.json(listing)

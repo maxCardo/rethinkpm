@@ -452,11 +452,11 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setVersion(version+1)
   }
 
-  const modifyUnitSchedule = async (unit, id) => {
+  const modifyUnitSchedule = async (unit, unitType) => {
     const listingId = focusedProperty._id;
     const data = {
       unit,
-      id
+      unitType
     }
     const listingUpdated = (await axios.post(`/api/marketplace/ops/listings/${listingId}/modifyUnitSch`, data)).data
     const newListings = listings.map((listing) => {
@@ -471,13 +471,39 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
     setVersion(version+1)
   }
 
-  const deleteUnitSchedule = async (id) => {
+  const deleteUnitSchedule = async (unitType) => {
     const listingId = focusedProperty._id;
     const data = {
-      id
+      unitType
     }
     const listingUpdated = (await axios.post(`/api/marketplace/ops/listings/${listingId}/deleteUnitSch`, data)).data
-    const newListings = listings.filter((listing) => listing._id !== id)
+    const newListings = listings.map((listing) => {
+      if(listing._id === listingUpdated._id) {
+        return listingUpdated
+      } else {
+        return listing
+      }
+    })
+    setFocusedProperty(listingUpdated)
+    setListings(newListings)
+    setVersion(version+1)
+  }
+
+  const setRent = async (rent, unitSchId) => {
+    const listingId = focusedProperty._id;
+    const data = {
+      rent,
+      unitSchId
+    }
+    const listingUpdated = (await axios.post(`/api/marketplace/ops/listings/${listingId}/setRent`, data)).data
+    console.log(listingUpdated)
+    const newListings = listings.map((listing) => {
+      if(listing._id === listingUpdated._id) {
+        return listingUpdated
+      } else {
+        return listing
+      }
+    })
     setFocusedProperty(listingUpdated)
     setListings(newListings)
     setVersion(version+1)
@@ -664,7 +690,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
       <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} property={focusedProperty}
                     handleSubmit={submitAddDataModal}/>
-      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} />
+      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent}/>
     </div>
   )
 }

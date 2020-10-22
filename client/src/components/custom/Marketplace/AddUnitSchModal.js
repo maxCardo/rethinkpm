@@ -22,6 +22,11 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
   }, [editingUnitSch])
 
   const onSubmit = () => {
+    if(editingUnitSch && (editingUnitSch.numUnits !== units)) {
+      if(!window.confirm('Changing the number of units will result in losing the rent data, are you sure you want to change them?')) {
+        return;
+      }
+    }
     const info = {
       unitType,
       bedrooms,  
@@ -34,7 +39,7 @@ const AddUnitSchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
 
     resetData()
     if(editingUnitSch) {
-      handleSubmit(info, editingUnitSch._id)
+      handleSubmit(info, editingUnitSch.unitType)
     } else {
       handleSubmit(info)
     }

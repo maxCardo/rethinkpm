@@ -2,12 +2,15 @@ import React, { Fragment, useState, useEffect } from 'react'
 import Table from '../../core/Table'
 import IconButton from '../../core/IconButton/IconButton'
 import AddUnitSchModal from './AddUnitSchModal'
+import SetRentModal from './SetRentModal'
 
 
-const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule}) => {
+const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent}) => {
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showRentModal, setShowRentModal] = useState(false)
   const [data, setData] = useState(units)
   const [focusedUnitSch, setFocusedUnitSch] = useState(undefined)
+  const [version, setVersion] = useState(0)
 
   useEffect(() => {
     setData(units)
@@ -39,14 +42,25 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, de
       accessor: 'size'
     },
     {
-      label: 'Nº of Units',
-      accessor: 'numUnits'
+      label: 'Rent',
+      accessor: 'rent'
     },
     {
       label: 'Actions',
       reactComponent: true,
       render: (item) => (
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <IconButton 
+            placement='bottom'
+            tooltipContent='Set Rent'
+            id='property-details-tooltip'
+            iconClass='fas fa-dollar-sign'
+            variant='action-button'
+            onClickFunc={() => {
+              setFocusedUnitSch(item);
+              setShowRentModal(true);
+            }}
+          />
           <IconButton 
             placement='bottom'
             tooltipContent='Edit'
@@ -66,7 +80,7 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, de
             iconClass='fas fa-trash'
             variant='action-button'
             onClickFunc={() => {
-              deleteUnitSchedule(item._id)
+              deleteUnitSchedule(item.unitType)
             }}
           />
         </div>
@@ -78,17 +92,24 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, de
     setShowAddModal(true)
   }
 
-  const handleClose = () => {
+  const handleModalClose = () => {
     setFocusedUnitSch(undefined);
     setShowAddModal(false);
+    setShowRentModal(false);
   }
-  const handleSubmit = (unit, id) => {
-    if(id) {
-      modifyUnitSchedule(unit, id)
+  const handleAddUnitSubmit = (unit, unitType) => {
+    if(unitType) {
+      modifyUnitSchedule(unit, unitType)
       setFocusedUnitSch(undefined);
     } else {
       addUnitSchedule(unit)
     }
+  }
+
+  const handleSetRentSubmit = async (rent, id) => {
+    await setRent(rent, id)
+    setVersion(version+1)
+    setFocusedUnitSch(undefined);
   }
 
   return (
@@ -104,8 +125,9 @@ const UnitSchedule = ({units, listingId, addUnitSchedule, modifyUnitSchedule, de
           onClickFunc={handleAdd}
         />
       </div>
-      <Table headers={headers} data={data}/>
-      <AddUnitSchModal show={showAddModal} handleClose={handleClose} handleSubmit={handleSubmit} editingUnitSch={focusedUnitSch} />
+      <Table headers={headers} data={data} version={version} scrolling={true} maxHeight='200px' />
+      <AddUnitSchModal show={showAddModal} handleClose={handleModalClose} handleSubmit={handleAddUnitSubmit} editingUnitSch={focusedUnitSch} />
+      <SetRentModal show={showRentModal} handleClose={handleModalClose} handleSubmit={handleSetRentSubmit} editingUnitSch={focusedUnitSch}/>
     </Fragment>
   )
 }

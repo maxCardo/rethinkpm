@@ -151,7 +151,7 @@ export class Table extends Component {
     const fontSize = this.props.fontSize ? this.props.fontSize : 12;
     return (
       <div>
-        <table className={this.props.className + ' table table-striped'} style={{fontSize: fontSize}}>
+        <table className={this.props.className + ' table table-striped ' + (this.props.scrolling ? 'table-scrollable' : '')} style={{fontSize: fontSize}}>
           <thead>
           <tr>
             {this.state.headers.map((header, index) => (
@@ -165,7 +165,7 @@ export class Table extends Component {
             ))}
           </tr>
           </thead>
-          <tbody>
+          <tbody style={{maxHeight: this.props.maxHeight}}>
           {(this.props.loading || this.state.paginatedData.length > 0) ? (this.state.paginatedData.map((dataItem, index) => (
             <tr
               key={`row-${index}`}
