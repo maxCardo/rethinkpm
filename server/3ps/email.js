@@ -20,13 +20,12 @@ const sendEmail = (to, subject, body, html) => {
     let sendTo;
     process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testEmail)
     let mailOptions = {
-        from: 'no-reply@fifthgrant.com',
+        from: 'adamp@fifthgrant.com',
         to: sendTo,
         subject: subject,
         text: body,
         html: html
     };
-
 
     transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
