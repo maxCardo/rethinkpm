@@ -84,14 +84,14 @@ const emailTemplate = (properties, message) => {
  
   const propertyTemplate = properties.map(property => {
     return `<div style="background-color:transparent;overflow:hidden" class="recommendedProperty"><div class="block-grid two-up"
-                     style="min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">
+                     style="min-width: 320px; max-width: 800px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">
                     <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
                         <!--[if (mso)|(IE)]>
                         <table width="100%" cellpadding="0" cellspacing="0" border="0"
                                style="background-color:transparent;">
                             <tr>
                                 <td align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width:600px">
+                                    <table cellpadding="0" cellspacing="0" border="0" style="width:800px">
                                         <tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
                         <!--[if (mso)|(IE)]>
                         <td align="center" width="200"
@@ -369,25 +369,25 @@ const emailTemplate = (properties, message) => {
                     <td align="center" style="background-color:#f4f4f4; padding-top: 40px;"><![endif]-->
             <div style="background-color:transparent;overflow:hidden">
                 <div class="block-grid "
-                     style="min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: transparent;">
+                     style="min-width: 320px; max-width: 800px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: transparent;">
                     <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
                         <!--[if (mso)|(IE)]>
                         <table width="100%" cellpadding="0" cellspacing="0" border="0"
                                style="background-color:transparent;">
                             <tr>
                                 <td align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width:600px">
+                                    <table cellpadding="0" cellspacing="0" border="0" style="width:800px">
                                         <tr class="layout-full-width" style="background-color:transparent"><![endif]-->
                         <!--[if (mso)|(IE)]>
-                        <td align="center" width="600"
-                            style="background-color:transparent;width:600px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
+                        <td align="center" width="800"
+                            style="background-color:transparent;width:800px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
                             valign="top">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px; text-align: center;">
                         <![endif]-->
                         <div class="col num12"
-                             style="min-width: 320px; max-width: 600px; display: table-cell; vertical-align: top; width: 600px;">
+                             style="min-width: 320px; max-width: 800px; display: table-cell; vertical-align: top; width: 800px;">
                             <div style="width:100% !important;">
                                 <!--[if (!mso)&(!IE)]><!-->
                                 <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
@@ -401,8 +401,8 @@ const emailTemplate = (properties, message) => {
                                         <![endif]--><img class="center autowidth" align="center" border="0"
                                                          src="https://fifthgrant.com/images/email-templates/recommendTemplate-header_top2.png"
                                                          alt="Alternate text" title="Alternate text"
-                                                         style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 600px; display: block;"
-                                                         width="600">
+                                                         style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 800px; display: block;"
+                                                         width="800">
                                         <!--[if mso]></td></tr></table><![endif]-->
                                     </div>
                                     <!--[if (!mso)&(!IE)]><!-->
@@ -417,25 +417,25 @@ const emailTemplate = (properties, message) => {
             </div>
             <div style="background-color:transparent;overflow:hidden;">
                 <div class="block-grid "
-                     style="min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">
+                     style="min-width: 320px; max-width: 800px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">
                     <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
                         <!--[if (mso)|(IE)]>
                         <table width="100%" cellpadding="0" cellspacing="0" border="0"
                                style="background-color:transparent;">
                             <tr>
                                 <td align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width:600px">
+                                    <table cellpadding="0" cellspacing="0" border="0" style="width:800px">
                                         <tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
                         <!--[if (mso)|(IE)]>
-                        <td align="center" width="600"
-                            style="background-color:#ffffff;width:600px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
+                        <td align="center" width="800"
+                            style="background-color:#ffffff;width:800px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
                             valign="top">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;">
                         <![endif]-->
                         <div class="col num12"
-                             style="min-width: 320px; max-width: 600px; display: table-cell; vertical-align: top; width: 600px;">
+                             style="min-width: 320px; max-width: 800px; display: table-cell; vertical-align: top; width: 800px;">
                             <div style="width:100% !important;">
                                 <!--[if (!mso)&(!IE)]><!-->
                                 <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
@@ -465,25 +465,25 @@ const emailTemplate = (properties, message) => {
             </div>
             <div style="background-color:transparent;overflow:hidden">
                 <div class="block-grid "
-                     style="min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">
+                     style="min-width: 320px; max-width: 800px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">
                     <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
                         <!--[if (mso)|(IE)]>
                         <table width="100%" cellpadding="0" cellspacing="0" border="0"
                                style="background-color:transparent;">
                             <tr>
                                 <td align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width:600px">
+                                    <table cellpadding="0" cellspacing="0" border="0" style="width:800px">
                                         <tr class="layout-full-width" style="background-color:#ffffff"><![endif]-->
                         <!--[if (mso)|(IE)]>
-                        <td align="center" width="600"
-                            style="background-color:#ffffff;width:600px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
+                        <td align="center" width="800"
+                            style="background-color:#ffffff;width:800px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
                             valign="top">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td style="padding-right: 0px; padding-left: 0px; padding-top:35px; padding-bottom:35px;">
                         <![endif]-->
                         <div class="col num12"
-                             style="min-width: 320px; max-width: 600px; display: table-cell; vertical-align: top; width: 600px;">
+                             style="min-width: 320px; max-width: 800px; display: table-cell; vertical-align: top; width: 800px;">
                             <div style="width:100% !important;">
                                 <!--[if (!mso)&(!IE)]><!-->
                                 <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:15px; padding-bottom:35px; padding-right: 0px; padding-left: 0px;">
@@ -527,25 +527,25 @@ const emailTemplate = (properties, message) => {
             ${templateString}
             <div style="background-color:transparent;overflow:hidden">
                 <div class="block-grid "
-                     style="min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: transparent;">
+                     style="min-width: 320px; max-width: 800px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: transparent;">
                     <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
                         <!--[if (mso)|(IE)]>
                         <table width="100%" cellpadding="0" cellspacing="0" border="0"
                                style="background-color:transparent;">
                             <tr>
                                 <td align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width:600px">
+                                    <table cellpadding="0" cellspacing="0" border="0" style="width:800px">
                                         <tr class="layout-full-width" style="background-color:transparent"><![endif]-->
                         <!--[if (mso)|(IE)]>
-                        <td align="center" width="600"
-                            style="background-color:transparent;width:600px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
+                        <td align="center" width="800"
+                            style="background-color:transparent;width:800px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
                             valign="top">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td style="padding-right: 0px; padding-left: 0px; padding-top:20px; padding-bottom:20px;">
                         <![endif]-->
                         <div class="col num12"
-                             style="min-width: 320px; max-width: 600px; display: table-cell; vertical-align: top; width: 600px;">
+                             style="min-width: 320px; max-width: 800px; display: table-cell; vertical-align: top; width: 800px;">
                             <div style="width:100% !important;">
                                 <!--[if (!mso)&(!IE)]><!-->
                                 <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:20px; padding-bottom:20px; padding-right: 0px; padding-left: 0px;">
