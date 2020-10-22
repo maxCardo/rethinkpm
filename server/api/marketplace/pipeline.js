@@ -15,7 +15,7 @@ router.use(auth);
 // @route: POST api/marketplace/pipeline/testRecommend
 // @desc: recomend propertie(s) to buyer(s) with email templet
 // @ access: Public
-router.post('/testRecommend', async (req, res) => {
+router.post('/recommend', async (req, res) => {
     try {
         const { properties, buyers: buyersId, customMessage, agentId } = req.body
         const propertiesFetched = await Promise.all(properties.map((propertyId => SalesListings.findById(propertyId))))
