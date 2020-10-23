@@ -197,7 +197,7 @@ const emailTemplate = (properties, message) => {
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
-                                                            <a target="_blank" href="http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${property._id}&mode=recommend">More Details</a>
+                                                            <a target="_blank" href="http://fifthgrant.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${property._id}&mode=recommend">More Details</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
