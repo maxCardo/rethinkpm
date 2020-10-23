@@ -25,7 +25,7 @@ const schoolDistrictOptions = require('../../config/supportData/schoolDistricts'
 const { filter } = require('../../config/supportData/areas')
 
 // @route: post /api/marketPlace/ops/recommend
-// @desc: 
+// @desc: ---- depricated ---- migrated to /recomed in pipline
 // @ access: Public
 router.post('/recommend', auth, async (req, res) => {
     try {

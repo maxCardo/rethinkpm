@@ -38,8 +38,10 @@ export const closeStreetView = () => dispatch => {
 export const syncManagedBuyer = (buyer) => async dispatch => {
     try {
         //ToDo: send dispatch to set loading tp true
-        //const res = await axios.post('/api/marketplace/pipeline/sync', buyer, config)
-        console.log('this was sync managed')
+        console.log('running');
+        console.log(buyer);
+        const res = await axios.get(`/api/marketplace/pipeline/sync/${buyer}`)
+
         // dispatch({
         //     type: SET_BUYER_PIPELINE,
         //     payload: data
