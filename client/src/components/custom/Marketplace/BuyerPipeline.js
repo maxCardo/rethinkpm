@@ -171,7 +171,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
               variant='action-button'
               onClickFunc={() => {
                 setIframeTarget(
-                  `https://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`
+                  `https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`
                 );
                 setShowPropertyDetailsModal(true);
               }}
@@ -182,7 +182,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
               id='link-tooltip'
               iconClass='fas fa-link'
               variant='link'
-              href={`https://cardo.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`}
+              href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.deal.listNumber}`}
             />
             {item.deal.streetName && item.deal.streetNumber && (
               <IconButton
