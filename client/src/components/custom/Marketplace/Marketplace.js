@@ -256,7 +256,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       iconClass='fas fa-list'
                       variant='action-button'
                       onClickFunc={() => {
-                        setIframeTarget(`https://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
+                        setIframeTarget(`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
                         setShowPropertyDetailsModal(true);
                       }}
           />
@@ -265,7 +265,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
                       id='link-tooltip'
                       iconClass='fas fa-link'
                       variant='link'
-                      href={`https://cardo.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
+                      href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
           />
           {(item.streetName && item.streetNumber) && (
             <IconButton placement='bottom'
