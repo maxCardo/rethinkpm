@@ -14,7 +14,7 @@ import {checkBoxCheck, useWindowSize} from "../../../util/commonFunctions";
 import { afterMain } from '@popperjs/core';
 import DetailModal from './DetailModal'
 
-const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pipeline:{buyerPipeline, loading}}) => {
+const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal, syncManagedBuyer, pipeline:{buyerPipeline, loading}}) => {
 
   const [showStreetViewModal, setShowStreetViewModal] = useState(true)
   const [showDead, setShowDead] = useState(false)
@@ -113,6 +113,10 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal,pi
     {
       accessor: 'deal.propertyType',
       label: 'Type',
+    },
+    {
+      accessor: 'deal.listNumber',
+      label: "MLS ID"
     },
     {
       accessor: 'deal.listDate',
@@ -270,4 +274,4 @@ const mapStateToProps = state => ({
     pipeline: state.marketplace
 })
 
-export default connect(mapStateToProps, {openStreetView, getBuyerPipeline,updateDeal})(BuyerPipeline)
+export default connect(mapStateToProps, {openStreetView, getBuyerPipeline,updateDeal, syncManagedBuyer})(BuyerPipeline)
