@@ -1,11 +1,12 @@
-const { sendEmail } = require('../../3ps/email')
+const { sendEmail } = require('../../../3ps/email')
 const express = require('express');
-const auth = require('../../middleware/auth');
-const SalesListings = require('../../db/models/sales/SalesListings');
-const Pipeline = require('../../db/models/sales/Pipeline');
-const BuyerPros = require('../../db/models/prospects/BuyerPros')
-const {addIdxListing, removeIdxListing, getIdxSavedListings} = require('../../3ps/idx')
-const {emailTemplate} = require('../../templets/recommendProps')
+const auth = require('../../../middleware/auth');
+const SalesListings = require('../../../db/models/sales/SalesListings');
+const Pipeline = require('../../../db/models/sales/Pipeline');
+const BuyerPros = require('../../../db/models/prospects/BuyerPros')
+const {addIdxListing, removeIdxListing, getIdxSavedListings} = require('../../../3ps/idx')
+const {emailTemplate} = require('../../../templets/recommendProps')
+const {syncPipeline} = require('./scripts')
 
 
 const router = express.Router();
@@ -50,6 +51,7 @@ router.put('/status', async (req, res) => {
             const idxDealId = await addIdxListing(deal.buyer.idxId, deal.deal.listNumber)
             deal.idxDealId = idxDealId
         }else if (action === 'dead' && deal.status === 'liked') {
+            console.log(deal.buyer.idxId, deal.idxDealId);
             removeIdxListing(deal.buyer.idxId, deal.idxDealId)            
         }
         deal.history.push({
@@ -71,52 +73,10 @@ router.put('/status', async (req, res) => {
 // @desc: Sync and update buyer pipeline deals with website
 // @ access: Public * ToDo: update to make private
 router.get('/sync/:id', async (req, res) => {
-    try {
-        console.log('got it');
-        const deals = await Pipeline.find({ buyer: req.params.id }).populate('buyer').populate('deal')
-        const idxDeals = await getIdxSavedListings(deals[0].buyer.idxId)
-        const idxDealIds = idxDeals.data.map(record => record.property.listingID)
-
-        const activeDeals =  deals.filter(record => record.status != 'dead').map(record => record.deal.listNumber)
-        const deadDeals = deals.filter(record => record.status === 'dead').map(record => record.deal.listNumber)
-        idxDealIds.map(async (id) => {
-            console.log(activeDeals.includes(id));
-            if (!activeDeals.includes(id)) {
-                console.log(id);
-                console.log('deal: ', deals.find(record => record.deal.listNumber === id)._id);
-                const newDeal = await new Pipeline({
-                    buyer: req.params.id,
-                    deal: deals.find(record => record.deal.listNumber === id)._id,
-                    status: 'liked',
-                    history: [
-                        {
-                            event: 'liked',
-                            statusTo: 'liked',
-                            note: 'user liked deal from website'
-                        },
-                    ],
-                })
-                //await newDeal.save
-                console.log('newDeal: ', newDeal);
-
-            }else if (deadDeals.includes(id)) {  
-                const deal = deals.find(record => record.deal.listNumber === id)
-                const update = await Pipeline.findOne({_id: deal._id})
-                update.active = true
-                update.history.push({
-                    event: 'updated status',
-                    statusFrom: update.status,
-                    statusTo: 'liked',
-                    note: 'user reliked deal from website',
-                });
-                update.status = 'liked'
-                console.log(update);
-                //await update.save()  
-            }
-        })
-
-        res.status(200).send('ok');
-
+    try { 
+        const pipeline = await syncPipeline(req.params.id)
+        console.log('pipeline: ', pipeline.filter(record => record.status === 'liked').map(record => record.deal.listNumber))
+        res.status(200).send(pipeline)
     } catch (err) {
         console.error(err)
         res.status(500).send('err');

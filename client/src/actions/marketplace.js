@@ -37,15 +37,15 @@ export const closeStreetView = () => dispatch => {
 //request to back end to check update thenbuyers pipeline based on liked properties on the website and resend pipeline data.
 export const syncManagedBuyer = (buyer) => async dispatch => {
     try {
-        //ToDo: send dispatch to set loading tp true
-        console.log('running');
-        console.log(buyer);
+        dispatch({
+            type: SET_PIPELINE_LOADING
+        })
         const res = await axios.get(`/api/marketplace/pipeline/sync/${buyer}`)
-
-        // dispatch({
-        //     type: SET_BUYER_PIPELINE,
-        //     payload: data
-        // })
+        console.log(res);
+        dispatch({
+             type: SET_BUYER_PIPELINE,
+             payload: res.data
+        })
     } catch (err) {
         dispatch(createErrorAlert(err.message, 'setManagedBuyer action'))
     }
