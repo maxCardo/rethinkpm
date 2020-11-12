@@ -179,6 +179,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [version, setVersion] = useState(0)
   const [tablePageSize, setTablePageSize] = useState(10)
   const [iframeTarget, setIframeTarget] = useState('')
+  const [propertyToBlackList, setPropertyToBlackList] = useState(undefined)
   const tableContainerHeight = useRef(null);
   const size = useWindowSize();
 
@@ -295,7 +296,7 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
              focus etc states because it's a button, or even a separate variant if needed*/
                       btnClass='text-danger'
                       needsConfirmation={true}
-                      onClickFunc={() => blacklistListing(item._id)}
+                      onClickFunc={() => setPropertyToBlackList(item._id)}
           />
         </div>
       )
@@ -426,6 +427,11 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
       const listingsBlacklisted = listings.filter((listing) => listing._id !== listingId)
       setListings(listingsBlacklisted)
     }
+  }
+
+  if(propertyToBlackList) {
+    blacklistListing(propertyToBlackList)
+    setPropertyToBlackList(undefined)
   }
 
   const startShowDetailFlow = (item) => {
