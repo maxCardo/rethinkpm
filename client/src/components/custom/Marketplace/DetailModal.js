@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {Modal, Button} from 'react-bootstrap';
 import VerticalTable from '../../core/VerticalTable/VerticalTable';
 import UnitSchedule from './UnitSchedule'
@@ -119,11 +119,20 @@ const headers = [
 
 
 const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent}) => {
-  if(!data) return ''
-  
+  const [subRent, setSubRent] = useState()
+  const [price, setPrice] = useState()
 
-  const subRent = data.data.rents.HA.success ? rentTiers[data.rents.HA.tier] : null
-  const price = data.currentPrice ? data.currentPrice : data.listPrice 
+  useEffect(() => {
+    if (data) {
+      console.log('data: ', data)
+      const subRent = data.data.rents.HA.success ? rentTiers[data.rents.HA.tier] : null
+      const price = data.currentPrice ? data.currentPrice : data.listPrice
+      setSubRent(subRent)
+      setPrice(price) 
+    }
+  }, [data])
+  
+  if (!data) return ''
 
   return (
     <Modal size='xl' show={show} onHide={handleClose}>

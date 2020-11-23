@@ -171,6 +171,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
   const [showPropertyDetailsModal, setShowPropertyDetailsModal] = useState(false)
   const [showRecommendationModal, setShowRecommendationModal] = useState(false)
   const [focusedProperty, setFocusedProperty] = useState(undefined)
+  const [recomendedProperty, setRecProps] = useState(undefined)
   const [showSaveFilterModal, setShowSaveFilterModal] = useState(false);
   const [savedFilters, setSavedFilters] = useState([])
   const [selectedFilter, setSelectedFilter] = useState(undefined)
@@ -364,7 +365,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
   }
 
   const startRecommendationFlow = (properties) => {
-    setFocusedProperty(properties.map(property => property._id))
+    setRecProps(properties.map(property => property._id))
     if(properties.length > 1) {
       setShowRecommendationModal(true)
     } else {
@@ -385,7 +386,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
 
   const submitRecommendationModal = (buyers, customMessage) => {
     const data = {
-      properties: focusedProperty,
+      properties: recomendedProperty,
       buyers: buyers,
       customMessage: customMessage
     }
