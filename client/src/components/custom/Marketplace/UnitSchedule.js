@@ -19,13 +19,15 @@ const UnitSchedule = ({units, listPrice, addUnitSchedule, modifyUnitSchedule, de
     let data = units
     const areaRent = areaRents.filter(area => area.searchName === zip)
     const totalCurrentRents = units.reduce((acc, unit) => acc + unit.rent, 0);
+    console.log('total current: ', totalCurrentRents);
     let totalAreaRents
     let totalSubRents
     if (areaRent.length) {
       console.log('areaRent: ', areaRent);
       console.log('units: ', units);
       data = units.map((unit) => {
-        unit.areaRent = Number(areaRent[0].marketPrice[`_${unit.bedrooms}BD`].med.replace('$', ''));
+        console.log(areaRent[0].marketPrice[`_${unit.bedrooms}BD`].med.replace(/[$,]/, ''));
+        unit.areaRent = Number(areaRent[0].marketPrice[`_${unit.bedrooms}BD`].med.replace(/[$,]/g, ''));
         return unit;
       });
       console.log('moreData: ', data);
@@ -79,7 +81,7 @@ const UnitSchedule = ({units, listPrice, addUnitSchedule, modifyUnitSchedule, de
     },
     {
       label: ' Subsidy Rent',
-      accessor: 'rent'
+      accessor: 'subRent'
     },
 
     {
@@ -149,6 +151,12 @@ const UnitSchedule = ({units, listPrice, addUnitSchedule, modifyUnitSchedule, de
     setFocusedUnitSch(undefined);
   }
 
+  const grm = {
+    inPlace: totalRents.currentRents > 0 ? (listPrice / (totalRents.currentRents * 12)).toFixed(1) : 'n/a',
+    area: totalRents.areaRents ? (listPrice / (totalRents.areaRents * 12)).toFixed(1) : 'n/a',
+    sub: totalRents.subRents ? (listPrice / (totalRents.subRents * 12)).toFixed(1) : 'n/a'
+  }
+
   return (
     <Fragment>
       <div style={{marginBottom: 5}}>
@@ -166,7 +174,7 @@ const UnitSchedule = ({units, listPrice, addUnitSchedule, modifyUnitSchedule, de
       <div>
         <p>
           Total Rents: InPlace: {totalRents.currentRents} | Area: {totalRents.areaRents}  | Subsidy: {totalRents.subRents} <br/>         
-          GRM: InPlace: {(listPrice/(totalRents.currentRents*12)).toFixed(1)} | Area: {(listPrice/(totalRents.areaRents*12)).toFixed(1)}  | Subsidy: {(listPrice/(totalRents.subRents*12)).toFixed(1)} 
+          GRM: InPlace: {grm.inPlace} | Area: {grm.area}  | Subsidy: {grm.sub} 
         </p>
       </div>
       <AddUnitSchModal show={showAddModal} handleClose={handleModalClose} handleSubmit={handleAddUnitSubmit} editingUnitSch={focusedUnitSch} />
