@@ -12,13 +12,14 @@ import Select from 'react-select'
 import {createErrorAlert} from '../../../actions/alert';
 import AddDataModal from './AddDataModal';
 import StreetViewModal from "./StreetViewModal";
-import {openStreetView} from "../../../actions/marketplace";
+import {openStreetView, getAreaRents} from "../../../actions/marketplace";
 import DetailModal from './DetailModal'
 import PropertyDetailsModal from "./PropertyDetailsModal";
 import {useWindowSize} from "../../../util/commonFunctions";
 import FullScreenTable from '../../core/FullScreenTable/FullScreenTable';
 import {checkBoxCheck} from '../../../util/commonFunctions'
 import FileDownload from 'js-file-download'
+import { afterMain } from '@popperjs/core';
 
 const FILTERFIELDS = {
   type: {
@@ -159,7 +160,7 @@ const FILTERFIELDS = {
 //   ]
 // }
 
-const Marketplace = ({createErrorAlert, openStreetView}) => {
+const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
 
   const [loading, setLoading] = useState(false)
   const [listings, setListings] = useState([])
@@ -306,6 +307,11 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
   const [headers, setHeaders] = useState(HEADERS)
   const [checkFlowActive, setCheckFlowActive] = useState(false)
   let [checkFlowList, setCheckFlowList] = useState([])
+
+
+  useEffect(() => {
+    getAreaRents()
+  },[])
 
   const fetchData = async (cancelToken) => {
     setLoading(true)
@@ -702,4 +708,4 @@ const Marketplace = ({createErrorAlert, openStreetView}) => {
 }
 
 
-export default connect(undefined, {createErrorAlert, openStreetView})(Marketplace)
+export default connect(undefined, {createErrorAlert, openStreetView, getAreaRents})(Marketplace)

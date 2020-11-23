@@ -5,13 +5,14 @@ const SalesListings = require('../../db/models/sales/SalesListings')
 const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const Pipeline = require('../../db/models/sales/Pipeline')
 const MarketFilter = require('../../db/models/sales/MarketFilter')
+const AreaRents = require('../../db/models/sales/AreaRents')
 const { parse } = require('json2csv');
 const fs = require('fs')
 const path = require('path')
 
 const router = express.Router()
 
-router.use(auth)
+//router.use(auth)
 
 //filter options: refactor to get these from api
 const zipcodeOptions = require('../../config/supportData/zipcodes')
@@ -105,9 +106,6 @@ router.post('/filters/:filterId/blacklist', async (req, res) => {
   await marketFilter.save()
 });
 
-
-
-
 // @route: GET /api/marketplace/ops/filterOptions
 // @desc: Get options for filter fields used by filter filtersModal comp (agentPros) 
 // @ access: Public * ToDo: update to make private
@@ -138,8 +136,6 @@ router.get('/filterOptions', async (req, res) => {
       res.status(400).send('server error')
   }
 });
-
-
 
 // @route: GET /api/marketplace/ops/listings/filter
 // @desc: Filter the listings
@@ -268,7 +264,6 @@ function convertFiltersToQuery(filters) {
   return queryObj
 }
 
-
 router.post('/listings/:listingId/addData', async (req,res) => {
   const {listingId} = req.params
   const {condition, numUnits} = req.body
@@ -357,6 +352,20 @@ router.post('/exportCsv', async (req, res) => {
   const {list} = req.body;
   const csv = parse(list)
   res.send(csv)
+})
+
+
+// @route: GET /api/marketplace/ops/area_rent
+// @desc: get list of area rents available
+// @ access: Public * ToDo: update to make private
+router.get('/area_rent', async (req, res) => {
+ try {
+   const rents = await AreaRents.find({'data.success': true})
+   res.status(200).send(rents);   
+ } catch (err) {
+   console.error(err);
+   res.send(500).send('server error')
+ } 
 })
 
 module.exports = router

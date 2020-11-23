@@ -1,4 +1,4 @@
-import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING} from './type';
+import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS} from './type';
 import {createErrorAlert} from "./alert";
 import axios from "axios";
 
@@ -103,5 +103,19 @@ export const likeProperty =  (buyerId, propertyId) => async dispatch => {
 
     } catch (err) {
         dispatch(createErrorAlert(err.message, 'Get Buyer Pipeline'))
+    }
+}
+
+//change status on pipeline deal from recomened to liked
+export const getAreaRents = () => async dispatch => {
+    try {
+        const res = await axios.get('/api/marketplace/ops/area_rent')
+        dispatch({
+            type: SET_AREA_RENTS,
+            payload: res.data
+        })
+
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'Set area rents'))
     }
 }

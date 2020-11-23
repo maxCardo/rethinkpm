@@ -120,6 +120,11 @@ const headers = [
 
 const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent}) => {
   if(!data) return ''
+  
+
+  const subRent = data.data.rents.HA.success ? rentTiers[data.rents.HA.tier] : null
+  const price = data.currentPrice ? data.currentPrice : data.listPrice 
+
   return (
     <Modal size='xl' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -130,7 +135,8 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
           {data.propertyType === 'multi' &&
             <Fragment>
               <h4>Unit Schedule</h4>
-              <UnitSchedule units={data.unitSch} listingId={data._id} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent}/>
+              {console.log('rentTiers DM: ',subRent)}
+              <UnitSchedule units={data.unitSch} listPrice={price} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent} zip={data.zipcode} subRents={subRent}/>
             </Fragment>
           }
       </Modal.Body>
