@@ -15,7 +15,7 @@ router.use(auth);
 
 // @route: Get api/marketplace/pipeline
 // @desc: get pipeline deals for a buyerPros
-// @ access: Public
+// @ access: private
 router.get('/', async (req, res) => {
     try {
         let pipeline = await Pipeline.find({}).populate('deal')
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
 
 // @route: Get api/marketplace/pipeline
 // @desc: get pipeline deals for a buyerPros
-// @ access: Public
+// @ access: private
 router.get('/:id', async (req, res) => {
  try {
     let buyerId = req.params.id;
@@ -41,7 +41,7 @@ router.get('/:id', async (req, res) => {
 
  // @route: Put api/marketplace/pipeline/trash
 // @desc: update deal status
-// @ access: Public
+// @ access: private
 router.put('/status', async (req, res) => {
     try { 
         //TODO: change status from recommend to dead
@@ -71,7 +71,7 @@ router.put('/status', async (req, res) => {
 
 // @route: GET /api/marketplace/pipeline/sync;
 // @desc: Sync and update buyer pipeline deals with website
-// @ access: Public * ToDo: update to make private
+// @ access: private * ToDo: update to make private
 router.get('/sync/:id', async (req, res) => {
     try { 
         const pipeline = await syncPipeline(req.params.id)
@@ -85,7 +85,7 @@ router.get('/sync/:id', async (req, res) => {
 
 // @route: POST api/marketplace/pipeline/testRecommend
 // @desc: recomend propertie(s) to buyer(s) with email templet
-// @ access: Public
+// @ access: private
 router.post('/recommend', async (req, res) => {
     try {
         const { properties, buyers: buyersId, customMessage, agentId } = req.body
@@ -138,11 +138,11 @@ router.post('/recommend', async (req, res) => {
     }
 })
 
-// @route: POST api/marketplace/pipeline/testRecommend
+// @route: GET api/marketplace/pipeline/testRecommend
 // @desc: serve up recomend email templet for testing with sample data
-// @ access: Public
-router.get('/testRecommend', async (req, res) => {
-    const properties = await SalesListings.find().sort([['listDate', -1]]).limit(5)
+// @ access: private
+router.get('/render/testRecommend', async (req, res) => {
+    const properties = await SalesListings.find({propertyType: 'multi', county: /allegheny/i}).sort([['listDate', -1]]).limit(2)
     const customMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation"
     const html = await emailTemplate(properties, customMessage);
     res.send(html)

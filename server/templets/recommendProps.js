@@ -1,3 +1,5 @@
+const AreaRents = require('../db/models/sales/AreaRents')
+
 const formatMoney = (data) => {
   if (!data) return '';
   return (new Intl.NumberFormat('en-US',
@@ -81,8 +83,46 @@ const emailTemplate = (properties, message) => {
  };
 
    
- 
-  const propertyTemplate = properties.map(property => {
+  const propertyTemplate = properties.map((property) => {
+
+    //const areaRents = await AreaRents.findOne({searchName: property.zipcode, 'data.success': true})
+    //console.log(areaRents);
+    
+    const units = property.unitSch
+    let data
+    //console.log('property: ', property.unitSch);
+    const totalRent = property.unitSch.reduce((acc, unit) => acc+unit.rent,0)
+    //console.log(totalRent);
+    const subRents = property.data.rents.HA.success ? rentTiers[property.rents.HA.tier] : null
+    //console.log('subRents: ', subRents)
+    let totalSubRent 
+    const grm = ''
+    const unitBreakdown = property.unitSch.map((unit, i) => ` Unit-${i+1}: ${unit.bedrooms}B${unit.bathsFull} Rent: ${unit.rent} |`)
+    console.log(unitBreakdown);
+
+    if (subRents) {
+      data = units.map((unit) => {
+        const {rent, bedrooms, bathsFull} = unit
+        let unitObj = {rent, bedrooms, bathsFull};
+        unitObj.subRent = subRents[`${unit.bedrooms}BD`];
+        //unitObj.rent = unit.rent
+        return unitObj;
+      });
+      totalSubRent = data.reduce((acc, unit) => acc + unit.subRent, 0); 
+    }
+    // if (areaRents) {
+    //     console.log('areaRents if fired: ', areaRents);
+    //   data = data.map((unit) => {
+    //     let unitObj = unit;
+    //     unitObj.areaRent = subRents[`_${unit.bedrooms}BD`];
+    //     return unitObj;
+    //   });
+    //   totalareaRent = data.reduce((acc, unit) => acc + unit.areaRent, 0);
+    // }
+    //console.log('data: ', data);
+    
+
+
     return `<div style="background-color:transparent;overflow:hidden" class="recommendedProperty"><div class="block-grid two-up"
                      style="min-width: 320px; max-width: 800px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; width: 100%; background-color: #ffffff;">
                     <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
@@ -191,7 +231,8 @@ const emailTemplate = (properties, message) => {
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
                                                             Rent Tier: ${property.rents.HA.tier} <br>
-                                                            Area Rents:${property.rents.HA.tier ?  ` eff: ${rentTiers[property.rents.HA.tier].eff} | 1BD: ${rentTiers[property.rents.HA.tier]['1BD']} | 2BD: ${rentTiers[property.rents.HA.tier]['2BD']} | 3BD: ${rentTiers[property.rents.HA.tier]['3BD']} | 4BD: ${rentTiers[property.rents.HA.tier]['4BD']}` : 'N/A'}
+                                                            Area Rents:${property.rents.HA.tier ?  ` eff: ${rentTiers[property.rents.HA.tier].eff} | 1BD: ${rentTiers[property.rents.HA.tier]['1BD']} | 2BD: ${rentTiers[property.rents.HA.tier]['2BD']} | 3BD: ${rentTiers[property.rents.HA.tier]['3BD']} | 4BD: ${rentTiers[property.rents.HA.tier]['4BD']}` : 'N/A'} <br>
+                                                            Units: ${unitBreakdown}
                                                          </td>
                                                     </tr>                                                
                                                     <tr style="vertical-align: top;" valign="top">
