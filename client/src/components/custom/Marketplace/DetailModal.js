@@ -119,20 +119,22 @@ const headers = [
 
 
 const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent}) => {
+  const [prop, setProp] = useState()
   const [subRent, setSubRent] = useState()
   const [price, setPrice] = useState()
 
   useEffect(() => {
-    if (data) {
-      console.log('data: ', data)
+    const prop = data
+    if (prop) {
       const subRent = data.data.rents.HA.success ? rentTiers[data.rents.HA.tier] : null
       const price = data.currentPrice ? data.currentPrice : data.listPrice
       setSubRent(subRent)
       setPrice(price) 
     }
+    setProp(prop)
   }, [data])
   
-  if (!data) return ''
+  if (!prop) return ''
 
   return (
     <Modal size='xl' show={show} onHide={handleClose}>
@@ -140,12 +142,12 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
         <Modal.Title>Details</Modal.Title>
       </Modal.Header>
       <Modal.Body >
-          <VerticalTable  headers={headers} data={data}/>
-          {data.propertyType === 'multi' &&
+          <VerticalTable  headers={headers} data={prop}/>
+          {prop.propertyType === 'multi' &&
             <Fragment>
               <h4>Unit Schedule</h4>
               {console.log('rentTiers DM: ',subRent)}
-              <UnitSchedule units={data.unitSch} listPrice={price} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent} zip={data.zipcode} subRents={subRent}/>
+              <UnitSchedule units={prop.unitSch} listPrice={price} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent} zip={prop.zipcode} subRents={subRent}/>
             </Fragment>
           }
       </Modal.Body>
