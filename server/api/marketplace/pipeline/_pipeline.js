@@ -11,7 +11,7 @@ const {syncPipeline} = require('./scripts')
 
 const router = express.Router();
 
-router.use(auth);
+//router.use(auth);
 
 // @route: Get api/marketplace/pipeline
 // @desc: get pipeline deals for a buyerPros
@@ -142,7 +142,7 @@ router.post('/recommend', async (req, res) => {
 // @desc: serve up recomend email templet for testing with sample data
 // @ access: private
 router.get('/render/testRecommend', async (req, res) => {
-    const properties = await SalesListings.find({propertyType: 'multi', county: /allegheny/i}).sort([['listDate', -1]]).limit(3)
+    const properties = await SalesListings.find({propertyType: 'res'}).sort([['listDate', -1]]).limit(20)
     const customMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation"
     const html = await emailTemplate(properties, customMessage);
     res.send(html)

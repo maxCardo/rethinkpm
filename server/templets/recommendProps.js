@@ -86,25 +86,26 @@ const emailTemplate = async (properties, message) => {
 
   const areaRentsArr = await AreaRents.find({searchName: {$in: properties.map(prop => prop.zipcode)}})
   
- 
-
   const propertyTemplate = properties.map((property) => {
 
     const areaRent = areaRentsArr.filter(x => searchName = property.zipcode)[0].marketPrice
     const areaRentStr = `1BD ${areaRent._1BD.med} | 2BD ${areaRent._2BD.med} | 3BD ${areaRent._3BD.med} | 4BD ${areaRent._4BD.med}`;  
+    const subRents = property.data.rents.HA.success ? rentTiers[property.rents.HA.tier] : null
+
     const totalRent = property.unitSch.reduce((acc, unit) => acc+unit.rent,0)
     const totalAreaRent = property.unitSch.reduce((acc, unit) =>{
         const areaRentCalc = Number(areaRent[`_${unit.bedrooms}BD`].med.replace(/[$ ,]/g, ''))
         return areaRentCalc + acc
     },0)
-    const subRents = property.data.rents.HA.success ? rentTiers[property.rents.HA.tier] : null
     const  totalSubRent = property.unitSch.reduce((acc, unit) =>{
         const subRentCalc = subRents[`${unit.bedrooms}BD`];
         return subRentCalc + acc
     },0) 
     const price = property.currentPrice ? property.currentPrice : property.listPrice 
     const grm = `Current: ${(price/(totalRent*12)).toFixed(1)} | Subsidy: ${(price/(totalSubRent*12)).toFixed(1)} | Area: ${(price/(totalAreaRent*12)).toFixed(1)}`;
-    const unitBreakdown = property.unitSch.map((unit, i) => ` Unit-${i+1}: ${unit.bedrooms}B${unit.bathsFull} Rent: ${unit.rent} |`) 
+    const unitBreakdown = property.unitSch.map((unit, i) => ` Unit-${i+1}: ${unit.bedrooms}B${unit.bathsFull} Rent: ${unit.rent} |`)     
+    
+    
 
 
     return `<div style="background-color:transparent;overflow:hidden" class="recommendedProperty"><div class="block-grid two-up"
@@ -209,35 +210,39 @@ const emailTemplate = async (properties, message) => {
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
-                                                            ${property.propertyType === "multi" ? "Multi-Unit | Zoning: "+ property.zoning+ '<br>' + property.numUnits + ' Units | ' + property.buildingSize+ ' SqFt'   : ""} ${property.propertyType === "res" ? "Residential | Zoning: "+ property.zoning : ""}
+                                                            ${property.propertyType === "multi" ? "Multi-Unit | Zoning: "+ property.zoning ? property.zoning : ' N/A' + '<br>' + property.numUnits + ' Units | ' + property.buildingSize+ ' SqFt'   : ""} 
+                                                            ${property.propertyType === "res" ? "Residential | Zoning: " + (property.zoning ? property.zoning : 'N/A') : ""}
                                                         </td>
                                                     </tr>
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
-                                                            Rent Tier: ${property.rents.HA.tier} <br>
-                                                            Subsidy Rents:${property.rents.HA.tier ?  ` eff: ${rentTiers[property.rents.HA.tier].eff} | 1BD: ${rentTiers[property.rents.HA.tier]['1BD']} | 2BD: ${rentTiers[property.rents.HA.tier]['2BD']} | 3BD: ${rentTiers[property.rents.HA.tier]['3BD']} | 4BD: ${rentTiers[property.rents.HA.tier]['4BD']}` : 'N/A'} <br>
+                                                            Rent Tier: ${property.rents.HA.tier ? property.rents.HA.tier : ' N/A' } <br>
+                                                            Subsidy Rents:${property.rents.HA.tier ?  ` eff: ${rentTiers[property.rents.HA.tier].eff} | 1BD: ${rentTiers[property.rents.HA.tier]['1BD']} | 2BD: ${rentTiers[property.rents.HA.tier]['2BD']} | 3BD: ${rentTiers[property.rents.HA.tier]['3BD']} | 4BD: ${rentTiers[property.rents.HA.tier]['4BD']}` : ' N/A'} <br>
                                                             Area Rents: ${areaRentStr}
                                                          </td>
                                                     </tr>
-                                                    <tr style="vertical-align: top;" valign="top">
+                                                    ${property.propertyType !== 'multi' ? '' : `
+                                                        <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
                                                             Current Rent Roll:<br> ${unitBreakdown}
                                                         </td>
-                                                    </tr>
-                                                    <tr style="vertical-align: top;" valign="top">
-                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                            valign="top">
-                                                            Rent Totals:<br> Current: ${totalRent} | Subsidy: ${totalSubRent} | Area: ${totalAreaRent}
-                                                        </td>
-                                                    </tr>   
-                                                     <tr style="vertical-align: top;" valign="top">
-                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                            valign="top">
-                                                            GRM:<br> Current: ${grm}
-                                                        </td>
-                                                    </tr>                                                     
+                                                        </tr>
+                                                        <tr style="vertical-align: top;" valign="top">
+                                                            <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                                valign="top">
+                                                                Rent Totals:<br> Current: ${totalRent} | Subsidy: ${totalSubRent} | Area: ${totalAreaRent}
+                                                            </td>
+                                                        </tr>   
+                                                        <tr style="vertical-align: top;" valign="top">
+                                                            <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                                valign="top">
+                                                                GRM:<br> ${grm}
+                                                            </td>
+                                                        </tr>
+                                                    `}
+                                                                                                         
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
