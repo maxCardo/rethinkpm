@@ -15,22 +15,16 @@ const UnitSchedule = ({units, listPrice, addUnitSchedule, modifyUnitSchedule, de
   const [version, setVersion] = useState(0)
 
   useEffect(() => {
-    console.log('subRents: ', subRents)
     let data = units
     const areaRent = areaRents.filter(area => area.searchName === zip)
     const totalCurrentRents = units.reduce((acc, unit) => acc + unit.rent, 0);
-    console.log('total current: ', totalCurrentRents);
     let totalAreaRents
     let totalSubRents
     if (areaRent.length) {
-      console.log('areaRent: ', areaRent);
-      console.log('units: ', units);
       data = units.map((unit) => {
-        console.log(areaRent[0].marketPrice[`_${unit.bedrooms}BD`].med.replace(/[$,]/, ''));
         unit.areaRent = Number(areaRent[0].marketPrice[`_${unit.bedrooms}BD`].med.replace(/[$,]/g, ''));
         return unit;
       });
-      console.log('moreData: ', data);
       totalAreaRents = data.reduce((rents, unit) => rents + unit.areaRent,0)
     }
     if (subRents) {

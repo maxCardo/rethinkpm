@@ -1,4 +1,5 @@
-const AreaRents = require('../db/models/sales/AreaRents')
+const AreaRents = require('../db/models/sales/AreaRents');
+const { AvailablePhoneNumberCountryPage } = require('twilio/lib/rest/api/v2010/account/availablePhoneNumber');
 
 const formatMoney = (data) => {
   if (!data) return '';
@@ -7,13 +8,14 @@ const formatMoney = (data) => {
   ).format(data))
 }
 
-const emailTemplate = (properties, message) => {
+const emailTemplate = async (properties, message) => {
  const mlsStatus = {
    A: 'Active',
    C: 'Contingent',
    S: 'Sold',
    X: 'expired',
    W: 'withdrawn',
+   U: 'Under Contract'
  };
 
  const rentTiers = {
@@ -82,44 +84,27 @@ const emailTemplate = (properties, message) => {
    },
  };
 
-   
+  const areaRentsArr = await AreaRents.find({searchName: {$in: properties.map(prop => prop.zipcode)}})
+  
   const propertyTemplate = properties.map((property) => {
 
-    //const areaRents = await AreaRents.findOne({searchName: property.zipcode, 'data.success': true})
-    //console.log(areaRents);
-    
-    const units = property.unitSch
-    let data
-    //console.log('property: ', property.unitSch);
-    const totalRent = property.unitSch.reduce((acc, unit) => acc+unit.rent,0)
-    //console.log(totalRent);
+    const areaRent = areaRentsArr.filter(x => searchName = property.zipcode)[0].marketPrice
+    const areaRentStr = `1BD ${areaRent._1BD.med} | 2BD ${areaRent._2BD.med} | 3BD ${areaRent._3BD.med} | 4BD ${areaRent._4BD.med}`;  
     const subRents = property.data.rents.HA.success ? rentTiers[property.rents.HA.tier] : null
-    //console.log('subRents: ', subRents)
-    let totalSubRent 
-    const grm = ''
-    const unitBreakdown = property.unitSch.map((unit, i) => ` Unit-${i+1}: ${unit.bedrooms}B${unit.bathsFull} Rent: ${unit.rent} |`)
-    console.log(unitBreakdown);
 
-    if (subRents) {
-      data = units.map((unit) => {
-        const {rent, bedrooms, bathsFull} = unit
-        let unitObj = {rent, bedrooms, bathsFull};
-        unitObj.subRent = subRents[`${unit.bedrooms}BD`];
-        //unitObj.rent = unit.rent
-        return unitObj;
-      });
-      totalSubRent = data.reduce((acc, unit) => acc + unit.subRent, 0); 
-    }
-    // if (areaRents) {
-    //     console.log('areaRents if fired: ', areaRents);
-    //   data = data.map((unit) => {
-    //     let unitObj = unit;
-    //     unitObj.areaRent = subRents[`_${unit.bedrooms}BD`];
-    //     return unitObj;
-    //   });
-    //   totalareaRent = data.reduce((acc, unit) => acc + unit.areaRent, 0);
-    // }
-    //console.log('data: ', data);
+    const totalRent = property.unitSch.reduce((acc, unit) => acc+unit.rent,0)
+    const totalAreaRent = property.unitSch.reduce((acc, unit) =>{
+        const areaRentCalc = Number(areaRent[`_${unit.bedrooms}BD`].med.replace(/[$ ,]/g, ''))
+        return areaRentCalc + acc
+    },0)
+    const  totalSubRent = property.unitSch.reduce((acc, unit) =>{
+        const subRentCalc = subRents[`${unit.bedrooms}BD`];
+        return subRentCalc + acc
+    },0) 
+    const price = property.currentPrice ? property.currentPrice : property.listPrice 
+    const grm = `Current: ${(price/(totalRent*12)).toFixed(1)} | Subsidy: ${(price/(totalSubRent*12)).toFixed(1)} | Area: ${(price/(totalAreaRent*12)).toFixed(1)}`;
+    const unitBreakdown = property.unitSch.map((unit, i) => ` Unit-${i+1}: ${unit.bedrooms}B${unit.bathsFull} Rent: ${unit.rent} |`)     
+    
     
 
 
@@ -210,6 +195,7 @@ const emailTemplate = (properties, message) => {
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
+                                                            mls : ${property.listNumber} <br>
                                                             ${property.streetNumber} ${property.streetName} ${property.city}, ${property.zipcode}   
                                                         </td>
                                                     </tr>
@@ -224,17 +210,39 @@ const emailTemplate = (properties, message) => {
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
-                                                            ${property.propertyType === "multi" ? "Multi-Unit | Zoning: "+ property.zoning+ '<br>' + property.numUnits + ' Units | ' + property.buildingSize+ ' SqFt'   : ""} ${property.propertyType === "res" ? "Residential | Zoning: "+ property.zoning : ""}
+                                                            ${property.propertyType === "multi" ? "Multi-Unit | Zoning: "+ property.zoning ? property.zoning : ' N/A' + '<br>' + property.numUnits + ' Units | ' + property.buildingSize+ ' SqFt'   : ""} 
+                                                            ${property.propertyType === "res" ? "Residential | Zoning: " + (property.zoning ? property.zoning : 'N/A') : ""}
                                                         </td>
                                                     </tr>
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
-                                                            Rent Tier: ${property.rents.HA.tier} <br>
-                                                            Area Rents:${property.rents.HA.tier ?  ` eff: ${rentTiers[property.rents.HA.tier].eff} | 1BD: ${rentTiers[property.rents.HA.tier]['1BD']} | 2BD: ${rentTiers[property.rents.HA.tier]['2BD']} | 3BD: ${rentTiers[property.rents.HA.tier]['3BD']} | 4BD: ${rentTiers[property.rents.HA.tier]['4BD']}` : 'N/A'} <br>
-                                                            Units: ${unitBreakdown}
+                                                            Rent Tier: ${property.rents.HA.tier ? property.rents.HA.tier : ' N/A' } <br>
+                                                            Subsidy Rents:${property.rents.HA.tier ?  ` eff: ${rentTiers[property.rents.HA.tier].eff} | 1BD: ${rentTiers[property.rents.HA.tier]['1BD']} | 2BD: ${rentTiers[property.rents.HA.tier]['2BD']} | 3BD: ${rentTiers[property.rents.HA.tier]['3BD']} | 4BD: ${rentTiers[property.rents.HA.tier]['4BD']}` : ' N/A'} <br>
+                                                            Area Rents: ${areaRentStr}
                                                          </td>
-                                                    </tr>                                                
+                                                    </tr>
+                                                    ${property.propertyType !== 'multi' ? '' : `
+                                                        <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            Current Rent Roll:<br> ${unitBreakdown}
+                                                        </td>
+                                                        </tr>
+                                                        <tr style="vertical-align: top;" valign="top">
+                                                            <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                                valign="top">
+                                                                Rent Totals:<br> Current: ${totalRent} | Subsidy: ${totalSubRent} | Area: ${totalAreaRent}
+                                                            </td>
+                                                        </tr>   
+                                                        <tr style="vertical-align: top;" valign="top">
+                                                            <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                                valign="top">
+                                                                GRM:<br> ${grm}
+                                                            </td>
+                                                        </tr>
+                                                    `}
+                                                                                                         
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
