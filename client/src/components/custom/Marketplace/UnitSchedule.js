@@ -22,7 +22,8 @@ const UnitSchedule = ({units, listPrice, addUnitSchedule, modifyUnitSchedule, de
     let totalSubRents
     if (areaRent.length) {
       data = units.map((unit) => {
-        unit.areaRent = Number(areaRent[0].marketPrice[`_${unit.bedrooms}BD`].med.replace(/[$,]/g, ''));
+        const unitBD = unit.bedrooms < 5 ? `_${unit.bedrooms}BD` : `_4BD`
+        unit.areaRent = Number(areaRent[0].marketPrice[unitBD].med.replace(/[$,]/g, ''));
         return unit;
       });
       totalAreaRents = data.reduce((rents, unit) => rents + unit.areaRent,0)

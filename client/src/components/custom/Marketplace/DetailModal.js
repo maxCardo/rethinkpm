@@ -119,9 +119,9 @@ const headers = [
 
 
 const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent}) => {
-  const [prop, setProp] = useState()
-  const [subRent, setSubRent] = useState()
-  const [price, setPrice] = useState()
+  const [prop, setProp] = useState('')
+  const [subRent, setSubRent] = useState('')
+  const [price, setPrice] = useState('')
 
   useEffect(() => {
     const prop = data
@@ -142,11 +142,10 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
         <Modal.Title>Details</Modal.Title>
       </Modal.Header>
       <Modal.Body >
-          <VerticalTable  headers={headers} data={prop}/>
+          <VerticalTable  headers={headers} data={data}/>
           {prop.propertyType === 'multi' &&
             <Fragment>
               <h4>Unit Schedule</h4>
-              {console.log('rentTiers DM: ',subRent)}
               <UnitSchedule units={prop.unitSch} listPrice={price} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent} zip={prop.zipcode} subRents={subRent}/>
             </Fragment>
           }
