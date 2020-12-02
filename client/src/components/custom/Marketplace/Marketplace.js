@@ -444,7 +444,9 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
   const startShowDetailFlow = (item) => {
     console.log(item);
     setFocusedProperty(item)
+    setLoading(true)
     setShowDetailModal(true)
+    setLoading(false)
   }
 
   const addUnitSchedule = async (unit) => {
