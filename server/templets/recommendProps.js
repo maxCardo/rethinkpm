@@ -92,17 +92,41 @@ const emailTemplate = async (properties, message) => {
     const areaRentStr = `1BD ${areaRent._1BD.med} | 2BD ${areaRent._2BD.med} | 3BD ${areaRent._3BD.med} | 4BD ${areaRent._4BD.med}`;  
     const subRents = property.data.rents.HA.success ? rentTiers[property.rents.HA.tier] : null
 
+
+
     const totalRent = property.unitSch.reduce((acc, unit) => acc+unit.rent,0)
-    const totalAreaRent = property.unitSch.reduce((acc, unit) =>{
-        const areaRentCalc = Number(areaRent[`_${unit.bedrooms}BD`].med.replace(/[$ ,]/g, ''))
-        return areaRentCalc + acc
-    },0)
-    const  totalSubRent = property.unitSch.reduce((acc, unit) =>{
-        const subRentCalc = subRents[`${unit.bedrooms}BD`];
-        return subRentCalc + acc
-    },0) 
+    // const totalAreaRent = property.unitSch.reduce((acc, unit) =>{
+    //     const areaRentCalc = Number(areaRent[`_${unit.bedrooms}BD`].med.replace(/[$ ,]/g, ''))
+    //     return areaRentCalc + acc
+    // },0)
+    // const  totalSubRent = property.unitSch.reduce((acc, unit) =>{
+    //     const subRentCalc = subRents[`${unit.bedrooms}BD`];
+    //     return subRentCalc + acc
+    // },0)
+    const totalAreaRent = property.rents.area ? property.rents.area : null
+    const totalSubRent = property.rents.HA.rent ? property.rents.HA.rent : null  
     const price = property.currentPrice ? property.currentPrice : property.listPrice 
-    const grm = `Current: ${(price/(totalRent*12)).toFixed(1)} | Subsidy: ${(price/(totalSubRent*12)).toFixed(1)} | Area: ${(price/(totalAreaRent*12)).toFixed(1)}`;
+    const grm = `
+      Current: ${totalRent ? (price/(totalRent*12)).toFixed(1): 'N/A'} | 
+      Subsidy: ${totalSubRent ? (price/(totalSubRent*12)).toFixed(1) : 'N/A'} | 
+      Area: ${totalAreaRent ? (price/(totalAreaRent*12)).toFixed(1): 'N/A'}
+    `;
+    const occupancyRate = .95
+    let roi = null
+    if (property.model.rentalIncome) {
+        const { management, leasing, maintenance, utilities, taxes, insurance } = property.model
+        const totalExpLowTax = management + leasing + maintenance + utilities + insurance + taxes.low
+        const totalExpHighTax = management + leasing + maintenance + utilities + insurance + taxes.high
+        console.log('exp: ', totalExpLowTax);
+        console.log(((totalRent*12)*occupancyRate));
+        console.log('price: ', price);
+        roi = `
+            Current: ${totalRent ? (((((totalRent * 12) * occupancyRate) - totalExpHighTax) / price)*100).toFixed(1) + ' to ' + (((((totalRent * 12) * occupancyRate) - totalExpLowTax) / price)*100).toFixed(1) : 'N/A'} | 
+            Subsidy: ${totalSubRent ? (((((totalSubRent*12) * occupancyRate) - totalExpHighTax) / price)*100).toFixed(1) + ' to ' + (((((totalSubRent*12) * occupancyRate) - totalExpLowTax) / price)*100).toFixed(1) : 'N/A'} | 
+            *Area: ${property.cap ? `${property.highCap} to ${property.cap}` : 'N/A'}
+        `;     
+    }
+
     const unitBreakdown = property.unitSch.map((unit, i) => ` Unit-${i+1}: ${unit.bedrooms}B${unit.bathsFull} Rent: ${unit.rent} |`)     
     
     
@@ -210,7 +234,7 @@ const emailTemplate = async (properties, message) => {
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
                                                             valign="top">
-                                                            ${property.propertyType === "multi" ? "Multi-Unit | Zoning: "+ property.zoning ? property.zoning : ' N/A' + '<br>' + property.numUnits + ' Units | ' + property.buildingSize+ ' SqFt'   : ""} 
+                                                            ${property.propertyType === "multi" ? "Multi-Unit | Zoning: "+ (property.zoning ? property.zoning : ' N/A') + '<br>' + property.numUnits + ' Units | ' + property.buildingSize+ ' SqFt'   : ""} 
                                                             ${property.propertyType === "res" ? "Residential | Zoning: " + (property.zoning ? property.zoning : 'N/A') : ""}
                                                         </td>
                                                     </tr>
@@ -222,6 +246,16 @@ const emailTemplate = async (properties, message) => {
                                                             Area Rents: ${areaRentStr}
                                                          </td>
                                                     </tr>
+                                                    ${property['model'].taxes ? `
+                                                        <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            Taxes: <br>
+                                                            Current: ${property.model.taxes.low ? formatMoney(property.model.taxes.low) : 'N/A'} ${property.assessedValue ? ' | Assesed Value:' + (formatMoney(property.assessedValue.land + property.assessedValue.bldg)) : ''} <br>
+                                                            Potential: ${property.model.taxes.high ? formatMoney(property.model.taxes.high)  + ' (assumed reassesment @ 87% purchase price)' : 'N/A'}  <br>
+                                                         </td>
+                                                        </tr>` : ''
+                                                    }
                                                     ${property.propertyType !== 'multi' ? '' : `
                                                         <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
@@ -229,19 +263,23 @@ const emailTemplate = async (properties, message) => {
                                                             Current Rent Roll:<br> ${unitBreakdown}
                                                         </td>
                                                         </tr>
-                                                        <tr style="vertical-align: top;" valign="top">
-                                                            <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                                valign="top">
-                                                                Rent Totals:<br> Current: ${totalRent} | Subsidy: ${totalSubRent} | Area: ${totalAreaRent}
-                                                            </td>
-                                                        </tr>   
-                                                        <tr style="vertical-align: top;" valign="top">
-                                                            <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
-                                                                valign="top">
-                                                                GRM:<br> ${grm}
-                                                            </td>
-                                                        </tr>
                                                     `}
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            Rent Totals:<br> 
+                                                            Current: ${totalRent ? totalRent : 'N/A'} |   Subsidy: ${totalSubRent ? totalSubRent : 'N/A'} | Area: ${totalAreaRent ? totalAreaRent : 'N/A' }
+                                                        </td>
+                                                    </tr>   
+                                                    <tr style="vertical-align: top;" valign="top">
+                                                        <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"
+                                                            valign="top">
+                                                            Returns:<br> 
+                                                            GRM: ${grm} <br>
+                                                            ROI: ${roi ? roi : 'N/A'} 
+                                                        </td>
+                                                    </tr>
+                                                    
                                                                                                          
                                                     <tr style="vertical-align: top;" valign="top">
                                                         <td style="word-break: break-word; vertical-align: top; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"

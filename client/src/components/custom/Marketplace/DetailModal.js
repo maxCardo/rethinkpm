@@ -106,15 +106,33 @@ const headers = [
     accessor: 'rents.HA.tier',
   },
   {
-    label: 'Area Rents',
+    label: 'Sub Rents',
     accessor: 'rents.HA.tier',
     mapper: (tier) => tier ? `eff: ${rentTiers[tier].eff} | 1BD: ${rentTiers[tier]['1BD']} | 2BD: ${rentTiers[tier]['2BD']} | 3BD: ${rentTiers[tier]['3BD']} | 4BD: ${rentTiers[tier]['4BD']}`
         : '',
   },
   {
+    label: 'Area Rents',
+    accessor: 'rents.HA.area',
+    mapper: (rent) => rent ? `$${rent}`: 'N/A',
+  },
+  {
+    label: 'Taxes',
+    accessor: 'model.taxes',
+    mapper: (taxes) => taxes ? `Current: $${taxes.low.toFixed(0)} | Reassessed on PP (projected): $${taxes.high.toFixed(0)}` : 'Tax Info Not Available'
+  },
+  {
     label: 'Owner Ocupied?',
     accessor: 'ownerOcc',
-  }
+  },
+  {
+    label: 'Value Score',
+    accessor: 'cap',
+  },
+  {
+    label: 'Value Score (Adjusted)?',
+    accessor: 'highCap',
+  },
 ]; 
 
 
