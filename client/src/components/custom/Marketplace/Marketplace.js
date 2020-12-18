@@ -152,6 +152,16 @@ const FILTERFIELDS = {
     dataType: "array",
     accessor: "zoning"
   },
+  ROIC: {
+    type: {
+      label: "Don't filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "ROIC",
+    dataType: "number",
+    accessor: "highCap"
+  },
 }
 
 // const FILTEROPTIONS = {
@@ -246,6 +256,10 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
       accessor: 'condition',
       label: 'Condition',
       mapper: (data) => conditionsMap[data]
+    },
+    {
+      accessor: 'highCap',
+      label: 'ROIS',
     },
     {
       reactComponent: true,
