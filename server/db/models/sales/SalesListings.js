@@ -85,6 +85,22 @@ const salesListingsSchema = new mongoose.Schema({
             success: Boolean,
             errorRes: String,
         },
+        soldData: {
+            ran: {
+                type: Boolean,
+                default: false,
+            },
+            success: Boolean,
+            errorRes: String,
+        },
+        compReport: {
+            ran: {
+                type: Boolean,
+                default: false,
+            },
+            success: Boolean,
+            errorRes: String,
+        }
     },
     propertyType: String, // determained by function: residental, smallMulti, multiFamily
     listDate: Date, //Function, must be day before created if list being created by yesterdays new listing. if record is created by today listings this can be set to default Date.now
@@ -133,9 +149,8 @@ const salesListingsSchema = new mongoose.Schema({
             enum: ['Point'],
             default: 'Point',
         },
-        coordinates: {
-            type: [Number],
-        },
+        coordinates: Array,
+
     },
     status: String, //Set By Function: app level status n    ???
     lotSize: Number, // County API:
@@ -152,6 +167,10 @@ const salesListingsSchema = new mongoose.Schema({
         zip: String,
     },
     lotBlock: String, //County API: "PARID"
+    hvac: {
+        code: String, //county api HEATINGCOOLING
+        desc: String // conty api HEATINGCOOLINGDESC
+    },
     tract: String, //Census API
     opZone: Boolean, // In-house API or save data in app
     walkScore: Number, //from walkScore API
@@ -169,10 +188,12 @@ const salesListingsSchema = new mongoose.Schema({
         market: Number,
         area: Number,
         multiFam: Number,
-        inPlace: Number
     },
     soldPrice: Number, //County API: is not updated right away will have to gather at some point after the sale. will need further reserch to determain best stratigy for this.
     //manualy entrey via UI (online review)
+    saleDate: Date,
+    sellingAgentID: String, // manualy updated bi yearly for agent recruiment via csv from MLS site
+    sellingOfficeID: String, // manualy updated bi yearly for agent recruiment via csv from MLS site
     style: String, // define styles , mls manualy csv do give styles but limited in scope?? how to use. can we get this of county data?
     condition: String, //A define condition A,B,C,D
     history: [
@@ -202,7 +223,7 @@ const salesListingsSchema = new mongoose.Schema({
             },
         },
     ],
-    //manualy updated bi yearly for agent recruiment via csv from MLS site
+    //manualy updated bi yearly for agent recruiment via csv from MLS site  DEPRICATED: not sure if ever used
     buyerAgentId: String,
     buyerOfficeId: String,
     unitSch: [
@@ -239,7 +260,13 @@ const salesListingsSchema = new mongoose.Schema({
         bldg: Number,
         land: Number,
     },
+    compReport: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'comp_report'
+    },
 });
+
+salesListingsSchema.index({ location: '2dsphere' })
 
 
 module.exports = mongoose.model('salesListings', salesListingsSchema);

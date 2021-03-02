@@ -133,6 +133,25 @@ const headers = [
     label: 'Value Score (Adjusted)?',
     accessor: 'highCap',
   },
+  {
+    label: 'CompRange',
+    accessor: 'compReport.price.priceRange',
+  },
+  {
+    label: 'Sample Size',
+    accessor: 'compReport.price.sampleSize',
+  },
+  {
+    label: 'Current Value',
+    accessor: 'compReport.price.oov',
+    mapper: (arv) => arv ? `$${arv.toFixed(0)}` : 'N/A',
+  },
+  {
+    label: 'ARV',
+    accessor: 'compReport.price.arv',
+    mapper: (arv) => arv ? `$${arv.toFixed(0)}` : 'N/A',
+  },
+
 ]; 
 
 

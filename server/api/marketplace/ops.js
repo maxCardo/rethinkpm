@@ -6,6 +6,7 @@ const BuyerPros = require('../../db/models/prospects/BuyerPros')
 const Pipeline = require('../../db/models/sales/Pipeline')
 const MarketFilter = require('../../db/models/sales/MarketFilter')
 const AreaRents = require('../../db/models/sales/AreaRents')
+const CompReport = require('../../db/models/sales/compReport')
 const { parse } = require('json2csv');
 const fs = require('fs')
 const path = require('path')
@@ -138,11 +139,12 @@ router.get('/filterOptions', async (req, res) => {
 });
 
 // @route: GET /api/marketplace/ops/listings/filter
-// @desc: Filter the listings
+// @desc: Filter the listings (pageSize functionality is not currently being utilized ny the front end)
 // @ access: Public * ToDo: update to make private
 router.post('/listings/filter', async (req, res) => {
   try {
       const PAGESIZE = req.body.pageSize;
+      console.log('PAGESIZE: ',PAGESIZE, req.body.page);
       const data = req.body.filters
       let filters = []
       if(data.length) {
@@ -164,12 +166,15 @@ router.post('/listings/filter', async (req, res) => {
       let record;
       if (req.body.page) {
           if(PAGESIZE) {
+            console.log('if fired on 168');
             record = await SalesListings.find(queryObj).skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
           } else {
+            console.log('if fired on 171');
             record = await SalesListings.find(queryObj)
           }
       } else {
-          record = await SalesListings.find(queryObj).limit(PAGESIZE + 1)
+          record = await SalesListings.find(queryObj).populate('compReport')
+          console.log('line 176: ', record.length);
       }
       
       let hasMore = false;
@@ -189,6 +194,7 @@ router.post('/listings/filter', async (req, res) => {
         }
         return listing 
       })
+      console.log('line 97: ', record.length);
       res.status(200).send({ record, filters, hasMore });
 
   } catch (error) {
