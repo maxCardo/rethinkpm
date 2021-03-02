@@ -332,6 +332,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
     setLoading(true)
     const res = await axios.get(`/api/sales/listings`, {cancelToken});
     const listings = res.data;
+    console.log(listings[1]);
     setListings(listings)
     setLoading(false)
   }

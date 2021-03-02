@@ -3,6 +3,7 @@ const {sendEmail} = require('../3ps/email')
 const AgentModel = require('../db/models/prospects/agentPros/agent')
 const OfficeModel = require('../db/models/sales/office')
 const SalesListings = require('../db/models/sales/SalesListings')
+const CompReport = require('../db/models/sales/compReport')
 const BuyerPros = require('../db/models/prospects/BuyerPros');
 const {sendRecomendationEmail} = require('../3ps/email')
 
@@ -77,7 +78,7 @@ router.get('/offices', async(req,res) => {
 })
 
 router.get('/listings', async (req,res) => {
-  const listings = await SalesListings.find({mlsStatus: 'A'}).sort([['listDate', -1]]).limit(100)
+  const listings = await SalesListings.find({mlsStatus: 'A'}).populate('compReport').sort([['listDate', -1]]).limit(100)
   const listingsUpdated = await listings.map((listing) => {
     if (!listing.city) {
       listing.city = listing.area;
