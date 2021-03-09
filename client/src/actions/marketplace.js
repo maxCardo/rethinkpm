@@ -1,4 +1,4 @@
-import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS} from './type';
+import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO} from './type';
 import {createErrorAlert} from "./alert";
 import axios from "axios";
 
@@ -117,5 +117,21 @@ export const getAreaRents = () => async dispatch => {
 
     } catch (err) {
         dispatch(createErrorAlert(err.message, 'Set area rents'))
+    }
+}
+
+//@desc: set property owner info in focused property
+export const getOwnerInfo = (id) => async dispatch => {
+    console.log(id);
+    try {
+        const res = await axios.get(`/api/marketplace/owners/${id}`)
+        console.log(res);
+        dispatch({
+            type: SET_OWNER_INFO,
+            payload: res.data
+        })
+
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'SET OWNER DATA'))
     }
 }
