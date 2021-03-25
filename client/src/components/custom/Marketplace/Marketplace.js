@@ -17,6 +17,7 @@ import DetailModal from './DetailModal'
 import PropertyDetailsModal from "./PropertyDetailsModal";
 import {useWindowSize} from "../../../util/commonFunctions";
 import FullScreenTable from '../../core/FullScreenTable/FullScreenTable';
+import Table from '../../core/Table';
 import {checkBoxCheck} from '../../../util/commonFunctions'
 import FileDownload from 'js-file-download'
 import { afterMain } from '@popperjs/core';
@@ -608,35 +609,35 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
     if(!listings.length) {
       populateTable()
     }
-    const height = size.height;
-    // 360 is sum of all heights of everything else that takes vertical space outside the container
-    const controlHeight = height - 360;
-    let rowNumber;
-    if (height) {
-      // 43 is height of row
-      rowNumber = Math.floor(controlHeight / 43);
-    } else {
-      rowNumber = 10;
-    }
-    if(tablePageSize !== rowNumber) {
-      if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
-        setTablePageSize(rowNumber)
-        setVersion(version+1)
-        tableContainerHeight.current = controlHeight;
-      } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
-        setTablePageSize(rowNumber)
-        setVersion(version+1)
-        tableContainerHeight.current = controlHeight;
-      } else {
-        console.log('effect did nothing')
-      }
-    }
+    // const height = size.height;
+    // // 360 is sum of all heights of everything else that takes vertical space outside the container
+    // const controlHeight = height - 360;
+    // let rowNumber;
+    // if (height) {
+    //   // 43 is height of row
+    //   rowNumber = Math.floor(controlHeight / 43);
+    // } else {
+    //   rowNumber = 10;
+    // }
+    // if(tablePageSize !== rowNumber) {
+    //   if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
+    //     setTablePageSize(rowNumber)
+    //     setVersion(version+1)
+    //     tableContainerHeight.current = controlHeight;
+    //   } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
+    //     setTablePageSize(rowNumber)
+    //     setVersion(version+1)
+    //     tableContainerHeight.current = controlHeight;
+    //   } else {
+    //     console.log('effect did nothing')
+    //   }
+    //}
 
   }, [size.height, listings.length, tablePageSize, version]); // Empty array ensures that effect is only run on mount
 
   return loading ? <Loading /> : (
     <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-      <KpiBar/>
+      {/* <KpiBar/> */}
 
       <div style={{flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column'}}>
         <div className='searchContainer agentsSearchContainer'>
@@ -687,7 +688,8 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
         </div>
         <div className="container-fluid" style={{overflow: 'auto', display: 'flex', flexDirection:'column', flex: 1}}>
           <div className="col-12 p-0 containerTable" id='' style={{display: 'flex', flexDirection: 'column', flex: 1}}>
-            <FullScreenTable
+            
+            <Table
               pageSize={tablePageSize}
               sorting={true}
               fontSize={12}
@@ -698,7 +700,19 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
               sortDirection='desc'
               version={version}
               onClickRow={(item) => startShowDetailFlow(item)}
-            />
+            /> 
+            {/* <FullScreenTable
+              pageSize={tablePageSize}
+              sorting={true}
+              fontSize={12}
+              filter={filterString}
+              data={listings}
+              headers={headers}
+              sortBy="listDate"
+              sortDirection='desc'
+              version={version}
+              onClickRow={(item) => startShowDetailFlow(item)}
+            /> */}
             Number of records: {listings.length}
           </div>
         </div>
