@@ -27,8 +27,9 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
       const backUpProfile = qs.parse(search).profile
       backUpProfile ? loadBackUpProfile(settings.profileType, backUpProfile) : loadProfileDefault(settings.profileType)
     }
+    // ToDo: whats the point of this. should be controled by json ??
     if (settings.profileType && profileType.current !== settings.profileType) {
-      profileType.current = (settings.profileType === 'agentPros') ? 'Agent' : (settings.profileType === 'buyerPros') ? 'Buyer' : 'Renter';
+      profileType.current = (settings.profileType === 'agentPros') ? 'Agent' : (settings.profileType === 'buyerPros') ? 'Buyer' : (settings.profileType === 'sellerPros') ? 'Seller' :'Renter';
       setTabKey('details');
     }
   }, [settings, settings.profileType])
@@ -90,10 +91,17 @@ const Profile = ({profile: {activeProfile, loading}, location: {search}, setting
         <Tab eventKey="filters" title="Filters">
           <div>Manage Filters</div>
         </Tab>
-
+        {/*ToDO: make profile type spacific tabs implemented on json doc  */}
         {(profileType.current === 'Buyer') && (
           <Tab eventKey="manageBuyers" title="Manage Pipeline">
             <BuyerPipeline profile={activeProfile}/>
+          </Tab>
+        )}
+
+        {(profileType.current === 'Seller') && (
+          <Tab eventKey="manageSeller" title="Seller Pipeline">
+            <div>seller pipeline</div>
+            {/* <sellerPipeline profile={activeProfile} /> */}
           </Tab>
         )}
       </Tabs>

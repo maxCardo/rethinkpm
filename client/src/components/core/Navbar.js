@@ -34,6 +34,12 @@ const Navbar = ({auth: {isAuthenticated, loginInProgress}, logout}) => {
                 </Link>
             </li>
             <li>
+                <Link to='/profile/sellerPros'>
+                    <BuyersIcon />
+                    <span>Seller</span>
+                </Link>
+            </li>
+            <li>
                 <Link to='/profile/rentPros'>
                     <RentersIcon />
                     <span>Renters</span>
