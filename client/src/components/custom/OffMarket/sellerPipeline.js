@@ -85,24 +85,20 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
             label: 'Status',
         },
         {
-            accessor: 'deal.propertyType',
+            accessor: 'propertyType',
             label: 'Type',
         },
         {
-            accessor: 'deal.listNumber',
-            label: "MLS ID"
-        },
-        {
-            accessor: 'deal.listDate',
+            accessor: 'createDate',
             label: 'List Date',
             mapper: 'date',
         },
         {
-            accessor: 'deal.city',
+            accessor: 'city',
             label: 'Area',
         },
         {
-            accessor: 'deal.listPrice',
+            accessor: 'listPrice',
             label: 'List Price',
             mapper: 'money',
         },
@@ -113,25 +109,25 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
             render: (item) => (
                 <div>
                     <p>
-                        {item.deal.streetNumber} {item.deal.streetName}
+                        {item.streetNumber} {item.streetName}
                     </p>
                 </div>
             ),
         },
         {
             label: 'Zip',
-            accessor: 'deal.zipcode',
+            accessor: 'zipcode',
         },
         {
-            accessor: 'deal.bedrooms',
+            accessor: 'bedrooms',
             label: 'Bedrooms',
         },
         {
-            accessor: 'deal.totalBaths',
+            accessor: 'totalBaths',
             label: 'Bathrooms',
         },
         {
-            accessor: 'deal.condition',
+            accessor: 'condition',
             label: 'Condition',
             mapper: (data) => conditionsMap[data],
         },
@@ -141,7 +137,7 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
             render: (item) => {
                 return (
                     <div>
-                        {item.deal.streetName && item.deal.streetNumber && (
+                        {item.streetName && item.streetNumber && (
                             <IconButton
                                 placement='bottom'
                                 tooltipContent='Open street view'
@@ -149,7 +145,7 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
                                 iconClass='fas fa-eye'
                                 variant='action-button'
                                 onClickFunc={() =>
-                                    openStreetView(item.deal.streetName, item.deal.streetNumber)
+                                    openStreetView(item.streetName, item.streetNumber)
                                 }
                             />
                         )}

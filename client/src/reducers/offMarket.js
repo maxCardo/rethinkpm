@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
         case SET_SELLER_PIPELINE:
             return {
                 ...state,
-                buyerPipeline: payload,
+                sellerPipeline: payload,
                 loading: false
             }
         case UPDATE_DEAL_STATUS:
