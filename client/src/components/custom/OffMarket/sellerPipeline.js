@@ -4,18 +4,19 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
-import './style.css';
-import StreetViewModal from "./StreetViewModal";
-import { getSellerPipeline, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule} from "../../../actions/marketplace";
+import '../Marketplace/style.css';
+import StreetViewModal from "../Marketplace/StreetViewModal";
+import { getSellerPipeline, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, openStreetView} from "../../../actions/offMarket";
+// updateDeal, syncManagedBuyer
 //import { openStreetView, syncManagedBuyer, getBuyerPipeline, updateDeal } from "../../../actions/marketplace";
 import { Form } from "react-bootstrap";
 import IconButton from "../../core/IconButton/IconButton";
-import PropertyDetailsModal from "./PropertyDetailsModal";
+// import PropertyDetailsModal from "./PropertyDetailsModal";
 import { checkBoxCheck, useWindowSize } from "../../../util/commonFunctions";
 import { afterMain } from '@popperjs/core';
-import DetailModal from './DetailModal'
+import DetailModal from '../Marketplace/DetailModal'
 
-const BuyerPipeline = ({ openStreetView, profile, getBuyerPipeline, updateDeal, syncManagedBuyer, pipeline: { buyerPipeline, loading } }) => {
+const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal, syncManagedBuyer, pipeline: { sellerPipeline, loading } }) => {
 
     const [showStreetViewModal, setShowStreetViewModal] = useState(true)
     const [showDead, setShowDead] = useState(false)
@@ -176,19 +177,18 @@ const BuyerPipeline = ({ openStreetView, profile, getBuyerPipeline, updateDeal, 
         },
     ];
 
+
     return loading ? (
         <Loading />
     ) : (
             <div className='tableWithActions buyerPipeline'>
-                <div
-                    className='container-fluid'
-                >
+                <div className='container-fluid'>
                     <div className='ManageBuyers-actions'>
                         <Form.Group className='ManageBuyers__check-group'>
                             <Form.Label className="checkbox path">
                                 <input type="checkbox" checked={showDead} name='okToText' onClick={() => setShowDead(!showDead)} onChange={() => { }} />
                                 {checkBox} &nbsp; Show Dead Deals
-            </Form.Label>
+                            </Form.Label>
                         </Form.Group>
                         <IconButton
                             placement='right'
@@ -205,7 +205,7 @@ const BuyerPipeline = ({ openStreetView, profile, getBuyerPipeline, updateDeal, 
                             pageSize={tablePageSize}
                             sorting={true}
                             fontSize={12}
-                            data={showDead === false ? buyerPipeline.filter((deal) => deal.status !== 'dead') : buyerPipeline}
+                            data={showDead === false ? sellerPipeline.filter((deal) => deal.status !== 'dead') : sellerPipeline}
                             headers={HEADERS}
                             onClickRow={(item) => startShowDetailFlow(item)}
                         />
@@ -216,14 +216,17 @@ const BuyerPipeline = ({ openStreetView, profile, getBuyerPipeline, updateDeal, 
                     handleClose={() => setShowStreetViewModal(false)}
                     apiKey='AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o'
                 />
-                <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal} handleClose={() => setShowPropertyDetailsModal(false)} />
-                <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} />
+                {/* <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal} handleClose={() => setShowPropertyDetailsModal(false)} /> */}
+                <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} /> 
+                 {/* addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} /> */}
             </div>
         );
 }
 
 const mapStateToProps = state => ({
-    pipeline: state.marketplace
+    pipeline: state.offMarket
 })
 
-export default connect(mapStateToProps, { openStreetView, getBuyerPipeline, updateDeal, syncManagedBuyer })(BuyerPipeline)
+export default connect(mapStateToProps, { openStreetView, getSellerPipeline })(SellerPipeline)
+
+//, updateDeal, syncManagedBuyer
