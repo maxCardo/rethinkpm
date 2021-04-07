@@ -1,7 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import {Modal, Button} from 'react-bootstrap';
+import {connect} from 'react-redux'
+import {Modal, Button, Tab, Nav} from 'react-bootstrap';
 import VerticalTable from '../../core/VerticalTable/VerticalTable';
 import UnitSchedule from './UnitSchedule'
+
+import {getOwnerInfo} from '../../../actions/marketplace'
 
 
 const rentTiers = {
@@ -155,7 +158,7 @@ const headers = [
 ]; 
 
 
-const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent}) => {
+const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent, getOwnerInfo, ownerInfo}) => {
   const [prop, setProp] = useState('')
   const [subRent, setSubRent] = useState('')
   const [price, setPrice] = useState('')
@@ -166,7 +169,8 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
       const subRent = data.data.rents.HA.success ? rentTiers[data.rents.HA.tier] : null
       const price = data.currentPrice ? data.currentPrice : data.listPrice
       setSubRent(subRent)
-      setPrice(price) 
+      setPrice(price)
+      getOwnerInfo(prop._id) 
     }
     setProp(prop)
   }, [data])
@@ -176,16 +180,33 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
   return (
     <Modal size='xl' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Details</Modal.Title>
+        <Modal.Title>Details: {prop.listNumber}</Modal.Title>
       </Modal.Header>
-      <Modal.Body >
-          <VerticalTable  headers={headers} data={data}/>
-          {prop.propertyType === 'multi' &&
-            <Fragment>
-              <h4>Unit Schedule</h4>
-              <UnitSchedule units={prop.unitSch} listPrice={price} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent} zip={prop.zipcode} subRents={subRent}/>
-            </Fragment>
-          }
+      <Modal.Body>
+        <Tab.Container defaultActiveKey="description" defaultActiveKey = "details">
+          <Nav className='nav-tabs'>
+            <Nav.Item>
+              <Nav.Link eventKey="details">Property Details</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="news">Owner Info</Nav.Link>
+            </Nav.Item>
+          </Nav>
+          <Tab.Content>
+            <Tab.Pane eventKey="details">
+              <VerticalTable headers={headers} data={data} />
+              {prop.propertyType === 'multi' &&
+                <Fragment>
+                  <h4>Unit Schedule</h4>
+                  <UnitSchedule units={prop.unitSch} listPrice={price} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent} zip={prop.zipcode} subRents={subRent} />
+                </Fragment>
+              }
+            </Tab.Pane>
+            <Tab.Pane eventKey="news">
+              <p className='DetailsModal__description'>....This is owner info</p>
+            </Tab.Pane>
+          </Tab.Content>
+        </Tab.Container>
       </Modal.Body>
       <Modal.Footer>
         <Button variant='secondary' onClick={handleClose}>
@@ -196,4 +217,9 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
   )
 }
 
-export default DetailModal;
+
+const mapStateToProps = state => ({
+  ownerInfo: state.marketplace.ownerInfo
+})
+
+export default connect(mapStateToProps, {getOwnerInfo})(DetailModal);

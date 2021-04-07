@@ -8,5 +8,6 @@ router.use('/web', require('./website'))
 router.use('/ops', require('./ops'))
 router.use('/pipeline', require('./pipeline/_pipeline'))
 router.use('/off_market', require('./offMarket/_offMarket'))
+router.use('/owners', require('./owners/_owners'))
 
 module.exports = router
