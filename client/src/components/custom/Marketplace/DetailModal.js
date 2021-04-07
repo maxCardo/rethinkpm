@@ -119,7 +119,7 @@ const headers = [
   {
     label: 'Taxes',
     accessor: 'model.taxes',
-    mapper: (taxes) => taxes ? `Current: $${taxes.low.toFixed(0)} | Reassessed on PP (projected): $${taxes.high.toFixed(0)}` : 'Tax Info Not Available'
+    mapper: (taxes) => taxes ? `Current: $${taxes.low.toFixed(0)} | Reassessed on PP (projected): $${taxes.high ? taxes.high.toFixed(0): '?'}` : 'Tax Info Not Available'
   },
   {
     label: 'Owner Ocupied?',

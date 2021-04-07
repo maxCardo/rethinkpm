@@ -61,8 +61,8 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
     const checkBox = checkBoxCheck();
 
     const startShowDetailFlow = (item) => {
-        console.log(item.deal);
-        setFocusedProperty(item.deal);
+        console.log(item);
+        setFocusedProperty(item);
         setShowDetailModal(true);
     };
 
