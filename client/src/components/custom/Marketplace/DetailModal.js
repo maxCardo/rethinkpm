@@ -145,8 +145,22 @@ const headers = [
     accessor: 'compReport.price.sampleSize',
   },
   {
+    label: 'Standard Deviation',
+    accessor: 'compReport.price.stdDev',
+    mapper: (stdDev) => stdDev ? `$${parseInt(stdDev)}` : 'N/A',
+  },
+  {
+    label: 'Current Value',
+    accessor: 'compReport.price._25_75',
+  },
+  {
     label: 'Current Value',
     accessor: 'compReport.price.oov',
+    mapper: (arv) => arv ? `$${arv.toFixed(0)}` : 'N/A',
+  },
+  {
+    label: 'Average Value',
+    accessor: 'compReport.price.average',
     mapper: (arv) => arv ? `$${arv.toFixed(0)}` : 'N/A',
   },
   {
