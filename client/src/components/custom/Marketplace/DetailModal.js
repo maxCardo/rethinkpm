@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Modal, Button, Tab, Nav} from 'react-bootstrap';
 import VerticalTable from '../../core/VerticalTable/VerticalTable';
 import UnitSchedule from './UnitSchedule'
+import CompView from './comps/compView'
 
 import {getOwnerInfo} from '../../../actions/marketplace'
 
@@ -205,6 +206,9 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
             <Nav.Item>
               <Nav.Link eventKey="news">Owner Info</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="compView">Comps</Nav.Link>
+            </Nav.Item>
           </Nav>
           <Tab.Content>
             <Tab.Pane eventKey="details">
@@ -218,6 +222,9 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
             </Tab.Pane>
             <Tab.Pane eventKey="news">
               <p className='DetailsModal__description'>....This is owner info</p>
+            </Tab.Pane>
+            <Tab.Pane eventKey="compView">
+              <CompView data = {data}/>
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>
