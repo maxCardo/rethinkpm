@@ -238,6 +238,11 @@ const listLeadSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'lead_comp_report'
     },
+    assesment: {
+        app: {
+
+        }
+    }
 });
 
 listLeadSchema.index({ location: '2dsphere' })

@@ -19,7 +19,10 @@ const leadCompReportSchema = new mongoose.Schema({
         salePrice: Number, //redundent
         adjSalePrice: Number,
         adjustments: Object,
-        totalAdj: Number
+        totalAdj: Number,
+        //added
+        blackList: Boolean,
+        like: Boolean, 
     }],
     price: {
         average: Number,
