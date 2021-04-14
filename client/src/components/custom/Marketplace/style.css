@@ -245,3 +245,24 @@ margin-left: 0;
   align-items: center;
   display: flex;
 }
+
+.Marketplace__DetailModal .modal {
+  overflow-y: hidden;
+}
+.Marketplace__DetailModal .modal-content {
+  margin-top: 1.5%;
+}
+.Marketplace__DetailModal .VerticalTable > div {
+  max-height: 40vh;
+  overflow-y: auto;
+  margin: 20px auto;
+}
+
+@media (min-width: 1200px) {
+  .Marketplace__DetailModal .modal-xl {
+    max-width: 97%;
+  }
+  .modal-open .Marketplace__DetailModal.modal {
+    overflow-y: hidden;
+  }
+}

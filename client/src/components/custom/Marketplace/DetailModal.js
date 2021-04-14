@@ -188,12 +188,14 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
       getOwnerInfo(prop._id) 
     }
     setProp(prop)
+      console.log('dataDetail')
+      console.log(data)
   }, [data])
   
   if (!prop) return ''
 
   return (
-    <Modal size='xl' show={show} onHide={handleClose}>
+    <Modal className='Marketplace__DetailModal' size='xl' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Details: {prop.listNumber}</Modal.Title>
       </Modal.Header>
@@ -224,7 +226,7 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
               <p className='DetailsModal__description'>....This is owner info</p>
             </Tab.Pane>
             <Tab.Pane eventKey="compView">
-              <CompView data = {data}/>
+              <CompView data={data}/>
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>

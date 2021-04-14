@@ -67,7 +67,7 @@ export class VerticalTable extends Component {
   }
   render() {
     return (
-      <div>
+      <div className='VerticalTable'>
         <Table headers={this.state.headers} data={this.state.data} />
       </div>
     )

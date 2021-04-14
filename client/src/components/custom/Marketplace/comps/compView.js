@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 const CompView = (data) => {
     useEffect(() => {
+        console.log('data')
         console.log(data)
         
     }, [])
