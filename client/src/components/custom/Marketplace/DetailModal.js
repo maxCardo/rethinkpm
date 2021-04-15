@@ -4,6 +4,7 @@ import {Modal, Button, Tab, Nav} from 'react-bootstrap';
 import VerticalTable from '../../core/VerticalTable/VerticalTable';
 import UnitSchedule from './UnitSchedule'
 import CompView from './comps/compView'
+import OwnerInfo from './OwnerInfo'
 
 import {getOwnerInfo} from '../../../actions/marketplace'
 
@@ -221,7 +222,7 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
               }
             </Tab.Pane>
             <Tab.Pane eventKey="news">
-              <p className='DetailsModal__description'>....This is owner info</p>
+              <OwnerInfo ownerInfo={ownerInfo}/>
             </Tab.Pane>
             <Tab.Pane eventKey="compView">
               <CompView data = {data}/>
