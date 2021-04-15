@@ -1,12 +1,18 @@
 const SalesListings = require('../../../db/models/sales/SalesListings')
+const ListLeads = require('../../../db/models/sales/ListLeads')
 const {getOwnerProps} = require('../../../3ps/county')
 
 //@desc get data on owners other propertie holdings and transactions from county records
-const getOwnerData = async (list_id) => {
-    const listing = await SalesListings.findById(list_id)
+const getOwnerData = async (list_id, recType) => {
+    let listing
+    if (recType ==='listLead') {
+        listing = await ListLeads.findById(list_id)
+    }else{
+        listing = await SalesListings.findById(list_id)
+    }
     const { address1, address2, city_state, zip } = listing.ownerAddress
     const searchString = `${address1} ${address2} ${city_state} ${zip}`
-    const res = await getOwnerProps(searchString)
+    const res = await getOwnerProps(address1, zip)
     //if no re update county rec  and searchString?
     const numProps = res.length
     const returnArr = res.map((prop) => {
@@ -28,7 +34,6 @@ const getOwnerData = async (list_id) => {
         numProps,
         propDetails
     }
-    console.log('ownersRec: ', await ownerRec);
 
     return await ownerRec
     

@@ -11,11 +11,13 @@ const router = express.Router();
 // @route: GET api/marketplace/owners
 // @desc: get data on owner of a listing
 // @ access: private
-router.get('/:id', async (req, res) => {
+router.get('/:id/:type', async (req, res) => {
     try {
-        const data = await getOwnerData(req.params.id)
+        console.log('owner id api fired', req.params.type);
+        const data = await getOwnerData(req.params.id, req.params.type)
         res.status(200).send(data)
     } catch (err) {
+        console.error(err);
         res.status(500).send(err)
     }
       

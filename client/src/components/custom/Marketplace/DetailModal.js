@@ -173,7 +173,7 @@ const headers = [
 ]; 
 
 
-const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent, getOwnerInfo, ownerInfo}) => {
+const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent, getOwnerInfo, ownerInfo, type = 'salesLead'}) => {
   const [prop, setProp] = useState('')
   const [subRent, setSubRent] = useState('')
   const [price, setPrice] = useState('')
@@ -185,7 +185,7 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
       const price = data.currentPrice ? data.currentPrice : data.listPrice
       setSubRent(subRent)
       setPrice(price)
-      getOwnerInfo(prop._id) 
+      getOwnerInfo(prop._id, type) 
     }
     setProp(prop)
   }, [data])

@@ -213,7 +213,7 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
                     apiKey='AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o'
                 />
                 {/* <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal} handleClose={() => setShowPropertyDetailsModal(false)} /> */}
-                <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} /> 
+                <DetailModal show={showDetailModal} data={focusedProperty} type={'listLead'} handleClose={() => setShowDetailModal(false)} /> 
                  {/* addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} /> */}
             </div>
         );

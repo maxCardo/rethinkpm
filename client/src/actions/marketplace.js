@@ -121,10 +121,10 @@ export const getAreaRents = () => async dispatch => {
 }
 
 //@desc: set property owner info in focused property
-export const getOwnerInfo = (id) => async dispatch => {
-    console.log(id);
+export const getOwnerInfo = (id, type) => async dispatch => {
+    console.log('ownerInfoId', id);
     try {
-        const res = await axios.get(`/api/marketplace/owners/${id}`)
+        const res = await axios.get(`/api/marketplace/owners/${id}/${type}`)
         console.log(res);
         dispatch({
             type: SET_OWNER_INFO,
