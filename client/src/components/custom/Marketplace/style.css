@@ -257,7 +257,82 @@ margin-left: 0;
   overflow-y: auto;
   margin: 20px auto;
 }
-
+.OwnedProperty {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+.op__img-container {
+  max-width: 250px;
+}
+.op__details {
+  flex-grow: 1;
+  display: flex;
+}
+.op__estimate {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.op__estimateGain {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+}
+.Comps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 20px;
+  margin-top: -20px;
+}
+.Comps > li {
+  display: flex;
+  width: 33%;
+  justify-content: space-between;
+  background: #fff;
+  margin-bottom: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .22);
+}
+.listImage-container {
+  margin-right: 12px;
+}
+.Comps li a {
+  display: block;
+}
+.Comps li img {
+  height: 100%;
+  width: auto;
+}
+.op__estimateData-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 0 16px;
+}
+.op__estimatedValue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.op__equity {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+.Comp__details {
+  display: flex;
+  font-size: 14px;
+}
+.compDetails-modal {
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  background: rgba(0,0,0,.33);
+}
 @media (min-width: 1200px) {
   .Marketplace__DetailModal .modal-xl {
     max-width: 97%;
