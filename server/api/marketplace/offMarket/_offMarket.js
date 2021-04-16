@@ -14,7 +14,7 @@ router.get('/seller_pipeline/:id', async (req, res) => {
     try {
         console.log('firing seller pipeline');
         let sellerId = req.params.id;
-        let pipeline = await ListLeads.find({ "pros": sellerId }).populate('compReport')
+        let pipeline = await ListLeads.find({ "pros": sellerId }).populate({ path: 'compReport', populate: { path: 'comps.listing_id' } })
         res.status(200).send(pipeline)
     } catch (err) {
         console.error(err);
