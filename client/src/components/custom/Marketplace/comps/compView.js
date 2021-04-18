@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Form, Modal} from 'react-bootstrap';
+import CardList from "../../../core/CardList";
 
 
 const CompView = (data) => {
 
     const [comps, setComps] = useState([])
     const [sellingPrice, setSellingPrice] = useState(0)
-    const [sellingPriceRange, setSellingPriceRange] = useState(0)
     const [mortgage, setMortgage] = useState(0)
 
 
@@ -38,15 +38,13 @@ const CompView = (data) => {
             {style: 'currency', currency: 'USD'}
         ).format(sum))
     }
+
     const Item = ({comp, getComp}) => {
         const handleClick = () => {
             getComp(comp)
         };
         return (
-            <li onClick={handleClick}>
-                <div className="listImage-container">
-                    <a href="https://placeholder.com"><img src="https://via.placeholder.com/160x50" alt="placeholder"/></a>
-                </div>
+            <li onClick={handleClick} style={{backgroundImage: 'url(https://via.placeholder.com/768x380)', backgroundPosition: 'cover'}}>
                 <div className="Comp__details">
                     <span className="salePrice">Sale Price (adj): {moneyFormat(comp.adjSalePrice)}</span>
                     <span className="salePrice">Sale Price: {moneyFormat(comp.adjSalePrice)}</span>
@@ -57,7 +55,7 @@ const CompView = (data) => {
         )
     }
 
-    const compList = comps && comps.map((comp, idx) => {
+    const compList = (comps) && comps.map((comp, idx) => {
         const getComp = () => {
             setActiveComp(comps[idx]);
             setShowModal(true);
@@ -72,7 +70,7 @@ const CompView = (data) => {
     }
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid flex-row">
             <div className="OwnedProperty">
                 <div className="op__img-container">
                     <a href="https://placeholder.com"><img src="https://via.placeholder.com/250x80" alt="placeholder"/></a>
@@ -109,7 +107,7 @@ const CompView = (data) => {
                             <Form.Group className="sliderGroupContainer">
                                 <Form.Group controlId="op__Estimate-price">
                                     <Form.Label>Est. selling price of your home</Form.Label>
-                                    <Form.Control type="text" value={sellingPrice}/>
+                                    <Form.Control type="text"/>
                                 </Form.Group>
                                 <Form.Group controlId="op__Estimate">
                                     <Form.Control type="range"/>
@@ -118,7 +116,7 @@ const CompView = (data) => {
                             <Form.Group className="sliderGroupContainer">
                                 <Form.Group controlId="op__Estimate-mortgage">
                                     <Form.Label>Est. remaining mortgage</Form.Label>
-                                    <Form.Control type="text" value={mortgage}/>
+                                    <Form.Control type="text"/>
                                 </Form.Group>
                                 <Form.Group controlId="op__Estimate-mortgage">
                                     <Form.Control type="range"/>
@@ -128,9 +126,11 @@ const CompView = (data) => {
                     </div>
                 </div>
             </div>
-            <ul className="Comps">
-                {compList}
-            </ul>
+            <div className="Map">
+                <h2>This is map</h2>
+            </div>
+            <CardList list={comps} />
+
             <Modal size='lg' className="compDetails-modal" show={showModal} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>CompDetail</Modal.Title>
