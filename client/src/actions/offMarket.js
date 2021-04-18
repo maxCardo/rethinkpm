@@ -45,13 +45,15 @@ export const deleteUnitSchedule = async (id) => {
     // //setFocusedProperty(listingUpdated)
 }
 
-export const openStreetView = (street, number) => dispatch => {
+export const openStreetView = (street, number, zip) => dispatch => {
+    console.log(zip);
     try {
         dispatch({
             type: OPEN_STREET_VIEW,
             payload: {
                 street: street,
                 number: number,
+                zip: zip,
                 StreetViewModalOpen: true
             }
         });

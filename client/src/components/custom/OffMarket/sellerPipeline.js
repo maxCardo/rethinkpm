@@ -145,7 +145,7 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
                                 iconClass='fas fa-eye'
                                 variant='action-button'
                                 onClickFunc={() =>
-                                    openStreetView(item.streetName, item.streetNumber)
+                                    openStreetView(item.streetName, item.streetNumber, item.zipcode)
                                 }
                             />
                         )}

@@ -19,6 +19,7 @@ export default function (state = initialState, action) {
                 ...state,
                 ststreet: payload.street,
                 stnumber: payload.number,
+                stzip: payload.zip,
                 streetViewOpen: true
             }
         case CLOSE_STREET_VIEW:
