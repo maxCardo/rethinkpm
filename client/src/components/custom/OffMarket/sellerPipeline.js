@@ -6,7 +6,7 @@ import Table from '../../core/Table';
 import Loading from '../../core/LoadingScreen/Loading';
 import '../Marketplace/style.css';
 import StreetViewModal from "../Marketplace/StreetViewModal";
-import { getSellerPipeline, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, openStreetView} from "../../../actions/offMarket";
+import { getSellerPipeline, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, openStreetView, deletePropRec} from "../../../actions/offMarket";
 // updateDeal, syncManagedBuyer
 //import { openStreetView, syncManagedBuyer, getBuyerPipeline, updateDeal } from "../../../actions/marketplace";
 import { Form } from "react-bootstrap";
@@ -16,7 +16,7 @@ import { checkBoxCheck, useWindowSize } from "../../../util/commonFunctions";
 import { afterMain } from '@popperjs/core';
 import DetailModal from '../Marketplace/DetailModal'
 
-const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal, syncManagedBuyer, pipeline: { sellerPipeline, loading } }) => {
+const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal, syncManagedBuyer, pipeline: { sellerPipeline, loading }, deletePropRec }) => {
 
     const [showStreetViewModal, setShowStreetViewModal] = useState(true)
     const [showDead, setShowDead] = useState(false)
@@ -165,7 +165,7 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
                             id='trash-property-tooltip'
                             iconClass='fas fa-trash'
                             variant='action-button'
-                            onClickFunc={() => updateDeal(item._id, 'dead')}
+                            onClickFunc={() => deletePropRec(item._id)}
                         />
                     </div>
                 );
@@ -223,6 +223,13 @@ const mapStateToProps = state => ({
     pipeline: state.offMarket
 })
 
-export default connect(mapStateToProps, { openStreetView, getSellerPipeline })(SellerPipeline)
+export default connect(mapStateToProps, { openStreetView, getSellerPipeline, deletePropRec })(SellerPipeline)
 
 //, updateDeal, syncManagedBuyer
+
+//606f5ae84783c60017d955f6 10 docs pass
+// listLead: 606f5ae34783c60017d955f4 10 doc pass
+//salesPros.listLeads: 9 recs (#7 is tarket list lead): fail!
+
+//606b402aa7daa80017282480 - 0
+//606b4086a7daa8001728249e

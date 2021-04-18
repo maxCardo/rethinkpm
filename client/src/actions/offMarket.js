@@ -1,5 +1,5 @@
-import {SET_SELLER_PIPELINE,OPEN_STREET_VIEW} from './type'
-import { createErrorAlert } from "./alert";
+import { SET_SELLER_PIPELINE, OPEN_STREET_VIEW, DELETE_SELLER_PROPERTY} from './type'
+import { createErrorAlert, createSuccessAlert } from "./alert";
 import axios from 'axios'
 
 export const getSellerPipeline = (id) => async dispatch => {
@@ -59,5 +59,22 @@ export const openStreetView = (street, number, zip) => dispatch => {
         });
     } catch (err) {
         dispatch(createErrorAlert(err.message, 'openStreetView action'))
+    }
+}
+
+//CRUD functionality on offMarket properties
+
+//@desc: delete record from db, adjust user rec array of deals, delete associated compReport
+export const deletePropRec = (id) => async dispatch => {
+    try {
+        const res = await axios.delete(`/api/marketplace/off_market/seller_pipeline/${id}`);
+        console.log('res:', res)
+        dispatch({
+            type: DELETE_SELLER_PROPERTY,
+            payload: id
+        })
+        dispatch(createSuccessAlert(res.data.msg, 'Delete Seller Record'))
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'Could Not Delete Record'))
     }
 }
