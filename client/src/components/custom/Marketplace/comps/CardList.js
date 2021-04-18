@@ -1,5 +1,7 @@
-import React, {useEffect, useState} from "react";
-import VerticalTable from "./VerticalTable/VerticalTable";
+import React, {useEffect, useState} from "react"
+import VerticalTable from "../../../core/VerticalTable/VerticalTable"
+import IconButton from "../../../core/IconButton/IconButton"
+import missingImage from '../../../../img/missingImage.jpg'
 
 const CardList = ({list}) => {
 
@@ -69,7 +71,18 @@ const CardList = ({list}) => {
         return month + '/' + day + '/' + year;
     }
 
-    const ListItem = ({comp}) => {
+    const getFormattedStatus = (status) => {
+        if (status === 'S')
+            return 'Sold'
+        if (status === 'U')
+            return 'Unknown Status'
+        if (status === 'C')
+            return 'Contingent'
+    }
+
+    const ListItem = ({comp, idx}) => {
+        const [activeComp, setActiveComp] = useState(-1)
+
         const compMlsStatus = comp && comp.listing_id && comp.listing_id.mlsStatus;
         const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
         const address = comp && comp.listing_id && comp.listing_id.address;
@@ -78,45 +91,49 @@ const CardList = ({list}) => {
         const listDate = comp && comp.listing_id && comp.listing_id.listDate ? getFormattedDate(new Date(comp.listing_id.listDate)) : 'nodate';
         const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize;
         const lotSize = comp && comp.listing_id && comp.listing_id.lotSize;
-
-        const mainImage = comp && comp.listing_id && comp.listing_id.images &&  comp.listing_id.images.length > 0 ? comp.listing_id.images[0] : 'https://s3.amazonaws.com/mlsphotos.idxbroker.com/photos/4da9/9ad41255877c3678f411c740137735ed/d504';
+        const mainImage = comp && comp.listing_id && comp.listing_id.images &&  comp.listing_id.images.length > 0 ? comp.listing_id.images[0] : missingImage;
 
         console.log('CardList comp')
         console.log(comp && comp)
-
 
         return (
             <li>
                 <div className="Comp__details-container" style={{backgroundImage: `url(${mainImage})`, backgroundPosition: 'cover'}}>
                     <div className="Comp__details">
-                        <span>Status: {compMlsStatus ? compMlsStatus : 'Unknown'}</span>
+                        <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
                         <span>Sale Price: {moneyFormat(comp.adjSalePrice)} | Sold: ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'Not Sold' })</span>
                         <span>Address: {address}</span>
                         <span>Bedrooms: {bedrooms}</span>
                         <span>Baths: {baths}</span>
                         <span>Building Area: {buildingSize && buildingSize + 'sq.ft'}</span>
                         <span>Lot Area: {lotSize && lotSize + 'sq.ft'}</span>
-                    </div>
-                    <div className="CompListing__details">
-                        <VerticalTable headers={headers} data={comp} />
-                        <span>Date Listed: {listDate && listDate}</span>
-                        <span>Date Contingent: </span>
-                        <span>Date Sold: </span>
-                        <span>Days On Market: </span>
-                        <span>Adjustments: </span>
-                        <span>Adjusted Price (adjusted value) </span>
+
                     </div>
                 </div>
+                <div className={'CompListing__details ' + ((activeComp > -1) && (activeComp === idx) ? 'open' : '')}>
+                    <VerticalTable headers={headers} data={comp}/>
+                    <span>Date Listed: {listDate && listDate}</span>
+                    <span>Date Contingent: </span>
+                    <span>Date Sold: </span>
+                    <span>Days On Market: </span>
+                    <span>Adjustments: </span>
+                    <span>Adjusted Price (adjusted value) </span>
+                </div>
+                <IconButton placement='bottom'
+                            tooltipContent={activeComp!==idx ? 'View more details' : 'Hide Details'}
+                            iconClass='fas fa-info'
+                            variant='action-button'
+                            btnClass='singleFieldEdit CardList__infoBtn'
+                            onClickFunc={ () => activeComp!==idx ? setActiveComp(idx) : setActiveComp(-1) } />
                 <div className="Comp__details-footer">
                     <p>Curtecy from our partners, the United Federation of Planets</p>
                 </div>
-
             </li>
         )
     }
 
     const compList = (comps) && comps.map((comp, idx) => {
-        return (<ListItem key={idx} comp={comp}/>);
+        return (<ListItem key={idx} idx={idx} comp={comp}/>);
     })
 
     return (<ul className="Comps">

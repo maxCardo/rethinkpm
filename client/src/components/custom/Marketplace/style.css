@@ -346,23 +346,37 @@ margin-left: 0;
   display: flex;
   flex-direction: column;
 }
-.Comps > li .Comp__details-container:hover .CompListing__details {
+.Comps > li .CompListing__details.open {
   bottom: 0;
   height: 100%;
   z-index: 15;
   background: rgba(55,55,55,.95);
   opacity: 1;
+  overflow-y: auto;
+}
+.Comps > li .table tr:hover {
+  background: #888;
 }
 .CompListing__details .table th,
 .CompListing__details .table td {
   color: #fff;
-  border:none;
+  width: 40%;
+  border: 1px solid #fff;
+}
+.CompListing__details .table td:nth-child(2) {
+  width: 60%;
 }
 .CompListing__details .VerticalTable > div {
   margin: 0 0 0 0;
 }
 .CompListing__details .VerticalTable thead {
   display: none;
+}
+.CardList__infoBtn.action-buttons__button {
+  position: absolute;
+  z-index: 16;
+  top: 5px;
+  right: 5px;
 }
 .listImage-container {
   margin-right: 12px;

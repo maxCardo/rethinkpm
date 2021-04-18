@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Form, Modal} from 'react-bootstrap';
-import CardList from "../../../core/CardList";
+import CardList from "./CardList";
 
 
 const CompView = (data) => {
 
     const [comps, setComps] = useState([])
-    const [sellingPrice, setSellingPrice] = useState(0)
-    const [mortgage, setMortgage] = useState(0)
-
 
     /* MODAL state*/
     const [activeComp, setActiveComp] = useState({});
@@ -129,6 +126,7 @@ const CompView = (data) => {
             <div className="Map">
                 <h2>This is map</h2>
             </div>
+
             <CardList list={comps} />
 
             <Modal size='lg' className="compDetails-modal" show={showModal} onHide={hideModal}>
