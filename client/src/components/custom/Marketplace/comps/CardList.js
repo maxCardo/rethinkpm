@@ -75,7 +75,7 @@ const CardList = ({list}) => {
         if (status === 'S')
             return 'Sold'
         if (status === 'U')
-            return 'Unknown Status'
+            return 'Under Contract'
         if (status === 'C')
             return 'Contingent'
     }
@@ -87,7 +87,7 @@ const CardList = ({list}) => {
         const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
         const address = comp && comp.listing_id && comp.listing_id.address;
         const bedrooms = comp && comp.listing_id && comp.listing_id.bedrooms;
-        const baths = comp && comp.listing_id && comp.listing_id.bathsFull + comp && comp.listing_id && comp.listing_id.bathsPartial;
+        const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths;
         const listDate = comp && comp.listing_id && comp.listing_id.listDate ? getFormattedDate(new Date(comp.listing_id.listDate)) : 'nodate';
         const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize;
         const lotSize = comp && comp.listing_id && comp.listing_id.lotSize;
@@ -101,23 +101,18 @@ const CardList = ({list}) => {
                 <div className="Comp__details-container" style={{backgroundImage: `url(${mainImage})`, backgroundPosition: 'cover'}}>
                     <div className="Comp__details">
                         <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
-                        <span>Sale Price: {moneyFormat(comp.adjSalePrice)} | Sold: ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'Not Sold' })</span>
-                        <span>Address: {address}</span>
-                        <span>Bedrooms: {bedrooms}</span>
-                        <span>Baths: {baths}</span>
-                        <span>Building Area: {buildingSize && buildingSize + 'sq.ft'}</span>
-                        <span>Lot Area: {lotSize && lotSize + 'sq.ft'}</span>
-
+                        <span class="Comp__details-prices">{moneyFormat(comp.adjSalePrice)} => ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'Not Sold' })</span>
+                        <span class="Comp__details-address">Address: {address}</span>
+                        <div className="Comp__details-bar">
+                            <span>Bedrooms: {bedrooms}</span>
+                            <span>Baths: {baths}</span>
+                            <span>Building Area: {buildingSize && buildingSize + 'sq.ft'}</span>
+                            <span>Lot Area: {lotSize && lotSize + 'sq.ft'}</span>
+                        </div>
                     </div>
                 </div>
                 <div className={'CompListing__details ' + ((activeComp > -1) && (activeComp === idx) ? 'open' : '')}>
                     <VerticalTable headers={headers} data={comp}/>
-                    <span>Date Listed: {listDate && listDate}</span>
-                    <span>Date Contingent: </span>
-                    <span>Date Sold: </span>
-                    <span>Days On Market: </span>
-                    <span>Adjustments: </span>
-                    <span>Adjusted Price (adjusted value) </span>
                 </div>
                 <IconButton placement='bottom'
                             tooltipContent={activeComp!==idx ? 'View more details' : 'Hide Details'}

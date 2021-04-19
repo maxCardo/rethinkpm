@@ -346,13 +346,36 @@ margin-left: 0;
   display: flex;
   flex-direction: column;
 }
+.Comp__details .Comp__details-bar {
+  position: absolute;
+  bottom: -4px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+.Comp__details-bar > span {
+  background: #fff;
+  margin-right: 4px;
+  color: #252525;
+  padding: 2px 8px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 0 2px rgba(255, 255, 255, .45);
+}
 .Comps > li .CompListing__details.open {
   bottom: 0;
   height: 100%;
   z-index: 15;
   background: rgba(55,55,55,.95);
   opacity: 1;
-  overflow-y: auto;
+}
+.Comp__details-prices {
+  font-size: 24px;
+  line-height: 32px;
+  margin-top: 12px;
+
 }
 .Comps > li .table tr:hover {
   background: #888;
