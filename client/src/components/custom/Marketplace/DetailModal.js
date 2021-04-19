@@ -201,8 +201,8 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
         <Modal.Title>Details: {prop.listNumber}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Tab.Container className='profile-tables__container' defaultActiveKey="details">
-          <Nav className='nav-tabs'>
+        <Tab.Container className='detailModal-tabs__container Marketplace__details' defaultActiveKey="details">
+          <Nav className='nav-tabs detailModal__tabs'>
             <Nav.Item>
               <Nav.Link eventKey="details">Property Details</Nav.Link>
             </Nav.Item>

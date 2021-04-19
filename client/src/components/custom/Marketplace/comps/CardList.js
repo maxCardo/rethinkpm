@@ -86,12 +86,17 @@ const CardList = ({list}) => {
         const compMlsStatus = comp && comp.listing_id && comp.listing_id.mlsStatus;
         const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
         const address = comp && comp.listing_id && comp.listing_id.address;
+        const area = comp && comp.listing_id && comp.listing_id.area;
         const bedrooms = comp && comp.listing_id && comp.listing_id.bedrooms;
         const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths;
         const listDate = comp && comp.listing_id && comp.listing_id.listDate ? getFormattedDate(new Date(comp.listing_id.listDate)) : 'nodate';
         const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize;
-        const lotSize = comp && comp.listing_id && comp.listing_id.lotSize;
         const mainImage = comp && comp.listing_id && comp.listing_id.images &&  comp.listing_id.images.length > 0 ? comp.listing_id.images[0] : missingImage;
+
+        // TODO: needs review
+        const currentPrice = comp && comp.adjSalePrice ? comp.adjSalePrice : false;
+        const listingPrice = comp && comp.listing_id && comp.listing_id.listPrice ? comp.listing_id.listPrice : false;
+
 
         console.log('CardList comp')
         console.log(comp && comp)
@@ -101,13 +106,13 @@ const CardList = ({list}) => {
                 <div className="Comp__details-container" style={{backgroundImage: `url(${mainImage})`, backgroundPosition: 'cover'}}>
                     <div className="Comp__details">
                         <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
-                        <span class="Comp__details-prices">{moneyFormat(comp.adjSalePrice)} => ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'Not Sold' })</span>
+                        <span class="Comp__details-prices">{currentPrice ? moneyFormat(currentPrice) : moneyFormat(listingPrice)} ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'Not Sold' })</span>
                         <span class="Comp__details-address">Address: {address}</span>
+                        <span className="Comp__details-address">Area: {area}</span>
                         <div className="Comp__details-bar">
-                            <span>Bedrooms: {bedrooms}</span>
-                            <span>Baths: {baths}</span>
-                            <span>Building Area: {buildingSize && buildingSize + 'sq.ft'}</span>
-                            <span>Lot Area: {lotSize && lotSize + 'sq.ft'}</span>
+                            {bedrooms ? <span>Bedrooms: {bedrooms}</span> : ''}
+                            {baths ? <span>Baths: {baths}</span> : ''}
+                            {buildingSize ? <span>buildingSize: {buildingSize}sq.ft</span> : ''}
                         </div>
                     </div>
                 </div>
