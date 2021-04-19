@@ -5,6 +5,7 @@ import VerticalTable from '../../core/VerticalTable/VerticalTable';
 import UnitSchedule from './UnitSchedule'
 import CompView from './comps/compView'
 import OwnerInfo from './OwnerInfo'
+import Journal from './Journal'
 
 import {getOwnerInfo} from '../../../actions/marketplace'
 
@@ -212,6 +213,9 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
             <Nav.Item>
               <Nav.Link eventKey="compView">Comps</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="journal">Journal</Nav.Link>
+            </Nav.Item>
           </Nav>
           <Tab.Content>
             <Tab.Pane eventKey="details">
@@ -228,6 +232,9 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
             </Tab.Pane>
             <Tab.Pane eventKey="compView">
               <CompView data={data}/>
+            </Tab.Pane>
+            <Tab.Pane eventKey="journal">
+              <Journal history={data.history} />
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>
