@@ -5,7 +5,7 @@ import VerticalTable from '../../core/VerticalTable/VerticalTable';
 import UnitSchedule from './UnitSchedule'
 import CompView from './comps/compView'
 import OwnerInfo from './OwnerInfo'
-import Journal from './Journal'
+import Journal from './journal/Journal'
 
 import {getOwnerInfo} from '../../../actions/marketplace'
 
