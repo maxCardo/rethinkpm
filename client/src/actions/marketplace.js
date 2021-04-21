@@ -135,3 +135,20 @@ export const getOwnerInfo = (id, type) => async dispatch => {
         dispatch(createErrorAlert(err.message, 'SET OWNER DATA'))
     }
 }
+
+//@desc add note on listLead or sales lead ToDO: add notes on buyerPipeline (spacific to buyer inquary not salesListing)??? 
+export const addNote = (data, id, type) => async dispatch => {
+    try {
+        console.log('logging from actions: ', data, id, type)
+        
+        //const res = await axios.post(`/api/marketplace/ops/addNote/${id}/${type}`, data, config)
+        //console.log('ran added note: ', res)
+        // dispatch({
+        //     type: SET_ACTIVE_PROFILE,
+        //     payload: res.data
+        // })
+
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'addNote action'))
+    }
+};

@@ -1,10 +1,10 @@
 import React, { useState  } from 'react'
 import {Modal, Button, Form} from 'react-bootstrap'
 import {connect} from 'react-redux'
-//import {addNote} from '../../../../../../actions/profile'
+import {addNote} from '../../../../actions/marketplace'
 
 
-const AddNoteModule = ({show, handleClose, addNote, profileType, id}) => {
+const AddNoteModule = ({show, handleClose, handleSubmit, addNote, profileType, id}) => {
   const [formData, setFormData] = useState({content:''}) 
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value })
   const onSubmit = () => addNote(formData,id,profileType)
@@ -26,7 +26,7 @@ const AddNoteModule = ({show, handleClose, addNote, profileType, id}) => {
         <Button variant="secondary" onClick={handleClose}>
           Close
           </Button>
-        <Button variant="primary" onClick={() => {onSubmit(); handleClose()}}>
+        <Button variant="primary" onClick={() => {onSubmit(); handleSubmit(formData); handleClose()}}>
           Save Changes
           </Button>
       </Modal.Footer>
@@ -39,5 +39,5 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {})(AddNoteModule) 
+export default connect(mapStateToProps, {addNote})(AddNoteModule) 
 

@@ -3,7 +3,7 @@ import { Tabs, Tab } from 'react-bootstrap'
 import TableWithSearch from './TableWithSearch'
 
 
-const Journal = ({history}) => {
+const Journal = ({history, type, id}) => {
     useEffect(() => {
         console.log(history)
 
@@ -46,27 +46,17 @@ const Journal = ({history}) => {
         <div className='profile-tables__container'>
             <Tabs defaultActiveKey="All">
                 <Tab eventKey="All" title="All">
-                    <TableWithSearch
-                        data={all}
-                        headers={logHeaders}
-                        handleSubmit={() => onSubmit()}
-                        sortBy='date'
-                        sortDirection='desc'
-                        sorting={true}
-                        //profileType={profileType}
-                    />
+                    <TableWithSearch data={all} headers={logHeaders} handleSubmit={() => onSubmit()} sortBy='date' sortDirection='desc' sorting={true} profileType={type}/>
                 </Tab>
                 <Tab eventKey="notes" title="Notes">
-                    <TableWithSearch data={notes} headers={headers} handleSubmit={() => onSubmit()} />
+                    <TableWithSearch data={notes} headers={headers} profileType={type} id={id} handleSubmit={() => onSubmit()} />
                 </Tab>
                 <Tab eventKey="Logs" title="Logs">
-                    <TableWithSearch data={logs} headers={headers} handleSubmit={() => onSubmit()} />
+                    <TableWithSearch data={logs} headers={headers} profileType={type} id={id} handleSubmit={() => onSubmit()} />
                 </Tab>
             </Tabs>
-
         </div>
     )
-
 }
 
 export default Journal
