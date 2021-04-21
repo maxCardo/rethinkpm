@@ -94,8 +94,9 @@ const CardList = ({list}) => {
         const mainImage = comp && comp.listing_id && comp.listing_id.images &&  comp.listing_id.images.length > 0 ? comp.listing_id.images[0] : missingImage;
 
         // TODO: needs review
-        const currentPrice = comp && comp.adjSalePrice ? comp.adjSalePrice : false;
+        const currentPrice = comp && comp.listing_id && comp.listing_id.currentPrice ? comp.listing_id.currentPrice : false;
         const listingPrice = comp && comp.listing_id && comp.listing_id.listPrice ? comp.listing_id.listPrice : false;
+        const price = currentPrice ? currentPrice : listingPrice
 
 
         console.log('CardList comp')
@@ -106,9 +107,13 @@ const CardList = ({list}) => {
                 <div className="Comp__details-container" style={{backgroundImage: `url(${mainImage})`, backgroundPosition: 'cover'}}>
                     <div className="Comp__details">
                         <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
-                        <span class="Comp__details-prices">{currentPrice ? moneyFormat(currentPrice) : moneyFormat(listingPrice)} ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'Not Sold' })</span>
+                        {/* toDo: make sold price smaller add header */}
+                        <span class="Comp__details-prices">{moneyFormat(price)} ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'N/A' })</span> 
+                        {/* remove headers from address and area */}
                         <span class="Comp__details-address">Address: {address}</span>
+                        {/*  make address one line with area if available in parens next to address line*/}
                         <span className="Comp__details-address">Area: {area}</span>
+                        {/* remove tiles for bd bth make on line like website */}
                         <div className="Comp__details-bar">
                             {bedrooms ? <span>Bedrooms: {bedrooms}</span> : ''}
                             {baths ? <span>Baths: {baths}</span> : ''}
