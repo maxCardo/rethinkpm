@@ -85,16 +85,16 @@ const CardList = ({list}) => {
 
         const compMlsStatus = comp && comp.listing_id && comp.listing_id.mlsStatus;
         const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
-        const address = comp && comp.listing_id && comp.listing_id.address;
+        const streetNumber = comp && comp.listing_id && comp.listing_id.streetNumber;
+        const streetName = comp && comp.listing_id && comp.listing_id.streetName;
+        const municipality = comp && comp.listing_id && comp.listing_id.municipality;
         const area = comp && comp.listing_id && comp.listing_id.area;
-        const county = comp && comp.listing_id && comp.listing_id.county;
+        const address = `${streetNumber && streetNumber} ${streetName && streetName}, ${municipality && municipality} ${area && area}`
         const bedrooms = comp && comp.listing_id && comp.listing_id.bedrooms;
         const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths;
-        const listDate = comp && comp.listing_id && comp.listing_id.listDate ? getFormattedDate(new Date(comp.listing_id.listDate)) : 'nodate';
         const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize;
         const mainImage = comp && comp.listing_id && comp.listing_id.images &&  comp.listing_id.images.length > 0 ? comp.listing_id.images[0] : missingImage;
 
-        // TODO: needs review
         const currentPrice = comp && comp.listing_id && comp.listing_id.currentPrice ? comp.listing_id.currentPrice : false;
         const listingPrice = comp && comp.listing_id && comp.listing_id.listPrice ? comp.listing_id.listPrice : false;
         const price = currentPrice ? currentPrice : listingPrice
@@ -112,9 +112,9 @@ const CardList = ({list}) => {
                     <div className="Comp__details">
                         <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
                         {/* toDo: make sold price smaller add header */}
-                        <span class="Comp__details-prices">{moneyFormat(price)} <span>({(compMlsStatus === "S") && priceSold ? 'Sold: '+ moneyFormat(priceSold) : 'N/A' })</span></span>
+                        <span className="Comp__details-prices">{moneyFormat(price)} <span>({(compMlsStatus === "S") && priceSold ? 'Sold: '+ moneyFormat(priceSold) : 'N/A' })</span></span>
                         {/* remove headers from address and area */}
-                        <span class="Comp__details-address">{address && area && address + ','} {area  && '(' + area + ')'} {county}</span>
+                        <span className="Comp__details-address">{address}</span>
                         {/* remove tiles for bd bth make on line like website */}
                         <div className="Comp__details-bar">
                             {bedrooms ? <span>Bedrooms: {bedrooms}</span> : ''}
