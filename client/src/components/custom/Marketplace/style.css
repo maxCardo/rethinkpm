@@ -390,6 +390,9 @@ margin-left: 0;
   margin-top: 12px;
   font-weight: 600;
 }
+.Comp__details-prices > span {
+  font-size: 16px;
+}
 .Comps > li .table tr:hover {
   background: #888;
 }
@@ -493,8 +496,11 @@ margin-left: 0;
   border-radius: 0;
   border-color: #fff;
 }
-.detailModal__tabs .container-fluid.flex-row {
-  padding: 0 0;
+.Marketplace__DetailModal .container-fluid.flex-row {
+  padding: 0 0 0 0;
+}
+.Marketplace__DetailModal .modal-body {
+  padding: 1rem 0;
 }
 @media (min-width: 1200px) {
   .Marketplace__DetailModal .modal-xl {

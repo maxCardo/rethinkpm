@@ -111,7 +111,7 @@ const CardList = ({list}) => {
                     <div className="Comp__details">
                         <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
                         {/* toDo: make sold price smaller add header */}
-                        <span class="Comp__details-prices">{moneyFormat(price)} ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'N/A' })</span> 
+                        <span class="Comp__details-prices">{moneyFormat(price)} <span>({(compMlsStatus === "S") && priceSold ? 'Sold: '+ moneyFormat(priceSold) : 'N/A' })</span></span>
                         {/* remove headers from address and area */}
                         <span class="Comp__details-address">{address && area && address + ','} {area  && '(' + area + ')'} {county}</span>
                         {/* remove tiles for bd bth make on line like website */}
