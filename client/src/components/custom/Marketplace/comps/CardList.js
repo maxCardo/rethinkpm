@@ -89,7 +89,7 @@ const CardList = ({list}) => {
         const streetName = comp && comp.listing_id && comp.listing_id.streetName;
         const municipality = comp && comp.listing_id && comp.listing_id.municipality;
         const area = comp && comp.listing_id && comp.listing_id.area;
-        const address = `${streetNumber && streetNumber} ${streetName && streetName}, ${municipality && municipality} ${area && area}`
+        const address = `${streetNumber} ${streetName}, ${municipality} ${area}`;
         const bedrooms = comp && comp.listing_id && comp.listing_id.bedrooms;
         const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths;
         const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize;
