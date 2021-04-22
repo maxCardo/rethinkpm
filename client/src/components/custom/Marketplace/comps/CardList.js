@@ -104,8 +104,9 @@ const CardList = ({list}) => {
 
         return (
             <li>
-                <div className="Comp__details-imgContainer">
-                    <img src={mainImage} alt="The property image"/>
+                {/* This is full width */}
+                <div className="Comp__details-imgContainer" style={{backgroundImage: 'url(' +mainImage + ')', backgroundSize: 'cover', backgroundPosition: 'center center', minHeight: '192px'}}>
+                    {/*This is full height <img src={mainImage} alt="The property image"/>*/}
                 </div>
                 <div className="Comp__details-container">
                     <div className="Comp__details">
