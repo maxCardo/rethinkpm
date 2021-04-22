@@ -322,6 +322,7 @@ margin-left: 0;
   background-repeat: no-repeat;
   flex-grow: 1;
   cursor: pointer;
+  min-height: 220px;
 }
 .Comp__details {
   display: flex;
