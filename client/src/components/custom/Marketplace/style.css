@@ -288,6 +288,7 @@ margin-left: 0;
   padding: 20px;
   margin-top: -20px;
   margin-left: auto;
+  padding: 20px 0 20px 20px;
 }
 .Comps, .Map {
   width: 49.5%;
@@ -330,9 +331,11 @@ margin-left: 0;
   position: relative;
   width: 100%;
   height: 100%;
+  justify-content: flex-end;
 }
 .Comp__details-address {
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 600;
 }
 .CompListing__details {
   padding: 12px;
@@ -350,22 +353,18 @@ margin-left: 0;
   flex-direction: column;
 }
 .Comp__details .Comp__details-bar {
-  position: absolute;
-  bottom: -4px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
 .Comp__details-bar > span {
-  background: #fff;
   margin-right: 4px;
-  color: #252525;
-  padding: 2px 8px;
+  color: #fff;
   margin-bottom: 4px;
   font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 0 2px rgba(255, 255, 255, .45);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, .45);
 }
 .Comps > li .CompListing__details.open {
   bottom: 0;
@@ -374,11 +373,22 @@ margin-left: 0;
   background: rgba(55,55,55,.95);
   opacity: 1;
 }
+.Comp__details-imgContainer {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.Comp__details-imgContainer img {
+  height: 192px;
+  width: auto;
+}
 .Comp__details-prices {
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 18px;
+  line-height: 24px;
   margin-top: 12px;
-
+  font-weight: 600;
 }
 .Comps > li .table tr:hover {
   background: #888;
@@ -482,6 +492,9 @@ margin-left: 0;
   color: #fff;
   border-radius: 0;
   border-color: #fff;
+}
+.detailModal__tabs .container-fluid.flex-row {
+  padding: 0 0;
 }
 @media (min-width: 1200px) {
   .Marketplace__DetailModal .modal-xl {

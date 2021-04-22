@@ -87,6 +87,7 @@ const CardList = ({list}) => {
         const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
         const address = comp && comp.listing_id && comp.listing_id.address;
         const area = comp && comp.listing_id && comp.listing_id.area;
+        const county = comp && comp.listing_id && comp.listing_id.county;
         const bedrooms = comp && comp.listing_id && comp.listing_id.bedrooms;
         const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths;
         const listDate = comp && comp.listing_id && comp.listing_id.listDate ? getFormattedDate(new Date(comp.listing_id.listDate)) : 'nodate';
@@ -98,26 +99,26 @@ const CardList = ({list}) => {
         const listingPrice = comp && comp.listing_id && comp.listing_id.listPrice ? comp.listing_id.listPrice : false;
         const price = currentPrice ? currentPrice : listingPrice
 
-
         console.log('CardList comp')
         console.log(comp && comp)
 
         return (
             <li>
-                <div className="Comp__details-container" style={{backgroundImage: `url(${mainImage})`, backgroundPosition: 'cover'}}>
+                <div className="Comp__details-imgContainer">
+                    <img src={mainImage} alt="The property image"/>
+                </div>
+                <div className="Comp__details-container">
                     <div className="Comp__details">
                         <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
                         {/* toDo: make sold price smaller add header */}
                         <span class="Comp__details-prices">{moneyFormat(price)} ({(compMlsStatus === "S") && priceSold ? moneyFormat(priceSold) : 'N/A' })</span> 
                         {/* remove headers from address and area */}
-                        <span class="Comp__details-address">Address: {address}</span>
-                        {/*  make address one line with area if available in parens next to address line*/}
-                        <span className="Comp__details-address">Area: {area}</span>
+                        <span class="Comp__details-address">{address && area && address + ','} {area  && '(' + area + ')'} {county}</span>
                         {/* remove tiles for bd bth make on line like website */}
                         <div className="Comp__details-bar">
                             {bedrooms ? <span>Bedrooms: {bedrooms}</span> : ''}
                             {baths ? <span>Baths: {baths}</span> : ''}
-                            {buildingSize ? <span>buildingSize: {buildingSize}sq.ft</span> : ''}
+                            {buildingSize ? <span>{buildingSize} sq.ft</span> : ''}
                         </div>
                     </div>
                 </div>
