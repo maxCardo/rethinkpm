@@ -1,19 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Form, Modal} from 'react-bootstrap';
-import CardList from "../../../core/CardList";
+import CardList from "./CardList";
 
 
 const CompView = (data) => {
 
     const [comps, setComps] = useState([])
-    const [sellingPrice, setSellingPrice] = useState(0)
-    const [mortgage, setMortgage] = useState(0)
-
 
     /* MODAL state*/
     const [activeComp, setActiveComp] = useState({});
     const [showModal, setShowModal] = useState(false);
-
 
     const [property, setProperty] = useState([])
 
@@ -33,37 +29,6 @@ const CompView = (data) => {
 
     }, [data])
 
-    const moneyFormat = (sum) => {
-        return (new Intl.NumberFormat('en-US',
-            {style: 'currency', currency: 'USD'}
-        ).format(sum))
-    }
-
-    const Item = ({comp, getComp}) => {
-        const handleClick = () => {
-            getComp(comp)
-        };
-        return (
-            <li onClick={handleClick} style={{backgroundImage: 'url(https://via.placeholder.com/768x380)', backgroundPosition: 'cover'}}>
-                <div className="Comp__details">
-                    <span className="salePrice">Sale Price (adj): {moneyFormat(comp.adjSalePrice)}</span>
-                    <span className="salePrice">Sale Price: {moneyFormat(comp.adjSalePrice)}</span>
-                    <span className="salePrice">Area: {comp.area}.00$</span>
-                    <span className="salePrice">Sale Price: {comp.adjSalePrice}.00$</span>
-                </div>
-            </li>
-        )
-    }
-
-    const compList = (comps) && comps.map((comp, idx) => {
-        const getComp = () => {
-            setActiveComp(comps[idx]);
-            setShowModal(true);
-        };
-
-        return (<Item key={idx} comp={comp} getComp={getComp}/>);
-    })
-
     const hideModal = () => {
         setShowModal(false)
         setActiveComp({})
@@ -81,12 +46,6 @@ const CompView = (data) => {
                             <div className="op__estimatedValue">
                                 <span>Land: {property && property.assessedValue && property.assessedValue.land}</span>
                                 <span>Building: {property && property.assessedValue && property.assessedValue.bldg}</span>
-                            </div>
-                            <div className="op__estimateRange">
-                                xxxxxx.00$ - xxxxxx.00$
-                            </div>
-                            <div className="op__estimateRange30">
-                                xxxxxx.00$ <span className="ChangeColor">(+- 15.0%)</span>
                             </div>
                         </div>
                         <div className="op__estimateGain">
@@ -131,13 +90,13 @@ const CompView = (data) => {
             </div>
             <CardList list={comps} />
 
+            {/*Modal thing*/}
             <Modal size='lg' className="compDetails-modal" show={showModal} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>CompDetail</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     the comp details
-
                 </Modal.Body>
                 <Modal.Footer className="modalFooterBtns">
                     <Button className="btn btn-primary" disabled={false} variant="secondary"
