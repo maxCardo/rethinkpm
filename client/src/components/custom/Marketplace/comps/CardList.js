@@ -87,9 +87,9 @@ const CardList = ({list}) => {
         const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
         const streetNumber = comp && comp.listing_id && comp.listing_id.streetNumber;
         const streetName = comp && comp.listing_id && comp.listing_id.streetName;
-        const municipality = comp && comp.listing_id && comp.listing_id.municipality;
-        const area = comp && comp.listing_id && comp.listing_id.area;
-        const address = `${streetNumber} ${streetName}, ${municipality} ${area}`;
+        const municipality = comp && comp.listing_id && comp.listing_id.municipality ? comp.listing_id.municipality : '' ;
+        const area = comp && comp.area;
+        const address = `${streetNumber} ${streetName}, ${municipality} (${area})`;
         const bedrooms = comp && comp.listing_id && comp.listing_id.bedrooms;
         const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths;
         const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize;
@@ -98,9 +98,6 @@ const CardList = ({list}) => {
         const currentPrice = comp && comp.listing_id && comp.listing_id.currentPrice ? comp.listing_id.currentPrice : false;
         const listingPrice = comp && comp.listing_id && comp.listing_id.listPrice ? comp.listing_id.listPrice : false;
         const price = currentPrice ? currentPrice : listingPrice
-
-        console.log('CardList comp')
-        console.log(comp && comp)
 
         return (
             <li>
