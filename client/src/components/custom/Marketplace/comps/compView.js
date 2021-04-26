@@ -1,17 +1,23 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Form, Modal} from 'react-bootstrap';
 import CardList from "./CardList";
+import {mortgageCalc, incomeValue} from './mortgageCalc'
 
 
 const CompView = (data) => {
 
     const [comps, setComps] = useState([])
-
+    const [incVal, setIncVal] = useState()
     /* MODAL state*/
     const [activeComp, setActiveComp] = useState({});
     const [showModal, setShowModal] = useState(false);
-
     const [property, setProperty] = useState([])
+
+    const mktIncomeValue = async (noi) => {
+        const res = await incomeValue(noi)
+        setIncVal(res)
+        console.log('income value: ', res);
+    }
 
     useEffect(() => {
         const props = data && data.data
@@ -27,7 +33,19 @@ const CompView = (data) => {
         console.log('data')
         console.log(data)
 
+        //calculate NOI issues: no reserves, taxes based on current which can be low
+        const areaRents = data.data.rents.area  > 0 ? data.data.rents.area : null 
+        const subRent = data.data.rents.HA.rent > 0 ? data.data.rents.HA.rent : null
+        const rents = areaRents && areaRents < subRent ? areaRents : subRent 
+        const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = data.data.model
+        const totalExpPreTax = management + leasing + maintenance + utilities + insurance
+        const noi = (rents*12) - vacancyLoss - totalExpPreTax - taxes.low
+        console.log('noi: ', noi);
+        mktIncomeValue(noi)
+
     }, [data])
+
+    
 
     const hideModal = () => {
         setShowModal(false)
@@ -46,6 +64,7 @@ const CompView = (data) => {
                             <div className="op__estimatedValue">
                                 <span>Land: {property && property.assessedValue && property.assessedValue.land}</span>
                                 <span>Building: {property && property.assessedValue && property.assessedValue.bldg}</span>
+                                <span>Income Approach: {incVal}</span>
                             </div>
                         </div>
                         <div className="op__estimateGain">
@@ -63,7 +82,7 @@ const CompView = (data) => {
                                     <p className="op__resultValue">$221,125</p>
                                 </div>
                             </div>
-                            <Form.Group className="sliderGroupContainer">
+                            {/* <Form.Group className="sliderGroupContainer">
                                 <Form.Group controlId="op__Estimate-price">
                                     <Form.Label>Est. selling price of your home</Form.Label>
                                     <Form.Control type="text"/>
@@ -80,7 +99,7 @@ const CompView = (data) => {
                                 <Form.Group controlId="op__Estimate-mortgage">
                                     <Form.Control type="range"/>
                                 </Form.Group>
-                            </Form.Group>
+                            </Form.Group> */}
                         </div>
                     </div>
                 </div>
