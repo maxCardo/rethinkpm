@@ -8,6 +8,7 @@ const CompView = (data) => {
 
     const [comps, setComps] = useState([])
     const [incVal, setIncVal] = useState()
+    const [mktRent, setMktRent] = useState()
     /* MODAL state*/
     const [activeComp, setActiveComp] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -39,9 +40,10 @@ const CompView = (data) => {
         const rents = areaRents && areaRents < subRent ? areaRents : subRent 
         const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = data.data.model
         const totalExpPreTax = management + leasing + maintenance + utilities + insurance
-        const noi = (rents*12) - vacancyLoss - totalExpPreTax - taxes.low
-        console.log('noi: ', noi);
-        mktIncomeValue(noi)
+        const netOpIncome = (rents*12) - vacancyLoss - totalExpPreTax - taxes.low
+        console.log('noi: ', netOpIncome);
+        mktIncomeValue(netOpIncome)
+        setMktRent(rents)
 
     }, [data])
 
