@@ -60,6 +60,12 @@ const CompView = (data) => {
         setActiveComp({})
     }
 
+    const formatRange = (value) => {
+        const firstNumber = value && value.split(" - ")[0] && value.split(" - ")[0]
+        const secondNumber = value && value.split(" - ")[0] && value.split(" - ")[1]
+        return formatMoney(firstNumber) + ' - ' + formatMoney(secondNumber)
+    }
+
     return (
         <div className="container-fluid flex-row">
             <div className="OwnedProperty">
@@ -80,19 +86,20 @@ const CompView = (data) => {
                         <h4>Search</h4>
                         <p className="op__resultValue">Sample Size: { activePropertyReport.sampleSize }</p>
                         <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
-                        <p className="op__resultValue">Price Range: { activePropertyReport.priceRange }</p>
+                        <p className="op__resultValue">Price Range: { formatRange(activePropertyReport.priceRange) }</p>
                         <p className="op__resultValue">Standard Deviation: {formatMoney(activePropertyReport.stdDev)}</p>
                     </div>
                     <div className="op__box">
                         <h4>Comp Approach</h4>
                         <p className="op__oov">{ formatMoney(activePropertyReport.oov) }</p>
-                        <p className="op__resultValue">Target Range: { activePropertyReport.targetRange }</p>
-                        <p className="op__smCentered">{activePropertyReport._25_75}</p>
+                        <p className="op__resultValue">Target Range:</p>
+                        <p className="op__smCentered">{formatRange(activePropertyReport._25_75)}</p>
                     </div>
                     <div className="op__box">
                         <h4>Income Approach</h4>
-                        <p className="op__smCentered">{formatMoney(incVal)}</p>
-                        <p className="op__smCentered">{formatMoney(mktRent)}</p>
+                        <p className="op__smCentered">{ formatMoney(incVal) }</p>
+                        <p className="op__resultValue">Market Rent:</p>
+                        <p className="op__smCentered">{ formatMoney(mktRent) }</p>
                     </div>
                 </div>
             </div>
