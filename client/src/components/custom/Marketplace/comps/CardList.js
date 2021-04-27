@@ -43,9 +43,6 @@ const CardList = ({list}) => {
         }
     ];
 
-    console.log('list')
-    console.log(list)
-
     useEffect(() => {
         const props = list && list
 

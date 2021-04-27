@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {Button, Form, Modal} from 'react-bootstrap';
+import {Button, Modal} from 'react-bootstrap';
 import CardList from "./CardList";
 import {mortgageCalc, incomeValue} from './mortgageCalc'
+import ProfileIcon from "../../../core/ProfileIcon";
+import {formatMoney} from "../../../../util/commonFunctions";
 
 
 const CompView = (data) => {
@@ -12,7 +14,9 @@ const CompView = (data) => {
     /* MODAL state*/
     const [activeComp, setActiveComp] = useState({});
     const [showModal, setShowModal] = useState(false);
-    const [property, setProperty] = useState([])
+
+    const [property, setProperty] = useState({});
+    const [activePropertyReport, setActivePropertyReport] = useState({});
 
     const mktIncomeValue = async (noi) => {
         const res = await incomeValue(noi)
@@ -25,8 +29,10 @@ const CompView = (data) => {
 
         if (props) {
             const theComps = props && props.compReport && props.compReport.comps ? props.compReport.comps : [];
+            const theReport = props && props.compReport && props.compReport.price ? props.compReport.price : {};
             setComps(theComps);
-            setProperty(props)
+            setProperty(props);
+            setActivePropertyReport(theReport)
             console.log('theComps')
             console.log(theComps)
         }
@@ -57,52 +63,36 @@ const CompView = (data) => {
     return (
         <div className="container-fluid flex-row">
             <div className="OwnedProperty">
-                <div className="op__img-container">
-                    <a href="https://placeholder.com"><img src="https://via.placeholder.com/250x80" alt="placeholder"/></a>
+                <div className="op__preparedBy">
+                    <p>Prepared by:</p>
+                    <div className="op__userBox">
+                        <div className="op__userAvatar">
+                            <ProfileIcon name={'Adam Poznanski'} size={35}/>
+                        </div>
+                        <div className="op__userData">
+                            <p>Adam Poznanski</p>
+                            <p className="sub">Broker</p>
+                        </div>
+                    </div>
                 </div>
                 <div className="op__details">
-                    <div className="op__estimate">
-                        <div className="op__estimateData-container">
-                            <div className="op__estimatedValue">
-                                <span>Land: {property && property.assessedValue && property.assessedValue.land}</span>
-                                <span>Building: {property && property.assessedValue && property.assessedValue.bldg}</span>
-                                <span>Income Approach: {incVal}</span>
-                            </div>
-                        </div>
-                        <div className="op__estimateGain">
-                            <div className="op__equity">
-                                <div className="op__box">
-                                    <p>Estimated Home Equity</p>
-                                    <p className="op__resultValue">$221,125</p>
-                                </div>
-                                <div className="op__box">
-                                    <p>Estimated Home Equity</p>
-                                    <p className="op__resultValue">$221,125</p>
-                                </div>
-                                <div className="op__box">
-                                    <p>Estimated Home Equity</p>
-                                    <p className="op__resultValue">$221,125</p>
-                                </div>
-                            </div>
-                            {/* <Form.Group className="sliderGroupContainer">
-                                <Form.Group controlId="op__Estimate-price">
-                                    <Form.Label>Est. selling price of your home</Form.Label>
-                                    <Form.Control type="text"/>
-                                </Form.Group>
-                                <Form.Group controlId="op__Estimate">
-                                    <Form.Control type="range"/>
-                                </Form.Group>
-                            </Form.Group>
-                            <Form.Group className="sliderGroupContainer">
-                                <Form.Group controlId="op__Estimate-mortgage">
-                                    <Form.Label>Est. remaining mortgage</Form.Label>
-                                    <Form.Control type="text"/>
-                                </Form.Group>
-                                <Form.Group controlId="op__Estimate-mortgage">
-                                    <Form.Control type="range"/>
-                                </Form.Group>
-                            </Form.Group> */}
-                        </div>
+                    <div className="op__box">
+                        <h4>Search</h4>
+                        <p className="op__resultValue">Sample Size: { activePropertyReport.sampleSize }</p>
+                        <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
+                        <p className="op__resultValue">Price Range: { activePropertyReport.priceRange }</p>
+                        <p className="op__resultValue">Standard Deviation: {formatMoney(activePropertyReport.stdDev)}</p>
+                    </div>
+                    <div className="op__box">
+                        <h4>Comp Approach</h4>
+                        <p className="op__oov">{ formatMoney(activePropertyReport.oov) }</p>
+                        <p className="op__resultValue">Target Range: { activePropertyReport.targetRange }</p>
+                        <p className="op__smCentered">{activePropertyReport._25_75}</p>
+                    </div>
+                    <div className="op__box">
+                        <h4>Income Approach</h4>
+                        <p className="op__smCentered">{formatMoney(incVal)}</p>
+                        <p className="op__smCentered">{formatMoney(mktRent)}</p>
                     </div>
                 </div>
             </div>
