@@ -281,34 +281,49 @@ margin-left: 0;
 .op__box h4 {
   margin-bottom: 0;
 }
-.op__details .op__box:first-child {
-  width: 40%;
-  max-width: 360px;
-  padding-left: 20px;
+.op__box:nth-child(3) h4 {
+  text-align: left;
+  padding-left: 12px;
 }
-.op__details .op__box:last-child {
+.opBox__double > div {
+  display: flex;
+}
+.op__details .op__box.opBox__double {
+  flex-grow: 1;
+  max-width: unset;
+  margin-left: 20px;
+}
+.op__details .op__box:nth-child(2){
   width: 25%;
   max-width: 250px;
 }
 .op__details .op__box {
   width: 35%;
   max-width: 300px;
+  text-align: center;
 }
 .op__estimateGain {
   flex-grow: 1;
   display: flex;
   justify-content: space-between;
 }
+.op__userAvatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .op__userBox {
   display: flex;
   background: #fff;
   padding: 12px;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, .187);
+  position: relative;
+  min-width: 240px;
 }
 .op__userData {
   margin-left: 10px;
 }
-.op__box .op__oov {
+.op__box .op__bigMoney {
   font-size: 30px;
   font-weight: 600;
 }
@@ -334,6 +349,9 @@ p.sub {
 .Comps, .Map {
   width: 49.5%;
 }
+.editComps__container .Comps{
+  width: 100%;
+}
 .Comps > li {
   display: flex;
   flex-direction: column;
@@ -345,6 +363,11 @@ p.sub {
   position: relative;
   color: #fff;
   border-bottom: 4px solid #6f9dd4;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .Comps > li .Comp__details-container:before {
   content: "";
@@ -535,8 +558,45 @@ p.sub {
   flex-direction: row !important;
   flex-wrap: wrap;
 }
+.Marketplace__DetailModal-edit.Marketplace__DetailModal .editComps__container {
+  width: 80%;
+  background: #ededed;
+  box-shadow: 0px 0px 14px -5px inset rgba(0, 0, 0, .38);
+  padding-top: 20px;
+}
+.Marketplace__DetailModal-edit .Comps {
+  max-height: 77vh;
+  padding: 20px 20px 20px 20px;
+  justify-content: flex-start;
+}
+.Marketplace__DetailModal-edit .Comps > li {
+  width: calc(33.333% - 6px);
+  margin-right: 8px;
+}
+.Marketplace__DetailModal-edit .Comps > li:nth-child(3n) {
+  margin-right: 0;
+}
 .Marketplace__DetailModal .modal-body {
   padding: 1rem 0;
+}
+.EditComp__card .Comp__details-imgContainer {
+  position: static;
+}
+.EditComp__card .Comp__details {
+  padding: 10px;
+}
+.EditComp__card .Comp__details-bar,
+.EditComp__card .Comp__details span {
+  color: #000;
+}
+.EditComp__card .calcSidebar {
+  flex-grow: 1;
+  align-self: baseline;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 326px;
 }
 @media (min-width: 1200px) {
   .Marketplace__DetailModal .modal-xl {
