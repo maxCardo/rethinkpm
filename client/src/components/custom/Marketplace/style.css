@@ -483,12 +483,35 @@ p.sub {
 .CompListing__details .VerticalTable thead {
   display: none;
 }
-.CardList__infoBtn.action-buttons__button {
+.CardList__streetViewBtn,
+.CardList__mapBtn,
+.CardList__infoBtn,
+.CardList__galleryBtn,
+.CardList__editBtn {
   position: absolute;
   z-index: 16;
+}
+.CardList__infoBtn.action-buttons__button {
   top: 5px;
   right: 5px;
 }
+.CardList__mapBtn.action-buttons__button {
+  left: 5px;
+  top: 5px;
+}
+.CardList__streetViewBtn.action-buttons__button {
+  left: 35px;
+  top: 5px;
+}
+.CardList__galleryBtn.action-buttons__button {
+  left: 65px;
+  top: 5px;
+}
+.CardList__editBtn.action-buttons__button {
+  left: 95px;
+  top: 5px;
+}
+
 .listImage-container {
   margin-right: 12px;
 }
@@ -589,14 +612,17 @@ p.sub {
 .EditComp__card .Comp__details span {
   color: #000;
 }
-.EditComp__card .calcSidebar {
+.calcSidebar {
   flex-grow: 1;
   align-self: baseline;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: flex-start;
   min-height: 326px;
+  padding: 20px;
+}
+.EditComp__card {
+  width: 100%;
 }
 @media (min-width: 1200px) {
   .Marketplace__DetailModal .modal-xl {

@@ -6,6 +6,8 @@ import ProfileIcon from "../../../core/ProfileIcon";
 import {formatMoney} from "../../../../util/commonFunctions";
 import IconButton from "../../../core/IconButton/IconButton";
 import EditCompReport from "./editCompReport";
+import missingImage from '../../../../img/missingImage.jpg'
+
 
 
 const CompView = (data) => {
@@ -35,8 +37,8 @@ const CompView = (data) => {
             setComps(theComps);
             setProperty(props);
             setActivePropertyReport(theReport)
-            console.log('theComps')
-            console.log(theComps)
+            console.log('property')
+            console.log(property)
         }
 
         //calculate NOI issues: no reserves, taxes based on current which can be low
@@ -111,19 +113,23 @@ const CompView = (data) => {
                             <div className="opBox__half">
                                 <p className="op__resultValue">Sample Size: { activePropertyReport.sampleSize }</p>
                                 <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
-                                <p className="op__resultValue">Price Range: { formatRange(activePropertyReport.priceRange) }</p>
+
                                 <p className="op__resultValue">Standard Deviation: {formatMoney(activePropertyReport.stdDev)}</p>
                             </div>
                             <div className="opBox__half">
-                                <p className="op__resultValue">Just This: { activePropertyReport._10_90 }</p>
+                                <p className="op__resultValue">Price Range: </p>
+                                <p>{ formatRange(activePropertyReport.priceRange) }</p>
+                                <p className="op__resultValue">Wider Price Range: </p>
+                                <p>{ activePropertyReport._10_90 }</p>
+
+                            </div>
+                            <div className="opBox__half">
                                 <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
                                 <p className="op__resultValue">Price Range: { formatRange(activePropertyReport.priceRange) }</p>
                                 <p className="op__resultValue">Standard Deviation: {formatMoney(activePropertyReport.stdDev)}</p>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
             <div className="Map">
@@ -138,47 +144,58 @@ const CompView = (data) => {
                 </Modal.Header>
                 <Modal.Body>
                     {/*Card list of comps with queue and 5 active.*/}
-                    {/*Each needs to activate Select/Remove, mapview, streetview, gallery on different element clicks.*/}
+                    {/*Each needs to activate Select/Remove, mapview, streetview, gallery, edit modal on different element clicks.*/}
                     {/*Sticky calculator sidebar with save, cancel and home card*/}
                     <div className="flex-between">
                         <div className="editComps__container">
                             <EditCompReport list={comps} report={activePropertyReport} />
                         </div>
                         <div className="calcSidebar">
-                        <div className="Calculator">
-                            <div className="activeReport">
-                                <p className="op__bigMoney">{ formatMoney(activePropertyReport.oov) }</p>
-                                <p className="op__resultValue">Target Range:</p>
-                                <p className="op__smCentered">{formatRange(activePropertyReport._25_75)}</p>
+                            <div  className="EditComp__card">
+                                <div className="Comp__details-imgContainer" style={{backgroundImage: 'url(' +missingImage + ')', backgroundSize: 'cover', backgroundPosition: 'center center', minHeight: '220px'}}>
+                                </div>
+                                <IconButton placement='bottom'
+                                            tooltipContent='Click to Edit Main Property'
+                                            iconClass='fas fa-edit'
+                                            variant='action-button'
+                                            btnClass='singleFieldEdit CardList__infoBtn'
+                                            onClickFunc={ () => console.log('Edit main property') } />
+                                <div>
+                                    <div className="Comp__details">
+                                        <span>Status: status</span>
+                                        <span className="Comp__details-prices">whaaat</span>
+                                        <span className="Comp__details-address">meh</span>
+                                        <div className="Comp__details-bar">
+                                            {property.bedrooms ? <span>Bedrooms: {property.bedrooms}</span> : ''}
+                                            {property.baths ? <span>Baths: {property.baths}</span> : ''}
+                                            {property.buildingSize ? <span>{property.buildingSize} sq.ft</span> : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="Calculator">
+                                <div className="activeReport">
+                                    <p className="op__bigMoney">{ formatMoney(activePropertyReport.oov) }</p>
+                                    <p className="op__resultValue">Target Range:</p>
+                                    <p className="op__smCentered">{formatRange(activePropertyReport._25_75)}</p>
+                                </div>
+                            </div>
+                            <div className="calcSidebar__actions">
+
+                                <Button className="btn btn-danger" variant="secondary"
+                                        onClick={hideModal}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button className="btn btn-primary" disabled={false} variant="secondary"
+                                        onClick={() => console.log('save and exit')}
+                                >
+                                    Save and Exit
+                                </Button>
                             </div>
                         </div>
-                        <div className="calcSidebar__actions">
-                            <Button className="btn btn-danger" variant="secondary"
-                                    onClick={hideModal}
-                            >
-                                Cancel
-                            </Button>
-                            <Button className="btn btn-primary" disabled={false} variant="secondary"
-                                    onClick={() => console.log('save and exit')}
-                            >
-                                Save and Exit
-                            </Button>
-                        </div>
-                    </div>
                     </div>
                 </Modal.Body>
-                <Modal.Footer className="modalFooterBtns">
-                    <Button className="btn btn-primary" disabled={false} variant="secondary"
-                            onClick={() => console.log('submitIt')}
-                    >
-                        Submit
-                    </Button>
-                    <Button className="btn btn-danger" variant="secondary"
-                            onClick={hideModal}
-                    >
-                        Cancel
-                    </Button>
-                </Modal.Footer>
             </Modal>
         </div>
     )
