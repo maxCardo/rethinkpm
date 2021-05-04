@@ -3,11 +3,10 @@ import {Button, Modal} from 'react-bootstrap';
 import CardList from "./CardList";
 import {mortgageCalc, incomeValue} from './mortgageCalc'
 import ProfileIcon from "../../../core/ProfileIcon";
-import {formatMoney} from "../../../../util/commonFunctions";
+import {formatMoney, formatRange} from "../../../../util/commonFunctions";
 import IconButton from "../../../core/IconButton/IconButton";
 import EditCompReport from "./editCompReport";
 import missingImage from '../../../../img/missingImage.jpg'
-
 
 
 const CompView = (data) => {
@@ -64,12 +63,6 @@ const CompView = (data) => {
         setActiveComp({})
     }
 
-    const formatRange = (value) => {
-        const firstNumber = value && value.split(" - ")[0] && value.split(" - ")[0]
-        const secondNumber = value && value.split(" - ")[0] && value.split(" - ")[1]
-        return formatMoney(firstNumber) + ' - ' + formatMoney(secondNumber)
-    }
-
     return (
         <div className="container-fluid flex-row">
             <div className="OwnedProperty">
@@ -111,22 +104,22 @@ const CompView = (data) => {
                         <h4>Search</h4>
                         <div>
                             <div className="opBox__half">
+                                <p className="op__resultValue">Standard Deviation: </p>
+                                <p>{formatMoney(activePropertyReport.stdDev)}</p>
                                 <p className="op__resultValue">Sample Size: { activePropertyReport.sampleSize }</p>
                                 <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
-
-                                <p className="op__resultValue">Standard Deviation: {formatMoney(activePropertyReport.stdDev)}</p>
+                                <p className="op__resultValue">Standard Deviation: </p>
+                                <p>{formatMoney(activePropertyReport.stdDev)}</p>
                             </div>
                             <div className="opBox__half">
                                 <p className="op__resultValue">Price Range: </p>
                                 <p>{ formatRange(activePropertyReport.priceRange) }</p>
-                                <p className="op__resultValue">Wider Price Range: </p>
-                                <p>{ activePropertyReport._10_90 }</p>
-
+                                <p className="op__resultValue">Bedrooms: { property.bedrooms }</p>
                             </div>
                             <div className="opBox__half">
-                                <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
-                                <p className="op__resultValue">Price Range: { formatRange(activePropertyReport.priceRange) }</p>
-                                <p className="op__resultValue">Standard Deviation: {formatMoney(activePropertyReport.stdDev)}</p>
+                                <p className="op__resultValue">10-90 Price Range: </p>
+                                <p>{ formatRange(activePropertyReport._10_90) }</p>
+                                <p className="op__resultValue">School District: { property.schoolDistrict }</p>
                             </div>
                         </div>
                     </div>
@@ -138,7 +131,7 @@ const CompView = (data) => {
             <CardList list={comps} />
 
             {/*Modal thing*/}
-            <Modal size='xl' className="Marketplace__DetailModal Marketplace__DetailModal-edit" show={showModal} onHide={hideModal}>
+            <Modal size='xl' className="Marketplace__DetailModal Marketplace__compReport-edit" show={showModal} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Comp Report (Agent Only)</Modal.Title>
                 </Modal.Header>

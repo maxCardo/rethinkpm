@@ -226,7 +226,9 @@ img {
 .my-3 {
   margin: 3rem 0;
 }
-
+.fade.modal {
+  background: rgba(0,0,0,.115);
+}
 .btn {
   display: inline-block;
   background: #f4f4f4;

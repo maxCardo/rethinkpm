@@ -282,11 +282,14 @@ margin-left: 0;
   margin-bottom: 0;
 }
 .op__box:nth-child(3) h4 {
-  text-align: left;
+  text-align: center;
   padding-left: 12px;
 }
 .opBox__double > div {
   display: flex;
+  text-align: center;
+  justify-content: space-around;
+  padding: 16px 0 0 0;
 }
 .op__details .op__box.opBox__double {
   flex-grow: 1;
@@ -531,7 +534,16 @@ p.sub {
   z-index: 9999;
   background: rgba(0,0,0,.33);
 }
-
+.Gallery__modal .slick-track {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 50vh;
+}
+.Gallery__modal .slick-slide img {
+  height: 100% !important;
+  display: inline-block;
+  width: auto!important;
+}
 
 /*Property modal subnav*/
 .detailModal__tabs-container {
@@ -581,26 +593,43 @@ p.sub {
   flex-direction: row !important;
   flex-wrap: wrap;
 }
-.Marketplace__DetailModal-edit.Marketplace__DetailModal .editComps__container {
+.Marketplace__compReport-edit.Marketplace__DetailModal .editComps__container {
   width: 80%;
   background: #ededed;
   box-shadow: 0px 0px 14px -5px inset rgba(0, 0, 0, .38);
   padding-top: 20px;
 }
-.Marketplace__DetailModal-edit .Comps {
+.Marketplace__compReport-edit .Comps {
   max-height: 77vh;
   padding: 20px 20px 20px 20px;
   justify-content: flex-start;
 }
-.Marketplace__DetailModal-edit .Comps > li {
+.Marketplace__compReport-edit .Comps > li {
   width: calc(33.333% - 6px);
   margin-right: 8px;
 }
-.Marketplace__DetailModal-edit .Comps > li:nth-child(3n) {
+.Marketplace__compReport-edit .Comps > li:nth-child(3n) {
   margin-right: 0;
 }
 .Marketplace__DetailModal .modal-body {
   padding: 1rem 0;
+}
+.Gallery__modal .modal-footer {
+  margin-top: 20px;
+}
+.Gallery__modal .slick-next:before,
+.Gallery__modal .slick-prev:before {
+  font-size: 20px;
+  line-height: 1;
+  opacity: .75;
+  color: #252525;
+}
+.Gallery__modal .modal-dialog {
+  max-width: 90%;
+}
+.Gallery__modal .modal-content {
+  margin-top: 5%;
+  margin-bottom: 0;
 }
 .EditComp__card .Comp__details-imgContainer {
   position: static;
@@ -623,6 +652,27 @@ p.sub {
 }
 .EditComp__card {
   width: 100%;
+}
+.userBox__comp {
+  min-width: 130px;
+  color: #252525;
+  position: absolute;
+  right: 12px;
+  max-height: 68px;
+  top: -40px;
+}
+.userBox__comp p {
+  margin-bottom: 0;
+}
+.userBox__comp img {
+  height: 50px;
+  width: 50px;
+}
+.userBox__comp .op__userData span {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  font-size: 11px;
 }
 @media (min-width: 1200px) {
   .Marketplace__DetailModal .modal-xl {

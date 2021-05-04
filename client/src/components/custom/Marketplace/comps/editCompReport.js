@@ -1,8 +1,9 @@
 import React, {Fragment, useEffect, useRef, useState} from "react"
 import IconButton from "../../../core/IconButton/IconButton"
 import missingImage from '../../../../img/missingImage.jpg'
+import robotAvatar from '../../../../img/robotAvatar.png'
 import {Button, Modal} from "react-bootstrap";
-import Loading from "../../../core/LoadingScreen/Loading";
+import Slider from "react-slick";
 import {StreetView} from "react-google-map-street-view";
 
 const EditCompReport = ({list}) => {
@@ -37,15 +38,6 @@ const EditCompReport = ({list}) => {
             {style: 'currency', currency: 'USD'}
         ).format(sum))
     }
-
-    const getFormattedDate = (date) => {
-        let year = date.getFullYear();
-        let month = (1 + date.getMonth()).toString().padStart(2, '0');
-        let day = date.getDate().toString().padStart(2, '0');
-
-        return month + '/' + day + '/' + year;
-    }
-
 
     const getFormattedStatus = (status) => {
         if (status === 'S')
@@ -83,10 +75,13 @@ const EditCompReport = ({list}) => {
         }
 
         const onCompGalleryView = (index) => {
-            console.log('onCompGalleryView index - ' + index);
+            setActiveComp(comps[index].listing_id)
+            setGalleryModalOpen(true);
         }
+
         const onCompEditView = (index) => {
-            console.log('onCompEditView index - ' + index);
+            setActiveComp(comps[index].listing_id)
+            setCompEditModal(true);
         }
 
         const compMlsStatus = comp && comp.listing_id && comp.listing_id.mlsStatus;
@@ -113,37 +108,37 @@ const EditCompReport = ({list}) => {
                     backgroundPosition: 'center center',
                     minHeight: '220px'
                 }}>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click to remove from List'
+                                iconClass='fas fa-trash'
+                                variant='action-button'
+                                btnClass='singleFieldEdit CardList__infoBtn'
+                                onClickFunc={() => onCompRemove(idx)}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click to view map area'
+                                iconClass='fas fa-map-marker-alt'
+                                variant='action-button'
+                                btnClass='singleFieldEdit CardList__mapBtn'
+                                onClickFunc={() => onCompMapView(idx)}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click to street view'
+                                iconClass='fas fa-street-view'
+                                variant='action-button'
+                                btnClass='singleFieldEdit CardList__streetViewBtn'
+                                onClickFunc={() => onCompStreetView(idx)}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click to View Gallery'
+                                iconClass='fas fa-images'
+                                variant='action-button'
+                                btnClass='singleFieldEdit CardList__galleryBtn'
+                                onClickFunc={() => onCompGalleryView(idx)}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click to Fix'
+                                iconClass='fas fa-tools'
+                                variant='action-button'
+                                btnClass='singleFieldEdit CardList__editBtn'
+                                onClickFunc={() => onCompEditView(idx)}/>
                 </div>
-                <IconButton placement='bottom'
-                            tooltipContent='Click to remove from List'
-                            iconClass='fas fa-trash'
-                            variant='action-button'
-                            btnClass='singleFieldEdit CardList__infoBtn'
-                            onClickFunc={() => onCompRemove(idx)}/>
-                <IconButton placement='bottom'
-                            tooltipContent='Click to view map area'
-                            iconClass='fas fa-map-marker-alt'
-                            variant='action-button'
-                            btnClass='singleFieldEdit CardList__mapBtn'
-                            onClickFunc={() => onCompMapView(idx)}/>
-                <IconButton placement='bottom'
-                            tooltipContent='Click to street view'
-                            iconClass='fas fa-street-view'
-                            variant='action-button'
-                            btnClass='singleFieldEdit CardList__streetViewBtn'
-                            onClickFunc={() => onCompStreetView(idx)}/>
-                <IconButton placement='bottom'
-                            tooltipContent='Click to View Gallery'
-                            iconClass='fas fa-images'
-                            variant='action-button'
-                            btnClass='singleFieldEdit CardList__galleryBtn'
-                            onClickFunc={() => onCompGalleryView(idx)}/>
-                <IconButton placement='bottom'
-                            tooltipContent='Click to Fix'
-                            iconClass='fas fa-tools'
-                            variant='action-button'
-                            btnClass='singleFieldEdit CardList__editBtn'
-                            onClickFunc={() => onCompEditView(idx)}/>
                 <div>
                     <div className="Comp__details">
                         <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
@@ -155,6 +150,16 @@ const EditCompReport = ({list}) => {
                             {baths ? <span>Baths: {baths}</span> : ''}
                             {buildingSize ? <span>{buildingSize} sq.ft</span> : ''}
                         </div>
+                        <div className="op__userBox userBox__comp">
+                            <div className="op__userAvatar">
+                                <img src={robotAvatar} alt=""/>
+                            </div>
+                            <div className="op__userData">
+                                <span>last edit</span>
+                                <p>Max Cardo</p>
+                                <p className="sub">Robot</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="Comp__details-footer">
@@ -163,13 +168,37 @@ const EditCompReport = ({list}) => {
             </li>
         )
     }
-    const [streetView, setStreetView] = useState(true);
-    const [streetViewModalOpen, setStreetViewModalOpen] = useState(false);
+    const [streetView, setStreetView] = useState(true)
+    const [streetViewModalOpen, setStreetViewModalOpen] = useState(false)
+    const [galleryModalOpen, setGalleryModalOpen] = useState(false)
+    const [compEditModal, setCompEditModal] = useState(false)
+
     const apiKey = 'AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o'
-    const address = `${activeComp.streetNumber} ${activeComp.streetName}, Pittsburg, Pennsylvania`;
+    const address = `${activeComp.streetNumber} ${activeComp.streetName}, Pittsburg, Pennsylvania`
+
+    var sliderSettings = {
+        dots: true,
+        infinite: false,
+        slidesToShow: 3,
+        slidesToScrikk: 1,
+        variableWidth: true,
+        cssEase: 'linear',
+    };
+
 
     return (
         <>
+            <link
+                rel="stylesheet"
+                type="text/css"
+                charSet="UTF-8"
+                href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+            />
+            <link
+                rel="stylesheet"
+                type="text/css"
+                href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+            />
             <ul className="Comps">
                 {theCompsList}
             </ul>
@@ -204,6 +233,55 @@ const EditCompReport = ({list}) => {
                     </Button>
                 </Modal.Footer>
             </Modal>}
+            {activeComp && galleryModalOpen && (
+                <Modal size='xl'
+                       className='Gallery__modal'
+                       show={galleryModalOpen}
+                       onHide={() => {
+                           console.log(activeComp)
+                           setGalleryModalOpen(false)
+                       }}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Gallery</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Slider {...sliderSettings}>
+                            {activeComp && activeComp.images && activeComp.images.map((item, index) => (
+                                <img key={index} src={item} />
+                            ))}
+                        </Slider>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className='real-btn' variant='2' onClick={() => {
+                            setGalleryModalOpen(false)
+                        }}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
+            {activeComp && compEditModal && (
+                <Modal size='xl'
+                       className='CompEdit__modal'
+                       show={compEditModal}
+                       onHide={() => {
+                           setCompEditModal(false)
+                       }}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Gallery</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                     just add water
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className='real-btn' variant='2' onClick={() => {
+                            setCompEditModal(false)
+                        }}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
         </>
     )
 };
