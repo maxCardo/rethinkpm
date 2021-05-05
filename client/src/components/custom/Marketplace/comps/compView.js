@@ -106,10 +106,8 @@ const CompView = (data) => {
                             <div className="opBox__half">
                                 <p className="op__resultValue">Standard Deviation: </p>
                                 <p>{formatMoney(activePropertyReport.stdDev)}</p>
-                                <p className="op__resultValue">Sample Size: { activePropertyReport.sampleSize }</p>
+                                <p>Sample Size: { activePropertyReport.sampleSize }</p>
                                 <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
-                                <p className="op__resultValue">Standard Deviation: </p>
-                                <p>{formatMoney(activePropertyReport.stdDev)}</p>
                             </div>
                             <div className="opBox__half">
                                 <p className="op__resultValue">Price Range: </p>
@@ -174,7 +172,6 @@ const CompView = (data) => {
                                 </div>
                             </div>
                             <div className="calcSidebar__actions">
-
                                 <Button className="btn btn-danger" variant="secondary"
                                         onClick={hideModal}
                                 >

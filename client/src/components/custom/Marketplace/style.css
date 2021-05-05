@@ -274,10 +274,14 @@ margin-left: 0;
   display: flex;
   justify-content: flex-end;
 }
-
+.op__resultValue + p {
+  font-size: 22px;
+  line-height: 26px;
+}
 .OwnedProperty p {
   margin-bottom: 0;
 }
+
 .op__box h4 {
   margin-bottom: 0;
 }
@@ -673,6 +677,20 @@ p.sub {
   top: 0;
   right: 5px;
   font-size: 11px;
+}
+.CompEdit__modal label {
+  margin: 0 12px 0 0;
+}
+.CompEdit__modal .form-group {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 @media (min-width: 1200px) {
   .Marketplace__DetailModal .modal-xl {
