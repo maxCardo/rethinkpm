@@ -6,6 +6,7 @@ import {Button, Col, Modal, Row} from "react-bootstrap";
 import Slider from "react-slick";
 import {StreetView} from "react-google-map-street-view";
 import Form from "react-bootstrap/Form";
+import GalleryModal from "./GalleryModal";
 
 const EditCompReport = ({list}) => {
     const hasProps = useRef(0);
@@ -51,15 +52,18 @@ const EditCompReport = ({list}) => {
 
 
     const ListItem = ({comp, idx}) => {
+
         const onCompRemove = (index) => {
-            comps.splice(index, 1)
-            setComps(comps)
-            if (hasProps.current === 1) {
-                const compList = (comps) && comps.map((comp, idx) => {
-                    return (<ListItem key={idx} idx={idx} comp={comp}/>);
-                })
-                setTheCompsList(compList)
-            }
+            console.log('Removed comp with index ' + index );
+
+            // comps.splice(index, 1)
+            // setComps(comps)
+            // if (hasProps.current === 1) {
+            //     const compList = (comps) && comps.map((comp, idx) => {
+            //         return (<ListItem key={idx} idx={idx} comp={comp}/>);
+            //     })
+            //     setTheCompsList(compList)
+            // }
         }
 
         const onCompMapView = (index) => {
@@ -109,11 +113,23 @@ const EditCompReport = ({list}) => {
                     minHeight: '220px'
                 }}>
                     <IconButton placement='bottom'
-                                tooltipContent='Click to remove from List'
-                                iconClass='fas fa-trash'
+                                tooltipContent='Click save to comp list'
+                                iconClass='fas fa-check-double'
                                 variant='action-button'
-                                btnClass='singleFieldEdit CardList__infoBtn'
-                                onClickFunc={() => onCompRemove(idx)}/>
+                                btnClass='singleFieldEdit CardList__doubleCheckBtn'
+                                onClickFunc={() => console.log('clicked double checked')}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click save to comp list'
+                                iconClass='fas fa-thumbs-up'
+                                variant='action-button'
+                                btnClass='singleFieldEdit CardList__likeBtn'
+                                onClickFunc={() => console.log('clicked like')}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click remove from comp list'
+                                iconClass='fas fa-thumbs-down'
+                                variant='action-button'
+                                btnClass='singleFieldEdit CardList__dislikeBtn'
+                                onClickFunc={() => console.log('clicked not like')}/>
                     <IconButton placement='bottom'
                                 tooltipContent='Click to view map area'
                                 iconClass='fas fa-map-marker-alt'
@@ -185,6 +201,9 @@ const EditCompReport = ({list}) => {
         cssEase: 'linear',
     };
 
+    const handleGalleryClose = (value) => {
+        setGalleryModalOpen(value);
+    }
 
     return (
         <>
@@ -234,31 +253,7 @@ const EditCompReport = ({list}) => {
                 </Modal.Footer>
             </Modal>}
             {activeComp && galleryModalOpen && (
-                <Modal size='xl'
-                       className='Gallery__modal'
-                       show={galleryModalOpen}
-                       onHide={() => {
-                           console.log(activeComp)
-                           setGalleryModalOpen(false)
-                       }}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Gallery</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Slider {...sliderSettings}>
-                            {activeComp && activeComp.images && activeComp.images.map((item, index) => (
-                                <img key={index} src={item}/>
-                            ))}
-                        </Slider>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button className='real-btn' variant='2' onClick={() => {
-                            setGalleryModalOpen(false)
-                        }}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <GalleryModal modalOpen={galleryModalOpen} openModal={handleGalleryClose} activeComp={activeComp} sliderSettings={sliderSettings} />
             )}
             {activeComp && compEditModal && (
                 <Modal size='xl'

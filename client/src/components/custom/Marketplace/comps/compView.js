@@ -7,6 +7,7 @@ import {formatMoney, formatRange} from "../../../../util/commonFunctions";
 import IconButton from "../../../core/IconButton/IconButton";
 import EditCompReport from "./editCompReport";
 import missingImage from '../../../../img/missingImage.jpg'
+import './style.css'
 
 
 const CompView = (data) => {
@@ -153,7 +154,7 @@ const CompView = (data) => {
                                             onClickFunc={ () => console.log('Edit main property') } />
                                 <div>
                                     <div className="Comp__details">
-                                        <span>Status: status</span>
+                                        <span>Status: {property.status}</span>
                                         <span className="Comp__details-prices">whaaat</span>
                                         <span className="Comp__details-address">meh</span>
                                         <div className="Comp__details-bar">
