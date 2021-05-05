@@ -2,9 +2,10 @@ import React, {Fragment, useEffect, useRef, useState} from "react"
 import IconButton from "../../../core/IconButton/IconButton"
 import missingImage from '../../../../img/missingImage.jpg'
 import robotAvatar from '../../../../img/robotAvatar.png'
-import {Button, Modal} from "react-bootstrap";
+import {Button, Col, Modal, Row} from "react-bootstrap";
 import Slider from "react-slick";
 import {StreetView} from "react-google-map-street-view";
+import Form from "react-bootstrap/Form";
 
 const EditCompReport = ({list}) => {
     const hasProps = useRef(0);
@@ -47,7 +48,6 @@ const EditCompReport = ({list}) => {
         if (status === 'C')
             return 'Contingent'
     }
-
 
 
     const ListItem = ({comp, idx}) => {
@@ -204,17 +204,17 @@ const EditCompReport = ({list}) => {
             </ul>
 
             {activeComp && streetViewModalOpen && <Modal size='xl'
-                    className='StreetView__modal'
-                    show={streetViewModalOpen}
-                    onHide={() => {
-                        console.log(activeComp)
-                        setStreetViewModalOpen(false)
-                    }}>
+                                                         className='StreetView__modal'
+                                                         show={streetViewModalOpen}
+                                                         onHide={() => {
+                                                             console.log(activeComp)
+                                                             setStreetViewModalOpen(false)
+                                                         }}>
                 <Modal.Header closeButton>
                     <Modal.Title>{streetView ? 'Street' : 'Map'} View </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <StreetView address={address  + ' ' + activeComp.zipcode} APIkey={apiKey}
+                    <StreetView address={address + ' ' + activeComp.zipcode} APIkey={apiKey}
                                 streetView={streetView}
                                 zoomLevel={10}/>
                 </Modal.Body>
@@ -247,7 +247,7 @@ const EditCompReport = ({list}) => {
                     <Modal.Body>
                         <Slider {...sliderSettings}>
                             {activeComp && activeComp.images && activeComp.images.map((item, index) => (
-                                <img key={index} src={item} />
+                                <img key={index} src={item}/>
                             ))}
                         </Slider>
                     </Modal.Body>
@@ -271,9 +271,42 @@ const EditCompReport = ({list}) => {
                         <Modal.Title>Gallery</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                     just add water
+                        <button onClick={() => console.log(activeComp)}>Log it</button>
+                        <pre>
+                            {JSON.stringify(activeComp)}
+                        </pre>
+                        <Form>
+                            <Row>
+                                <Col md={4}>
+                                    <Form.Group controlId="propertyBaths">
+                                        <Form.Label>Baths</Form.Label>
+                                        <Form.Control type="number" value={activeComp.bathsFull} placeholder="Number of baths"/>
+                                    </Form.Group>
+                                </Col>
+                                <Col md={4}>
+                                    <Form.Group controlId="propertyBedrooms">
+                                        <Form.Label>Bedrooms</Form.Label>
+                                        <Form.Control type="number" value={activeComp.bedrooms} placeholder="Number of bedrooms"/>
+                                    </Form.Group>
+                                </Col>
+                                <Col md={4} className='flex-center'>
+                                    <Form.Group controlId="formBasicCheckbox" >
+                                        <Form.Check type="checkbox" label="Check me out"/>
+                                    </Form.Group>
+                                </Col>
+                                <Col md={4}>
+                                    <Form.Group controlId="propertyBedrooms">
+                                        <Form.Label>Total Baths</Form.Label>
+                                        <Form.Control type="number" value={activeComp.totalBaths} placeholder="Number of total bedrooms"/>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                        </Form>
                     </Modal.Body>
                     <Modal.Footer>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
                         <Button className='real-btn' variant='2' onClick={() => {
                             setCompEditModal(false)
                         }}>
