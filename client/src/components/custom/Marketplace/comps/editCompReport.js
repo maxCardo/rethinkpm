@@ -2,10 +2,9 @@ import React, {Fragment, useEffect, useRef, useState} from "react"
 import IconButton from "../../../core/IconButton/IconButton"
 import missingImage from '../../../../img/missingImage.jpg'
 import robotAvatar from '../../../../img/robotAvatar.png'
-import {Button, Col, Modal, Row} from "react-bootstrap";
-import Slider from "react-slick";
-import {StreetView} from "react-google-map-street-view";
-import Form from "react-bootstrap/Form";
+import GalleryModal from "./GalleryModal";
+import StreetMapViewModal from "./StreetMapViewModal";
+import EditCompListingModal from "./EditCompListingModal";
 
 const EditCompReport = ({list}) => {
     const hasProps = useRef(0);
@@ -49,18 +48,53 @@ const EditCompReport = ({list}) => {
             return 'Contingent'
     }
 
+    {/*TODO: this needs to stay in container*/}
+    const onCompRemove = (index) => {
+        console.log('Removed comp with index ' + index );
 
+        // comps.splice(index, 1)
+        // setComps(comps)
+        // if (hasProps.current === 1) {
+        //     const compList = (comps) && comps.map((comp, idx) => {
+        //         return (<ListItem key={idx} idx={idx} comp={comp}/>);
+        //     })
+        //     setTheCompsList(compList)
+        // }
+    }
+
+    const [streetView, setStreetView] = useState(true)
+    const [streetViewModalOpen, setStreetViewModalOpen] = useState(false)
+    const [galleryModalOpen, setGalleryModalOpen] = useState(false)
+    const [compEditModal, setCompEditModal] = useState(false)
+
+    var sliderSettings = {
+        dots: true,
+        infinite: false,
+        slidesToShow: 3,
+        slidesToScrikk: 1,
+        variableWidth: true,
+        cssEase: 'linear',
+    };
+
+    const handleGalleryClose = (value) => {
+        setGalleryModalOpen(value);
+    }
+
+    const handleStreetViewModal = (value) => {
+        setStreetViewModalOpen(value);
+    }
+
+    const handleStreetViewMode = (value) => {
+        setStreetView(value);
+    }
+
+    const handleEditComp = (value) => {
+        setCompEditModal(value)
+    }
+
+
+    {/*TODO: Extract to separate component, last cause weird*/}
     const ListItem = ({comp, idx}) => {
-        const onCompRemove = (index) => {
-            comps.splice(index, 1)
-            setComps(comps)
-            if (hasProps.current === 1) {
-                const compList = (comps) && comps.map((comp, idx) => {
-                    return (<ListItem key={idx} idx={idx} comp={comp}/>);
-                })
-                setTheCompsList(compList)
-            }
-        }
 
         const onCompMapView = (index) => {
             setStreetView(false);
@@ -108,12 +142,26 @@ const EditCompReport = ({list}) => {
                     backgroundPosition: 'center center',
                     minHeight: '220px'
                 }}>
+
                     <IconButton placement='bottom'
-                                tooltipContent='Click to remove from List'
-                                iconClass='fas fa-trash'
+                                tooltipContent='Click save to comp list'
+                                iconClass='fas fa-check-double'
                                 variant='action-button'
-                                btnClass='singleFieldEdit CardList__infoBtn'
-                                onClickFunc={() => onCompRemove(idx)}/>
+                                btnClass='singleFieldEdit CardList__doubleCheckBtn'
+                                onClickFunc={() => console.log('clicked double checked')}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click save to comp list'
+                                iconClass='fas fa-thumbs-up'
+                                variant='action-button'
+                                btnClass={`singleFieldEdit CardList__likeBtn ${(idx < 10) && 'selected'}`}
+                                onClickFunc={() => console.log('clicked like')}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click remove from comp list'
+                                iconClass='fas fa-thumbs-down'
+                                variant='action-button'
+                                btnClass='singleFieldEdit CardList__dislikeBtn'
+                                onClickFunc={() => console.log('clicked not like')}/>
+
                     <IconButton placement='bottom'
                                 tooltipContent='Click to view map area'
                                 iconClass='fas fa-map-marker-alt'
@@ -126,6 +174,8 @@ const EditCompReport = ({list}) => {
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__streetViewBtn'
                                 onClickFunc={() => onCompStreetView(idx)}/>
+
+                    {/*TODO: Dont show if activeProperty.images.lenght === 0*/}
                     <IconButton placement='bottom'
                                 tooltipContent='Click to View Gallery'
                                 iconClass='fas fa-images'
@@ -168,152 +218,20 @@ const EditCompReport = ({list}) => {
             </li>
         )
     }
-    const [streetView, setStreetView] = useState(true)
-    const [streetViewModalOpen, setStreetViewModalOpen] = useState(false)
-    const [galleryModalOpen, setGalleryModalOpen] = useState(false)
-    const [compEditModal, setCompEditModal] = useState(false)
-
-    const apiKey = 'AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o'
-    const address = `${activeComp.streetNumber} ${activeComp.streetName}, Pittsburg, Pennsylvania`
-
-    var sliderSettings = {
-        dots: true,
-        infinite: false,
-        slidesToShow: 3,
-        slidesToScrikk: 1,
-        variableWidth: true,
-        cssEase: 'linear',
-    };
-
 
     return (
         <>
-            <link
-                rel="stylesheet"
-                type="text/css"
-                charSet="UTF-8"
-                href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-            />
-            <link
-                rel="stylesheet"
-                type="text/css"
-                href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-            />
             <ul className="Comps">
                 {theCompsList}
             </ul>
-
-            {activeComp && streetViewModalOpen && <Modal size='xl'
-                                                         className='StreetView__modal'
-                                                         show={streetViewModalOpen}
-                                                         onHide={() => {
-                                                             console.log(activeComp)
-                                                             setStreetViewModalOpen(false)
-                                                         }}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{streetView ? 'Street' : 'Map'} View </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <StreetView address={address + ' ' + activeComp.zipcode} APIkey={apiKey}
-                                streetView={streetView}
-                                zoomLevel={10}/>
-                </Modal.Body>
-                <Modal.Footer>
-                    <IconButton onClickFunc={() => setStreetView(!streetView)}
-                                fontSize={22}
-                                btnClass='modal__action-button'
-                                variant='action-button'
-                                iconClass='fas fa-map-marker'
-                                tooltipContent={`Change to ${streetView ? 'Map mode' : 'Street mode'}`}/>
-
-                    <Button className='real-btn' variant='2' onClick={() => {
-                        setStreetViewModalOpen(false)
-                    }}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>}
+            {activeComp && streetViewModalOpen && (
+                <StreetMapViewModal modalOpen={streetViewModalOpen} openModal={handleStreetViewModal} changeStreetView={handleStreetViewMode} activeComp={activeComp} streetView={streetView} />
+            )}
             {activeComp && galleryModalOpen && (
-                <Modal size='xl'
-                       className='Gallery__modal'
-                       show={galleryModalOpen}
-                       onHide={() => {
-                           console.log(activeComp)
-                           setGalleryModalOpen(false)
-                       }}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Gallery</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Slider {...sliderSettings}>
-                            {activeComp && activeComp.images && activeComp.images.map((item, index) => (
-                                <img key={index} src={item}/>
-                            ))}
-                        </Slider>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button className='real-btn' variant='2' onClick={() => {
-                            setGalleryModalOpen(false)
-                        }}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <GalleryModal modalOpen={galleryModalOpen} openModal={handleGalleryClose} activeComp={activeComp} sliderSettings={sliderSettings} />
             )}
             {activeComp && compEditModal && (
-                <Modal size='xl'
-                       className='CompEdit__modal'
-                       show={compEditModal}
-                       onHide={() => {
-                           setCompEditModal(false)
-                       }}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Gallery</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <button onClick={() => console.log(activeComp)}>Log it</button>
-                        <pre>
-                            {JSON.stringify(activeComp)}
-                        </pre>
-                        <Form>
-                            <Row>
-                                <Col md={4}>
-                                    <Form.Group controlId="propertyBaths">
-                                        <Form.Label>Baths</Form.Label>
-                                        <Form.Control type="number" value={activeComp.bathsFull} placeholder="Number of baths"/>
-                                    </Form.Group>
-                                </Col>
-                                <Col md={4}>
-                                    <Form.Group controlId="propertyBedrooms">
-                                        <Form.Label>Bedrooms</Form.Label>
-                                        <Form.Control type="number" value={activeComp.bedrooms} placeholder="Number of bedrooms"/>
-                                    </Form.Group>
-                                </Col>
-                                <Col md={4} className='flex-center'>
-                                    <Form.Group controlId="formBasicCheckbox" >
-                                        <Form.Check type="checkbox" label="Check me out"/>
-                                    </Form.Group>
-                                </Col>
-                                <Col md={4}>
-                                    <Form.Group controlId="propertyBedrooms">
-                                        <Form.Label>Total Baths</Form.Label>
-                                        <Form.Control type="number" value={activeComp.totalBaths} placeholder="Number of total bedrooms"/>
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button className='real-btn' variant='2' onClick={() => {
-                            setCompEditModal(false)
-                        }}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <EditCompListingModal modalOpen={compEditModal} openModal={handleEditComp} activeComp={activeComp} />
             )}
         </>
     )

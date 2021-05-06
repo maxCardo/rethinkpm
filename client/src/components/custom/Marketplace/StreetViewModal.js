@@ -24,7 +24,6 @@ const StreetViewModal = ({  apiKey, address, zip, modalOpen, closeStreetView}) =
             </Modal.Header>
             {loading ? <Loading/> : <Fragment>
                 <Modal.Body>
-                    {console.log(address + ', Pennsylvania' + ' ' + zip )}
                     <StreetView address={address + ', Pennsylvania' + ' ' + zip } APIkey={apiKey} streetView={streetView}
                                 zoomLevel={10}/>
                 </Modal.Body>
