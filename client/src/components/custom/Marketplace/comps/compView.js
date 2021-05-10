@@ -37,8 +37,7 @@ const CompView = (data) => {
             setComps(theComps);
             setProperty(props);
             setActivePropertyReport(theReport)
-            console.log('property')
-            console.log(property)
+
         }
 
         //calculate NOI issues: no reserves, taxes based on current which can be low
@@ -76,7 +75,6 @@ const CompView = (data) => {
                         <div className="op__userData">
                             <p>Adam Poznanski</p>
                             <p className="sub">Broker</p>
-
                         </div>
                         <IconButton placement='bottom'
                                     tooltipContent={'Edit Comp Report (Agent Only)'}
