@@ -22,7 +22,10 @@ const leadCompReportSchema = new mongoose.Schema({
         totalAdj: Number,
         //added
         blackList: Boolean,
-        like: Boolean, 
+        like: Boolean,
+        addAdj: Object,
+        ttlAddAdj: Number,
+        addAdjPrice: Number 
     }],
     price: {
         average: Number,
@@ -35,9 +38,40 @@ const leadCompReportSchema = new mongoose.Schema({
         searchRad: String,
         arv: Number,
         oov: Number
-    }
+    },
+    adjPrice:{
+        average: Number,
+        Median: Number,
+        priceRange: String,
+        _25_75: String,
+        _10_90: String,
+        stdDev: String,
+        sampleSize: Number,
+        searchRad: String,
+        arv: Number,
+    },
+    history: [
+        {
+            type: {
+                //note, log etc
+                type: String,
+            },
+            content: {
+                type: String,
+            },
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+            date: {
+                type: Date,
+                default: Date.now,
+            },
+        },
+    ],
 })
 
 module.exports = mongoose.model('lead_comp_report', leadCompReportSchema);
 
 //migrated from BM on 4-7-21
+//updated here on 5/10/21
