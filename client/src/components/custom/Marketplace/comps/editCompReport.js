@@ -48,7 +48,7 @@ const EditCompReport = ({list}) => {
             return 'Contingent'
     }
 
-    {/*TODO: this needs to stay in container*/}
+    {/*TODO: this needs to stay in container, or probably be removed completely */}
     const onCompRemove = (index) => {
         console.log('Removed comp with index ' + index );
 
@@ -145,16 +145,11 @@ const EditCompReport = ({list}) => {
 
                     <IconButton placement='bottom'
                                 tooltipContent='Click save to comp list'
-                                iconClass='fas fa-check-double'
-                                variant='action-button'
-                                btnClass='singleFieldEdit CardList__doubleCheckBtn'
-                                onClickFunc={() => console.log('clicked double checked')}/>
-                    <IconButton placement='bottom'
-                                tooltipContent='Click save to comp list'
                                 iconClass='fas fa-thumbs-up'
                                 variant='action-button'
                                 btnClass={`singleFieldEdit CardList__likeBtn ${(idx < 10) && 'selected'}`}
                                 onClickFunc={() => console.log('clicked like')}/>
+
                     <IconButton placement='bottom'
                                 tooltipContent='Click remove from comp list'
                                 iconClass='fas fa-thumbs-down'
@@ -164,18 +159,12 @@ const EditCompReport = ({list}) => {
 
                     <IconButton placement='bottom'
                                 tooltipContent='Click to view map area'
-                                iconClass='fas fa-map-marker-alt'
+                                iconClass='fas fa-street-view'
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__mapBtn'
                                 onClickFunc={() => onCompMapView(idx)}/>
-                    <IconButton placement='bottom'
-                                tooltipContent='Click to street view'
-                                iconClass='fas fa-street-view'
-                                variant='action-button'
-                                btnClass='singleFieldEdit CardList__streetViewBtn'
-                                onClickFunc={() => onCompStreetView(idx)}/>
 
-                    {/*TODO: Dont show if activeProperty.images.lenght === 0*/}
+                    {/*TODO: Dont show if activeProperty.images.length === 0*/}
                     <IconButton placement='bottom'
                                 tooltipContent='Click to View Gallery'
                                 iconClass='fas fa-images'
@@ -188,6 +177,12 @@ const EditCompReport = ({list}) => {
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__editBtn'
                                 onClickFunc={() => onCompEditView(idx)}/>
+                    <IconButton placement='bottom'
+                                tooltipContent='Click for more Info'
+                                iconClass='fas fa-info'
+                                variant='action-button'
+                                btnClass="CardList__compInfoBtn"
+                                onClickFunc={() => console.log('clicked more info')}/>
                 </div>
                 <div>
                     <div className="Comp__details">
