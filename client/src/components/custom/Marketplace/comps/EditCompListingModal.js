@@ -113,7 +113,7 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
                             </Form.Group>
                         </Col>
                         <Col md={12}>
-                            <Form.Group className='cem__radioGroup' controlId="propertyCondition">
+                            <Form.Group className='cem__selectGroup' controlId="propertyCondition">
                                 <Form.Label>Building Condition</Form.Label>
                                 <Select
                                     placeholder={`Select Location Condition...`}

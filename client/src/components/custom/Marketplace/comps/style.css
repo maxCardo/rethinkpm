@@ -455,13 +455,28 @@ p.sub {
     font-size: 11px;
 }
 .cem__radioGroup,
-.cem__notesGroup {
+.cem__notesGroup,
+.cem__selectGroup {
     display: flex;
     flex-direction: column;
     margin-bottom: 12px;
 }
+.cem__radioGroup .btn.btn-primary {
+    z-index: 2;
+}
+.cem__selectGroup {
+    z-index: 15;
+    margin-top: 12px;
+    position: relative;
+}
 .cem__checkGroup {
     margin: 12px 0;
+}
+.CompEdit__modal.modal {
+    overflow-y: hidden;
+}
+.CompEdit__modal .modal-content {
+    margin-top: 40px;
 }
 .CompEdit__modal label {
     margin: 0 12px 0 0;
