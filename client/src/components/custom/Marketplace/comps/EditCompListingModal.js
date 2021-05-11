@@ -13,9 +13,9 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
     ]
 
     const optionsEntranceStairs = [
-        { value: '0 - 6 Stairs', label: '0 - 6' },
-        { value: '7-15 Stairs', label: '7-15' },
-        { value: '15+ Stairs', label: '15+' }
+        { value: '0 - 6 Stairs', label: '0 - 6 Stairs' },
+        { value: '7-15 Stairs', label: '7-15 Stairs' },
+        { value: '15+ Stairs', label: '15+ Stairs' }
     ]
 
     const optionsLocationConditions = [
@@ -83,33 +83,27 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
                 <Form>
                     <Row>
                         <Col md={6}>
-                            <Form.Group className='cem__radioGroup' controlId="propertyBedrooms">
+                            <Form.Group className='cem__selectGroup' controlId="propertyGeoConditions">
                                 <Form.Label>Geo Conditions</Form.Label>
-                                <ToggleButtonGroup type="radio" name="options" value={geoValue} onChange={handleGeoChange}>
-                                    {optionsGeoConditions.map((option, index) => {
-                                        return   <ToggleButton
-                                            key={index}
-                                            type='radio'
-                                            id={`geoConditions${index}`}
-                                            value={option.value}
-                                        >{option.label}</ToggleButton>
-                                    })}
-                                </ToggleButtonGroup>
+                                <Select
+                                    placeholder={`Select Location Condition...`}
+                                    options={optionsGeoConditions}
+                                    value={geoValue}
+                                    onChange={handleGeoChange}
+                                    styles={{width: '100%'}}
+                                />
                             </Form.Group>
                         </Col>
                         <Col md={6}>
-                            <Form.Group className='cem__radioGroup' controlId="propertyBedrooms">
+                            <Form.Group className='cem__selectGroup' controlId="propertyEntrance">
                                 <Form.Label>Entrance Stairs</Form.Label>
-                                <ToggleButtonGroup type="radio" name="options" value={stairsValue} onChange={handleStairsChange}>
-                                    {optionsEntranceStairs.map((option, index) => {
-                                    return   <ToggleButton
-                                        key={index}
-                                        type='radio'
-                                        id={`entranceStairs${index}`}
-                                        value={option.value}
-                                    >{option.label}</ToggleButton>
-                                })}
-                                </ToggleButtonGroup>
+                                <Select
+                                    placeholder={`Select Location Condition...`}
+                                    options={optionsEntranceStairs}
+                                    value={stairsValue}
+                                    onChange={handleStairsChange}
+                                    styles={{width: '100%'}}
+                                />
                             </Form.Group>
                         </Col>
                         <Col md={12}>

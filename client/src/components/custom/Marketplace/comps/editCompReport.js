@@ -1,10 +1,11 @@
-import React, {Fragment, useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import IconButton from "../../../core/IconButton/IconButton"
 import missingImage from '../../../../img/missingImage.jpg'
 import robotAvatar from '../../../../img/robotAvatar.png'
 import GalleryModal from "./GalleryModal";
 import StreetMapViewModal from "./StreetMapViewModal";
 import EditCompListingModal from "./EditCompListingModal";
+import InfoModal from "./infoModal";
 
 const EditCompReport = ({list}) => {
     const hasProps = useRef(0);
@@ -66,6 +67,7 @@ const EditCompReport = ({list}) => {
     const [streetViewModalOpen, setStreetViewModalOpen] = useState(false)
     const [galleryModalOpen, setGalleryModalOpen] = useState(false)
     const [compEditModal, setCompEditModal] = useState(false)
+    const [compInfoModal, setCompInfoModal] = useState(false)
 
     var sliderSettings = {
         dots: true,
@@ -91,6 +93,9 @@ const EditCompReport = ({list}) => {
     const handleEditComp = (value) => {
         setCompEditModal(value)
     }
+    const handleInfoComp = (value) => {
+        setCompInfoModal(value)
+    }
 
 
     {/*TODO: Extract to separate component, last cause weird*/}
@@ -98,12 +103,6 @@ const EditCompReport = ({list}) => {
 
         const onCompMapView = (index) => {
             setStreetView(false);
-            setActiveComp(comps[index].listing_id)
-            setStreetViewModalOpen(true);
-        }
-
-        const onCompStreetView = (index) => {
-            setStreetView(true);
             setActiveComp(comps[index].listing_id)
             setStreetViewModalOpen(true);
         }
@@ -117,6 +116,12 @@ const EditCompReport = ({list}) => {
             setActiveComp(comps[index].listing_id)
             setCompEditModal(true);
         }
+
+        const onCompInfoView = (index) => {
+            setActiveComp(comps[index].listing_id)
+            setCompInfoModal(true);
+        }
+
 
         const compMlsStatus = comp && comp.listing_id && comp.listing_id.mlsStatus;
         const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
@@ -182,7 +187,7 @@ const EditCompReport = ({list}) => {
                                 iconClass='fas fa-info'
                                 variant='action-button'
                                 btnClass="CardList__compInfoBtn"
-                                onClickFunc={() => console.log('clicked more info')}/>
+                                onClickFunc={() => onCompInfoView(idx)}/>
                 </div>
                 <div>
                     <div className="Comp__details">
@@ -227,6 +232,9 @@ const EditCompReport = ({list}) => {
             )}
             {activeComp && compEditModal && (
                 <EditCompListingModal modalOpen={compEditModal} openModal={handleEditComp} activeComp={activeComp} />
+            )}
+            {activeComp && compInfoModal && (
+                <InfoModal modalOpen={compInfoModal} openModal={handleInfoComp} activeComp={activeComp} />
             )}
         </>
     )
