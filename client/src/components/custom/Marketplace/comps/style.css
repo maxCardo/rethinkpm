@@ -272,14 +272,15 @@ p.sub {
     left: 5px;
     top: 5px;
 }
-.CardList__streetViewBtn.action-buttons__button {
-    left: 40px;
+.CardList__compInfoBtn.action-buttons__button {
+    left: 85px;
     top: 5px;
 }
 .CardList__galleryBtn.action-buttons__button {
-    left: 75px;
+    left: 45px;
     top: 5px;
 }
+
 .CardList__editBtn.action-buttons__button {
     right: 150px;
     bottom: 25px;
@@ -453,6 +454,30 @@ p.sub {
     right: 5px;
     font-size: 11px;
 }
+.cem__radioGroup,
+.cem__notesGroup,
+.cem__selectGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+.cem__radioGroup .btn.btn-primary {
+    z-index: 2;
+}
+.cem__selectGroup {
+    z-index: 15;
+    margin-top: 12px;
+    position: relative;
+}
+.cem__checkGroup {
+    margin: 12px 0;
+}
+.CompEdit__modal.modal {
+    overflow-y: hidden;
+}
+.CompEdit__modal .modal-content {
+    margin-top: 40px;
+}
 .CompEdit__modal label {
     margin: 0 12px 0 0;
 }
@@ -460,7 +485,7 @@ p.sub {
     margin-bottom: 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
 }
 .flex-center {
     display: flex;

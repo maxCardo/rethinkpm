@@ -8,6 +8,7 @@ import IconButton from "../../../core/IconButton/IconButton";
 import EditCompReport from "./editCompReport";
 import missingImage from '../../../../img/missingImage.jpg'
 import './style.css'
+import EditCompListingModal from "./EditCompListingModal";
 
 
 const CompView = (data) => {
@@ -37,8 +38,7 @@ const CompView = (data) => {
             setComps(theComps);
             setProperty(props);
             setActivePropertyReport(theReport)
-            console.log('property')
-            console.log(property)
+
         }
 
         //calculate NOI issues: no reserves, taxes based on current which can be low
@@ -64,6 +64,12 @@ const CompView = (data) => {
         setActiveComp({})
     }
 
+    const [propertyEditModal, setPropertyEditModal] = useState(false)
+    const handlePropertyEdit = (value) => {
+        setPropertyEditModal(value)
+    }
+
+
     return (
         <div className="container-fluid flex-row">
             <div className="OwnedProperty">
@@ -76,7 +82,6 @@ const CompView = (data) => {
                         <div className="op__userData">
                             <p>Adam Poznanski</p>
                             <p className="sub">Broker</p>
-
                         </div>
                         <IconButton placement='bottom'
                                     tooltipContent={'Edit Comp Report (Agent Only)'}
@@ -151,7 +156,7 @@ const CompView = (data) => {
                                             iconClass='fas fa-edit'
                                             variant='action-button'
                                             btnClass='singleFieldEdit CardList__infoBtn'
-                                            onClickFunc={ () => console.log('Edit main property') } />
+                                            onClickFunc={ () => handlePropertyEdit(true) } />
                                 <div>
                                     <div className="Comp__details">
                                         <span>Status: {property.status}</span>
@@ -188,6 +193,9 @@ const CompView = (data) => {
                     </div>
                 </Modal.Body>
             </Modal>
+            {property && propertyEditModal && (
+                <EditCompListingModal modalOpen={propertyEditModal} openModal={handlePropertyEdit} activeComp={property}/>
+            )}
         </div>
     )
 }

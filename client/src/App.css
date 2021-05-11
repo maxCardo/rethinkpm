@@ -908,3 +908,14 @@ input[type=number]:focus,
   background: #6f9dd4;
   border-color: #6f9dd4;
 }
+/* Changing Defaults */
+.btn-primary,
+.bg-primary,
+.badge-primary,
+.alert-primary {
+  background: #6f9dd4;
+  color: #fff;
+}
+.btn.active.btn-primary {
+ background: #364d69;
+}
