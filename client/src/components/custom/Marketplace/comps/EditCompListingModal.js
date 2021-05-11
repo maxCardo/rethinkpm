@@ -83,26 +83,26 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
                 <Form>
                     <Row>
                         <Col md={6}>
-                            <Form.Group className='cem__selectGroup' controlId="propertyGeoConditions">
+                            <Form.Group className='cem__selectGroup' controlId="propertyGeoConditions"  style={{zIndex: 16}}>
                                 <Form.Label>Geo Conditions</Form.Label>
                                 <Select
-                                    placeholder={`Select Location Condition...`}
+                                    placeholder={`Select Geo Condition...`}
                                     options={optionsGeoConditions}
                                     value={geoValue}
                                     onChange={handleGeoChange}
-                                    styles={{width: '100%'}}
+                                    style={{width: '100%'}}
                                 />
                             </Form.Group>
                         </Col>
                         <Col md={6}>
-                            <Form.Group className='cem__selectGroup' controlId="propertyEntrance">
+                            <Form.Group className='cem__selectGroup' controlId="propertyEntrance"  style={{zIndex: 16}}>
                                 <Form.Label>Entrance Stairs</Form.Label>
                                 <Select
-                                    placeholder={`Select Location Condition...`}
+                                    placeholder={`Select Stairs Condition...`}
                                     options={optionsEntranceStairs}
                                     value={stairsValue}
                                     onChange={handleStairsChange}
-                                    styles={{width: '100%'}}
+                                    style={{width: '100%'}}
                                 />
                             </Form.Group>
                         </Col>
@@ -110,11 +110,11 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
                             <Form.Group className='cem__selectGroup' controlId="propertyCondition">
                                 <Form.Label>Building Condition</Form.Label>
                                 <Select
-                                    placeholder={`Select Location Condition...`}
+                                    placeholder={`Select Building Condition...`}
                                     options={optionsLocationConditions}
                                     value={locationValue}
                                     onChange={handleLocationChange}
-                                    styles={{width: '100%'}}
+                                    style={{width: '100%'}}
                                 />
                             </Form.Group>
                         </Col>
