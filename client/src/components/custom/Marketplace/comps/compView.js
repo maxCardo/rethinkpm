@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {connect} from 'react-redux'
 import {Button, Modal} from 'react-bootstrap';
 import CardList from "./CardList";
 import {mortgageCalc, incomeValue} from './mortgageCalc'
@@ -11,7 +12,7 @@ import './style.css'
 import EditCompListingModal from "./EditCompListingModal";
 
 
-const CompView = (data) => {
+const CompView = ({data, compReport}) => {
 
     const [comps, setComps] = useState([])
     const [incVal, setIncVal] = useState()
@@ -29,28 +30,34 @@ const CompView = (data) => {
     }
 
     useEffect(() => {
-        const props = data && data.data
+        const props = data 
+        console.log('compReport');
+        console.log(compReport);
 
         if (props) {
-            const theComps = props && props.compReport && props.compReport.comps ? props.compReport.comps : [];
-            const theReport = props && props.compReport && props.compReport.price ? props.compReport.price : {};
+            
+            const theComps = compReport.comps ? compReport.comps : [];
+            const theReport = compReport.price;
             setComps(theComps);
             setProperty(props);
             setActivePropertyReport(theReport)
 
+            console.log('comps');
+            console.log(theComps);
+
         }
 
         //calculate NOI issues: no reserves, taxes based on current which can be low
-        const areaRents = data.data.rents.area  > 0 ? data.data.rents.area : null 
-        const subRent = data.data.rents.HA.rent > 0 ? data.data.rents.HA.rent : null
+        const areaRents = data.rents.area  > 0 ? data.rents.area : null 
+        const subRent = data.rents.HA.rent > 0 ? data.rents.HA.rent : null
         const rents = areaRents && areaRents < subRent ? areaRents : subRent 
-        const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = data.data.model
+        const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = data.model
         const totalExpPreTax = management + leasing + maintenance + utilities + insurance
         const netOpIncome = (rents*12) - vacancyLoss - totalExpPreTax - taxes.low
         mktIncomeValue(netOpIncome)
         setMktRent(rents)
 
-    }, [data])
+    }, [compReport, data])
 
     useEffect(() => {
         console.log('activePropertyReport')
@@ -198,6 +205,16 @@ const CompView = (data) => {
     )
 }
 
-export default CompView
+const mapStateToProps = state => ({
+    compReport: state.marketplace.compReport
+})
+
+
+export default connect(mapStateToProps, null)(CompView)
+
+//ToDO: right now we are pulling compReport from shared state but the focused property is still passed though props and is needed for rent numbers used in this component. 
+//on the full marketplace refactor we can simplify one the focusedPropety is available in SS and the rent data can be pulled from there. 
+// the main chalange to the current set up is that when the compReport is updated only the interation in ss will be updated with the db. the old verstion of the record will still be 
+// active in the componoent state. this can be an issue if the user leaves and then reopens this component on the same record.
 
 
