@@ -7,7 +7,7 @@ import CompView from './comps/compView'
 import OwnerInfo from './OwnerInfo'
 import Journal from './journal/Journal'
 
-import {getOwnerInfo} from '../../../actions/marketplace'
+import {getOwnerInfo, setActiveComp} from '../../../actions/marketplace'
 
 
 const rentTiers = {
@@ -175,7 +175,7 @@ const headers = [
 ]; 
 
 
-const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent, getOwnerInfo, ownerInfo, type = 'salesLead'}) => {
+const DetailModal = ({ show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent, ownerInfo, type = 'salesLead', getOwnerInfo, setActiveComp}) => {
   const [prop, setProp] = useState('')
   const [subRent, setSubRent] = useState('')
   const [price, setPrice] = useState('')
@@ -187,11 +187,10 @@ const DetailModal = ({show, handleClose, data, addUnitSchedule, modifyUnitSchedu
       const price = data.currentPrice ? data.currentPrice : data.listPrice
       setSubRent(subRent)
       setPrice(price)
-      getOwnerInfo(prop._id, type) 
+      getOwnerInfo(prop._id, type)
+      setActiveComp(prop) 
     }
     setProp(prop)
-      console.log('dataDetail')
-      console.log(data)
   }, [data])
   
   if (!prop) return ''
@@ -253,4 +252,4 @@ const mapStateToProps = state => ({
   ownerInfo: state.marketplace.ownerInfo
 })
 
-export default connect(mapStateToProps, {getOwnerInfo})(DetailModal);
+export default connect(mapStateToProps, {getOwnerInfo, setActiveComp})(DetailModal);

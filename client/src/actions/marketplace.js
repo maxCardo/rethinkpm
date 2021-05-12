@@ -1,4 +1,4 @@
-import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO} from './type';
+import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO, SET_ACTIVE_COMP_REPORT} from './type';
 import {createErrorAlert} from "./alert";
 import axios from "axios";
 
@@ -122,10 +122,8 @@ export const getAreaRents = () => async dispatch => {
 
 //@desc: set property owner info in focused property
 export const getOwnerInfo = (id, type) => async dispatch => {
-    console.log('ownerInfoId', id);
     try {
         const res = await axios.get(`/api/marketplace/owners/${id}/${type}`)
-        console.log(res);
         dispatch({
             type: SET_OWNER_INFO,
             payload: res.data
@@ -152,3 +150,16 @@ export const addNote = (data, id, type) => async dispatch => {
         dispatch(createErrorAlert(err.message, 'addNote action'))
     }
 };
+
+export const setActiveComp = (prop) => async dispatch => {
+    console.log('running getAvtiveComp', prop);
+    if(prop.compReport){
+        dispatch({
+            type: SET_ACTIVE_COMP_REPORT,
+            payload: prop.compReport
+        })
+
+    }else{
+        console.log('no comp report found');
+    }
+}

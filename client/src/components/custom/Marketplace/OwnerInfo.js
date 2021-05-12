@@ -4,8 +4,7 @@ import Loading from '../../core/LoadingScreen/Loading'
 const OwnerInfo = ({ownerInfo:{data ,loading}}) => {
 
     useEffect(() => {
-        console.log('ownerInfo Data: ', data);
-        console.log('loading?: ', loading);
+        
     }, [data])
     
     

@@ -61,7 +61,6 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
     const checkBox = checkBoxCheck();
 
     const startShowDetailFlow = (item) => {
-        console.log(item);
         setFocusedProperty(item);
         setShowDetailModal(true);
     };
@@ -225,11 +224,3 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, { openStreetView, getSellerPipeline, deletePropRec })(SellerPipeline)
 
-//, updateDeal, syncManagedBuyer
-
-//606f5ae84783c60017d955f6 10 docs pass
-// listLead: 606f5ae34783c60017d955f4 10 doc pass
-//salesPros.listLeads: 9 recs (#7 is tarket list lead): fail!
-
-//606b402aa7daa80017282480 - 0
-//606b4086a7daa8001728249e

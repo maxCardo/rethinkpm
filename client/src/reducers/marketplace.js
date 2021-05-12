@@ -1,4 +1,4 @@
-import {CLOSE_STREET_VIEW, OPEN_STREET_VIEW, SET_BUYER_PIPELINE,UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO} from '../actions/type';
+import {CLOSE_STREET_VIEW, OPEN_STREET_VIEW, SET_BUYER_PIPELINE,UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO, SET_ACTIVE_COMP_REPORT} from '../actions/type';
 const initialState = {
     loading: true,
     streetViewOpen: false,
@@ -7,7 +7,8 @@ const initialState = {
     ownerInfo: {
         loading: true,
         data: {}
-    }
+    },
+    compReport: {}
 };
 
 export default function (state = initialState, action) {
@@ -58,6 +59,11 @@ export default function (state = initialState, action) {
                     data: payload
                 }
             }
+        case SET_ACTIVE_COMP_REPORT:
+            return{
+                ...state,
+                compReport: payload
+            }    
 
         default:
             return state;

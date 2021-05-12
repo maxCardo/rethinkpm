@@ -26,7 +26,6 @@ const CompView = (data) => {
     const mktIncomeValue = async (noi) => {
         const res = await incomeValue(noi)
         setIncVal(res)
-        console.log('income value: ', res);
     }
 
     useEffect(() => {
@@ -48,7 +47,6 @@ const CompView = (data) => {
         const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = data.data.model
         const totalExpPreTax = management + leasing + maintenance + utilities + insurance
         const netOpIncome = (rents*12) - vacancyLoss - totalExpPreTax - taxes.low
-        console.log('noi: ', netOpIncome);
         mktIncomeValue(netOpIncome)
         setMktRent(rents)
 

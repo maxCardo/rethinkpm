@@ -1,4 +1,4 @@
-import { SET_SELLER_PIPELINE, OPEN_STREET_VIEW, DELETE_SELLER_PROPERTY} from './type'
+import { SET_SELLER_PIPELINE, OPEN_STREET_VIEW, DELETE_SELLER_PROPERTY, SET_BUYER_PIPELINE} from './type'
 import { createErrorAlert, createSuccessAlert } from "./alert";
 import axios from 'axios'
 
@@ -7,6 +7,10 @@ export const getSellerPipeline = (id) => async dispatch => {
         const res = await axios.get(`/api/marketplace/off_market/seller_pipeline/${id}`);
         dispatch({
             type: SET_SELLER_PIPELINE,
+            payload: res.data
+        })
+        dispatch({
+            type: SET_BUYER_PIPELINE,
             payload: res.data
         })
     } catch (err) {

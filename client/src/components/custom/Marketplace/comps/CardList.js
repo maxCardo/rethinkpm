@@ -48,8 +48,6 @@ const CardList = ({list}) => {
 
         if (props) {
             setComps(props);
-            console.log('theComps')
-            console.log(props)
         }
 
     }, [list])
