@@ -10,6 +10,10 @@ import missingImage from '../../../../img/missingImage.jpg'
 import './style.css'
 import EditCompListingModal from "./EditCompListingModal";
 
+/*NEEDS REVIEW*/
+import GoogleMapReact from 'google-map-react';
+
+
 
 const CompView = (data) => {
 
@@ -22,6 +26,9 @@ const CompView = (data) => {
 
     const [property, setProperty] = useState({});
     const [activePropertyReport, setActivePropertyReport] = useState({});
+
+
+
 
     const mktIncomeValue = async (noi) => {
         const res = await incomeValue(noi)
@@ -54,10 +61,7 @@ const CompView = (data) => {
 
     }, [data])
 
-    useEffect(() => {
-        console.log('activePropertyReport')
-        console.log(activePropertyReport)
-    }, [comps])
+
 
     const hideModal = () => {
         setShowModal(false)
@@ -69,6 +73,58 @@ const CompView = (data) => {
         setPropertyEditModal(value)
     }
 
+    const defaultMapProps = {
+        center: {
+            lat: 40.4406,
+            lng: -79.9959
+        },
+        zoom: 10
+    };
+
+
+
+    /* TODO: for markers */
+    const [compsCoordinates, setCompsCoordinates] = useState([]);
+
+
+    useEffect(() => {
+        if (comps.length > 0) {
+            let coordinatesList = [];
+            comps.forEach((item, index) => {
+                let geoObject = {}
+                if (item.listing_id && item.listing_id.longitude && item.listing_id.latitude) {
+                    geoObject = {
+                        id: item.listing_id._id,
+                        lng: item.listing_id.longitude,
+                        lat: item.listing_id.latitude,
+                    }
+                }
+                coordinatesList.push(geoObject)
+
+                // return {longitude: item.data.listing_id.longitude, latitude: item.data.listing_id.latitude}
+                console.log(item)
+                console.log('item')
+                console.log('index')
+                console.log(index)
+            })
+            let noEmpties = coordinatesList.filter(value => Object.keys(value).length !== 0);
+            console.log('coordinatesList');
+            console.log(noEmpties);
+            setCompsCoordinates(noEmpties)
+        }
+        console.log('compsCoordinates');
+        console.log(compsCoordinates);
+
+    }, [comps])
+
+    const AnyReactComponent = ({ content }) => <div>{content}</div>;
+
+    const mapMarkerList = (compsCoordinates) && compsCoordinates.map((comp, idx) => {
+        const onCLickMapMarker = () => {
+            console.log(idx);
+        }
+        return (<AnyReactComponent key={`${comp.id}-${idx}`} lat={comp.lat} lng={comp.lng} content={comp.id} onClick={onCLickMapMarker}/>);
+    })
 
     return (
         <div className="container-fluid flex-row">
@@ -130,7 +186,13 @@ const CompView = (data) => {
                 </div>
             </div>
             <div className="Map">
-                <h2>This is map</h2>
+                <div className="googleMapContainer" style={{height: '52vh', width: 'auto'}}>
+                    <GoogleMapReact bootstrapURLKeys={{ key: 'AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o' }}
+                                    defaultCenter={defaultMapProps.center}
+                                    defaultZoom={defaultMapProps.zoom} >
+                        {mapMarkerList}
+                    </GoogleMapReact>
+                </div>
             </div>
             <CardList list={comps} />
 
