@@ -7,7 +7,7 @@ import CompView from './comps/compView'
 import OwnerInfo from './OwnerInfo'
 import Journal from './journal/Journal'
 
-import {getOwnerInfo, setActiveComp} from '../../../actions/marketplace'
+import {getOwnerInfo, setActiveComp, setFocusedProp} from '../../../actions/marketplace'
 
 
 const rentTiers = {
@@ -175,7 +175,7 @@ const headers = [
 ]; 
 
 
-const DetailModal = ({ show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent, ownerInfo, type = 'salesLead', getOwnerInfo, setActiveComp}) => {
+const DetailModal = ({ show, handleClose, data, addUnitSchedule, modifyUnitSchedule, deleteUnitSchedule, setRent, ownerInfo, type = 'salesLead', getOwnerInfo, setActiveComp, setFocusedProp}) => {
   const [prop, setProp] = useState('')
   const [subRent, setSubRent] = useState('')
   const [price, setPrice] = useState('')
@@ -188,7 +188,7 @@ const DetailModal = ({ show, handleClose, data, addUnitSchedule, modifyUnitSched
       setSubRent(subRent)
       setPrice(price)
       getOwnerInfo(prop._id, type)
-      setActiveComp(prop) 
+      setFocusedProp(prop) 
     }
     setProp(prop)
   }, [data])
@@ -230,7 +230,7 @@ const DetailModal = ({ show, handleClose, data, addUnitSchedule, modifyUnitSched
               <OwnerInfo ownerInfo={ownerInfo}/>
             </Tab.Pane>
             <Tab.Pane eventKey="compView">
-              <CompView data={data}/>
+              <CompView/>
             </Tab.Pane>
             <Tab.Pane eventKey="journal">
               <Journal history={data.history} type={type} id={data._id} />
@@ -252,4 +252,4 @@ const mapStateToProps = state => ({
   ownerInfo: state.marketplace.ownerInfo
 })
 
-export default connect(mapStateToProps, {getOwnerInfo, setActiveComp})(DetailModal);
+export default connect(mapStateToProps, { getOwnerInfo, setFocusedProp})(DetailModal);

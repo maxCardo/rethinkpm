@@ -12,7 +12,7 @@ import './style.css'
 import EditCompListingModal from "./EditCompListingModal";
 
 
-const CompView = ({data, compReport}) => {
+const CompView = ({focusedProp}) => {
 
     const [comps, setComps] = useState([])
     const [incVal, setIncVal] = useState()
@@ -30,7 +30,8 @@ const CompView = ({data, compReport}) => {
     }
 
     useEffect(() => {
-        const props = data 
+        const props = focusedProp
+        const compReport = props.compReport
         console.log('compReport');
         console.log(compReport);
 
@@ -48,16 +49,16 @@ const CompView = ({data, compReport}) => {
         }
 
         //calculate NOI issues: no reserves, taxes based on current which can be low
-        const areaRents = data.rents.area  > 0 ? data.rents.area : null 
-        const subRent = data.rents.HA.rent > 0 ? data.rents.HA.rent : null
+        const areaRents = props.rents.area  > 0 ? props.rents.area : null 
+        const subRent = props.rents.HA.rent > 0 ? props.rents.HA.rent : null
         const rents = areaRents && areaRents < subRent ? areaRents : subRent 
-        const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = data.model
+        const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = props.model
         const totalExpPreTax = management + leasing + maintenance + utilities + insurance
         const netOpIncome = (rents*12) - vacancyLoss - totalExpPreTax - taxes.low
         mktIncomeValue(netOpIncome)
         setMktRent(rents)
 
-    }, [compReport, data])
+    }, [focusedProp])
 
     useEffect(() => {
         console.log('activePropertyReport')
@@ -206,7 +207,7 @@ const CompView = ({data, compReport}) => {
 }
 
 const mapStateToProps = state => ({
-    compReport: state.marketplace.compReport
+    focusedProp: state.marketplace.focusedProp
 })
 
 

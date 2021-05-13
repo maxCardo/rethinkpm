@@ -1,4 +1,4 @@
-import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO, SET_ACTIVE_COMP_REPORT} from './type';
+import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO, SET_FOCUSED_PROPERTY} from './type';
 import {createErrorAlert} from "./alert";
 import axios from "axios";
 
@@ -151,15 +151,10 @@ export const addNote = (data, id, type) => async dispatch => {
     }
 };
 
-export const setActiveComp = (prop) => async dispatch => {
-    console.log('running getAvtiveComp', prop);
-    if(prop.compReport){
-        dispatch({
-            type: SET_ACTIVE_COMP_REPORT,
-            payload: prop.compReport
-        })
-
-    }else{
-        console.log('no comp report found');
-    }
+export const setFocusedProp = (prop) => async dispatch => {
+    console.log('running setFocusedProp', prop);
+    dispatch({
+        type: SET_FOCUSED_PROPERTY,
+        payload: prop
+    }) 
 }
