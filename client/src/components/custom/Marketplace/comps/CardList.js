@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react"
 import VerticalTable from "../../../core/VerticalTable/VerticalTable"
 import IconButton from "../../../core/IconButton/IconButton"
 import missingImage from '../../../../img/missingImage.jpg'
+import axios from "axios";
 
 const CardList = ({list}) => {
 
@@ -77,34 +78,86 @@ const CardList = ({list}) => {
             return 'Contingent'
     }
 
+    const [googleImageLinks, setGoogleImageLinks] = useState([])
+
+    useEffect(() => {
+        const getImage = async (comp) => {
+            const streetNumber = comp && comp.listing_id && comp.listing_id.streetNumber
+            const streetName = comp && comp.listing_id && comp.listing_id.streetName
+            const geoAddress = `${streetNumber} ${streetName}, Pittsburgh, PA`
+
+            const place =   axios.get(`https://maps.googleapis.com/maps/api/place/details/json?address=${geoAddress}&key=AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o`)
+                .then(response => images.push(response.data))
+                .catch(err => {
+                    console.log('err')
+                    console.log(err)                     //Axios entire error message
+                    console.log(err.response.data.error) //Google API error message
+                })
+
+                await axios.get(` https://maps.googleapis.com/maps/api/place/findplacefromtext/json?address=${geoAddress}`,  { headers: {
+                'x-apikey': '',
+                "Access-Control-Allow-Origin": "*"
+            }}).then((res) => res.data);
+        }
+        let images = []
+        comps.forEach((comp) => {
+            const image = getImage(comp);
+            images.push(image)
+        })
+
+        setGoogleImageLinks(images);
+    }, [comps])
+
+    //
+    /*TODO: get all places by addresses in one call https://maps.googleapis.com/maps/api/place/findplacefromtext/json?address=${geoAddress}
+    *          get all images by place ids
+    * */
+
     const ListItem = ({comp, idx}) => {
         const [activeComp, setActiveComp] = useState(-1)
 
-        const compMlsStatus = comp && comp.listing_id && comp.listing_id.mlsStatus;
-        const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
-        const streetNumber = comp && comp.listing_id && comp.listing_id.streetNumber;
-        const streetName = comp && comp.listing_id && comp.listing_id.streetName;
-        const municipality = comp && comp.listing_id && comp.listing_id.municipality ? comp.listing_id.municipality : '' ;
+        const compMlsStatus = comp && comp.listing_id && comp.listing_id.mlsStatus
+        const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice
+        const streetNumber = comp && comp.listing_id && comp.listing_id.streetNumber
+        const streetName = comp && comp.listing_id && comp.listing_id.streetName
+        const municipality = comp && comp.listing_id && comp.listing_id.municipality ? comp.listing_id.municipality : ''
         const area = comp && comp.area;
-        const address = `${streetNumber} ${streetName}, ${municipality} (${area})`;
-        const bedrooms = comp && comp.listing_id && comp.listing_id.bedrooms;
-        const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths;
-        const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize;
-        const mainImage = comp && comp.listing_id && comp.listing_id.images &&  comp.listing_id.images.length > 0 ? comp.listing_id.images[0] : missingImage;
+        const address = `${streetNumber} ${streetName}, ${municipality} (${area})`
+        const bedrooms = comp && comp.listing_id && comp.listing_id.bedrooms
+        const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths
+        const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize
+        const mainImage = comp && comp.listing_id && comp.listing_id.images &&  comp.listing_id.images.length > 0 ? comp.listing_id.images[0] : ''
 
-        const currentPrice = comp && comp.listing_id && comp.listing_id.currentPrice ? comp.listing_id.currentPrice : false;
-        const listingPrice = comp && comp.listing_id && comp.listing_id.listPrice ? comp.listing_id.listPrice : false;
+        const currentPrice = comp && comp.listing_id && comp.listing_id.currentPrice ? comp.listing_id.currentPrice : false
+        const listingPrice = comp && comp.listing_id && comp.listing_id.listPrice ? comp.listing_id.listPrice : false
         const price = currentPrice ? currentPrice : listingPrice
+
+        const compLat = comp && comp.listing_id && comp.listing_id.latitude
+        const compLon = comp && comp.listing_id && comp.listing_id.longitude
+
+        const geoAddress = `${streetNumber} ${streetName}, Pittsburgh, PA`
+
+        if (!mainImage)
+            var noImageLink = ''
+
+        if (!mainImage && comp && comp.listing_id && streetNumber && streetName) {
+            noImageLink = `https://maps.googleapis.com/maps/api/streetview?size=600x300&address=${geoAddress}key=AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o`
+        }
+        if (!noImageLink) {
+            noImageLink = missingImage;
+        }
+
 
         return (
             <li>
                 {/* This is full width */}
-                <div className="Comp__details-imgContainer" style={{backgroundImage: 'url(' +mainImage + ')', backgroundSize: 'cover', backgroundPosition: 'center center', minHeight: '220px'}}>
+                <div className="Comp__details-imgContainer" style={{backgroundImage: 'url(' + ((mainImage) ? mainImage : noImageLink) + ')', backgroundSize: 'cover', backgroundPosition: 'center center', minHeight: '220px'}} >
                     {/*This is full height <img src={mainImage} alt="The property image"/>*/}
+                    {noImageLink && noImageLink}
                 </div>
                 <div className="Comp__details-container">
                     <div className="Comp__details">
-                        <span>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
+                        <span onClick={() => console.log(googleImageLinks)}>Status: {compMlsStatus ? getFormattedStatus(compMlsStatus) : 'Unknown'}</span>
                         {/* toDo: make sold price smaller add header */}
                         <span className="Comp__details-prices">{moneyFormat(price)} <span>({(compMlsStatus === "S") && priceSold ? 'Sold: '+ moneyFormat(priceSold) : 'N/A' })</span></span>
                         {/* remove headers from address and area */}
@@ -137,9 +190,14 @@ const CardList = ({list}) => {
         return (<ListItem key={idx} idx={idx} comp={comp}/>);
     })
 
-    return (<ul className="Comps">
-        {compList}
-    </ul>)
+    return (<>
+
+        <ul className="Comps">
+            {compList}
+        </ul>
+    </>
+
+    )
 }
 
 export default CardList;

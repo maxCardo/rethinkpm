@@ -27,9 +27,6 @@ const CompView = (data) => {
     const [property, setProperty] = useState({});
     const [activePropertyReport, setActivePropertyReport] = useState({});
 
-
-
-
     const mktIncomeValue = async (noi) => {
         const res = await incomeValue(noi)
         setIncVal(res)
@@ -61,8 +58,6 @@ const CompView = (data) => {
 
     }, [data])
 
-
-
     const hideModal = () => {
         setShowModal(false)
         setActiveComp({})
@@ -80,8 +75,6 @@ const CompView = (data) => {
         },
         zoom: 10
     };
-
-
 
     /* TODO: for markers */
     const [compsCoordinates, setCompsCoordinates] = useState([]);
@@ -117,7 +110,7 @@ const CompView = (data) => {
 
     }, [comps])
 
-    const AnyReactComponent = ({ content }) => <div>{content}</div>;
+    const AnyReactComponent = ({ content, onClick }) => <button onClick={onClick}>{content}</button>;
 
     const mapMarkerList = (compsCoordinates) && compsCoordinates.map((comp, idx) => {
         const onCLickMapMarker = () => {
@@ -194,7 +187,8 @@ const CompView = (data) => {
                     </GoogleMapReact>
                 </div>
             </div>
-            <CardList list={comps} />
+`
+            {comps && <CardList list={comps}/>}
 
             {/*Modal thing*/}
             <Modal size='xl' className="Marketplace__DetailModal Marketplace__compReport-edit" show={showModal} onHide={hideModal}>
@@ -202,9 +196,6 @@ const CompView = (data) => {
                     <Modal.Title>Edit Comp Report (Agent Only)</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/*Card list of comps with queue and 5 active.*/}
-                    {/*Each needs to activate Select/Remove, mapview, streetview, gallery, edit modal on different element clicks.*/}
-                    {/*Sticky calculator sidebar with save, cancel and home card*/}
                     <div className="flex-between">
                         <div className="editComps__container">
                             <EditCompReport list={comps} report={activePropertyReport} />
