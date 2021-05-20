@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
-import {Button, Modal} from 'react-bootstrap';
 import CardList from "./CardList";
+import { Button, Modal } from 'react-bootstrap';
 import {mortgageCalc, incomeValue} from '../mortgageCalc'
 import ProfileIcon from "../../../../core/ProfileIcon";
 import {formatMoney, formatRange} from "../../../../../util/commonFunctions";
 import IconButton from "../../../../core/IconButton/IconButton";
+import CompWorkup from '../compWorkup/CompWorkup'
 import EditCompReport from "../compWorkup/editCompReport";
 import missingImage from '../../../../../img/missingImage.jpg'
 import '../style.css'
-import EditCompListingModal from "../compWorkup/models/EditCompListingModal";
+
 
 
 const CompView = ({focusedProp}) => {
@@ -139,8 +140,6 @@ const CompView = ({focusedProp}) => {
                 <h2>This is map</h2>
             </div>
             <CardList list={comps} />
-
-            {/*Modal thing*/}
             <Modal size='xl' className="Marketplace__DetailModal Marketplace__compReport-edit" show={showModal} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Comp Report (Agent Only)</Modal.Title>
@@ -149,59 +148,11 @@ const CompView = ({focusedProp}) => {
                     {/*Card list of comps with queue and 5 active.*/}
                     {/*Each needs to activate Select/Remove, mapview, streetview, gallery, edit modal on different element clicks.*/}
                     {/*Sticky calculator sidebar with save, cancel and home card*/}
-                    <div className="flex-between">
-                        <div className="editComps__container">
-                            <EditCompReport list={comps} report={activePropertyReport} />
-                        </div>
-                        <div className="calcSidebar">
-                            <div  className="EditComp__card">
-                                <div className="Comp__details-imgContainer" style={{backgroundImage: 'url(' +missingImage + ')', backgroundSize: 'cover', backgroundPosition: 'center center', minHeight: '220px'}}>
-                                </div>
-                                <IconButton placement='bottom'
-                                            tooltipContent='Click to Edit Main Property'
-                                            iconClass='fas fa-edit'
-                                            variant='action-button'
-                                            btnClass='singleFieldEdit CardList__infoBtn'
-                                            onClickFunc={ () => handlePropertyEdit(true) } />
-                                <div>
-                                    <div className="Comp__details">
-                                        <span>Status: {property.status}</span>
-                                        <span className="Comp__details-prices">whaaat</span>
-                                        <span className="Comp__details-address">meh</span>
-                                        <div className="Comp__details-bar">
-                                            {property.bedrooms ? <span>Bedrooms: {property.bedrooms}</span> : ''}
-                                            {property.baths ? <span>Baths: {property.baths}</span> : ''}
-                                            {property.buildingSize ? <span>{property.buildingSize} sq.ft</span> : ''}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="Calculator">
-                                <div className="activeReport">
-                                    <p className="op__bigMoney">{ formatMoney(activePropertyReport.oov) }</p>
-                                    <p className="op__resultValue">Target Range:</p>
-                                    <p className="op__smCentered">{formatRange(activePropertyReport._25_75)}</p>
-                                </div>
-                            </div>
-                            <div className="calcSidebar__actions">
-                                <Button className="btn btn-danger" variant="secondary"
-                                        onClick={hideModal}
-                                >
-                                    Cancel
-                                </Button>
-                                <Button className="btn btn-primary" disabled={false} variant="secondary"
-                                        onClick={() => console.log('save and exit')}
-                                >
-                                    Save and Exit
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
+                    <CompWorkup/>                
                 </Modal.Body>
             </Modal>
-            {property && propertyEditModal && (
-                <EditCompListingModal modalOpen={propertyEditModal} openModal={handlePropertyEdit} activeComp={property}/>
-            )}
+            {/*Modal thing*/}
+            
         </div>
     )
 }
