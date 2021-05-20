@@ -79,7 +79,6 @@ const CardList = ({list}) => {
 
     const ListItem = ({comp, idx}) => {
         const [activeComp, setActiveComp] = useState(-1)
-
         const compMlsStatus = comp && comp.listing_id && comp.listing_id.mlsStatus;
         const priceSold = comp && comp.listing_id && comp.listing_id.soldPrice;
         const streetNumber = comp && comp.listing_id && comp.listing_id.streetNumber;
@@ -91,13 +90,14 @@ const CardList = ({list}) => {
         const baths = comp && comp.listing_id && comp.listing_id.totalBaths && comp.listing_id.totalBaths;
         const buildingSize = comp && comp.listing_id && comp.listing_id.buildingSize;
         const mainImage = comp && comp.listing_id && comp.listing_id.images &&  comp.listing_id.images.length > 0 ? comp.listing_id.images[0] : missingImage;
-
         const currentPrice = comp && comp.listing_id && comp.listing_id.currentPrice ? comp.listing_id.currentPrice : false;
         const listingPrice = comp && comp.listing_id && comp.listing_id.listPrice ? comp.listing_id.listPrice : false;
         const price = currentPrice ? currentPrice : listingPrice
+        const listingId = comp && comp.listing_id && comp.listing_id._id
+
 
         return (
-            <li>
+            <li id={`target${listingId}`}>
                 {/* This is full width */}
                 <div className="Comp__details-imgContainer" style={{backgroundImage: 'url(' +mainImage + ')', backgroundSize: 'cover', backgroundPosition: 'center center', minHeight: '220px'}}>
                     {/*This is full height <img src={mainImage} alt="The property image"/>*/}

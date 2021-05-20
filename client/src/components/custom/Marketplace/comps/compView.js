@@ -97,8 +97,10 @@ const CompView = (data) => {
                         id: item.listing_id._id,
                         lng: item.listing_id.longitude,
                         lat: item.listing_id.latitude,
+                        price: item.listing_id.listPrice
                     }
                 }
+
                 coordinatesList.push(geoObject)
 
                 // return {longitude: item.data.listing_id.longitude, latitude: item.data.listing_id.latitude}
@@ -117,13 +119,14 @@ const CompView = (data) => {
 
     }, [comps])
 
-    const AnyReactComponent = ({ content }) => <div>{content}</div>;
+    const MarkerComponent = ({ content, onClick, idx, theId }) => <a className={'btn btn-primary btn-sm'} href={`#target${theId}`} onClick={onClick}>{content}</a>;
 
     const mapMarkerList = (compsCoordinates) && compsCoordinates.map((comp, idx) => {
         const onCLickMapMarker = () => {
-            console.log(idx);
+            console.log('comp');
+            console.log(comp);
         }
-        return (<AnyReactComponent key={`${comp.id}-${idx}`} lat={comp.lat} lng={comp.lng} content={comp.id} onClick={onCLickMapMarker}/>);
+        return (<MarkerComponent key={`${comp.id}-${idx}`} idx={idx} theId={comp.id} lat={comp.lat} lng={comp.lng} content={comp.price} onClick={onCLickMapMarker}/>);
     })
 
     return (
@@ -195,16 +198,12 @@ const CompView = (data) => {
                 </div>
             </div>
             <CardList list={comps} />
-
             {/*Modal thing*/}
             <Modal size='xl' className="Marketplace__DetailModal Marketplace__compReport-edit" show={showModal} onHide={hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Comp Report (Agent Only)</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/*Card list of comps with queue and 5 active.*/}
-                    {/*Each needs to activate Select/Remove, mapview, streetview, gallery, edit modal on different element clicks.*/}
-                    {/*Sticky calculator sidebar with save, cancel and home card*/}
                     <div className="flex-between">
                         <div className="editComps__container">
                             <EditCompReport list={comps} report={activePropertyReport} />
