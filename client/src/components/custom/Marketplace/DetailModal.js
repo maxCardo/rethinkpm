@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Modal, Button, Tab, Nav} from 'react-bootstrap';
 import VerticalTable from '../../core/VerticalTable/VerticalTable';
 import UnitSchedule from './UnitSchedule'
-import CompView from './comps/compView'
+import CompView from './comps/compView/CompView'
 import OwnerInfo from './OwnerInfo'
 import Journal from './journal/Journal'
 

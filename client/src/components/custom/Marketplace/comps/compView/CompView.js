@@ -2,14 +2,14 @@ import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 import {Button, Modal} from 'react-bootstrap';
 import CardList from "./CardList";
-import {mortgageCalc, incomeValue} from './mortgageCalc'
-import ProfileIcon from "../../../core/ProfileIcon";
-import {formatMoney, formatRange} from "../../../../util/commonFunctions";
-import IconButton from "../../../core/IconButton/IconButton";
-import EditCompReport from "./editCompReport";
-import missingImage from '../../../../img/missingImage.jpg'
-import './style.css'
-import EditCompListingModal from "./EditCompListingModal";
+import {mortgageCalc, incomeValue} from '../mortgageCalc'
+import ProfileIcon from "../../../../core/ProfileIcon";
+import {formatMoney, formatRange} from "../../../../../util/commonFunctions";
+import IconButton from "../../../../core/IconButton/IconButton";
+import EditCompReport from "../compWorkup/editCompReport";
+import missingImage from '../../../../../img/missingImage.jpg'
+import '../style.css'
+import EditCompListingModal from "../compWorkup/models/EditCompListingModal";
 
 
 const CompView = ({focusedProp}) => {
@@ -216,6 +216,8 @@ export default connect(mapStateToProps, null)(CompView)
 //ToDO: right now we are pulling compReport from shared state but the focused property is still passed though props and is needed for rent numbers used in this component. 
 //on the full marketplace refactor we can simplify one the focusedPropety is available in SS and the rent data can be pulled from there. 
 // the main chalange to the current set up is that when the compReport is updated only the interation in ss will be updated with the db. the old verstion of the record will still be 
-// active in the componoent state. this can be an issue if the user leaves and then reopens this component on the same record.
+// active in the componoent state. this can be an issue if the user leaves and then reopens this component on the same record (5/12/2021ap).
+
+//update chaged shared state item to foucusedProp which includes the comp report. This shoul be a non breaking change since it set in detalsModel which is a universaly used componnet (5/13/2021ap)
 
 

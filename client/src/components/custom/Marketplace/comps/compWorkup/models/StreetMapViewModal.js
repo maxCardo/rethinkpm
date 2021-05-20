@@ -1,7 +1,7 @@
 import {Button, Modal} from "react-bootstrap";
 import React from "react";
 import {StreetView} from "react-google-map-street-view";
-import IconButton from "../../../core/IconButton/IconButton";
+import IconButton from "../../../../../core/IconButton/IconButton";
 
 const StreetMapViewModal = ({ modalOpen, openModal, activeComp, streetView, changeStreetView }) => {
 

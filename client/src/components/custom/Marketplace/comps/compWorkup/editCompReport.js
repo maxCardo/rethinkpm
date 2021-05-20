@@ -1,38 +1,44 @@
 import React, {useEffect, useRef, useState} from "react"
-import IconButton from "../../../core/IconButton/IconButton"
-import missingImage from '../../../../img/missingImage.jpg'
-import robotAvatar from '../../../../img/robotAvatar.png'
-import GalleryModal from "./GalleryModal";
-import StreetMapViewModal from "./StreetMapViewModal";
-import EditCompListingModal from "./EditCompListingModal";
-import InfoModal from "./infoModal";
+import {connect} from 'react-redux'
+import IconButton from "../../../../core/IconButton/IconButton"
+import missingImage from '../../../../../img/missingImage.jpg'
+import robotAvatar from '../../../../../img/robotAvatar.png'
+import GalleryModal from "./models/GalleryModal";
+import StreetMapViewModal from "./models/StreetMapViewModal";
+import EditCompListingModal from "./models/EditCompListingModal";
+import InfoModal from "./models/infoModal";
+import {likeComp, unlikeComp} from '../../../../../actions/marketplace/comps'
 
-const EditCompReport = ({list}) => {
+const EditCompReport = ({focusedProp}) => {
     const hasProps = useRef(0);
     const [comps, setComps] = useState([])
-    const [theCompsList, setTheCompsList] = useState([])
     const [activeComp, setActiveComp] = useState({});
+    const [streetView, setStreetView] = useState(true)
+    const [streetViewModalOpen, setStreetViewModalOpen] = useState(false)
+    const [galleryModalOpen, setGalleryModalOpen] = useState(false)
+    const [compEditModal, setCompEditModal] = useState(false)
+    const [compInfoModal, setCompInfoModal] = useState(false)
 
     useEffect(() => {
-
-        const props = list && list
+        console.log('useEffect1 fired')
+        const props = focusedProp.compReport.comps
         if (props && hasProps.current === 0) {
             setComps(props)
             hasProps.current = 1
         }
 
-    }, [list])
+    }, [focusedProp])
 
-    useEffect(() => {
+    const likeComp = (compId) => {
+        const updated = comps.map(comp => comp._id === compId ? comp.like != true ? { ...comp, like: true, blacklist: false } : { ...comp, like: false } : comp)
+        setComps(updated)
+    }
 
-        if (hasProps.current === 1) {
-            const compList = (comps) && comps.map((comp, idx) => {
-                return (<ListItem key={idx} idx={idx} comp={comp}/>)
-            })
-            setTheCompsList(compList)
-        }
-
-    }, [comps])
+    const unlikeComp = (compId) => {
+        const updated = comps.map(comp => comp._id === compId ? comp.blacklist != true ? { ...comp, blacklist: true, like: false } : { ...comp, blacklist: false } : comp)
+        console.log(updated)
+        setComps(updated)
+    }
 
     const moneyFormat = (sum) => {
         return (new Intl.NumberFormat('en-US',
@@ -63,11 +69,6 @@ const EditCompReport = ({list}) => {
         // }
     }
 
-    const [streetView, setStreetView] = useState(true)
-    const [streetViewModalOpen, setStreetViewModalOpen] = useState(false)
-    const [galleryModalOpen, setGalleryModalOpen] = useState(false)
-    const [compEditModal, setCompEditModal] = useState(false)
-    const [compInfoModal, setCompInfoModal] = useState(false)
 
     var sliderSettings = {
         dots: true,
@@ -113,6 +114,8 @@ const EditCompReport = ({list}) => {
         }
 
         const onCompEditView = (index) => {
+            console.log(comps)
+            console.log(index)
             setActiveComp(comps[index].listing_id)
             setCompEditModal(true);
         }
@@ -152,15 +155,15 @@ const EditCompReport = ({list}) => {
                                 tooltipContent='Click save to comp list'
                                 iconClass='fas fa-thumbs-up'
                                 variant='action-button'
-                                btnClass={`singleFieldEdit CardList__likeBtn ${(idx < 10) && 'selected'}`}
-                                onClickFunc={() => console.log('clicked like')}/>
+                                btnClass={`singleFieldEdit CardList__likeBtn ${(comp.like === true) && 'selected'}`}
+                                onClickFunc={() => likeComp(comp._id)}/>
 
                     <IconButton placement='bottom'
                                 tooltipContent='Click remove from comp list'
                                 iconClass='fas fa-thumbs-down'
                                 variant='action-button'
-                                btnClass='singleFieldEdit CardList__dislikeBtn'
-                                onClickFunc={() => console.log('clicked not like')}/>
+                                btnClass={`singleFieldEdit CardList__dislikeBtn ${(comp.blacklist === true) && 'selected'}`}
+                                onClickFunc={() => unlikeComp(comp._id)}/>
 
                     <IconButton placement='bottom'
                                 tooltipContent='Click to view map area'
@@ -222,7 +225,7 @@ const EditCompReport = ({list}) => {
     return (
         <>
             <ul className="Comps">
-                {theCompsList}
+                {comps.map((comp, idx) => (<ListItem comp={comp} key={idx} idx={idx}/>))}
             </ul>
             {activeComp && streetViewModalOpen && (
                 <StreetMapViewModal modalOpen={streetViewModalOpen} openModal={handleStreetViewModal} changeStreetView={handleStreetViewMode} activeComp={activeComp} streetView={streetView} />
@@ -240,4 +243,8 @@ const EditCompReport = ({list}) => {
     )
 };
 
-export default EditCompReport;
+const mapStateToProps = state => ({
+    focusedProp: state.marketplace.focusedProp
+})
+
+export default connect(mapStateToProps, {})(EditCompReport);

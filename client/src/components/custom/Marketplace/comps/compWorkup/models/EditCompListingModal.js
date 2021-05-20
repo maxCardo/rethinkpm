@@ -2,7 +2,8 @@ import {Button, Col, Modal, Row, ToggleButton, ToggleButtonGroup} from "react-bo
 import React from "react";
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
-import {checkBoxCheck} from "../../../../util/commonFunctions";
+import {checkBoxCheck} from "../../../../../../util/commonFunctions";
+import {updateCompData} from '../../../../../../actions/marketplace/comps'
 
 const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
 
@@ -196,7 +197,8 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
                         car2parking,
                         car3parking
                     }
-                    console.log(theObject)
+                    updateCompData(theObject)
+                    openModal(false)
                 }}>
                     Submit
                 </Button>

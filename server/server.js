@@ -24,7 +24,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors())
 app.use(cookieParser());
 
-
 dbConnect();
 
 //Init middle ware. replaces bodyParser

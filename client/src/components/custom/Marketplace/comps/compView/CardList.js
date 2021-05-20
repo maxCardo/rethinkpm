@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
-import VerticalTable from "../../../core/VerticalTable/VerticalTable"
-import IconButton from "../../../core/IconButton/IconButton"
-import missingImage from '../../../../img/missingImage.jpg'
+import VerticalTable from "../../../../core/VerticalTable/VerticalTable"
+import IconButton from "../../../../core/IconButton/IconButton"
+import missingImage from '../../../../../img/missingImage.jpg'
 
 const CardList = ({list}) => {
 

@@ -1,6 +1,6 @@
 import {Button, Modal} from "react-bootstrap";
 import React from "react";
-import VerticalTable from "../../../core/VerticalTable/VerticalTable";
+import VerticalTable from "../../../../../core/VerticalTable/VerticalTable";
 
 const InfoModal = ({ modalOpen, openModal, activeComp }) => {
 
