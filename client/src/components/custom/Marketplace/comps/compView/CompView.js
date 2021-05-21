@@ -7,7 +7,6 @@ import ProfileIcon from "../../../../core/ProfileIcon";
 import {formatMoney, formatRange} from "../../../../../util/commonFunctions";
 import IconButton from "../../../../core/IconButton/IconButton";
 import CompWorkup from '../compWorkup/CompWorkup'
-import EditCompReport from "../compWorkup/editCompReport";
 import missingImage from '../../../../../img/missingImage.jpg'
 import '../style.css'
 

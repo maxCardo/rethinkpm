@@ -3,31 +3,22 @@ import {connect} from 'react-redux'
 import IconButton from "../../../../core/IconButton/IconButton"
 import missingImage from '../../../../../img/missingImage.jpg'
 import robotAvatar from '../../../../../img/robotAvatar.png'
-import GalleryModal from "./models/GalleryModal";
-import StreetMapViewModal from "./models/StreetMapViewModal";
-import EditCompListingModal from "./models/EditCompListingModal";
-import InfoModal from "./models/infoModal";
 import {likeComp, unlikeComp} from '../../../../../actions/marketplace/comps'
 
-const EditCompReport = ({focusedProp}) => {
+const WorkUpTiles = ({list, simpleAction, openModel}) => {
     const hasProps = useRef(0);
     const [comps, setComps] = useState([])
     const [activeComp, setActiveComp] = useState({});
-    const [streetView, setStreetView] = useState(true)
-    const [streetViewModalOpen, setStreetViewModalOpen] = useState(false)
-    const [galleryModalOpen, setGalleryModalOpen] = useState(false)
-    const [compEditModal, setCompEditModal] = useState(false)
-    const [compInfoModal, setCompInfoModal] = useState(false)
+    
+    // useEffect(() => {
+    //     console.log('useEffect1 fired')
+    //     const props = focusedProp.compReport.comps
+    //     if (props && hasProps.current === 0) {
+    //         setComps(props)
+    //         hasProps.current = 1
+    //     }
 
-    useEffect(() => {
-        console.log('useEffect1 fired')
-        const props = focusedProp.compReport.comps
-        if (props && hasProps.current === 0) {
-            setComps(props)
-            hasProps.current = 1
-        }
-
-    }, [focusedProp])
+    // }, [focusedProp])
 
     const likeComp = (compId) => {
         const updated = comps.map(comp => comp._id === compId ? comp.like != true ? { ...comp, like: true, blacklist: false } : { ...comp, like: false } : comp)
@@ -70,59 +61,59 @@ const EditCompReport = ({focusedProp}) => {
     }
 
 
-    var sliderSettings = {
-        dots: true,
-        infinite: false,
-        slidesToShow: 3,
-        slidesToScrikk: 1,
-        variableWidth: true,
-        cssEase: 'linear',
-    };
+    // var sliderSettings = {
+    //     dots: true,
+    //     infinite: false,
+    //     slidesToShow: 3,
+    //     slidesToScrikk: 1,
+    //     variableWidth: true,
+    //     cssEase: 'linear',
+    // };
 
-    const handleGalleryClose = (value) => {
-        setGalleryModalOpen(value);
-    }
+    // const handleGalleryClose = (value) => {
+    //     setGalleryModalOpen(value);
+    // }
 
-    const handleStreetViewModal = (value) => {
-        setStreetViewModalOpen(value);
-    }
+    // const handleStreetViewModal = (value) => {
+    //     setStreetViewModalOpen(value);
+    // }
 
-    const handleStreetViewMode = (value) => {
-        setStreetView(value);
-    }
+    // const handleStreetViewMode = (value) => {
+    //     setStreetView(value);
+    // }
 
-    const handleEditComp = (value) => {
-        setCompEditModal(value)
-    }
-    const handleInfoComp = (value) => {
-        setCompInfoModal(value)
-    }
+    // const handleEditComp = (value) => {
+    //     setCompEditModal(value)
+    // }
+    // const handleInfoComp = (value) => {
+    //     setCompInfoModal(value)
+    // }
 
 
     {/*TODO: Extract to separate component, last cause weird*/}
     const ListItem = ({comp, idx}) => {
 
         const onCompMapView = (index) => {
-            setStreetView(false);
-            setActiveComp(comps[index].listing_id)
-            setStreetViewModalOpen(true);
+            // setStreetView(false);
+            // setActiveComp(comps[index].listing_id)
+            // setStreetViewModalOpen(true);
         }
 
         const onCompGalleryView = (index) => {
-            setActiveComp(comps[index].listing_id)
-            setGalleryModalOpen(true);
+            // setActiveComp(comps[index].listing_id)
+            // setGalleryModalOpen(true);
         }
 
         const onCompEditView = (index) => {
-            console.log(comps)
-            console.log(index)
-            setActiveComp(comps[index].listing_id)
-            setCompEditModal(true);
+            // console.log(comps)
+            // console.log(index)
+            // setActiveComp(comps[index].listing_id)
+            // setCompEditModal(true);
         }
 
         const onCompInfoView = (index) => {
-            setActiveComp(comps[index].listing_id)
-            setCompInfoModal(true);
+            // setActiveComp(comps[index].listing_id)
+            // setCompInfoModal(true);
         }
 
 
@@ -156,7 +147,7 @@ const EditCompReport = ({focusedProp}) => {
                                 iconClass='fas fa-thumbs-up'
                                 variant='action-button'
                                 btnClass={`singleFieldEdit CardList__likeBtn ${(comp.like === true) && 'selected'}`}
-                                onClickFunc={() => likeComp(comp._id)}/>
+                                onClickFunc={() => simpleAction(comp)}/>
 
                     <IconButton placement='bottom'
                                 tooltipContent='Click remove from comp list'
@@ -170,7 +161,7 @@ const EditCompReport = ({focusedProp}) => {
                                 iconClass='fas fa-street-view'
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__mapBtn'
-                                onClickFunc={() => onCompMapView(idx)}/>
+                                onClickFunc={() => openModel('streetView',comp.listing_id)}/>
 
                     {/*TODO: Dont show if activeProperty.images.length === 0*/}
                     <IconButton placement='bottom'
@@ -178,19 +169,19 @@ const EditCompReport = ({focusedProp}) => {
                                 iconClass='fas fa-images'
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__galleryBtn'
-                                onClickFunc={() => onCompGalleryView(idx)}/>
+                                onClickFunc={() => openModel('gallery',comp.listing_id)}/>
                     <IconButton placement='bottom'
                                 tooltipContent='Click to Fix'
                                 iconClass='fas fa-tools'
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__editBtn'
-                                onClickFunc={() => onCompEditView(idx)}/>
+                                onClickFunc={() => openModel('edit',comp.listing_id)}/>
                     <IconButton placement='bottom'
                                 tooltipContent='Click for more Info'
                                 iconClass='fas fa-info'
                                 variant='action-button'
                                 btnClass="CardList__compInfoBtn"
-                                onClickFunc={() => onCompInfoView(idx)}/>
+                                onClickFunc={() => openModel('info',comp.listing_id)}/>
                 </div>
                 <div>
                     <div className="Comp__details">
@@ -225,20 +216,9 @@ const EditCompReport = ({focusedProp}) => {
     return (
         <>
             <ul className="Comps">
-                {comps.map((comp, idx) => (<ListItem comp={comp} key={idx} idx={idx}/>))}
+                {list.map((comp, idx) => (<ListItem comp={comp} key={idx} idx={idx}/>))}
             </ul>
-            {activeComp && streetViewModalOpen && (
-                <StreetMapViewModal modalOpen={streetViewModalOpen} openModal={handleStreetViewModal} changeStreetView={handleStreetViewMode} activeComp={activeComp} streetView={streetView} />
-            )}
-            {activeComp && galleryModalOpen && (
-                <GalleryModal modalOpen={galleryModalOpen} openModal={handleGalleryClose} activeComp={activeComp} sliderSettings={sliderSettings} />
-            )}
-            {activeComp && compEditModal && (
-                <EditCompListingModal modalOpen={compEditModal} openModal={handleEditComp} activeComp={activeComp} />
-            )}
-            {activeComp && compInfoModal && (
-                <InfoModal modalOpen={compInfoModal} openModal={handleInfoComp} activeComp={activeComp} />
-            )}
+            
         </>
     )
 };
@@ -247,4 +227,4 @@ const mapStateToProps = state => ({
     focusedProp: state.marketplace.focusedProp
 })
 
-export default connect(mapStateToProps, {})(EditCompReport);
+export default connect(mapStateToProps, {})(WorkUpTiles);

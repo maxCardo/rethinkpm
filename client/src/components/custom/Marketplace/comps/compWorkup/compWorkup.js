@@ -3,8 +3,11 @@ import {connect} from 'react-redux'
 import { Button } from 'react-bootstrap';
 import IconButton from "../../../../core/IconButton/IconButton";
 import { formatMoney, formatRange } from "../../../../../util/commonFunctions";
-import EditCompReport from "./editCompReport";
+import WorkUpTiles from "./WorkUpTiles";
+import GalleryModal from "./models/GalleryModal";
+import StreetMapViewModal from "./models/StreetMapViewModal";
 import EditCompListingModal from "./models/EditCompListingModal";
+import InfoModal from "./models/infoModal";
 import missingImage from '../../../../../img/missingImage.jpg'
 
 //actions
@@ -17,19 +20,26 @@ import missingImage from '../../../../../img/missingImage.jpg'
 //stairs
 
 const CompWorkup = ({showModal, hideModal, focusedProp}) => {
-
-    const [comps, setComps] = useState([])
-    /* MODAL state*/
-    const [activeComp, setActiveComp] = useState({});
     const [property, setProperty] = useState({});
+    const [comps, setComps] = useState([])
+
+    const [activeComp, setActiveComp] = useState({});
+    const [streetView, setStreetView] = useState(false)
+    const [streetViewModalOpen, setStreetViewModalOpen] = useState(false)
+    const [galleryModalOpen, setGalleryModalOpen] = useState(false)
+    const [compEditModal, setCompEditModal] = useState(false)
+    const [compInfoModal, setCompInfoModal] = useState(false)
+
     const [activePropertyReport, setActivePropertyReport] = useState({});
     const [propertyEditModal, setPropertyEditModal] = useState(false)
    
     useEffect(() => {
         const props = focusedProp
         const compReport = props.compReport
-        console.log('compReport');
-        console.log(compReport);
+        // console.log('compReport');
+        // console.log(compReport);
+        //setProperty(focusedProp);
+        console.log('property: ',property)
 
         if (props) {
 
@@ -50,12 +60,48 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         setPropertyEditModal(value)
     }
 
+    const simpleAction = () => {
+        console.log('simple action')
+    }
+
+    const openModel = (model, comp) => {
+        //const selectedComp = comps.filter(x => x._id === compId)
+        setActiveComp(comp)
+        console.log('activeComp: ',activeComp)
+        console.log('model: ', model)
+        switch(model){
+            case 'streetView':
+                setStreetViewModalOpen(true)
+                break;
+            case 'gallery':
+                setGalleryModalOpen(true)
+                break;
+            case 'edit':
+                setCompEditModal(true)
+                break;
+            case 'info':
+                setCompInfoModal(true)
+                break;
+            default:
+                console.log('defaulT!!!!')
+        }
+    }
+
+    var sliderSettings = {
+        dots: true,
+        infinite: false,
+        slidesToShow: 3,
+        slidesToScrikk: 1,
+        variableWidth: true,
+        cssEase: 'linear',
+    };
+
 
     return (
        <Fragment>
             < div className="flex-between" >
                 <div className="editComps__container">
-                    <EditCompReport list={comps} report={activePropertyReport} />
+                    <WorkUpTiles list={comps} simpleAction={simpleAction} openModel={openModel}/>
                 </div>
                 <div className="calcSidebar">
                     <div className="EditComp__card">
@@ -101,8 +147,17 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
                     </div>
                 </div>
             </div>
-            {property && propertyEditModal && (
-                <EditCompListingModal modalOpen={propertyEditModal} openModal={handlePropertyEdit} activeComp={property} />
+            {activeComp && streetViewModalOpen && (
+                <StreetMapViewModal modalOpen={streetViewModalOpen} activeComp={activeComp} streetView={streetView} openModal={setStreetViewModalOpen} changeStreetView={setStreetView} />
+            )}
+            {activeComp && galleryModalOpen && (
+                <GalleryModal modalOpen={galleryModalOpen} activeComp={activeComp} sliderSettings={sliderSettings} openModal={setGalleryModalOpen}/>
+            )}
+            {activeComp && compEditModal && (
+                <EditCompListingModal modalOpen={compEditModal} activeComp={activeComp} openModal={setCompEditModal}/>
+            )}
+            {activeComp && compInfoModal && (
+                <InfoModal modalOpen={compInfoModal} activeComp={activeComp} openModal={setCompInfoModal}/>
             )}
        </Fragment>
     )
