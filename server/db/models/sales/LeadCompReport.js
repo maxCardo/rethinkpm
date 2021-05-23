@@ -6,6 +6,17 @@ const leadCompReportSchema = new mongoose.Schema({
         ref: 'list_leads',
         unique: true
     },
+    review:{
+        reviewed: Boolean,
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+        date: {
+            type: Date,
+            default: Date.now,
+        },
+    },
     comps: [{
         listing_id: {
             type: mongoose.Schema.Types.ObjectId,

@@ -160,6 +160,10 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         
     }
 
+    const saveReport = () => {
+        console.log('running save report')
+    }
+
 
     return (
        <Fragment>
