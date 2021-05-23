@@ -5,7 +5,7 @@ import missingImage from '../../../../../img/missingImage.jpg'
 import robotAvatar from '../../../../../img/robotAvatar.png'
 import {likeComp, unlikeComp} from '../../../../../actions/marketplace/comps'
 
-const WorkUpTiles = ({list, simpleAction, openModel}) => {
+const WorkUpTiles = ({list, simpleAction, openModel, like, unlike}) => {
     const hasProps = useRef(0);
     const [comps, setComps] = useState([])
     const [activeComp, setActiveComp] = useState({});
@@ -20,16 +20,16 @@ const WorkUpTiles = ({list, simpleAction, openModel}) => {
 
     // }, [focusedProp])
 
-    const likeComp = (compId) => {
-        const updated = comps.map(comp => comp._id === compId ? comp.like != true ? { ...comp, like: true, blacklist: false } : { ...comp, like: false } : comp)
-        setComps(updated)
-    }
+    // const likeComp = (compId) => {
+    //     const updated = comps.map(comp => comp._id === compId ? comp.like != true ? { ...comp, like: true, blacklist: false } : { ...comp, like: false } : comp)
+    //     setComps(updated)
+    // }
 
-    const unlikeComp = (compId) => {
-        const updated = comps.map(comp => comp._id === compId ? comp.blacklist != true ? { ...comp, blacklist: true, like: false } : { ...comp, blacklist: false } : comp)
-        console.log(updated)
-        setComps(updated)
-    }
+    // const unlikeComp = (compId) => {
+    //     const updated = comps.map(comp => comp._id === compId ? comp.blacklist != true ? { ...comp, blacklist: true, like: false } : { ...comp, blacklist: false } : comp)
+    //     console.log(updated)
+    //     setComps(updated)
+    // }
 
     const moneyFormat = (sum) => {
         return (new Intl.NumberFormat('en-US',
@@ -147,14 +147,14 @@ const WorkUpTiles = ({list, simpleAction, openModel}) => {
                                 iconClass='fas fa-thumbs-up'
                                 variant='action-button'
                                 btnClass={`singleFieldEdit CardList__likeBtn ${(comp.like === true) && 'selected'}`}
-                                onClickFunc={() => simpleAction(comp)}/>
+                                onClickFunc={() => like(comp._id)}/>
 
                     <IconButton placement='bottom'
                                 tooltipContent='Click remove from comp list'
                                 iconClass='fas fa-thumbs-down'
                                 variant='action-button'
                                 btnClass={`singleFieldEdit CardList__dislikeBtn ${(comp.blacklist === true) && 'selected'}`}
-                                onClickFunc={() => unlikeComp(comp._id)}/>
+                                onClickFunc={() => unlike(comp._id)}/>
 
                     <IconButton placement='bottom'
                                 tooltipContent='Click to view map area'

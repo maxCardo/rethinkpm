@@ -5,7 +5,7 @@ import Select from "react-select";
 import {checkBoxCheck} from "../../../../../../util/commonFunctions";
 import {updateCompData} from '../../../../../../actions/marketplace/comps'
 
-const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
+const EditCompListingModal = ({ modalOpen, openModal, activeComp, submit }) => {
 
     const optionsGeoConditions = [
         { value: 'Flat', label: 'Flat' },
@@ -197,7 +197,7 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp }) => {
                         car2parking,
                         car3parking
                     }
-                    updateCompData(theObject)
+                    submit(activeComp._id, theObject)
                     openModal(false)
                 }}>
                     Submit

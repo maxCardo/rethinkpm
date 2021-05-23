@@ -90,13 +90,18 @@
 .op__userData {
     margin-left: 10px;
 }
-.op__box .op__bigMoney {
+
+.op__bigMoney {
     font-size: 30px;
     font-weight: 600;
-}
-.op__smCentered {
     text-align: center;
-    font-size: 18px;
+}
+
+.op__smCentered {
+    text-align: left;
+    font-size: 12px;
+    margin-bottom: 0;
+    margin-left: 30px;
 }
 p.sub {
     font-size: 13px;
