@@ -103,6 +103,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
     const likeComp = async (compId) => {
         console.log('running like comp')
         const updated = comps.map(comp => comp._id === compId ? comp.like != true ? { ...comp, like: true, blacklist: false } : { ...comp, like: false } : comp)
+        //updated.unshift(updated.splice(updated.findIndex(comp => comp._id === compId), 1)[0])
         console.log(updated)
         setComps(updated)
         calcCompAdj(updated)
@@ -110,6 +111,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
 
     const unlikeComp = (compId) => {
         const updated = comps.map(comp => comp._id === compId ? comp.blacklist != true ? { ...comp, blacklist: true, like: false } : { ...comp, blacklist: false } : comp)
+        updated.push(updated.splice(updated.findIndex(comp => comp._id === compId),1)[0])
         console.log(updated)
         setComps(updated)
     }
