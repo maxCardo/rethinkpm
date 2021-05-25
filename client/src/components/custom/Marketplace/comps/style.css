@@ -117,6 +117,7 @@ p.sub {
     margin-top: -20px;
     margin-left: auto;
     padding: 20px 0 20px 20px;
+    scroll-behavior: smooth;
 }
 .Comps, .Map {
     width: 49.5%;

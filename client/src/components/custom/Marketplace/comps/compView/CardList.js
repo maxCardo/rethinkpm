@@ -95,7 +95,7 @@ const CardList = ({list}) => {
         const price = currentPrice ? currentPrice : listingPrice
 
         return (
-            <li>
+            <li id={`target${comp.listing_id ? comp.listing_id._id : 'notraget' + idx}`}>
                 {/* This is full width */}
                 <div className="Comp__details-imgContainer" style={{backgroundImage: 'url(' +mainImage + ')', backgroundSize: 'cover', backgroundPosition: 'center center', minHeight: '220px'}}>
                     {/*This is full height <img src={mainImage} alt="The property image"/>*/}
