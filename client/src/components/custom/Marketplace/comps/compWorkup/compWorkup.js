@@ -242,6 +242,21 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert}) => {
         console.log('running save report')
         const likedComps = comps.filter(comp => comp.like === true)
         console.log(likedComps.length);
+        if (likedComps.length > 2) {
+            
+            const notUpdated = likedComps.filter(comp => comp.updated != true)
+            if (notUpdated >= 1) {
+                //setAlert
+                console.log(`${notUpdated.length} properties have not been updated with manual data. Please review and update prior to submiting`);
+            }else{
+                //save report
+                console.log('saving report');
+            }
+
+        }else{
+            //setAlert
+            console.log('please like at least 3 comps prior to saving comp');
+        }
         //check more then 3 liked
         //check all liked updated
         //if all clear save compreport to DB with updated: true
@@ -293,7 +308,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert}) => {
                             Cancel
                                 </Button>
                         <Button className="btn btn-primary" disabled={false} variant="secondary"
-                            onClick={() => console.log('save and exit')}
+                            onClick={() => saveReport()}
                         >
                             Save and Exit
                                 </Button>
