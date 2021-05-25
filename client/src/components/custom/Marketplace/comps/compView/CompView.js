@@ -46,7 +46,6 @@ const CompView = ({focusedProp}) => {
 
             console.log('comps');
             console.log(theComps);
-            
 
         }
 
@@ -220,7 +219,6 @@ const CompView = ({focusedProp}) => {
 const mapStateToProps = state => ({
     focusedProp: state.marketplace.focusedProp
 })
-
 
 export default connect(mapStateToProps, null)(CompView)
 

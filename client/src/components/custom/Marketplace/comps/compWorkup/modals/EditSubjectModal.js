@@ -1,10 +1,11 @@
-import { Button, Col, Modal, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import { Button, Col, Modal, Row, ToggleButton, ToggleButtonGroup, Alert } from "react-bootstrap";
 import React from "react";
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
 import { checkBoxCheck } from "../../../../../../util/commonFunctions";
 import { updateCompData } from '../../../../../../actions/marketplace/comps'
 import {setAlert} from "../../../../../../actions/alert";
+import UpdateAlert from "../../../../../core/Alert";
 
 const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
 
@@ -52,6 +53,7 @@ const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
     const [car3parking, setCar3parking] = React.useState();
 
     const [subjectModalValid, setSubjectModalValid] = React.useState(0)
+    const [subjectModalAlert, setSubjectModalAlert] = React.useState();
 
     const handleGeoChange = val => {
         setSubjectModalValid(subjectModalValid + 1);
@@ -219,6 +221,8 @@ const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
+                {/* TODO: Add validation message here*/}
+                {subjectModalAlert && <Alert>Please fill out all the fields</Alert>}
                 <Button variant="primary" type="submit" onClick={() => {
                     if (subjectModalValid === 7 ) {
                         const theObject = {
@@ -235,7 +239,7 @@ const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
                         submit(activeComp._id, theObject)
                         openModal(false)
                     } else {
-                        console.log('SET ALERT: Please fill out all required fields')
+                        setSubjectModalAlert('SET ALERT: Please fill out all required fields')
                     }
                 }}>
                     Submit
