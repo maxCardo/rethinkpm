@@ -4,13 +4,14 @@ import { Button } from 'react-bootstrap';
 import IconButton from "../../../../core/IconButton/IconButton";
 import { formatMoney, formatRange } from "../../../../../util/commonFunctions";
 import { arrAvg, getStanDev, getQuantMean , getQuantArr} from "../../../../../util/math";
+import {setAlert} from '../../../../../actions/alert'
 
 import WorkUpTiles from "./WorkUpTiles";
-import GalleryModal from "./models/GalleryModal";
-import StreetMapViewModal from "./models/StreetMapViewModal";
-import EditCompListingModal from "./models/EditCompListingModal";
-import EditSubjectModal from './models/EditSubjectModal'
-import InfoModal from "./models/infoModal";
+import GalleryModal from "./modals/GalleryModal";
+import StreetMapViewModal from "./modals/StreetMapViewModal";
+import EditCompListingModal from "./modals/EditCompListingModal";
+import EditSubjectModal from './modals/EditSubjectModal'
+import InfoModal from "./modals/infoModal";
 import missingImage from '../../../../../img/missingImage.jpg'
 
 //actions
@@ -22,7 +23,7 @@ import missingImage from '../../../../../img/missingImage.jpg'
 //parking
 //stairs
 
-const CompWorkup = ({showModal, hideModal, focusedProp}) => {
+const CompWorkup = ({showModal, hideModal, focusedProp, setAlert}) => {
     const [property, setProperty] = useState({});
     //@desc: subject condition updated. should varify from record on useEffect. if false user can not update comp condtion (trigger alert, open propCondition)
     const [propCond, setProbCond]= useState({avail: false, features:{}, adjustment:{}})
@@ -68,10 +69,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         setCompEditModal(value)
     }
 
-    const simpleAction = () => {
-        console.log('simple action')
-    }
-
+    //@desc: switch to set active comp and open modal
     const openModel = (model, comp) => {
         //const selectedComp = comps.filter(x => x._id === compId)
         setActiveComp(comp)
@@ -95,6 +93,8 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         }
     }
 
+    //@desc: settings for gallary slider
+    //todo: move to gallery modal. set loading until setting have run??
     var sliderSettings = {
         dots: true,
         infinite: false,
@@ -104,6 +104,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         cssEase: 'linear',
     };
 
+    //@desc: like comp, update rec in comp arr, move item index in arr (commented out).
     const likeComp = async (compId) => {
         const updated = comps.map(comp => comp._id === compId ? comp.like != true ? { ...comp, like: true, blacklist: false } : { ...comp, like: false } : comp)
         //updated.unshift(updated.splice(updated.findIndex(comp => comp._id === compId), 1)[0])
@@ -111,6 +112,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         calcCompAdj(updated)
     }
 
+    //@desc: unlike comp, update rec in comp arr, move item index in arr.
     const unlikeComp = (compId) => {
         const updated = comps.map(comp => comp._id === compId ? comp.blacklist != true ? { ...comp, blacklist: true, like: false } : { ...comp, blacklist: false } : comp)
         updated.push(updated.splice(updated.findIndex(comp => comp._id === compId),1)[0])
@@ -162,7 +164,8 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         
     }
 
-    //@desc: add manual adjustments to comp
+    //@desc: add manual adjustments to comp, re calculate price.
+    //todo: update comps listing record with assesment 
     const submitSupData = (compId, data) => {
         const features =  {
             car: {
@@ -201,17 +204,21 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
     } 
 
     //@desc check propery data completed before opening comp edit model
+    //todo: add alert of else clause
     const openCompEdit = () => {
         console.log(propCond);
         if (propCond.avail) {
             setCompEditModal(true)
         } else {
             console.log('PROP CONDITION NOT UPDATED');
+            setAlert('Please Edit Subject Propety Entry Prior to comps')
             //SEND ALERT
         }
     }
 
-    const submitSubEd = (id, data) => {
+    //@desc: Add manual property features to subject. 
+    //todo: update listing record with info. 
+    const submitSubjectEdit = (id, data) => {
         console.log('submiting data subEd');
         console.log(id, data);
         const report = {
@@ -230,6 +237,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         setProbCond(report)
     }
 
+    //@desc: check minimal manual entry requirements, save record to DB, update state  
     const saveReport = () => {
         console.log('running save report')
         const likedComps = comps.filter(comp => comp.like === true)
@@ -244,7 +252,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
        <Fragment>
             < div className="flex-between" >
                 <div className="editComps__container">
-                    <WorkUpTiles list={comps} simpleAction={simpleAction} openModel={openModel} like={likeComp} unlike={unlikeComp}/>
+                    <WorkUpTiles list={comps} openModel={openModel} like={likeComp} unlike={unlikeComp}/>
                 </div>
                 <div className="calcSidebar">
                     <div className="EditComp__card">
@@ -304,7 +312,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
             {activeComp && compInfoModal && (
                 <InfoModal modalOpen={compInfoModal} activeComp={activeComp} openModal={setCompInfoModal}/>
             )}
-            <EditSubjectModal modalOpen={subEdModal} activeComp={property} openModal={setSubEdModal} submit={submitSubEd} />
+            <EditSubjectModal modalOpen={subEdModal} activeComp={property} openModal={setSubEdModal} submit={submitSubjectEdit} />
             
        </Fragment>
     )
@@ -315,6 +323,6 @@ const mapStateToProps = state => ({
     focusedProp: state.marketplace.focusedProp
 })
 
-export default connect(mapStateToProps, null)(CompWorkup)
+export default connect(mapStateToProps, {setAlert})(CompWorkup)
 
     
