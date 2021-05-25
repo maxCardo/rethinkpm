@@ -327,11 +327,9 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert}) => {
             {activeComp && compInfoModal && (
                 <InfoModal modalOpen={compInfoModal} activeComp={activeComp} openModal={setCompInfoModal}/>
             )}
-            <EditSubjectModal modalOpen={subEdModal} activeComp={property} openModal={setSubEdModal} submit={submitSubjectEdit} />
-            
+            <EditSubjectModal modalOpen={subEdModal} activeComp={property} openModal={setSubEdModal} submit={submitSubjectEdit}/>
        </Fragment>
     )
-
 }
 
 const mapStateToProps = state => ({
