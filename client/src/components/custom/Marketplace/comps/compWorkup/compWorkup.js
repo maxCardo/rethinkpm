@@ -129,7 +129,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert}) => {
             setTimeout(() => {
                 console.log(x);
                 setReportPrice(x)    
-            },1)
+            },.5)
         })
     }
 
@@ -245,9 +245,10 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert}) => {
         if (likedComps.length > 2) {
             
             const notUpdated = likedComps.filter(comp => comp.updated != true)
-            if (notUpdated >= 1) {
+            console.log('notUpdated: ', notUpdated);
+            if (notUpdated.length >= 1) {
                 //setAlert
-                console.log(`${notUpdated.length} properties have not been updated with manual data. Please review and update prior to submiting`);
+                console.log(`Some properties have not been updated with manual data. Please review records for ${notUpdated.map(x => `${x.listing_id.streetNumber} ${x.listing_id.streetName} `)} and update prior to submiting`);
             }else{
                 //save report
                 console.log('saving report');
