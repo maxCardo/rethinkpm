@@ -1,11 +1,11 @@
-import {Button, Col, Modal, Row, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import { Button, Col, Modal, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import React from "react";
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
-import {checkBoxCheck} from "../../../../../../util/commonFunctions";
-import {updateCompData} from '../../../../../../actions/marketplace/comps'
+import { checkBoxCheck } from "../../../../../../util/commonFunctions";
+import { updateCompData } from '../../../../../../actions/marketplace/comps'
 
-const EditCompListingModal = ({ modalOpen, openModal, activeComp, submit }) => {
+const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
 
     const optionsGeoConditions = [
         { value: 'Flat', label: 'Flat' },
@@ -235,4 +235,4 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp, submit }) => {
         </Modal>
     )
 }
-export default EditCompListingModal
+export default EditSubjectModal

@@ -6,7 +6,7 @@ import {mortgageCalc, incomeValue} from '../mortgageCalc'
 import ProfileIcon from "../../../../core/ProfileIcon";
 import {formatMoney, formatRange} from "../../../../../util/commonFunctions";
 import IconButton from "../../../../core/IconButton/IconButton";
-import CompWorkup from '../compWorkup/CompWorkup'
+import CompWorkup from '../compWorkup/compWorkup'
 import missingImage from '../../../../../img/missingImage.jpg'
 import '../style.css'
 
@@ -45,6 +45,7 @@ const CompView = ({focusedProp}) => {
 
             console.log('comps');
             console.log(theComps);
+            
 
         }
 

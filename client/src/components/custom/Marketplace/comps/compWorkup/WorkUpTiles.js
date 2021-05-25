@@ -161,7 +161,7 @@ const WorkUpTiles = ({list, simpleAction, openModel, like, unlike}) => {
                                 iconClass='fas fa-street-view'
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__mapBtn'
-                                onClickFunc={() => openModel('streetView',comp.listing_id)}/>
+                                onClickFunc={() => openModel('streetView',comp)}/>
 
                     {/*TODO: Dont show if activeProperty.images.length === 0*/}
                     <IconButton placement='bottom'
@@ -169,19 +169,19 @@ const WorkUpTiles = ({list, simpleAction, openModel, like, unlike}) => {
                                 iconClass='fas fa-images'
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__galleryBtn'
-                                onClickFunc={() => openModel('gallery',comp.listing_id)}/>
+                                onClickFunc={() => openModel('gallery',comp)}/>
                     <IconButton placement='bottom'
                                 tooltipContent='Click to Fix'
                                 iconClass='fas fa-tools'
                                 variant='action-button'
                                 btnClass='singleFieldEdit CardList__editBtn'
-                                onClickFunc={() => openModel('edit',comp.listing_id)}/>
+                                onClickFunc={() => openModel('edit',comp)}/>
                     <IconButton placement='bottom'
                                 tooltipContent='Click for more Info'
                                 iconClass='fas fa-info'
                                 variant='action-button'
                                 btnClass="CardList__compInfoBtn"
-                                onClickFunc={() => openModel('info',comp.listing_id)}/>
+                                onClickFunc={() => openModel('info',comp)}/>
                 </div>
                 <div>
                     <div className="Comp__details">

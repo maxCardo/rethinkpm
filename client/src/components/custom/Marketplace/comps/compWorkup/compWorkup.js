@@ -9,6 +9,7 @@ import WorkUpTiles from "./WorkUpTiles";
 import GalleryModal from "./models/GalleryModal";
 import StreetMapViewModal from "./models/StreetMapViewModal";
 import EditCompListingModal from "./models/EditCompListingModal";
+import EditSubjectModal from './models/EditSubjectModal'
 import InfoModal from "./models/infoModal";
 import missingImage from '../../../../../img/missingImage.jpg'
 
@@ -23,6 +24,8 @@ import missingImage from '../../../../../img/missingImage.jpg'
 
 const CompWorkup = ({showModal, hideModal, focusedProp}) => {
     const [property, setProperty] = useState({});
+    //@desc: subject condition updated. should varify from record on useEffect. if false user can not update comp condtion (trigger alert, open propCondition)
+    const [propCond, setProbCond]= useState({avail: false, features:{}, adjustment:{}})
     const [comps, setComps] = useState([])
     const [activePropertyReport, setActivePropertyReport] = useState({});
     const [reportPrice, setReportPrice] = useState('0')
@@ -33,7 +36,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
     const [galleryModalOpen, setGalleryModalOpen] = useState(false)
     const [compEditModal, setCompEditModal] = useState(false)
     const [compInfoModal, setCompInfoModal] = useState(false)
-    const [propertyEditModal, setPropertyEditModal] = useState(false)
+    const [subEdModal, setSubEdModal] = useState(false)
    
     useEffect(() => {
         const props = focusedProp
@@ -61,7 +64,8 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
     }, [focusedProp])
 
     const handlePropertyEdit = (value) => {
-        setPropertyEditModal(value)
+        setActiveComp(property)
+        setCompEditModal(value)
     }
 
     const simpleAction = () => {
@@ -81,7 +85,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
                 setGalleryModalOpen(true)
                 break;
             case 'edit':
-                setCompEditModal(true)
+                openCompEdit()
                 break;
             case 'info':
                 setCompInfoModal(true)
@@ -101,10 +105,8 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
     };
 
     const likeComp = async (compId) => {
-        console.log('running like comp')
         const updated = comps.map(comp => comp._id === compId ? comp.like != true ? { ...comp, like: true, blacklist: false } : { ...comp, like: false } : comp)
         //updated.unshift(updated.splice(updated.findIndex(comp => comp._id === compId), 1)[0])
-        console.log(updated)
         setComps(updated)
         calcCompAdj(updated)
     }
@@ -114,7 +116,10 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         updated.push(updated.splice(updated.findIndex(comp => comp._id === compId),1)[0])
         console.log(updated)
         setComps(updated)
+        calcCompAdj(updated)
     }
+
+    //@desc: effect to count up comp price 
     const setSubjectPrice = (price) => {
         const priceArr = [(price * .25), (price * .35), (price * .45), (price * .55), (price * .65), (price * .75), price]
         console.log(priceArr)
@@ -126,6 +131,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
         })
     }
 
+    //@desc: calculate value of liked comps
     const calcCompAdj = (arr) => {
         console.log(arr)
         const data = arr.filter(comp => comp.like === true)
@@ -149,19 +155,88 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
             }
             setActivePropertyReport(price)
             setSubjectPrice(price.oov)
+        }else {
+            setActivePropertyReport({})
+            setSubjectPrice('0')
+        }
+        
+    }
+
+    //@desc: add manual adjustments to comp
+    const submitSupData = (compId, data) => {
+        const features =  {
+            car: {
+                _1: data.car1 === 'garage' ? 6000 : data.car1 === 'offStreet' ? 3000 : 0,
+                _2: data.car2 === 'garage' ? 5000 : data.car2 === 'offStreet' ? 2500 : 0,
+                _3: data.car3 === 'garage' ? 3000 : data.car3 === 'offStreet' ? 1500 : 0,
+            },
+            AC: data.AC === true ? 10000 : 0,
+            cave: data.cave === true ? 10000 : 0,
+        }
+        
+        const newAdjustment = {
+            parking: (propCond.adjustments.car._1 + propCond.adjustments.car._2 + propCond.adjustments.car._3) - (features.car._1 + features.car._2 + features.car._3) ,
+            AC: (propCond.adjustments.AC - features.AC),
+            cave: (propCond.adjustments.cave - features.cave)
+        }
+        const totalAdjustments = Object.values(newAdjustment).reduce((acc, item) => acc + item)
+
+        console.log('propCond: ', propCond);
+        console.log('features: ', features);
+        console.log('adjustments: ',newAdjustment);
+        console.log('total: ', totalAdjustments);
+
+        const comp = comps.filter(comp => comp._id === compId)[0]
+        console.log('comp: ', comp);
+        const currentAdj = comp.adjustments
+        console.log('current: ', currentAdj);
+        const compAdj = {...currentAdj, ...newAdjustment}
+        console.log('compAdj: ', compAdj);
+        const newSalePrice = Number(comp.adjSalePrice) + totalAdjustments
+        console.log('newSalesPrice', newSalePrice);
+        const updated = comps.map(comp => comp._id === compId ? {...comp, adjustments:compAdj, adjSalePrice: newSalePrice , updated: true} : comp )
+        console.log('updated: ', updated);
+        setComps(updated)
+        calcCompAdj(updated)
+    } 
+
+    //@desc check propery data completed before opening comp edit model
+    const openCompEdit = () => {
+        console.log(propCond);
+        if (propCond.avail) {
+            setCompEditModal(true)
+        } else {
+            console.log('PROP CONDITION NOT UPDATED');
+            //SEND ALERT
         }
     }
 
-    const submitSupData = (compId, data) => {
-        console.log('submiting data sup');
-        console.log(compId, data);
-        //const updated = arr.map(comp => comp._id === compId ? {...comp, } )
-        //setComps(updated)
-        
+    const submitSubEd = (id, data) => {
+        console.log('submiting data subEd');
+        console.log(id, data);
+        const report = {
+            avail: true,
+            features: data,
+            adjustments: {
+                car: {
+                    _1: data.car1 === 'garage' ? 6000 : data.car1 === 'offStreet' ? 3000 : 0,
+                    _2: data.car2 === 'garage' ? 5000 : data.car2 === 'offStreet' ? 2500 : 0,
+                    _3: data.car3 === 'garage' ? 3000 : data.car3 === 'offStreet' ? 1500 : 0,
+                },
+                AC: data.AC === true ? 10000 : 0,
+                cave: data.cave === true ? 10000 : 0,
+            }
+        }
+        setProbCond(report)
     }
 
     const saveReport = () => {
         console.log('running save report')
+        const likedComps = comps.filter(comp => comp.like === true)
+        console.log(likedComps.length);
+        //check more then 3 liked
+        //check all liked updated
+        //if all clear save compreport to DB with updated: true
     }
 
 
@@ -180,7 +255,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
                             iconClass='fas fa-edit'
                             variant='action-button'
                             btnClass='singleFieldEdit CardList__infoBtn'
-                            onClickFunc={() => handlePropertyEdit(true)} />
+                            onClickFunc={() => setSubEdModal(true)} />
                         <div>
                             <div className="Comp__details">
                                 <span>Subject</span>
@@ -229,6 +304,8 @@ const CompWorkup = ({showModal, hideModal, focusedProp}) => {
             {activeComp && compInfoModal && (
                 <InfoModal modalOpen={compInfoModal} activeComp={activeComp} openModal={setCompInfoModal}/>
             )}
+            <EditSubjectModal modalOpen={subEdModal} activeComp={property} openModal={setSubEdModal} submit={submitSubEd} />
+            
        </Fragment>
     )
 

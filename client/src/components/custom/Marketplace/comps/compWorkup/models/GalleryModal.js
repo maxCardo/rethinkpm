@@ -21,7 +21,6 @@ const GalleryModal = ({modalOpen, openModal, activeComp, sliderSettings}) => {
                    className='Gallery__modal'
                    show={modalOpen}
                    onHide={() => {
-                       console.log(activeComp)
                        openModal(false)
                    }}>
                 <Modal.Header closeButton>
@@ -29,7 +28,7 @@ const GalleryModal = ({modalOpen, openModal, activeComp, sliderSettings}) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Slider {...sliderSettings}>
-                        {activeComp && activeComp.images && activeComp.images.map((item, index) => (
+                        {activeComp && activeComp.listing_id.images.map((item, index) => (
                             <img key={index} src={item}/>
                         ))}
                     </Slider>

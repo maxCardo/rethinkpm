@@ -6,21 +6,20 @@ import IconButton from "../../../../../core/IconButton/IconButton";
 const StreetMapViewModal = ({ modalOpen, openModal, activeComp, streetView, changeStreetView }) => {
 
     const apiKey = 'AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o'
-    const address = `${activeComp.streetNumber} ${activeComp.streetName}, Pittsburg, Pennsylvania`
+    const address = `${activeComp.listing_id.streetNumber} ${activeComp.listing_id.streetName}, Pittsburg, Pennsylvania`
 
     return (
         <Modal size='xl'
                className='StreetView__modal'
                show={modalOpen}
                onHide={() => {
-                   console.log(activeComp)
                    openModal(false)
                }}>
             <Modal.Header closeButton>
                 <Modal.Title>{streetView ? 'Street' : 'Map'} View </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <StreetView address={address + ' ' + activeComp.zipcode} APIkey={apiKey}
+                <StreetView address={address + ' ' + activeComp.listing_id.zipcode} APIkey={apiKey}
                             streetView={streetView}
                             zoomLevel={10}/>
             </Modal.Body>

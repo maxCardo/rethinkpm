@@ -174,14 +174,13 @@ const InfoModal = ({ modalOpen, openModal, activeComp }) => {
                className='Info__modal'
                show={modalOpen}
                onHide={() => {
-                   console.log(activeComp)
                    openModal(false)
                }}>
             <Modal.Header closeButton>
                 <Modal.Title>All comp information</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <VerticalTable headers={headers} data={activeComp}/>
+                <VerticalTable headers={headers} data={activeComp.listing_id}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button className='real-btn' variant='2' onClick={() => {
