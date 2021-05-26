@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import IconButton from "../../../../core/IconButton/IconButton";
 import { formatMoney, formatRange } from "../../../../../util/commonFunctions";
 import { arrAvg, getStanDev, getQuantMean , getQuantArr} from "../../../../../util/math";
-import {setAlert} from '../../../../../actions/alert'
+import {createErrorAlert, setAlert} from '../../../../../actions/alert'
 
 import WorkUpTiles from "./WorkUpTiles";
 import GalleryModal from "./modals/GalleryModal";
@@ -23,7 +23,7 @@ import missingImage from '../../../../../img/missingImage.jpg'
 //parking
 //stairs
 
-const CompWorkup = ({showModal, hideModal, focusedProp, setAlert}) => {
+const CompWorkup = ({showModal, hideModal, focusedProp, setAlert, createErrorAlert}) => {
     const [property, setProperty] = useState({});
     //@desc: subject condition updated. should varify from record on useEffect. if false user can not update comp condtion (trigger alert, open propCondition)
     const [propCond, setProbCond]= useState({avail: false, features:{}, adjustment:{}})
@@ -327,7 +327,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert}) => {
             {activeComp && compInfoModal && (
                 <InfoModal modalOpen={compInfoModal} activeComp={activeComp} openModal={setCompInfoModal}/>
             )}
-            <EditSubjectModal modalOpen={subEdModal} activeComp={property} openModal={setSubEdModal} submit={submitSubjectEdit}/>
+            <EditSubjectModal createErrorAlert={createErrorAlert} modalOpen={subEdModal} activeComp={property} openModal={setSubEdModal} submit={submitSubjectEdit}/>
        </Fragment>
     )
 }
@@ -336,6 +336,6 @@ const mapStateToProps = state => ({
     focusedProp: state.marketplace.focusedProp
 })
 
-export default connect(mapStateToProps, {setAlert})(CompWorkup)
+export default connect(mapStateToProps, {setAlert, createErrorAlert})(CompWorkup)
 
     

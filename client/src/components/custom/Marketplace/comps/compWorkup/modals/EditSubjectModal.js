@@ -4,10 +4,8 @@ import Form from "react-bootstrap/Form";
 import Select from "react-select";
 import { checkBoxCheck } from "../../../../../../util/commonFunctions";
 import { updateCompData } from '../../../../../../actions/marketplace/comps'
-import {setAlert} from "../../../../../../actions/alert";
-import UpdateAlert from "../../../../../core/Alert";
 
-const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
+const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit, createErrorAlert }) => {
 
     const optionsGeoConditions = [
         { value: 'Flat', label: 'Flat' },
@@ -42,34 +40,49 @@ const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
         { value: 'poorParking', label: 'Poor parking conditions' }
     ]
 
-    const [geoValue, setGeoValue] = React.useState();
-    const [stairsValue, setStairsValue] = React.useState();
-    const [locationValue, setLocationValue] = React.useState();
-    const [buildingValue, setBuildingValue] = React.useState();
+    const [geoValue, setGeoValue] = React.useState(null);
+    const [stairsValue, setStairsValue] = React.useState(null);
+    const [locationValue, setLocationValue] = React.useState(null);
+    const [buildingValue, setBuildingValue] = React.useState(null);
     const [centralAir, setCentralAir] = React.useState(false);
     const [finishedBasement, setFinishedBasement] = React.useState(false);
-    const [car1parking, setCar1parking] = React.useState();
-    const [car2parking, setCar2parking] = React.useState();
-    const [car3parking, setCar3parking] = React.useState();
+    const [car1parking, setCar1parking] = React.useState(null);
+    const [car2parking, setCar2parking] = React.useState(null);
+    const [car3parking, setCar3parking] = React.useState(null);
 
     const [subjectModalValid, setSubjectModalValid] = React.useState(0)
-    const [subjectModalAlert, setSubjectModalAlert] = React.useState();
 
     const handleGeoChange = val => {
-        setSubjectModalValid(subjectModalValid + 1);
-        setGeoValue(val);
+        if (!geoValue) {
+            setSubjectModalValid(subjectModalValid + 1);
+            setGeoValue(val);
+        } else {
+            setGeoValue(val);
+        }
     }
     const handleStairsChange = val => {
-        setSubjectModalValid(subjectModalValid + 1);
-        setStairsValue(val);
+        if (!stairsValue) {
+            setSubjectModalValid(subjectModalValid + 1);
+            setStairsValue(val);
+        } else {
+            setStairsValue(val);
+        }
     }
     const handleLocationChange = val => {
-        setSubjectModalValid(subjectModalValid + 1);
-        setLocationValue(val);
+        if (!locationValue) {
+            setSubjectModalValid(subjectModalValid + 1);
+            setLocationValue(val);
+        } else {
+            setLocationValue(val);
+        }
     }
     const handleBuildingChange = val => {
-        setSubjectModalValid(subjectModalValid + 1);
-        setBuildingValue(val);
+        if (!buildingValue) {
+            setSubjectModalValid(subjectModalValid + 1);
+            setBuildingValue(val);
+        } else {
+            setBuildingValue(val);
+        }
     }
     const handleCentralAirChange = val => {
         setCentralAir(val);
@@ -78,16 +91,29 @@ const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
         setFinishedBasement(val);
     }
     const handleC1PChange = val => {
-        setSubjectModalValid(subjectModalValid + 1);
-        setCar1parking(val);
+        if (car1parking === null) {
+            setSubjectModalValid(subjectModalValid + 1);
+            setCar1parking(val);
+        } else {
+            setCar1parking(val);
+        }
     }
     const handleC2PChange = val => {
-        setSubjectModalValid(subjectModalValid + 1);
-        setCar2parking(val);
+        if (car2parking === null) {
+            setSubjectModalValid(subjectModalValid + 1);
+            setCar2parking(val);
+        } else {
+            setCar2parking(val);
+        }
+
     }
     const handleC3PChange = val => {
-        setSubjectModalValid(subjectModalValid + 1);
-        setCar3parking(val);
+        if (car3parking === null) {
+            setSubjectModalValid(subjectModalValid + 1);
+            setCar3parking(val);
+        } else {
+            setCar3parking(val);
+        }
     }
 
     const checkBox = checkBoxCheck();
@@ -222,8 +248,9 @@ const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
             </Modal.Body>
             <Modal.Footer>
                 {/* TODO: Add validation message here*/}
-                {subjectModalAlert && <Alert>Please fill out all the fields</Alert>}
                 <Button variant="primary" type="submit" onClick={() => {
+                    console.log('subjectModalValid')
+                    console.log(subjectModalValid)
                     if (subjectModalValid === 7 ) {
                         const theObject = {
                             geo: geoValue.value,
@@ -239,7 +266,7 @@ const EditSubjectModal = ({ modalOpen, openModal, activeComp, submit }) => {
                         submit(activeComp._id, theObject)
                         openModal(false)
                     } else {
-                        setSubjectModalAlert('SET ALERT: Please fill out all required fields')
+                        createErrorAlert('Please fill out all required fields', 'EditSubjectModal')
                     }
                 }}>
                     Submit
