@@ -33,3 +33,25 @@ export const submitCompReport = () => async dispatch => {
 
 }
 
+//@desc
+export const submitCompAnalysis = (report, type) => async dispatch => {
+
+    console.log('report action submit:', report, type);
+
+    //call api with updated report
+    //grab returned listing record (with compReport Populated)
+    //updated focusedProperty
+    //update "pipeline"
+
+    // try {
+    //     const res = await axios.get(`/api/marketplace/owners/${id}/${type}`)
+    //     dispatch({
+    //         type: SET_OWNER_INFO,
+    //         payload: res.data
+    //     })
+
+    // } catch (err) {
+    //     dispatch(createErrorAlert(err.message, 'SET OWNER DATA'))
+    // }
+}
+

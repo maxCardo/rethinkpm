@@ -13,7 +13,7 @@ import '../style.css'
 
 
 
-const CompView = ({focusedProp}) => {
+const CompView = ({focusedProp, type}) => {
 
     const [comps, setComps] = useState([])
     const [incVal, setIncVal] = useState()
@@ -207,7 +207,7 @@ const CompView = ({focusedProp}) => {
                     {/*Card list of comps with queue and 5 active.*/}
                     {/*Each needs to activate Select/Remove, mapview, streetview, gallery, edit modal on different element clicks.*/}
                     {/*Sticky calculator sidebar with save, cancel and home card*/}
-                    <CompWorkup/>                
+                    <CompWorkup type={type}/>                
                 </Modal.Body>
             </Modal>
             {/*Modal thing*/}

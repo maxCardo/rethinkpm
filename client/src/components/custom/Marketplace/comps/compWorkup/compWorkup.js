@@ -5,6 +5,7 @@ import IconButton from "../../../../core/IconButton/IconButton";
 import { formatMoney, formatRange } from "../../../../../util/commonFunctions";
 import { arrAvg, getStanDev, getQuantMean , getQuantArr} from "../../../../../util/math";
 import {createErrorAlert, setAlert} from '../../../../../actions/alert'
+import {submitCompAnalysis} from '../../../../../actions/marketplace/comps'
 
 import WorkUpTiles from "./WorkUpTiles";
 import GalleryModal from "./modals/GalleryModal";
@@ -23,7 +24,7 @@ import missingImage from '../../../../../img/missingImage.jpg'
 //parking
 //stairs
 
-const CompWorkup = ({showModal, hideModal, focusedProp, setAlert, createErrorAlert}) => {
+const CompWorkup = ({showModal, hideModal, focusedProp, setAlert, createErrorAlert,submitCompAnalysis, type}) => {
     const [property, setProperty] = useState({});
     //@desc: subject condition updated. should varify from record on useEffect. if false user can not update comp condtion (trigger alert, open propCondition)
     const [propCond, setProbCond]= useState({avail: false, features:{}, adjustment:{}})
@@ -63,11 +64,6 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert, createErrorAle
         }
 
     }, [focusedProp])
-
-    const handlePropertyEdit = (value) => {
-        setActiveComp(property)
-        setCompEditModal(value)
-    }
 
     //@desc: switch to set active comp and open modal
     const openModel = (model, comp) => {
@@ -252,6 +248,9 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert, createErrorAle
             }else{
                 //save report
                 console.log('saving report');
+                const compReport = focusedProp.compReport
+                const updated = {...compReport, price: activePropertyReport, comps: comps, review: propCond, updated: true}
+                submitCompAnalysis(updated)
             }
 
         }else{
@@ -337,6 +336,6 @@ const mapStateToProps = state => ({
     focusedProp: state.marketplace.focusedProp
 })
 
-export default connect(mapStateToProps, {setAlert, createErrorAlert})(CompWorkup)
+export default connect(mapStateToProps, {setAlert, createErrorAlert, submitCompAnalysis})(CompWorkup)
 
     
