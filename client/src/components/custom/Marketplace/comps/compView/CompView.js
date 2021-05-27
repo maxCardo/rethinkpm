@@ -7,6 +7,7 @@ import ProfileIcon from "../../../../core/ProfileIcon";
 import {formatMoney, formatRange} from "../../../../../util/commonFunctions";
 import IconButton from "../../../../core/IconButton/IconButton";
 import CompWorkup from '../compWorkup/compWorkup'
+import GoogleMapReact from 'google-map-react';
 import missingImage from '../../../../../img/missingImage.jpg'
 import '../style.css'
 
@@ -45,7 +46,6 @@ const CompView = ({focusedProp}) => {
 
             console.log('comps');
             console.log(theComps);
-            
 
         }
 
@@ -76,6 +76,59 @@ const CompView = ({focusedProp}) => {
         setPropertyEditModal(value)
     }
 
+    /* TODO: for markers */
+    const [compsCoordinates, setCompsCoordinates] = useState([]);
+
+
+    useEffect(() => {
+        if (comps.length > 0) {
+            let coordinatesList = [];
+            comps.forEach((item, index) => {
+                let geoObject = {}
+                if (item.listing_id && item.listing_id.longitude && item.listing_id.latitude) {
+                    geoObject = {
+                        id: item.listing_id._id,
+                        lng: item.listing_id.longitude,
+                        lat: item.listing_id.latitude,
+                        price: item.listing_id.listPrice
+                    }
+                }
+
+                coordinatesList.push(geoObject)
+
+                // return {longitude: item.data.listing_id.longitude, latitude: item.data.listing_id.latitude}
+                console.log(item)
+                console.log('item')
+                console.log('index')
+                console.log(index)
+            })
+            let noEmpties = coordinatesList.filter(value => Object.keys(value).length !== 0);
+            console.log('coordinatesList');
+            console.log(noEmpties);
+            setCompsCoordinates(noEmpties)
+        }
+        console.log('compsCoordinates');
+        console.log(compsCoordinates);
+
+    }, [comps])
+
+    const MarkerComponent = ({ content, onClick, idx, theId }) => <a className={'btn btn-primary btn-sm'} href={`#target${theId}`} onClick={onClick}>{content}</a>;
+
+    const mapMarkerList = (compsCoordinates) && compsCoordinates.map((comp, idx) => {
+        const onCLickMapMarker = () => {
+            console.log('comp');
+            console.log(comp);
+        }
+        return (<MarkerComponent key={`${comp.id}-${idx}`} idx={idx} theId={comp.id} lat={comp.lat} lng={comp.lng} content={comp.price} onClick={onCLickMapMarker}/>);
+    })
+
+    const defaultMapProps = {
+        center: {
+            lat: 40.4406,
+            lng: -79.9959
+        },
+        zoom: 11
+    };
 
     return (
         <div className="container-fluid flex-row">
@@ -137,7 +190,13 @@ const CompView = ({focusedProp}) => {
                 </div>
             </div>
             <div className="Map">
-                <h2>This is map</h2>
+                <div className="googleMapContainer" style={{height: '52vh', width: 'auto'}}>
+                    <GoogleMapReact bootstrapURLKeys={{ key: 'AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o' }}
+                                    defaultCenter={defaultMapProps.center}
+                                    defaultZoom={defaultMapProps.zoom} >
+                        {mapMarkerList}
+                    </GoogleMapReact>
+                </div>
             </div>
             <CardList list={comps} />
             <Modal size='xl' className="Marketplace__DetailModal Marketplace__compReport-edit" show={showModal} onHide={hideModal}>
@@ -160,7 +219,6 @@ const CompView = ({focusedProp}) => {
 const mapStateToProps = state => ({
     focusedProp: state.marketplace.focusedProp
 })
-
 
 export default connect(mapStateToProps, null)(CompView)
 

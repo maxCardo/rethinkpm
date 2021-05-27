@@ -95,7 +95,7 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp, submit }) => {
                 <Form>
                     <Row>
                         <Col md={6}>
-                            <Form.Group className='cem__selectGroup' controlId="propertyGeoConditions" style={{ zIndex: 16 }}>
+                            <Form.Group className='cem__selectGroup' controlId="propertyGeoConditions" style={{ zIndex: 17 }}>
                                 <Form.Label>Geo Conditions</Form.Label>
                                 <Select
                                     placeholder={`Select Geo Condition...`}
@@ -107,7 +107,7 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp, submit }) => {
                             </Form.Group>
                         </Col>
                         <Col md={6}>
-                            <Form.Group className='cem__selectGroup' controlId="propertyEntrance" style={{ zIndex: 16 }}>
+                            <Form.Group className='cem__selectGroup' controlId="propertyEntrance" style={{ zIndex: 17 }}>
                                 <Form.Label>Entrance Stairs</Form.Label>
                                 <Select
                                     placeholder={`Select Stairs Condition...`}
@@ -119,7 +119,7 @@ const EditCompListingModal = ({ modalOpen, openModal, activeComp, submit }) => {
                             </Form.Group>
                         </Col>
                         <Col md={12}>
-                            <Form.Group className='cem__selectGroup' controlId="propertyCondition">
+                            <Form.Group className='cem__selectGroup' controlId="propertyCondition" style={{ zIndex: 16 }}>
                                 <Form.Label>Location Condition</Form.Label>
                                 <Select
                                     placeholder={`Select Building Condition...`}
