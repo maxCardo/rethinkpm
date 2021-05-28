@@ -38,12 +38,11 @@ const CompView = ({focusedProp, type}) => {
 
         if (props) {
             
-            const theComps = compReport.comps ? compReport.comps : [];
+            const theComps = compReport.comps ? compReport.updated ? compReport.comps.filter(comp => comp.like === true): compReport.comps : [];
             const theReport = compReport.price;
             setComps(theComps);
             setProperty(props);
             setActivePropertyReport(theReport)
-
             console.log('comps');
             console.log(theComps);
 
@@ -137,7 +136,7 @@ const CompView = ({focusedProp, type}) => {
                     <p>Prepared by:</p>
                     <div className="op__userBox">
                         <div className="op__userAvatar">
-                            <ProfileIcon name={'Adam Poznanski'} size={35}/>
+                            <ProfileIcon name={'John Smith'} size={35}/>
                         </div>
                         <div className="op__userData">
                             <p>Adam Poznanski</p>

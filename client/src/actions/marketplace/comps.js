@@ -1,4 +1,4 @@
-import {SET_COMP_LIKE, SET_COMP_UNLIKE, SET_FOCUSED_PROPERTY, SET_BUYER_PIPELINE, SET_SELLER_PIPELINE} from '../type'
+import {SET_COMP_LIKE, SET_COMP_UNLIKE, SET_FOCUSED_PROPERTY, SET_BUYER_PIPELINE, SET_SELLER_PIPELINE, UPDATE_BUYER_PIPELINE, UPDATE_SELLER_PIPELINE} from '../type'
 import { createErrorAlert, createSuccessAlert } from "../alert";
 import axios from 'axios'
 
@@ -48,24 +48,24 @@ export const submitCompAnalysis = (report, type) => async dispatch => {
         const data = {report, type}
         const res = await axios.put(`/api/marketplace/comps/submit_report`, data, config)
         console.log('res: ',res);
-        // dispatch({
-        //     type: SET_FOCUSED_PROPERTY,
-        //     payload: res.data
-        // })
-        // if (type === 'sellerLead') {
-        //     console.log('sellerLead Fired');
-        //     dispatch({
-        //         type: SET_BUYER_PIPELINE,
-        //         payload: res.data
-        //     })
+        dispatch({
+            type: SET_FOCUSED_PROPERTY,
+            payload: res.data
+        })
+        if (type === 'sellerLead') {
+            console.log('sellerLead Fired');
+            dispatch({
+                type: UPDATE_BUYER_PIPELINE,
+                payload: res.data
+            })
             
-        // }else if (type === 'listLead'){
-        //     console.log('listLead fired');
-        //     dispatch({
-        //         type: SET_SELLER_PIPELINE,
-        //         payload: res.data
-        //     })
-        // }
+        }else if (type === 'listLead'){
+            console.log('listLead fired');
+            dispatch({
+                type: UPDATE_SELLER_PIPELINE,
+                payload: res.data
+            })
+        }
     } catch (err) {
         dispatch(createErrorAlert(err.message, 'Submit Comp Report Error'))
     }
