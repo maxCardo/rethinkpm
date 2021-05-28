@@ -49,7 +49,19 @@ router.put('/comp/update/:comp??', async (req, res) => {
 // @ access: private
 router.put('/submit_report', async (req, res) => {
     try {
-        res.status(200).send('done')
+        const {report, type} = req.body
+        console.log('type: ', type)
+        if (type === 'listLead') {
+            const compReport = await LeadCompReport.findOneAndReplace({_id: report._id}, report)
+            const property = await ListLeads.findOne({ _id: compReport.subject }).populate({ path: 'compReport', populate: { path: 'comps.listing_id' } })
+            res.status(200).send(property)
+        } else if (type === 'salesLead') {
+            //const compReport = await LeadCompReport.findOneAndReplace({ _id: report._id }, report)
+            //const property = await ListLeads.findOne({ _id: compReport.subject }).populate({ path: 'compReport', populate: { path: 'comps.listing_id' } })
+            //res.status(200).send(property)
+            console.log('saleslead triggered')
+        } 
+        
     } catch (err) {
         console.error(err);
         res.status(500).send(err)

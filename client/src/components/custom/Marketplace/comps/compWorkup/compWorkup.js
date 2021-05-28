@@ -250,7 +250,7 @@ const CompWorkup = ({showModal, hideModal, focusedProp, setAlert, createErrorAle
                 console.log('saving report');
                 const compReport = focusedProp.compReport
                 const updated = {...compReport, price: activePropertyReport, comps: comps, review: propCond, updated: true}
-                submitCompAnalysis(updated)
+                submitCompAnalysis(updated, type)
             }
 
         }else{
