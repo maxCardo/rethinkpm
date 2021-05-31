@@ -151,6 +151,7 @@ export const addNote = (data, id, type) => async dispatch => {
     }
 };
 
+//todo: ? call DB to get full record with comp records etc and remove these populations from origanal calls to gain speed ? 
 export const setFocusedProp = (prop) => async dispatch => {
     console.log('running setFocusedProp', prop);
     dispatch({

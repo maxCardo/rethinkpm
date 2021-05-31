@@ -167,13 +167,13 @@ router.post('/listings/filter', async (req, res) => {
       if (req.body.page) {
           if(PAGESIZE) {
             console.log('if fired on 168');
-            record = await SalesListings.find(queryObj).skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
+            record = await SalesListings.find(queryObj).populate({ path: 'compReport', populate: { path: 'comps.listing_id' }}).skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
           } else {
             console.log('if fired on 171');
-            record = await SalesListings.find(queryObj)
+            record = await SalesListings.find(queryObj).populate({ path: 'compReport', populate: { path: 'comps.listing_id' } })
           }
       } else {
-          record = await SalesListings.find(queryObj).populate('compReport')
+          record = await SalesListings.find(queryObj).populate({ path: 'compReport', populate: { path: 'comps.listing_id' }})
           console.log('line 176: ', record.length);
       }
       

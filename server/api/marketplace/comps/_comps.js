@@ -5,7 +5,6 @@ const ListLeads = require('../../../db/models/sales/ListLeads')
 const LeadCompReport = require('../../../db/models/sales/LeadCompReport')
 const SellerPros = require('../../../db/models/prospects/SellerPros')
 
-
 const router = express.Router();
 
 // @route: Get api/marketplace/comps/comp/like
@@ -67,9 +66,5 @@ router.put('/submit_report', async (req, res) => {
         res.status(500).send(err)
     }
 })
-
-
-
-
 
 module.exports = router;
