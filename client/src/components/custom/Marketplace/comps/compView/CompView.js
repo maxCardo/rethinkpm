@@ -32,12 +32,8 @@ const CompView = ({focusedProp, type}) => {
 
     useEffect(() => {
         const props = focusedProp
-        const compReport = props.compReport
-        console.log('compReport');
-        console.log(compReport);
-
-        if (props) {
-            
+        if (props.compReport) {
+            const compReport = props.compReport ? props.compReport : {}   
             const theComps = compReport.comps ? compReport.updated ? compReport.comps.filter(comp => comp.like === true): compReport.comps : [];
             const theReport = compReport.price;
             setComps(theComps);
@@ -46,17 +42,20 @@ const CompView = ({focusedProp, type}) => {
             console.log('comps');
             console.log(theComps);
 
+            //calculate NOI issues: no reserves, taxes based on current which can be low
+            const areaRents = props.rents ? props.rents.area > 0 ? props.rents.area : null : null
+            const subRent = props.rents ? props.rents.HA ? props.rents.HA.rent > 0 ? props.rents.HA.rent : null : null : null
+            const rents = areaRents && areaRents < subRent ? areaRents : subRent
+            if (props.model) {
+                const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = props.model
+                const totalExpPreTax = management + leasing + maintenance + utilities + insurance
+                const netOpIncome = (rents * 12) - vacancyLoss - totalExpPreTax - taxes.low
+                mktIncomeValue(netOpIncome)
+                setMktRent(rents)
+            }
         }
 
-        //calculate NOI issues: no reserves, taxes based on current which can be low
-        const areaRents = props.rents.area  > 0 ? props.rents.area : null 
-        const subRent = props.rents.HA.rent > 0 ? props.rents.HA.rent : null
-        const rents = areaRents && areaRents < subRent ? areaRents : subRent 
-        const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = props.model
-        const totalExpPreTax = management + leasing + maintenance + utilities + insurance
-        const netOpIncome = (rents*12) - vacancyLoss - totalExpPreTax - taxes.low
-        mktIncomeValue(netOpIncome)
-        setMktRent(rents)
+       
 
     }, [focusedProp])
 
