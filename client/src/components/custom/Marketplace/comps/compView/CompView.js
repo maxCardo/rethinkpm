@@ -10,6 +10,7 @@ import CompWorkup from '../compWorkup/compWorkup'
 import GoogleMapReact from 'google-map-react';
 import missingImage from '../../../../../img/missingImage.jpg'
 import '../style.css'
+import { clippingParents } from '@popperjs/core';
 
 
 
@@ -50,6 +51,11 @@ const CompView = ({focusedProp, type}) => {
                 const { rentalIncome, vacancyLoss, management, leasing, maintenance, utilities, taxes, insurance } = props.model
                 const totalExpPreTax = management + leasing + maintenance + utilities + insurance
                 const netOpIncome = (rents * 12) - vacancyLoss - totalExpPreTax - taxes.low
+                console.log('rent: ', rents)
+                console.log('vac: ', vacancyLoss)
+                console.log('exp: ', totalExpPreTax)
+                console.log('tax: ', taxes.low)
+                console.log('NOI',netOpIncome)
                 mktIncomeValue(netOpIncome)
                 setMktRent(rents)
             }
@@ -95,18 +101,14 @@ const CompView = ({focusedProp, type}) => {
                 coordinatesList.push(geoObject)
 
                 // return {longitude: item.data.listing_id.longitude, latitude: item.data.listing_id.latitude}
-                console.log(item)
-                console.log('item')
-                console.log('index')
-                console.log(index)
+                
             })
             let noEmpties = coordinatesList.filter(value => Object.keys(value).length !== 0);
             console.log('coordinatesList');
             console.log(noEmpties);
             setCompsCoordinates(noEmpties)
         }
-        console.log('compsCoordinates');
-        console.log(compsCoordinates);
+       
 
     }, [comps])
 
