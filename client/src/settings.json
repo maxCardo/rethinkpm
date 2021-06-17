@@ -555,7 +555,235 @@
           }
 
         ]
+      },
+      "sellerPros": {
+        "profileType": "sellerPros",
+        "profileNamePlural": "Sellers",
+        "statusOptions": [
+          {
+            "value": "new",
+            "label": "Lead"
+          },
+          {
+            "value": "prospect",
+            "label": "Prospect"
+          },
+          {
+            "value": "pending",
+            "label": "Pending"
+          },
+          {
+            "value": "notInterested",
+            "label": "Not Interested"
+          }
+        ],
+        "statusSelect": {
+          "options": [
+            {
+              "value": "['new', 'prospect','pending']",
+              "label": "Active"
+            },
+            {
+              "value": "['prospect','pending','new','notInterested']",
+              "label": "All"
+            },
+            {
+              "value": "['new']",
+              "label": "Lead"
+            },
+            {
+              "value": "['prospect']",
+              "label": "Prospect"
+            },
+            {
+              "value": "['pending']",
+              "label": "Pending"
+            },
+            {
+              "value": "['applicant']",
+              "label": "Applicant"
+            },
+            {
+              "value": "['notInterested']",
+              "label": "Not Interested"
+            }
+          ],
+          "selected": {
+            "value": "pending",
+            "label": "Pending"
+          },
+          "selectedQuery": "['new']"
+        },
+        "profileInfo": [
+          {
+            "name": "First Name",
+            "accessor": "firstName",
+            "col": 1,
+            "editable": "input"
+          },
+          {
+            "name": "Last Name",
+            "accessor": "lastName",
+            "col": 1,
+            "editable": "input"
+          },
+          {
+            "name": "Status",
+            "accessor": "status",
+            "col": 3,
+            "editable": "select"
+          },
+          {
+            "name": "Phone",
+            "accessor": "phoneNumbers",
+            "col": 1,
+            "formatter": "formatPhoneNumbers",
+            "editable": "phoneNumbers"
+          },
+          {
+            "name": "Email",
+            "accessor": "email",
+            "col": 1,
+            "editable": "emails"
+          },
+          {
+            "name": "Buyer Type",
+            "accessor": "buyerType",
+            "col": 2,
+            "datatype": "select",
+            "dataOptions": [
+              {
+                "value": "owner",
+                "label": "Home Owner"
+              },
+              {
+                "value": "investor",
+                "label": "Investor"
+              }
+            ]
+          },
+          {
+            "name": "Desired Neighborhoods",
+            "accessor": "targetArea",
+            "datatype": "collection",
+            "col": 2,
+            "formatter": "formatLabels"
+          },
+          {
+            "name": "Desired Zip Codes",
+            "accessor": "targetZip",
+            "datatype": "collection",
+            "col": 2,
+            "formatter": ""
+          },
+          {
+            "name": "Target Price Range",
+            "accessor": "targetPrice",
+            "col": 2
+          },
+          {
+            "name": "Pre Approved",
+            "accessor": "preApproved.status",
+            "key": "preApproved",
+            "col": 2,
+            "datatype": "select",
+            "dataOptions": [
+              {
+                "value": true,
+                "label": "Yes"
+              },
+              {
+                "value": false,
+                "label": "No"
+              }
+            ]
+          },
+          {
+            "name": "Other Preferences",
+            "accessor": "otherPref",
+            "col": 2,
+            "derived": "true"
+          },
+          {
+            "name": "Lead Owner",
+            "accessor": "leadOwner",
+            "col": 3,
+            "derived": "true"
+          },
+          {
+            "name": "Lead Source",
+            "accessor": "leadSource",
+            "col": 3,
+            "derived": "true"
+          },
+          {
+            "name": "Reason for loss",
+            "accessor": "reasonForLoss",
+            "col": 3,
+            "derived": "true"
+          },
+          {
+            "name": "Last Contact",
+            "accessor": "lastContact",
+            "col": 3,
+            "derived": "true"
+          }
+        ],
+        "screens": [
+          "notes"
+        ],
+        "filterFields": {
+          "leadOwner": {
+            "type": {
+              "label": "Don't filter",
+              "value": "noFilter"
+            },
+            "value": "",
+            "name": "Lead Owner",
+            "dataType": "string",
+            "accessor": "leadOwner",
+            "subAccessor": ""
+          },
+          "status": {
+            "type": {
+              "label": "Don't filter",
+              "value": "noFilter"
+            },
+            "value": "",
+            "name": "Status",
+            "dataType": "array",
+            "accessor": "status",
+            "subAccessor": ""
+          }
+        },
+        "tableHeaders": [
+          {
+            "accessor": "fullName",
+            "label": "Name"
+          },
+          {
+            "accessor": "email",
+            "label": "Email",
+            "mapper": "emailArray"
+          },
+          {
+            "accessor": "phoneNumbers",
+            "label": "Phone",
+            "mapper": "phoneArray"
+          },
+          {
+            "accessor": "lastContact",
+            "label": "Last Contact",
+            "mapper": "date"
+          },
+          {
+            "accessor": "createDate",
+            "label": "Create Date",
+            "mapper": "date"
+          }
+        ]
       }
+
     },
     "marketplace": {
       "streetViewApiKey": "AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o"

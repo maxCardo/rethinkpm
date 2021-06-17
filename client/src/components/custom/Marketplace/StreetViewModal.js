@@ -6,7 +6,7 @@ import {StreetView} from 'react-google-map-street-view';
 import {closeStreetView} from "../../../actions/marketplace";
 import IconButton from "../../core/IconButton/IconButton";
 
-const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
+const StreetViewModal = ({  apiKey, address, zip, modalOpen, closeStreetView}) => {
     const [streetView, setStreetView] = useState(true);
 
     const loading = false;
@@ -24,7 +24,7 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
             </Modal.Header>
             {loading ? <Loading/> : <Fragment>
                 <Modal.Body>
-                    <StreetView address={address + ', Pennsylvania'} APIkey={apiKey} streetView={streetView}
+                    <StreetView address={address + ', Pennsylvania' + ' ' + zip } APIkey={apiKey} streetView={streetView}
                                 zoomLevel={10}/>
                 </Modal.Body>
                 <Modal.Footer>
@@ -47,10 +47,17 @@ const StreetViewModal = ({  apiKey, address, modalOpen, closeStreetView}) => {
 
 }
 
-function mapStateToProps(state) {
-    const isOpen = state.marketplace.streetViewOpen;
-    const address = state.marketplace.ststreet + ' ' + state.marketplace.stnumber;
-    return { modalOpen: isOpen, address: address }
-}
+// function mapStateToProps(state) {
+//     const isOpen = state.marketplace.streetViewOpen;
+//     const address = state.marketplace.stnumber + ' ' + state.marketplace.ststreet;
+//     const zip = state.marketplace.stzip
+//     return { modalOpen: isOpen, address: address }
+// }
+
+const mapStateToProps = state => ({
+    modalOpen : state.marketplace.streetViewOpen,
+    address : state.marketplace.stnumber + ' ' + state.marketplace.ststreet,
+    zip : state.marketplace.stzip
+})
 
 export default connect(mapStateToProps, {closeStreetView})(StreetViewModal);

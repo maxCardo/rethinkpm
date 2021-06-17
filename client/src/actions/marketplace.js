@@ -1,4 +1,4 @@
-import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS} from './type';
+import {OPEN_STREET_VIEW, CLOSE_STREET_VIEW, SET_BUYER_PIPELINE, UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO, SET_FOCUSED_PROPERTY} from './type';
 import {createErrorAlert} from "./alert";
 import axios from "axios";
 
@@ -118,4 +118,44 @@ export const getAreaRents = () => async dispatch => {
     } catch (err) {
         dispatch(createErrorAlert(err.message, 'Set area rents'))
     }
+}
+
+//@desc: set property owner info in focused property
+export const getOwnerInfo = (id, type) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/marketplace/owners/${id}/${type}`)
+        dispatch({
+            type: SET_OWNER_INFO,
+            payload: res.data
+        })
+
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'SET OWNER DATA'))
+    }
+}
+
+//@desc add note on listLead or sales lead ToDO: add notes on buyerPipeline (spacific to buyer inquary not salesListing)??? 
+export const addNote = (data, id, type) => async dispatch => {
+    try {
+        console.log('logging from actions: ', data, id, type)
+        
+        //const res = await axios.post(`/api/marketplace/ops/addNote/${id}/${type}`, data, config)
+        //console.log('ran added note: ', res)
+        // dispatch({
+        //     type: SET_ACTIVE_PROFILE,
+        //     payload: res.data
+        // })
+
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'addNote action'))
+    }
+};
+
+//todo: ? call DB to get full record with comp records etc and remove these populations from origanal calls to gain speed ? 
+export const setFocusedProp = (prop) => async dispatch => {
+    console.log('running setFocusedProp', prop);
+    dispatch({
+        type: SET_FOCUSED_PROPERTY,
+        payload: prop
+    }) 
 }

@@ -123,3 +123,9 @@ export const  useWindowSize = () => {
 
   return windowSize;
 }
+
+export const formatRange = (value) => {
+  const firstNumber = value && value.split(" - ")[0] && value.split(" - ")[0]
+  const secondNumber = value && value.split(" - ")[0] && value.split(" - ")[1]
+  return formatMoney(firstNumber) + ' - ' + formatMoney(secondNumber)
+}

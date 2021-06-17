@@ -226,7 +226,9 @@ img {
 .my-3 {
   margin: 3rem 0;
 }
-
+.fade.modal {
+  background: rgba(0,0,0,.115);
+}
 .btn {
   display: inline-block;
   background: #f4f4f4;
@@ -816,7 +818,7 @@ input[type=number]:focus,
   justify-content: center;
   align-items: center;
   background: rgba(0,0,0,.19);
-  z-index: 20;
+  z-index: 99999;
 }
 .alert-container .alert {
   min-width: 290px;
@@ -905,4 +907,15 @@ input[type=number]:focus,
 .page-item.active .page-link {
   background: #6f9dd4;
   border-color: #6f9dd4;
+}
+/* Changing Defaults */
+.btn-primary,
+.bg-primary,
+.badge-primary,
+.alert-primary {
+  background: #6f9dd4;
+  color: #fff;
+}
+.btn.active.btn-primary {
+ background: #364d69;
 }

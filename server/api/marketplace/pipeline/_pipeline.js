@@ -17,8 +17,10 @@ const router = express.Router();
 // @desc: get pipeline deals for a buyerPros
 // @ access: private
 router.get('/', async (req, res) => {
+    console.log('calling buyer pipeline');
     try {
-        let pipeline = await Pipeline.find({}).populate('deal')
+        let pipeline = await Pipeline.find({}).populate({ path: 'deal', populate: { path: 'compReport', populate: { path: 'comps.listing_id'}}})
+        console.log('pipeline: ', pipeline);
         res.status(200).send(pipeline)
     } catch (err) {
         console.error(err);
@@ -30,9 +32,10 @@ router.get('/', async (req, res) => {
 // @desc: get pipeline deals for a buyerPros
 // @ access: private
 router.get('/:id', async (req, res) => {
+    console.log('get buyer pipeline 2');
  try {
     let buyerId = req.params.id;
-    let pipeline = await Pipeline.find({ "buyer": buyerId }).populate('deal')
+     let pipeline = await Pipeline.find({ "buyer": buyerId }).populate({ path: 'deal', populate: { path: 'compReport', populate: { path: 'comps.listing_id' } } })
     res.status(200).send(pipeline)   
  } catch (err) {
     console.error(err);

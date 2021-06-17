@@ -61,7 +61,6 @@ router.post('/idx_lead', (req,res) => {
   res.status(200).send('ok')
 })
 
-
 // @route: Get /api/sales/agents
 // @desc: Get all agents
 // @ access: Private
@@ -70,15 +69,13 @@ router.get('/agents', async (req,res) => {
   res.json(agents)
 })
 
-
-
 router.get('/offices', async(req,res) => {
   const offices = await OfficeModel.find({})
   res.json(offices)
 })
 
 router.get('/listings', async (req,res) => {
-  const listings = await SalesListings.find({mlsStatus: 'A'}).populate('compReport').sort([['listDate', -1]]).limit(100)
+  const listings = await SalesListings.find({ mlsStatus: 'A' }).populate({ path: 'compReport', populate: { path: 'comps.listing_id' }}).sort([['listDate', -1]]).limit(100)
   const listingsUpdated = await listings.map((listing) => {
     if (!listing.city) {
       listing.city = listing.area;
@@ -94,7 +91,6 @@ router.get('/kpi/numberOfListings', async (req, res) => {
   const porcentualChange = (((actualNumber - pastNumber) / pastNumber) * 100).toFixed(2)
   res.json({actualNumber, porcentualChange})
 })
-
 
 function convertFiltersToQuery(filters) {
   //create string query 
@@ -112,7 +108,5 @@ function convertFiltersToQuery(filters) {
   })
   return queryObj
 }
-
-
 
 module.exports = router;

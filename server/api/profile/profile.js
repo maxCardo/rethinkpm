@@ -21,6 +21,7 @@ const router = express.Router();
 router.use('/rentPros', require('./rentPros'))
 router.use('/buyerPros', require('./buyerPros'))
 router.use('/agentPros', require('./agentPros'))
+router.use('/sellerPros', require('./sellerPros'))
 
 // @route: GET /api/profile/inquiry/:id;
 // @desc: Get Inquiry Id info

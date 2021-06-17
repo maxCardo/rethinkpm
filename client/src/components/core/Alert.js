@@ -27,7 +27,7 @@ const UpdateAlert = ({error, success, clearAlerts}) => {
         if (success) {
             setTimeout(() => {
                 clearAlerts();
-            }, 2000)
+            }, 1000)
         }
     });
     
