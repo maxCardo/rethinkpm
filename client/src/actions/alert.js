@@ -1,5 +1,5 @@
 //import uuid from 'uuid';
-import { ALERT_FAILURE } from './type';
+import { ALERT_FAILURE, ALERT_SUCCESS } from './type';
 
 export const setAlert = (msg, location) => dispatch => {
    // const id = uuid.v4();
@@ -18,6 +18,17 @@ export const createErrorAlert = (message, location)  => {
     type: ALERT_FAILURE,
     payload: {
       heading: 'Error',
+      msg: message,
+      location: location
+    }
+  }
+}
+
+export const createSuccessAlert = (message, location) => {
+  return {
+    type: ALERT_SUCCESS,
+    payload: {
+      heading: 'Updated',
       msg: message,
       location: location
     }

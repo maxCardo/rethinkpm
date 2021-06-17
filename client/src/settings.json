@@ -612,7 +612,7 @@
             "value": "pending",
             "label": "Pending"
           },
-          "selectedQuery": "['pending']"
+          "selectedQuery": "['new']"
         },
         "profileInfo": [
           {

@@ -167,13 +167,13 @@ router.post('/listings/filter', async (req, res) => {
       if (req.body.page) {
           if(PAGESIZE) {
             console.log('if fired on 168');
-            record = await SalesListings.find(queryObj).skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
+            record = await SalesListings.find(queryObj).populate({ path: 'compReport', populate: { path: 'comps.listing_id' }}).skip(PAGESIZE * (+req.body.page)).limit(PAGESIZE + 1)
           } else {
             console.log('if fired on 171');
-            record = await SalesListings.find(queryObj)
+            record = await SalesListings.find(queryObj).populate({ path: 'compReport', populate: { path: 'comps.listing_id' } })
           }
       } else {
-          record = await SalesListings.find(queryObj).populate('compReport')
+          record = await SalesListings.find(queryObj).populate({ path: 'compReport', populate: { path: 'comps.listing_id' }})
           console.log('line 176: ', record.length);
       }
       
@@ -360,7 +360,6 @@ router.post('/exportCsv', async (req, res) => {
   res.send(csv)
 })
 
-
 // @route: GET /api/marketplace/ops/area_rent
 // @desc: get list of area rents available
 // @ access: Public * ToDo: update to make private
@@ -373,5 +372,21 @@ router.get('/area_rent', async (req, res) => {
    res.send(500).send('server error')
  } 
 })
+
+// @route: GET /api/marketplace/ops/area_rent
+// @desc: get list of area rents available
+// @ access: Public * ToDo: update to make private
+router.post('/addNote/:id/:type', async (req, res) => {
+  try {
+    const {id, type} = req.params
+    console.log('running addNote: ', id, type )
+    console.log(req.body)
+    res.status(200).send('success');
+  } catch (err) {
+    console.error(err);
+    res.send(500).send('server error')
+  }
+})
+
 
 module.exports = router

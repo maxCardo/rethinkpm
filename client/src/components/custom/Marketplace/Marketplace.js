@@ -458,6 +458,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
   }
 
   const startShowDetailFlow = (item) => {
+    console.log('item');
     console.log(item);
     setFocusedProperty(item)
     setLoading(true)
@@ -527,6 +528,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
       unitSchId
     }
     const listingUpdated = (await axios.post(`/api/marketplace/ops/listings/${listingId}/setRent`, data)).data
+    console.log('listingUpdated')
     console.log(listingUpdated)
     const newListings = listings.map((listing) => {
       if(listing._id === listingUpdated._id) {
