@@ -188,7 +188,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
   const [selectedFilter, setSelectedFilter] = useState(undefined)
   const [filterOptions, setFilterOptions] = useState({})
   const [showAddDataModal, setShowAddDataModal] = useState(false)
-  const [showDetailModal, setShowDetailModal] = useState(false) 
+  const [showDetailModal, setShowDetailModal] = useState(false)
   const [version, setVersion] = useState(0)
   const [tablePageSize, setTablePageSize] = useState(10)
   const [iframeTarget, setIframeTarget] = useState('')
@@ -235,9 +235,9 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
       reactComponent: true,
       label: "Address",
       render: (item) => (
-        <div>
-          <p>{item.streetNumber} {item.streetName}</p>
-        </div>
+          <div>
+            <p>{item.streetNumber} {item.streetName}</p>
+          </div>
       ),
       className: "Marketplace__address"
     },
@@ -267,55 +267,55 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
       label: 'Actions',
       className: "Marketplace__actions",
       render: (item) => (
-        <div>
-          <IconButton placement='bottom'
-                      tooltipContent='View property details'
-                      id='property-details-tooltip'
-                      iconClass='fas fa-list'
-                      variant='action-button'
-                      onClickFunc={() => {
-                        setIframeTarget(`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
-                        setShowPropertyDetailsModal(true);
-                      }}
-          />
-          <IconButton placement='bottom'
-                      tooltipContent='View On Site'
-                      id='link-tooltip'
-                      iconClass='fas fa-link'
-                      variant='link'
-                      href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
-          />
-          {(item.streetName && item.streetNumber) && (
+          <div>
             <IconButton placement='bottom'
-                        tooltipContent='Open street view'
-                        id='street-view-tooltip'
-                        iconClass='fas fa-eye'
+                        tooltipContent='View property details'
+                        id='property-details-tooltip'
+                        iconClass='fas fa-list'
                         variant='action-button'
-                        onClickFunc={() => openStreetView(item.streetName, item.streetNumber)}
-            />)}
-          <IconButton placement='bottom'
-                      tooltipContent='Input Listing Data'
-                      iconClass='fas fa-plus'
-                      variant='action-button'
-                      onClickFunc={() => startAddDataFlow(item)}
-          />
-          <IconButton placement='bottom'
-            tooltipContent='Recommend Deal'
-            iconClass='fas fa-star'
-            variant='action-button'
-            onClickFunc={() => startRecommendationFlow([item])}
-          />
-          <IconButton placement='bottom'
-                      tooltipContent='Blacklist Deal'
-                      iconClass='fas fa-trash'
-                      variant='action-button'
-            /*DEMO: change icon color, should be made with separate class with hover,
-             focus etc states because it's a button, or even a separate variant if needed*/
-                      btnClass='text-danger'
-                      needsConfirmation={true}
-                      onClickFunc={() => setPropertyToBlackList(item._id)}
-          />
-        </div>
+                        onClickFunc={() => {
+                          setIframeTarget(`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
+                          setShowPropertyDetailsModal(true);
+                        }}
+            />
+            <IconButton placement='bottom'
+                        tooltipContent='View On Site'
+                        id='link-tooltip'
+                        iconClass='fas fa-link'
+                        variant='link'
+                        href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
+            />
+            {(item.streetName && item.streetNumber) && (
+                <IconButton placement='bottom'
+                            tooltipContent='Open street view'
+                            id='street-view-tooltip'
+                            iconClass='fas fa-eye'
+                            variant='action-button'
+                            onClickFunc={() => openStreetView(item.streetName, item.streetNumber)}
+                />)}
+            <IconButton placement='bottom'
+                        tooltipContent='Input Listing Data'
+                        iconClass='fas fa-plus'
+                        variant='action-button'
+                        onClickFunc={() => startAddDataFlow(item)}
+            />
+            <IconButton placement='bottom'
+                        tooltipContent='Recommend Deal'
+                        iconClass='fas fa-star'
+                        variant='action-button'
+                        onClickFunc={() => startRecommendationFlow([item])}
+            />
+            <IconButton placement='bottom'
+                        tooltipContent='Blacklist Deal'
+                        iconClass='fas fa-trash'
+                        variant='action-button'
+                /*DEMO: change icon color, should be made with separate class with hover,
+                 focus etc states because it's a button, or even a separate variant if needed*/
+                        btnClass='text-danger'
+                        needsConfirmation={true}
+                        onClickFunc={() => setPropertyToBlackList(item._id)}
+            />
+          </div>
       )
     }
   ]
@@ -427,7 +427,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
       if (listing._id === focusedProperty._id) {
         listing.condition = condition
         listing.numUnits = numUnits
-      } 
+      }
       return listing
     })
     setListings(newListings)
@@ -545,7 +545,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
   const checkFlowListingToggle = (listing, checked) => {
     let newCheckFlowList;
     if(checked) {
-      newCheckFlowList = [...checkFlowList, listing] 
+      newCheckFlowList = [...checkFlowList, listing]
     } else {
       newCheckFlowList = checkFlowList.filter((listingInList) => {
         return listingInList._id !== listing._id
@@ -563,12 +563,12 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
         reactComponent: true,
         label: 'Checked',
         render: (item) => (
-          <div className="element-wrapper with--checkbox" onClick={e => e.stopPropagation()}>
-            <label className="checkbox path" checked={true}  >
-              <input type="checkbox" name='useFilter' defaultChecked={false} onChange={e => checkFlowListingToggle(item, e.target.checked)}/>
-              {checkBoxCheck()}
-            </label>
-          </div>
+            <div className="element-wrapper with--checkbox" onClick={e => e.stopPropagation()}>
+              <label className="checkbox path" checked={true}  >
+                <input type="checkbox" name='useFilter' defaultChecked={false} onChange={e => checkFlowListingToggle(item, e.target.checked)}/>
+                {checkBoxCheck()}
+              </label>
+            </div>
         )
       })
     } else {
@@ -594,7 +594,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
     startRecommendationFlow(checkFlowList)
   }
 
-    //EFFECT:  Redraw table on window resize
+  //EFFECT:  Redraw table on window resize
   useEffect(() => {
 
     const populateTable = () => {
@@ -608,71 +608,79 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
       }
     }
 
+    console.log('resized');
+
     if(!listings.length) {
       populateTable()
     }
-    // const height = size.height;
-    // // 360 is sum of all heights of everything else that takes vertical space outside the container
-    // const controlHeight = height - 360;
-    // let rowNumber;
-    // if (height) {
-    //   // 43 is height of row
-    //   rowNumber = Math.floor(controlHeight / 43);
-    // } else {
-    //   rowNumber = 10;
-    // }
-    // if(tablePageSize !== rowNumber) {
-    //   if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
-    //     setTablePageSize(rowNumber)
-    //     setVersion(version+1)
-    //     tableContainerHeight.current = controlHeight;
-    //   } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
-    //     setTablePageSize(rowNumber)
-    //     setVersion(version+1)
-    //     tableContainerHeight.current = controlHeight;
-    //   } else {
-    //     console.log('effect did nothing')
-    //   }
-    //}
+    const height = size.height;
+    // 360 is sum of all heights of everything else that takes vertical space outside the container
+    const controlHeight = height - 560;
+
+    let rowNumber;
+    if (height) {
+      // 43 is height of row
+      rowNumber = Math.floor((controlHeight / 43) - 5);
+    } else {
+      rowNumber = 10;
+    }
+    console.log(rowNumber)
+    console.log('rowNumber')
+    console.log(tablePageSize)
+    console.log('tablePageSize')
+
+    if(tablePageSize !== rowNumber) {
+      if ((tableContainerHeight.current > controlHeight) && (tableContainerHeight.current - 50 > controlHeight)) {
+        setTablePageSize(rowNumber)
+        setVersion(version+1)
+        tableContainerHeight.current = controlHeight;
+      } else if ((tableContainerHeight.current < controlHeight) && (tableContainerHeight.current + 50 < controlHeight)) {
+        setTablePageSize(rowNumber)
+        setVersion(version+1)
+        tableContainerHeight.current = controlHeight;
+      } else {
+        console.log('effect did nothing')
+      }
+    }
 
   }, [size.height, listings.length, tablePageSize, version]); // Empty array ensures that effect is only run on mount
 
   return loading ? <Loading /> : (
-    <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-      {/* <KpiBar/> */}
+      <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+        {/* <KpiBar/> */}
 
-      <div style={{flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column'}}>
-        <div className='searchContainer agentsSearchContainer'>
-          <div style={{display: 'flex'}}>
-            <Select
-              className="marketplace__filter-select"
-              onChange={handleFilterChange}
-              defaultValue="All"
-              options={savedFilters}
-              placeholder='Select Filter'
-              value={selectedFilter}
-            />
-            <input
-              className='form-control searchInput'
-              tabIndex={0}
-              onChange={(e) => setFilterString(e.target.value)}
-              placeholder='Search'
-            />
-          </div>
-          <div className='marketplace__filter-icons'>
-            {filters &&
-            <Fragment>
-              {!selectedFilter &&
+        <div style={{flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column'}}>
+          <div className='searchContainer agentsSearchContainer'>
+            <div style={{display: 'flex'}}>
+              <Select
+                  className="marketplace__filter-select"
+                  onChange={handleFilterChange}
+                  defaultValue="All"
+                  options={savedFilters}
+                  placeholder='Select Filter'
+                  value={selectedFilter}
+              />
+              <input
+                  className='form-control searchInput'
+                  tabIndex={0}
+                  onChange={(e) => setFilterString(e.target.value)}
+                  placeholder='Search'
+              />
+            </div>
+            <div className='marketplace__filter-icons'>
+              {filters &&
+              <Fragment>
+                {!selectedFilter &&
                 <button onClick={saveFilter}>Save filter</button>
+                }
+                <button onClick={clearFilter}>Clear filter</button>
+              </Fragment>
               }
-              <button onClick={clearFilter}>Clear filter</button>
-            </Fragment>
-            }
-            <button onClick={() => setShowFilterModal(true)}>
-              <i className="fas fa-filter"></i>
-            </button>
-            {
-              checkFlowActive &&
+              <button onClick={() => setShowFilterModal(true)}>
+                <i className="fas fa-filter"></i>
+              </button>
+              {
+                checkFlowActive &&
                 <Fragment>
                   <button onClick={exportCsv}>
                     <i className="fas fa-file-csv"></i>
@@ -681,17 +689,18 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
                     <i className="fas fa-star"></i>
                   </button>
                 </Fragment>
-            }
-            <button onClick={toggleCheckFlow}>
-              <i className="fas fa-check-square"></i>
-            </button>
-          </div>
+              }
+              <button onClick={toggleCheckFlow}>
+                <i className="fas fa-check-square"></i>
+              </button>
+            </div>
 
-        </div>
-        <div className="container-fluid" style={{overflow: 'auto', display: 'flex', flexDirection:'column', flex: 1}}>
-          <div className="col-12 p-0 containerTable" id='' style={{display: 'flex', flexDirection: 'column', flex: 1}}>
-            
-            <Table
+          </div>
+          <div className="container-fluid" style={{overflow: 'auto', display: 'flex', flexDirection:'column', flex: 1}}>
+            <div className="col-12 p-0 containerTable marketTable" id='' style={{display: 'flex', flexDirection: 'column', flex: 1, height: tableContainerHeight.current}}>
+
+
+              <FullScreenTable
               pageSize={tablePageSize}
               sorting={true}
               fontSize={12}
@@ -702,42 +711,30 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
               sortDirection='desc'
               version={version}
               onClickRow={(item) => startShowDetailFlow(item)}
-            /> 
-            {/* <FullScreenTable
-              pageSize={tablePageSize}
-              sorting={true}
-              fontSize={12}
-              filter={filterString}
-              data={listings}
-              headers={headers}
-              sortBy="listDate"
-              sortDirection='desc'
-              version={version}
-              onClickRow={(item) => startShowDetailFlow(item)}
-            /> */}
-            Number of records: {listings.length}
+            />
+              Number of records: {listings.length}
+            </div>
           </div>
         </div>
+        <FilterModal
+            show={showFilterModal}
+            filterFields={FILTERFIELDS}
+            options={filterOptions}
+            handleClose={() => setShowFilterModal(false)}
+            onSubmit={submitFilterModal}
+        />
+        <StreetViewModal
+            show={showStreetViewModal}
+            handleClose={() => setShowStreetViewModal(false)}
+            apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
+        <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal}
+                              handleClose={() => setShowPropertyDetailsModal(false)}/>
+        <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
+        <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
+        <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} property={focusedProperty}
+                      handleSubmit={submitAddDataModal}/>
+        <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent}/>
       </div>
-      <FilterModal
-        show={showFilterModal}
-        filterFields={FILTERFIELDS}
-        options={filterOptions}
-        handleClose={() => setShowFilterModal(false)}
-        onSubmit={submitFilterModal}
-      />
-      <StreetViewModal
-          show={showStreetViewModal}
-          handleClose={() => setShowStreetViewModal(false)}
-          apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
-      <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal}
-                          handleClose={() => setShowPropertyDetailsModal(false)}/>
-      <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
-      <SaveFilterModal show={showSaveFilterModal} handleClose={() => setShowSaveFilterModal(false)} handleSubmit={submitSaveFilterModal}/>
-      <AddDataModal show={showAddDataModal} handleClose={() => setShowAddDataModal(false)} property={focusedProperty}
-                    handleSubmit={submitAddDataModal}/>
-      <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)} addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule} setRent={setRent}/>
-    </div>
   )
 }
 
