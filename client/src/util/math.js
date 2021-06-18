@@ -1,18 +1,18 @@
 
 //supportFunctions
-const arrAvg = arr => (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2)
-const arrMax = arr => Math.max(...arr);
-const arrMin = arr => Math.min(...arr);
-const arrSum = arr => arr.reduce((a, b) => a + b, 0)
+export const arrAvg = arr => (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2)
+export const arrMax = arr => Math.max(...arr);
+export const arrMin = arr => Math.min(...arr);
+export const arrSum = arr => arr.reduce((a, b) => a + b, 0)
 
-const getStanDev = (array) => {
+export const getStanDev = (array) => {
     const n = array.length
     const mean = array.reduce((a, b) => a + b) / n
     return (Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)).toFixed(3)
 }
 
 //@desc returns x percentile record in an array
-const getQuantile = (arr, q) => {
+export const getQuantile = (arr, q) => {
     const sorted = arr.sort((a, b) => a - b);
     const pos = (sorted.length - 1) * q;
     const base = Math.floor(pos);
@@ -25,7 +25,7 @@ const getQuantile = (arr, q) => {
 }
 
 //@desc returns average of top x percentile records in an array
-const getQuantMean = (arr, q, q2) => {
+export const getQuantMean = (arr, q, q2) => {
     const sorted = arr.sort((a, b) => a - b);
     const pos = (sorted.length - 1) * q;
     const base = Math.floor(pos);
@@ -38,7 +38,7 @@ const getQuantMean = (arr, q, q2) => {
 }
 
 //@desc returns arr of top x percentile records in an array
-const getQuantArr = (arr, q, q2) => {
+export const getQuantArr = (arr, q, q2) => {
     const sorted = arr.sort((a, b) => a - b);
     const pos = (sorted.length - 1) * q;
     const base = Math.floor(pos);
@@ -47,4 +47,3 @@ const getQuantArr = (arr, q, q2) => {
     return sorted.slice(base, close)
 }
 
-module.exports = { getQuantile, getQuantMean, getStanDev, getQuantArr, arrAvg }
