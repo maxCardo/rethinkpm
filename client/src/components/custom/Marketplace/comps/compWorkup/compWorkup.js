@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import { Button } from 'react-bootstrap';
 import IconButton from "../../../../core/IconButton/IconButton";
 import { formatMoney, formatRange } from "../../../../../util/commonFunctions";
-import { arrAvg, getStanDev, getQuantMean , getQuantArr} from "../../../../../util/math";
+import {arrAvg, getStanDev, getQuantMean,getQuantArr} from "../../../../../util/math";
 import {createErrorAlert, setAlert} from '../../../../../actions/alert'
 import {submitCompAnalysis} from '../../../../../actions/marketplace/comps'
 
