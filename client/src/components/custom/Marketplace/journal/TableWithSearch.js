@@ -15,7 +15,6 @@ export class TableWithSearch extends Component {
     this.handleSearch = this.handleSearch.bind(this)
     this.handleAdd = this.handleAdd.bind(this)
     this.handleClose = this.handleClose.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
   render() {
     return (
@@ -32,7 +31,7 @@ export class TableWithSearch extends Component {
         <div className='table-with-search__table'>
           <Table {...this.props}  filter={this.state.searchString}   />
         </div>
-        <AddNoteModal show={this.state.showModal} profileType={this.props.profileType} id={this.props.id} handleClose={this.handleClose} handleSubmit={this.handleSubmit}/>
+        <AddNoteModal show={this.state.showModal} profileType={this.props.profileType} id={this.props.id} handleClose={this.handleClose}/>
       </div>
     )
   }
@@ -44,9 +43,6 @@ export class TableWithSearch extends Component {
   }
   handleClose() {
     this.setState({showModal: false})
-  }
-  handleSubmit(data) {
-    console.log('handeling submit on table w search', data)
   }
 }
 

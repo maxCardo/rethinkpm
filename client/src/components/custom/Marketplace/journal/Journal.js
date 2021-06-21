@@ -1,19 +1,28 @@
-import React, { useEffect} from 'react'
+import React, { useEffect, useState} from 'react'
+import {connect} from 'react-redux'
 import { Tabs, Tab } from 'react-bootstrap'
 import TableWithSearch from './TableWithSearch'
 
 
-const Journal = ({history, type, id}) => {
+const Journal = ({history, type, id, addNote}) => {
+
+    const [notes, setNotes] = useState([])
+    const [logs, setLogs] = useState([])
+    const [all, setAll] = useState([])
+
     useEffect(() => {
-        console.log(history)
-
-    }, [])
-
+        console.log('trigger use effect on notes');
+        
     const allNotes = history
 
-    var all = allNotes && allNotes.length ? allNotes : []
-    var notes = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'note') : []
-    var logs = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'log') : []
+    setAll(allNotes && allNotes.length ? allNotes : [])
+    setLogs(allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'log') : [])
+    setNotes(allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'note') : [])
+
+    console.log('all notes: ', all);
+        
+    },[history])
+
 
     var headers = [
         {
@@ -39,6 +48,7 @@ const Journal = ({history, type, id}) => {
 
     const onSubmit = (data) => {
         console.log('onSubmit fired: ', data)
+        addNote(data, type)
     }
 
 
@@ -59,4 +69,8 @@ const Journal = ({history, type, id}) => {
     )
 }
 
-export default Journal
+const mapStateToProps = state => ({
+    history: state.marketplace.focusedProp.history
+})
+
+export default connect (mapStateToProps, {})(Journal)

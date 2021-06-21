@@ -1,4 +1,4 @@
-import {CLOSE_STREET_VIEW, OPEN_STREET_VIEW, SET_BUYER_PIPELINE,UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO, SET_FOCUSED_PROPERTY, SET_COMP_LIKE, SET_COMP_UNLIKE, UPDATE_BUYER_PIPELINE} from '../actions/type';
+import {CLOSE_STREET_VIEW, OPEN_STREET_VIEW, SET_BUYER_PIPELINE,UPDATE_DEAL_STATUS, SET_PIPELINE_LOADING, SET_AREA_RENTS, SET_OWNER_INFO, SET_FOCUSED_PROPERTY, SET_COMP_LIKE, SET_COMP_UNLIKE, UPDATE_BUYER_PIPELINE, UPDATE_PIPELINE_NOTES} from '../actions/type';
 const initialState = {
     loading: true,
     streetViewOpen: false,
@@ -79,6 +79,11 @@ export default function (state = initialState, action) {
                 ...state,
                 buyerPipeline: state.sellerPipeline.map((deal) => deal._id === payload._id ? payload : deal),
                 loading: false
+            }
+        case UPDATE_PIPELINE_NOTES:
+            return {
+                ...state,
+                focusedProp: {...state.focusedProp, history:payload}
             }    
         default:
             return state;

@@ -233,7 +233,7 @@ const DetailModal = ({ show, handleClose, data, addUnitSchedule, modifyUnitSched
               <CompView type={type}/>
             </Tab.Pane>
             <Tab.Pane eventKey="journal">
-              <Journal history={data.history} type={type} id={data._id} />
+              <Journal type={type} id={data._id} />
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>

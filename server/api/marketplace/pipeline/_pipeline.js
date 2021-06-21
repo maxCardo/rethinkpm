@@ -2,6 +2,7 @@ const { sendEmail } = require('../../../3ps/email')
 const express = require('express');
 const auth = require('../../../middleware/auth');
 const SalesListings = require('../../../db/models/sales/SalesListings');
+const ListLead = require('../../../db/models/sales/ListLeads')
 const Pipeline = require('../../../db/models/sales/Pipeline');
 const BuyerPros = require('../../../db/models/prospects/BuyerPros')
 const {addIdxListing, removeIdxListing, getIdxSavedListings} = require('../../../3ps/idx')
@@ -19,7 +20,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     console.log('calling buyer pipeline');
     try {
-        let pipeline = await Pipeline.find({}).populate({ path: 'deal', populate: { path: 'compReport', populate: { path: 'comps.listing_id'}}})
+        let pipeline = await Pipeline.find({})
+            .populate({ path: 'deal', populate: { path: 'compReport', populate: { path: 'comps.listing_id'}}})
+            .populate({path: 'history',populate:'user'})
         console.log('pipeline: ', pipeline);
         res.status(200).send(pipeline)
     } catch (err) {
@@ -150,6 +153,44 @@ router.get('/render/testRecommend', async (req, res) => {
     const html = await emailTemplate(properties, customMessage);
     res.send(html)
 })
+
+//add post new note
+// @route: POST /api/marketplace/pipeline/addNote/:type/:id;
+// @desc: save filter section as filter or audiance   
+// @ access: Private
+router.post('/addNote/:id/:type', auth, async (req, res) => {
+    try {
+      id = req.params.id
+      type = req.params.type
+      
+      if (type === 'listLead') {
+        const record = await ListLead.findOne({_id: id}).populate({path: 'history',populate:'user'})
+        const newNote = {
+        ...req.body,
+        user: req.user,
+        type: 'note'
+        }
+        record.history.push(newNote)
+        await record.save()
+        res.status(200).send(record.history);
+
+      } else if (type === 'salesLead'){
+        const record = await SalesListings.findOne({_id: id}).populate({path: 'history',populate:'user'})
+        const newNote = {
+        ...req.body,
+        user: req.user,
+        type: 'note'
+        }
+        record.history.push(newNote)
+        await record.save()
+        res.status(200).send(record.history);
+      }
+      
+    } catch (err) {
+      res.status(400).send('server error')
+      console.log(err)
+    }
+  });
 
 
 module.exports = router;
