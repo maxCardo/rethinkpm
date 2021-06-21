@@ -373,20 +373,6 @@ router.get('/area_rent', async (req, res) => {
  } 
 })
 
-// @route: GET /api/marketplace/ops/area_rent
-// @desc: get list of area rents available
-// @ access: Public * ToDo: update to make private
-router.post('/addNote/:id/:type', async (req, res) => {
-  try {
-    const {id, type} = req.params
-    console.log('running addNote: ', id, type )
-    console.log(req.body)
-    res.status(200).send('success');
-  } catch (err) {
-    console.error(err);
-    res.send(500).send('server error')
-  }
-})
 
 
 module.exports = router

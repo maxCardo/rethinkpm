@@ -20,7 +20,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     console.log('calling buyer pipeline');
     try {
-        let pipeline = await Pipeline.find({}).populate({ path: 'deal', populate: { path: 'compReport', populate: { path: 'comps.listing_id'}}})
+        let pipeline = await Pipeline.find({})
+            .populate({ path: 'deal', populate: { path: 'compReport', populate: { path: 'comps.listing_id'}}})
+            .populate({path: 'history',populate:'user'})
         console.log('pipeline: ', pipeline);
         res.status(200).send(pipeline)
     } catch (err) {
@@ -162,7 +164,7 @@ router.post('/addNote/:id/:type', auth, async (req, res) => {
       type = req.params.type
       
       if (type === 'listLead') {
-        const record = await ListLead.findOne({_id: id})
+        const record = await ListLead.findOne({_id: id}).populate({path: 'history',populate:'user'})
         const newNote = {
         ...req.body,
         user: req.user,
@@ -173,7 +175,7 @@ router.post('/addNote/:id/:type', auth, async (req, res) => {
         res.status(200).send(record.history);
 
       } else if (type === 'salesLead'){
-        const record = await SalesListings.findOne({_id: id})
+        const record = await SalesListings.findOne({_id: id}).populate({path: 'history',populate:'user'})
         const newNote = {
         ...req.body,
         user: req.user,
