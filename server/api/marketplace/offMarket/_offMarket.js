@@ -24,6 +24,22 @@ router.get('/seller_pipeline/:id', async (req, res) => {
     }
 })
 
+// @route: Get api/marketplace/off_market/deals
+// @desc: get all offMarket Deals
+// @ access: private
+router.get('/deals', async (req, res) => {
+    try {
+        let sellerId = req.params.id;
+        let pipeline = await ListLeads.find()
+            .populate({ path: 'compReport', populate: { path: 'comps.listing_id' } })
+            .populate({path: 'history',populate:'user'})
+        res.status(200).send(pipeline)
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err)
+    }
+})
+
 // @route: Get api/marketplace/off_market/seller_pipeline/:id
 // @desc: get pipeline deals for a buyerPros
 // @ access: private
