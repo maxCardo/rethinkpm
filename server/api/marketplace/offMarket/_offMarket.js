@@ -31,7 +31,7 @@ router.get('/deals', async (req, res) => {
     try {
         let sellerId = req.params.id;
         let pipeline = await ListLeads.find()
-            .populate({ path: 'compReport', populate: { path: 'comps.listing_id' } })
+            .populate({ path: 'compReport', populate: { path: 'comps.listing_id' } }).sort([['createDate', -1]])
             .populate({path: 'history',populate:'user'})
         res.status(200).send(pipeline)
     } catch (err) {
