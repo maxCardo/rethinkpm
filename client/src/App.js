@@ -19,6 +19,7 @@ import ServiceTicket from './components/custom/service/ServiceTicket';
 import Profile from './components/custom/profile/Profile'
 import ChatScreen from './components/custom/Chat/ChatScreen'
 import Marketplace from './components/custom/Marketplace/Marketplace'
+import OffMarketList from './components/custom/OffMarket/List'
 import {loadUser} from './actions/auth';
 import {receiveSMS} from './actions/profile'
 import { connect } from 'react-redux';
@@ -70,6 +71,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/profile/buyerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.buyerPros }} />
             <PrivateRoute exact path='/profile/sellerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.sellerPros }} />
             <PrivateRoute exact path='/marketplace' component={Marketplace} apiKey={routeSettings.marketplace.streetViewApiKey} />
+            <PrivateRoute exact path='/offmarket' component={OffMarketList} apiKey={routeSettings.marketplace.streetViewApiKey} />
             <Route exact path='/playground' component={Playground} />
             <Route path='/vertical-table' component={TestVerticalTable} />
           </Switch>

@@ -18,6 +18,22 @@ export const getSellerPipeline = (id) => async dispatch => {
     }
 }
 
+export const getOffMarketDeals = (id) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/marketplace/off_market/deals`);
+        dispatch({
+            type: SET_SELLER_PIPELINE,
+            payload: res.data
+        })
+        dispatch({
+            type: SET_BUYER_PIPELINE,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch(createErrorAlert(err.message, 'Get offMarketList'))
+    }
+}
+
 export const addUnitSchedule = async (unit) => {
     // const listingId = focusedProperty._id;
     // const data = {
