@@ -34,6 +34,29 @@ router.post('/web_lead', (req,res) => {
     res.status(200).send('ok')
 })
 
+// @route: Post /api/sales/agent_lead;
+// @desc: create new task from agent user form on website
+// @ access: Public  *ToDo make private once tenants begin to log on on the software.
+router.post('/agent_lead', (req,res) => {
+  const { firstName, lastName, email, phone, message } = req.body
+
+  //set to adampoznanski@outlook.com for prod
+  const emailTo = 'adampoznanski@outlook.com, adamp@fifthgrant.com'
+
+  const emailBody = `
+    You received a new agent contact message with the following information:</br>
+    Name: ${firstName} ${lastName} </br>
+    Email: ${email} </br>
+    Phone: ${phone} </br>
+    Message: ${message} </br>
+  `
+
+  const emailSubject = `New Agent Contact message`
+  
+  sendEmail(emailTo, emailSubject,'', emailBody)
+  res.status(200).send('ok')
+})
+
 //---------------------------------------------------------- New task from user form ----------------------------------------------------------//
 // @route: Post /api/sales/idx_lead;
 // @desc: create new task from user form
