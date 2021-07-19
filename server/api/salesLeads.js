@@ -41,7 +41,7 @@ router.post('/agent_lead', (req,res) => {
   const { firstName, lastName, email, phone, message } = req.body
 
   //set to adampoznanski@outlook.com for prod
-  const emailTo = 'adampoznanski@outlook.com, adamp@fifthgrant.com'
+  const emailTo = 'adamp@fifthgrant.com, davidk@fifthgrant.com'
 
   const emailBody = `
     You received a new agent contact message with the following information:</br>
@@ -50,10 +50,17 @@ router.post('/agent_lead', (req,res) => {
     Phone: ${phone} </br>
     Message: ${message} </br>
   `
+  const planeBody = `
+    You received a new agent contact message with the following information:</br>
+    Name: ${firstName} ${lastName}
+    Email: ${email} 
+    Phone: ${phone} 
+    Message: ${message}
+  `
 
   const emailSubject = `New Agent Contact message`
   
-  sendEmail(emailTo, emailSubject,'', emailBody)
+  sendEmail(emailTo, emailSubject,planeBody, emailBody)
   res.status(200).send('ok')
 })
 
