@@ -95,12 +95,12 @@ const listLeadSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }, // create date 
-    status: String, // new | active | passive |  dead , redundent filed with lead data
+    status: String, // new | active | passive | dead dead = leave me alone, sold to someone else. passive = dormont no answer, both are considers not active
     pros: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'sellerPros'
     },
-    prosType: String, //home owner or wholesaler. Can add other prosType as they come up in future
+    prosType: String, //homeOwner or wholesaler, directBuy. Can add other prosType as they come up in future, - depricate: redundanant with info on sellerPros
     source: {  //marketing channel. redundent with pros rec?
         type: String,
         default: 'unknown'
@@ -118,7 +118,7 @@ const listLeadSchema = new mongoose.Schema({
     state: String,
     zipcode: String,
     county: String,
-    area: String, //google varify data includes this but may not match with known boundries. This will need to be reserched later
+    area: String, //google varify data includes this but may not match with known boundries. This will need to be reserched later   ????
     schoolDistrict: String, //county data: only available for alleghny county 
     municipality: String,
     taxMillage: { //internaal data based on municpality and school district. Only available in allegheny county
