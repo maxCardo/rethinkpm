@@ -39,7 +39,7 @@ const Navbar = ({auth: {isAuthenticated, loginInProgress}, logout}) => {
                     <span>Seller</span>
                 </Link>
             </li>
-            <li>
+            {/* <li>
                 <Link to='/profile/rentPros'>
                     <RentersIcon />
                     <span>Renters</span>
@@ -50,13 +50,13 @@ const Navbar = ({auth: {isAuthenticated, loginInProgress}, logout}) => {
                     <ServicesIcon />
                     <span>Services</span>
                 </Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
                 <Link to='/chat'>
                   <CommunicationIcon />
                   <span>Communications</span>
                 </Link>
-            </li>
+            </li> */}
             <li>
                 <Link to='/marketplace'>
                   <MarketplaceIcon />
@@ -67,6 +67,18 @@ const Navbar = ({auth: {isAuthenticated, loginInProgress}, logout}) => {
                 <Link to='/offmarket'>
                   <MarketplaceIcon />
                   <span>OffMarket</span>
+                </Link>
+            </li>
+            <li>
+                <Link to='/propertyRecords'>
+                  <MarketplaceIcon />
+                  <span>Properties</span>
+                </Link>
+            </li>
+            <li>
+                <Link to='/ownerRecords'>
+                  <MarketplaceIcon />
+                  <span>Owners</span>
                 </Link>
             </li>
             {/* <li><Link to="/rentroll">Current Rentals</Link></li>

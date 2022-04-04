@@ -28,6 +28,8 @@ import settings from './settings.json'
 import Alert from "./components/core/Alert";
 import Dash from "./components/custom/Dash"
 import TestVerticalTable from './components/custom/TestVerticalTable';
+import PropertyRecords from './components/custom/PropertyRecords/PropertyRecords'
+import OwnerRecords from './components/custom/PropertyRecords/OwnerRecords'
 
 
 
@@ -72,6 +74,8 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/profile/sellerPros' component={Profile} additionalProps={{ settings: routeSettings.profile.sellerPros }} />
             <PrivateRoute exact path='/marketplace' component={Marketplace} apiKey={routeSettings.marketplace.streetViewApiKey} />
             <PrivateRoute exact path='/offmarket' component={OffMarketList} apiKey={routeSettings.marketplace.streetViewApiKey} />
+            <PrivateRoute exact path='/propertyRecords' component={PropertyRecords}/>
+            <PrivateRoute exact path='/ownerRecords' component={OwnerRecords}/>
             <Route exact path='/playground' component={Playground} />
             <Route path='/vertical-table' component={TestVerticalTable} />
           </Switch>
