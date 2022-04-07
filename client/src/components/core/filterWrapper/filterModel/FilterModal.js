@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect} from 'react'
 import {Modal, Form, Button} from 'react-bootstrap';
 import FilterFields from './filterFields/_FilterFields'
-import Loading from '../../../common/LoadingScreen/Loading'
+import Loading from '../../../core/LoadingScreen/Loading'
 import './style.css'
 
 

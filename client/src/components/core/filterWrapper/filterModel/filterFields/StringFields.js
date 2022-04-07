@@ -1,6 +1,6 @@
 import React, {Fragment, useLayoutEffect, useRef, useState, useEffect} from 'react'
 import { Form, Row, Col } from 'react-bootstrap';
-import {checkBoxCheck} from '../../../../../utilities/commonFunctions'
+import {checkBoxCheck} from '../../../../../util/commonFunctions'
 
 const StringFields = ({ filterFields, onChange, prop, orderKey }) => {
 

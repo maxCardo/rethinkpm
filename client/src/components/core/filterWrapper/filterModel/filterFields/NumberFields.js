@@ -2,7 +2,7 @@
 import React , {Fragment, useState, useEffect} from 'react'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap';
-import {checkBoxCheck} from '../../../../../utilities/commonFunctions'
+import {checkBoxCheck} from '../../../../../util/commonFunctions'
 
 
 const NumberFields = ({ filterFields, onChange, prop, orderKey }) => {

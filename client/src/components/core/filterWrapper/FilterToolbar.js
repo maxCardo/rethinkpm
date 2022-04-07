@@ -1,5 +1,5 @@
 import React, {useState, Fragment} from 'react'
-import IconButton from '../IconButton/_IconButton'
+import IconButton from '../IconButton/IconButton'
 
 //dep for filter comp
 import Select from 'react-select'

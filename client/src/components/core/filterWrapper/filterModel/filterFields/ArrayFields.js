@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useRef, useLayoutEffect, useEffect} from 'react'
 import Select from 'react-select'
 import { Form, Row, Col } from 'react-bootstrap'
-import {checkBoxCheck} from '../../../../../utilities/commonFunctions'
+import {checkBoxCheck} from '../../../../../util/commonFunctions'
 
 
 const ArrayFields = ({orderKey, filterFields, onChange, prop, options}) => {

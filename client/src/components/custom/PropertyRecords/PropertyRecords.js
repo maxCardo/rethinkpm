@@ -1,4 +1,8 @@
 import React from 'react'
+import {connect} from 'react-redux'
+
+import FilterWrapper from '../../core/filterWrapper/FilterWrapper'
+import Table from '../../core/newTable/_Table'
 
 
 const PropertyRecords = () => {
@@ -10,5 +14,10 @@ const PropertyRecords = () => {
     )
 }
 
-export default PropertyRecords
+const mapStateToProps = state => ({
+    filteredData: state.filteredData
+})
+
+
+export default connect(mapStateToProps, {})(PropertyRecords)
 
