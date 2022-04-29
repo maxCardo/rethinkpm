@@ -2,6 +2,7 @@ import { SET_LOADING ,SET_FILTERED_DATA, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITE
 
 const initialState = {
     loading: true,
+    count: 0,
     list: [],
     savedFilters: [],
     filterOptions: [],
@@ -22,7 +23,8 @@ export default function (state = initialState, action) {
         case SET_FILTERED_DATA:
             return {
                 ...state,
-                list: payload,
+                list: payload.list,
+                count: payload.count,
                 selected: null,
                 activeFilter: [],
                 selectedData: [],
@@ -50,7 +52,8 @@ export default function (state = initialState, action) {
         case SET_FILTER:
             return {
                 ...state,
-                list: payload.record, 
+                list: payload.record,
+                count: payload.count, 
                 activeFilter: payload.filters,
                 selectedData: [],
                 loading: false

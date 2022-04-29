@@ -1,7 +1,9 @@
 const express = require('express')
 
-const Company = require('../../db/models/company')
-const TkrFilter = require('../../db/models/tkerFilter')
+const PropertyRecords = require('../../db/models/propertyRecords/PropertyRecords')
+const OwnerRecords = require('../../db/models/propertyRecords/OwnerRecords')
+const PropertyFilter = require('../../db/models/propertyRecords/PropertyFilter')
+const PropertyKeys = require('../../db/models/propertyRecords/propertyRecKeys')
 
 const {createFilter, convertFiltersToQuery} = require('./scripts')
 
@@ -9,9 +11,10 @@ const router = express.Router()
 
 //@desc: Intergrated data models to be used with filter wrapper component 
 const models = {
-    company: {
-        data: Company,
-        filters: TkrFilter
+    propertyRecord: {
+        data: PropertyRecords,
+        filters: PropertyFilter,
+        keys: PropertyKeys
     }
 }
 
@@ -21,8 +24,9 @@ const models = {
 router.get('/:model', async (req, res) => {
     try {
         const collection = models[req.params.model].data
+        const count = await collection.find().countDocuments()
         const list = await collection.find().limit(100)
-        res.status(200).send(list)
+        res.status(200).send({count,list})
 
     } catch (err) {
         console.error(err);
@@ -44,19 +48,32 @@ router.get('/savedFilters/:model', async (req, res) => {
 })
 
 // @route: GET api/watchlist
-// @desc: get items in watchlist
+// @desc: get filter options for all "array fields in FILTERFIELDS"
 // @ access: pulic - todo: make privite in future
 router.post('/filterOptions/:model', async (req, res) => {
     try {
         const collection = models[req.params.model].data
+        const keys = models[req.params.model].keys
+        //console.log('this is the collection: ',collection)
         const data = req.body
-        const comboArr = Object.keys(data).map(async (x) => {
-        const res = await collection.distinct(data[x].accessor, {[data[x].accessor] : {$nin: ['', null]}})
-        return {key: x, value : res.map(option => ({label: option, value: option}))}
-       })
-       //convert to newsted object format used by component
-       const returnObj = (await Promise.all(comboArr)).reduce((obj, item) => (obj[item.key] = item.value, obj) ,{});
-       res.status(200).send(returnObj)
+        //console.log('this is the data : ', data)
+        
+        //console.log('getPropKeys: ', keys)
+
+      const comboArr = Object.keys(data).map(async (x) => {
+        if (data[x].dataType === 'array') {
+          if (data[x].boolean) {
+            return {key: x, value : ([{label: 'True', value: true},{label: 'False', value: false}])}  
+          }
+          const res = await collection.distinct(data[x].accessor, {[data[x].accessor] : {$nin: ['', null]}})
+          //console.log('res: ', x ,  res)
+          return {key: x, value : res.map(option => ({label: keys && keys[x] && keys[x][option] ? keys[x][option] : option , value: option}))}
+        }else return {key: x, value : ([{label: '', value: ''},{label: '', value: ''}])}
+      })
+      //convert to newsted object format used by component
+      const returnObj = (await Promise.all(comboArr)).reduce((obj, item) => (obj[item.key] = item.value, obj) ,{});
+      //console.log('returnObh: ', returnObj)
+      res.status(200).send(returnObj)
 
     } catch (err) {
         console.error(err);
@@ -86,7 +103,8 @@ router.post('/loadFilter/:model', async (req, res) => {
           })
         }
         const queryObj = convertFiltersToQuery(filters)
-        let record = await collection.find(queryObj)
+        let count = await collection.find(queryObj).countDocuments()
+        let record = await collection.find(queryObj).limit(100)
 
         //if we make resuable how can we use populate???
 
@@ -120,7 +138,7 @@ router.post('/loadFilter/:model', async (req, res) => {
         }
 
         //res.status(200).send({ record, filters, hasMore });
-        res.status(200).send({ record, filters});
+        res.status(200).send({ count, record, filters});
   
     } catch (error) {
         console.error(error);

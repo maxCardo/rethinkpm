@@ -8,6 +8,7 @@ import brokerDashboard from "./brokerDashboard";
 import profile from "./profile";
 import marketplace from "./marketplace";
 import offMarket from "./offMarket";
+import filteredData from './filteredData'
 
 
-export default combineReducers({alert, auth, chat, dashboard, services, brokerDashboard,profile,marketplace,offMarket});
+export default combineReducers({alert, auth, chat, dashboard, services, brokerDashboard,profile,marketplace,offMarket, filteredData});
