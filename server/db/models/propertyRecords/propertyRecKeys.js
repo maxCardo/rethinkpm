@@ -2,7 +2,7 @@
 
 
 const propertyKeys = {
-    SoolDistrict: {
+    SchoolDistrict: {
         1:"Allegheny Valley",
         2:"Avonworth",
         3:"Pine-Richland",

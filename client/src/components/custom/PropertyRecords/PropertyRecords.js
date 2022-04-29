@@ -91,26 +91,7 @@ const PropertyRecords = ({filteredData: {count, list, savedFilters, activeFilter
 
   const FILTERFIELDS = {
 
-    Area: {
-      type: {
-        label: "Don't Filter",
-        value: "noFilter"
-      },
-      value: "",
-      name: "Area",
-      dataType: "array",
-      accessor: "municipality"
-    },
-    SchoolDistrict: {
-      type: {
-        label: "Don't Filter",
-        value: "noFilter"
-      },
-      value: "",
-      name: "School District",
-      dataType: "array",
-      accessor: "schoolDistrict"
-    },
+    
     //TODO: zipcodes did not upload into data set properly will fix issues on the data set in the future
     // Zipcode: {
     //   type: {
@@ -122,58 +103,6 @@ const PropertyRecords = ({filteredData: {count, list, savedFilters, activeFilter
     //   dataType: "array",
     //   accessor: "zipcode"
     // },
-    ownerType: {
-      type: {
-        label: "Don't Filter",
-        value: "noFilter"
-      },
-      value: "",
-      name: "Owner Type",
-      dataType: "array",
-      accessor: "ownerCode",
-      dependency: 'sector'
-    },
-    useCode: {
-      type: {
-        label: "Don't Filter",
-        value: "noFilter"
-      },
-      value: "",
-      name: "useCode",
-      dataType: "array",
-      accessor: "useCode"
-    },
-    homestead: {
-      type: {
-        label: "Don't Filter",
-        value: "noFilter"
-      },
-      value: "",
-      name: "Homestead",
-      dataType: "array",
-      boolean: true,
-      accessor: "homestead"
-    },
-    bedrooms: {
-      type: {
-        label: "Don't Filter",
-        value: "noFilter"
-      },
-      value: "",
-      name: "bedrooms",
-      dataType: "number",
-      accessor: "bedrooms"
-    },
-    sqft: {
-      type: {
-        label: "Don't Filter",
-        value: "noFilter"
-      },
-      value: "",
-      name: "sqft",
-      dataType: "number",
-      accessor: "sqft"
-    },
     //ToDo: can not sort by date with current component, can adjust data set to number (age of ownership) or adjust component to allow for date filtering
     // lastSoldDate: {
     //   type: {
@@ -195,6 +124,80 @@ const PropertyRecords = ({filteredData: {count, list, savedFilters, activeFilter
       dataType: "number",
       accessor: "salePrice"
     },
+    sqft: {
+      type: {
+        label: "Don't Filter",
+        value: "noFilter"
+      },
+      value: "",
+      name: "Square Footage",
+      dataType: "number",
+      accessor: "sqft"
+    },
+    bedrooms: {
+      type: {
+        label: "Don't Filter",
+        value: "noFilter"
+      },
+      value: "",
+      name: "Number of Bedrooms",
+      dataType: "number",
+      accessor: "bedrooms"
+    },
+    ownerType: {
+      type: {
+        label: "Don't Filter",
+        value: "noFilter"
+      },
+      value: "",
+      name: "Owner Type",
+      dataType: "array",
+      accessor: "ownerCode",
+      dependency: 'sector'
+    },
+    homestead: {
+      type: {
+        label: "Don't Filter",
+        value: "noFilter"
+      },
+      value: "",
+      name: "Homestead",
+      dataType: "array",
+      boolean: true,
+      accessor: "homestead"
+    },
+    useCode: {
+      type: {
+        label: "Don't Filter",
+        value: "noFilter"
+      },
+      value: "",
+      name: "useCode",
+      dataType: "array",
+      accessor: "useCode"
+    },
+    SchoolDistrict: {
+      type: {
+        label: "Don't Filter",
+        value: "noFilter"
+      },
+      value: "",
+      name: "School District",
+      dataType: "array",
+      accessor: "schoolDistrict"
+    },
+    Area: {
+      type: {
+        label: "Don't Filter",
+        value: "noFilter"
+      },
+      value: "",
+      name: "Area",
+      dataType: "array",
+      accessor: "municipality"
+    },
+
+
   }
 
 
