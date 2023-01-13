@@ -200,18 +200,43 @@ const PropertyRecords = ({filteredData: {count, list, savedFilters, activeFilter
 
   }
 
+  const bulkActions = [
+    
+    {
+      Action: 'Export to CSV',
+      icon: 'fas fa-file-csv',
+      function: (e) => exportToCSV(e)
+    }, 
+  ]
+
 
   //--- Bug Fix for filter Select CSS with Sticky Header ---//
   const [sticky, setSticky] = useState(true)
   useEffect(() => {
     setSticky(true)
   },[]) //run when main data filed is updated
+
+  const exportToCSV = async (data) => {
+    console.log('running esport CSV')
+    // const dataFormated = data.map(async record => {
+    //   let dataObj ={}
+    //   csvFormat.forEach(key => {
+    //     dataObj[key.label] = getData(record, key)    
+    //   })
+      
+    //   return dataObj
+    // })
+    // const promise = await Promise.all(dataFormated)
+    // exportCSV(promise)
+  }
+  
     
   return (
       <FilterWrapper
           dataModel='propertyRecord'
           filterFields={FILTERFIELDS}
           filterActive = {() => setSticky(!sticky)}
+          bulkActions = {bulkActions}
       >
       <div>
         Number of Records: {count}
