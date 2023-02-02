@@ -16,7 +16,7 @@ const propertyRecordsSchema = new mongoose.Schema({
             default: 1
         }
       },
-      ownerRecord: {
+      ownerRecord: {  //this is for versium phone scrape
         ran: {
           type: Boolean,
           default: false,
