@@ -53,6 +53,7 @@ export const fetchFilteredData = (model, data, label) => async dispatch => {
             dispatch({
             type: SET_LOADING
         })
+        console.log('running: ', model, data, label)
         const res = await axios.post(`/api/filteredData/loadFilter/${model}`, data);
         dispatch({
             type: SET_FILTER,

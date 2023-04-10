@@ -38,12 +38,13 @@ function createFilter(data, filterName) {
       }
     } else {
       //reformats and returns data model  
+      console.log(data[filterName].value, ' : ', data[filterName].dataType === 'number' ? Number(data[filterName].value) : 'not a number')
       return {
         field: data[filterName].accessor,
         subField: data[filterName].subAccessor,
         filterType: data[filterName].type.value,
         operator: data[filterName].type.operator,
-        value: typeof (data[filterName].value) === 'string' ? data[filterName].value : data[filterName].value.map((y) => y.value),
+        value: typeof (data[filterName].value) === 'string' ? data[filterName].dataType === 'number'? Number(data[filterName].value) : data[filterName].value : data[filterName].value.map((y) => y.value),
         secondValue: data[filterName].secondValue ? data[filterName].secondValue : ''
       }
     }
@@ -52,6 +53,7 @@ function createFilter(data, filterName) {
 //@desc
 function convertFiltersToQuery(filters) {
     //create string query 
+    console.log('filters: ', filters)
     const queryObj = {}
     filters.map((x) => {
         if (x.filterType === 'range') {

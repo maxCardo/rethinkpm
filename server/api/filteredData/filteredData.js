@@ -91,6 +91,8 @@ router.post('/loadFilter/:model', async (req, res) => {
         //console.log('PAGESIZE: ',PAGESIZE, req.body.page);
         const data = req.body.filters
         let filters = []
+        console.log('this is the data: ', data)
+        console.log(data.length)
         if(data.length) {
           filters = data
         } else {
