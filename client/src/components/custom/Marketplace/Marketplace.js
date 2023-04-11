@@ -22,6 +22,8 @@ import {checkBoxCheck} from '../../../util/commonFunctions'
 import FileDownload from 'js-file-download'
 import { afterMain } from '@popperjs/core';
 
+import {flagProperty} from '../../../actions/marketplace/marketplace'
+
 const FILTERFIELDS = {
   type: {
     type: {
@@ -304,6 +306,12 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
                         iconClass='fas fa-star'
                         variant='action-button'
                         onClickFunc={() => startRecommendationFlow([item])}
+            />
+            <IconButton placement='bottom'
+                        tooltipContent='Showcase Deal'
+                        iconClass='fas fa-flag'
+                        variant='action-button'
+                        onClickFunc={() => flagProperty(item._id)}
             />
             <IconButton placement='bottom'
                         tooltipContent='Blacklist Deal'
