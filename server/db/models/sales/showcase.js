@@ -11,23 +11,15 @@ const showcaseSchema = new mongoose.Schema({
         ref: 'salesListings',
     },
     status: {
-        type: String,
+        type: String, //active, rejected , lost , purchased
         required: true,
     },
     model_link: String, 
     history: [
         {
             type: {
-                //priceChange, statusUpdate, note, log etc
+                //note = info, log = automated from system 
                 type: String,
-            },
-            statusChange: {
-                to: String,
-                from: String,
-            },
-            priceChange: {
-                to: String,
-                from: String,
             },
             content: {
                 type: String,
