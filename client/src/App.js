@@ -30,7 +30,7 @@ import Dash from "./components/custom/Dash"
 import TestVerticalTable from './components/custom/TestVerticalTable';
 import PropertyRecords from './components/custom/PropertyRecords/PropertyRecords'
 import OwnerRecords from './components/custom/PropertyRecords/OwnerRecords'
-
+import ShowcaseRecords from './components/custom/Marketplace/showcase/showcase'
 
 
 const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
@@ -76,6 +76,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/offmarket' component={OffMarketList} apiKey={routeSettings.marketplace.streetViewApiKey} />
             <PrivateRoute exact path='/propertyRecords' component={PropertyRecords}/>
             <PrivateRoute exact path='/ownerRecords' component={OwnerRecords}/>
+            <PrivateRoute exact path='/showcase' component={ShowcaseRecords}/>
             <Route exact path='/playground' component={Playground} />
             <Route path='/vertical-table' component={TestVerticalTable} />
           </Switch>
