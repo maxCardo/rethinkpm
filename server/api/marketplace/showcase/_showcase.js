@@ -1,7 +1,7 @@
 
 const express = require('express')
 
-const Showcase = require('../../../db/models/sales/Showcase')
+const Showcase = require('../../../db/models/sales/ShowcaseList')
 
 
 
