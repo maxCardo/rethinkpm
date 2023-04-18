@@ -28,7 +28,7 @@ router.post('/test', async (req, res) => {
         const showcase = new Showcase(recObj)
         const rec = await showcase.save()
         console.log('saved record: ', rec)
-        res.status(200).send(rec)
+        res.status(200).send()
     } catch (err) {
         res.status(500).send(err)
     }

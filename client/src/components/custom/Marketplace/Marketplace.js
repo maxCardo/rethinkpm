@@ -22,7 +22,7 @@ import {checkBoxCheck} from '../../../util/commonFunctions'
 import FileDownload from 'js-file-download'
 import { afterMain } from '@popperjs/core';
 
-import {flagProperty} from '../../../actions/marketplace/marketplace'
+import {flagProperty} from '../../../actions/marketplace/showcase'
 
 const FILTERFIELDS = {
   type: {
