@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
-
 import IconButton from "../../../core/IconButton/IconButton";
 import Table from '../../../core/newTable/_Table'
+
+import {getShowcaseData} from '../../../../actions/marketplace/showcase'
 
 
 const ShowcaseRecords = () => {
@@ -90,14 +91,16 @@ const ShowcaseRecords = () => {
     }
   ]
 
-  
-
-
   //--- Bug Fix for filter Select CSS with Sticky Header ---//
   const [sticky, setSticky] = useState(true)
+  
   useEffect(() => {
     setSticky(true)
   },[]) //run when main data filed is updated
+
+  useEffect(() => {
+    getShowcaseData();
+  }, []);
 
  return(
     <div>

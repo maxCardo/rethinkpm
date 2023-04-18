@@ -12,14 +12,14 @@ const router = express.Router()
 
 
 // @route: GET /api/showcase/test
-// @desc: Filter the listings (pageSize functionality is not currently being utilized ny the front end)
+// @desc: save new flaged deal
 // @ access: Public * ToDo: update to make private
-router.post('/test', async (req, res) => {
+router.post('/flagdeal', async (req, res) => {
     try {
         console.log('testing api res on showcase deals: ', req.body)
         const recObj = {
             listName: 'testing',
-            dealId: req.body, 
+            deal_id: req.body.id, 
             status: 'active',
             history: []
         }
@@ -31,8 +31,23 @@ router.post('/test', async (req, res) => {
         res.status(200).send()
     } catch (err) {
         res.status(500).send(err)
+        console.error(err);
     }
     
+});
+
+// @route: GET /api/showcase/showcasedeals
+// @desc: get all showcase deals
+// @ access: Public * ToDo: update to make private
+router.get('/showcasedeals', async (req, res) => {
+    try {
+        console.log('testing api get showcase deals: ')
+        const deals = await Showcase.find().populate('deal_id')
+        console.log('all records: ', deals)
+        res.status(200).send(deals)
+    } catch (err) {
+        res.status(500).send(err)
+    }    
 });
 
 

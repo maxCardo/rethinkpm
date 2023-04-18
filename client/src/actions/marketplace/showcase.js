@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Alert } from "react-bootstrap";
 
 
 const config = { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } };
@@ -8,7 +7,7 @@ const config = { headers: { 'Content-Type': 'application/json', 'Accept': 'appli
 export const flagProperty = async (id) => {
 
     console.log('running function to flag peoperty from actions')
-    const res = await axios.post(`/api/marketplace/showcase/test`, {id}, config)
+    const res = await axios.post(`/api/marketplace/showcase/flagdeal`, {id}, config)
     console.log('res: ', res)
     if (res.status === 200) {
         alert('Record Saved')
@@ -18,3 +17,15 @@ export const flagProperty = async (id) => {
     }
 
 }
+
+export const getShowcaseData = async () => {
+
+    console.log('running get showcase data')
+    try {
+        const res = await axios.get('/api/marketplace/showcase/showcasedeals')
+        console.log('res: ', res)    
+    } catch (error) {
+        
+    }
+}
+
