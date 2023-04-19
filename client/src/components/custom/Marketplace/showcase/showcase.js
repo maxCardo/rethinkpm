@@ -6,18 +6,16 @@ import Table from '../../../core/newTable/_Table'
 import {getShowcaseData} from '../../../../actions/marketplace/showcase'
 
 
-const ShowcaseRecords = () => {
-
-    const list = []
+const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
 
   //---------- Data Maps --------------//
   const headers = [
     {
-      accessor: "propertyType",
+      accessor: "deal_id.propertyType",
       label: "useCode"
     },
     {
-      accessor: "city",
+      accessor: "deal_id.city",
       label: "Area"
     },
     {
@@ -25,21 +23,21 @@ const ShowcaseRecords = () => {
       label: "Address",
       render: (item) => (
           <div>
-            <p>{item.streetNumber} {item.streetName}</p>
+            <p>{item.deal_id.streetNumber} {item.deal_id.streetName}</p>
           </div>
       ),
       className: "Marketplace__address"
     },
     {
       label: 'Zip',
-      accessor: 'zipcode'
+      accessor: 'deal_id.zipcode'
     },
     {
-      accessor: 'bedrooms',
+      accessor: 'deal_id.bedrooms',
       label: 'Bed'
     },
     {
-      accessor: 'totalBaths',
+      accessor: 'deal_id.totalBaths',
       label: 'Bath'
     },
     {
@@ -94,9 +92,9 @@ const ShowcaseRecords = () => {
   //--- Bug Fix for filter Select CSS with Sticky Header ---//
   const [sticky, setSticky] = useState(true)
   
-  useEffect(() => {
-    setSticky(true)
-  },[]) //run when main data filed is updated
+  // useEffect(() => {
+  //   setSticky(true)
+  // },[]) //run when main data filed is updated
 
   useEffect(() => {
     getShowcaseData();
@@ -119,9 +117,9 @@ const ShowcaseRecords = () => {
 }
 
 const mapStateToProps = state => ({
-
+  showcase: state.showcase
 })
 
 
-export default connect(mapStateToProps, {})(ShowcaseRecords)
+export default connect(mapStateToProps, {getShowcaseData})(ShowcaseRecords)
 
