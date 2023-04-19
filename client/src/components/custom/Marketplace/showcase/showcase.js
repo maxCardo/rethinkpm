@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 import IconButton from "../../../core/IconButton/IconButton";
 import Table from '../../../core/newTable/_Table'
+import Loading from '../../../core/LoadingScreen/Loading';
 
 import {getShowcaseData} from '../../../../actions/marketplace/showcase'
 
@@ -100,7 +101,9 @@ const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
     getShowcaseData();
   }, []);
 
- return(
+ return loading ? (
+  <Loading />
+ ) : (
     <div>
       <div>
         Showcase Deals
