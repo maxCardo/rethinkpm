@@ -3,11 +3,13 @@ import {connect} from 'react-redux'
 import IconButton from "../../../core/IconButton/IconButton";
 import Table from '../../../core/newTable/_Table'
 import Loading from '../../../core/LoadingScreen/Loading';
+import DetailModal from '../DetailModal'
+import PropertyDetailsModal from '../PropertyDetailsModal';
 
-import {getShowcaseData} from '../../../../actions/marketplace/showcase'
+import {getShowcaseData, unflag} from '../../../../actions/marketplace/showcase'
 
 
-const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
+const ShowcaseRecords = ({getShowcaseData, unflag,  showcase: {list, loading}}) => {
 
   //---------- Data Maps --------------//
   const headers = [
@@ -53,8 +55,8 @@ const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
                         iconClass='fas fa-list'
                         variant='action-button'
                         onClickFunc={() => {
-                          //setIframeTarget(`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`);
-                          //setShowPropertyDetailsModal(true);
+                          setIframeTarget(`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.deal_id.listNumber}`);
+                          setShowPropertyDetailsModal(true);
                         }}
             />
             {/* <IconButton placement='bottom'
@@ -65,7 +67,7 @@ const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
                         href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
             /> */}
             
-            <IconButton placement='bottom'
+            {/* <IconButton placement='bottom'
                         tooltipContent='Input Listing Data'
                         iconClass='fas fa-plus'
                         variant='action-button'
@@ -76,14 +78,14 @@ const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
                         iconClass='fas fa-star'
                         variant='action-button'
                         //onClickFunc={() => startRecommendationFlow([item])}
-            />
+            /> */}
             <IconButton placement='bottom'
                         tooltipContent='Blacklist Deal'
                         iconClass='fas fa-trash'
                         variant='action-button'
                         btnClass='text-danger'
-                        needsConfirmation={true}
-                        //onClickFunc={() => setPropertyToBlackList(item._id)}
+                        //needsConfirmation={true}
+                        onClickFunc={() => unflag(item._id)}
             />
           </div>
       )
@@ -92,6 +94,10 @@ const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
 
   //--- Bug Fix for filter Select CSS with Sticky Header ---//
   const [sticky, setSticky] = useState(true)
+  const [showDetailModal, setShowDetailModal] = useState(false)
+  const [focusedProperty, setFocusedProperty] =  useState()
+  const [showPropertyDetailsModal, setShowPropertyDetailsModal] = useState(false)
+  const [iframeTarget, setIframeTarget] = useState('')
   
   // useEffect(() => {
   //   setSticky(true)
@@ -100,6 +106,16 @@ const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
   useEffect(() => {
     getShowcaseData();
   }, []);
+
+  
+  const startShowDetailFlow = (item) => {
+    console.log('item');
+    console.log(item.deal_id);
+    setFocusedProperty(item.deal_id)
+    //setLoading(true)
+    setShowDetailModal(true)
+    //setLoading(false)
+  }
 
  return loading ? (
   <Loading />
@@ -112,8 +128,18 @@ const ShowcaseRecords = ({getShowcaseData, showcase: {list, loading}}) => {
           <Table
             headers={headers}
             list = {list}
-            // handleClickRow={startShowDetailFlow}
+            handleClickRow={startShowDetailFlow}
             sticky = {sticky}
+          />
+          <DetailModal 
+            show={showDetailModal} 
+            data={focusedProperty} 
+            handleClose={() => setShowDetailModal(false)} 
+          />
+          <PropertyDetailsModal 
+            iframeTarget={iframeTarget} 
+            show={showPropertyDetailsModal}
+            handleClose={() => setShowPropertyDetailsModal(false)}
           />  
     </div>
   )
@@ -124,5 +150,5 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getShowcaseData})(ShowcaseRecords)
+export default connect(mapStateToProps, {getShowcaseData, unflag})(ShowcaseRecords)
 
