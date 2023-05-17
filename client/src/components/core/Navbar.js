@@ -75,12 +75,12 @@ const Navbar = ({auth: {isAuthenticated, loginInProgress}, logout}) => {
                   <span>Properties</span>
                 </Link>
             </li>
-            <li>
+            {/* <li>
                 <Link to='/ownerRecords'>
                   <MarketplaceIcon />
                   <span>Owners</span>
                 </Link>
-            </li>
+            </li> */}
             <li>
                 <Link to='/showcase'>
                   <MarketplaceIcon />
