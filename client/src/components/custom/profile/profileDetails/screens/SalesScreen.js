@@ -24,9 +24,7 @@ const SalesScreen = ({pastSales, activeProfile, profileType, loadProfileSales}) 
             setLoading(false)
         }
         fetchData()
-    }, [activeProfile])
-
-    console.log(propertiesSold);
+    }, [activeProfile, loadProfileSales, profileType])
 
     return (
         loading ? <Loading/> : <Fragment>

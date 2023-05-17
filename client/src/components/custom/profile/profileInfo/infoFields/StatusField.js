@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {updateStatus} from "../../../../../actions/profile";
 import PropTypes from "prop-types";
 import settings from '../../../../../settings';
+import IconButton from "../../../../core/IconButton/IconButton";
 
 const StatusField = ({updateStatus, data}) => {
 
@@ -26,7 +27,7 @@ const StatusField = ({updateStatus, data}) => {
     const lossInput = useRef();
 
     //ToDo: should we pull from common folder? utils? (utils.statusSchema currently was this data)
-     const agentStatus = theProfiles && theProfiles[profileType.current] && theProfiles[profileType.current]['statusOptions'];
+    const agentStatus = theProfiles && theProfiles[profileType.current] && theProfiles[profileType.current]['statusOptions'];
 
 
     const handleStatusChange = selectedOption => {
@@ -46,7 +47,7 @@ const StatusField = ({updateStatus, data}) => {
         //if status === 'notInterested' add lossReason to post
     };
 
-    useEffect( () => {
+    useEffect(() => {
         if (status !== formatStatus(data.status) && agent !== data._id) {
             setStatus(formatStatus(data.status));
             setAgent(data._id);
@@ -64,7 +65,6 @@ const StatusField = ({updateStatus, data}) => {
     }, [status, data.status, agent, data._id, data.profileType]);
 
 
-
     return (
         <Fragment key="status">
             <div className="statusField-container">
@@ -79,23 +79,32 @@ const StatusField = ({updateStatus, data}) => {
                     isSearchable={false}
                 />
                 {(!editable) ? (
-                    <button className='action-buttons__button singleFieldEdit'
-                            onClick={() => toggleEditable(true)}>
-                        <i className="fas fa-pencil-alt"></i>
-                    </button>
+                    <IconButton placement='bottom'
+                                tooltipContent='Edit status'
+                                iconClass='fas fa-pencil-alt'
+                                btnClass='singleFieldEdit'
+                                variant='action-button'
+                                onClickFunc={() => toggleEditable(true)}
+                    />
                 ) : (
                     <Fragment>
-                        <button className='action-buttons__button ab__confirm singleFieldEdit'
-                                onClick={() => setConfModal(true)}>
-                            <i className="fas fa-check"></i>
-                        </button>
-                        <button className='action-buttons__button ab__cancel singleFieldEdit'
-                                onClick={() => {
-                                    toggleEditable(false);
-                                    setStatus(formatedStatus)
-                                }}>
-                            <i className="fas fa-times"></i>
-                        </button>
+                        <IconButton placement='bottom'
+                                    tooltipContent='Confirm status change'
+                                    iconClass='fas fa-check'
+                                    btnClass='ab__confirm singleFieldEdit'
+                                    variant='action-button'
+                                    onClickFunc={() => setConfModal(true)}
+                        />
+                        <IconButton placement='bottom'
+                                    tooltipContent='Cancel change'
+                                    iconClass='fas fa-times'
+                                    btnClass='ab__cancel singleFieldEdit'
+                                    variant='action-button'
+                                    onClickFunc={() => {
+                                        toggleEditable(false);
+                                        setStatus(formatedStatus)
+                                    }}
+                        />
                     </Fragment>
                 )}
             </div>

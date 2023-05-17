@@ -1,0 +1,61 @@
+/*Icon button styling*/
+.action-buttons__button {
+    background: #fff;
+    color: #6f9dd4;
+    padding: 5px;
+    /* width: 30px;
+    height: 30px; */
+    /*Icon button transition for hover and focus mutations*/
+    transition: color 225ms, box-shadow 225ms;
+}
+/*box shadow on hover and focus*/
+.action-buttons__button:hover,
+.action-buttons__button:focus {
+    box-shadow: 1px 1px 8px rgba(0,0,0,.227);
+}
+/* color of icon in confirm change and cancel edit buttons*/
+.action-buttons__button.ab__cancel,
+.action-buttons__button.ab__confirm {
+    color: #fff;
+}
+/*background of cancel edit*/
+.action-buttons__button.ab__cancel {
+    background: #F44336;
+}
+/*background of confirm edit*/
+.action-buttons__button.ab__confirm {
+    background: #4CAF50;
+}
+/*darker when disabled*/
+.action-buttons__button.ab__confirm[disabled] {
+    background: #448947;
+    color: #ededed;
+}
+.action-buttons__button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.action-buttons__transparent.btn {
+    overflow: hidden;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #222;
+    background: transparent;
+    position: relative;
+}
+.action-buttons__transparent.btn:focus,
+.action-buttons__transparent.btn:active,
+.action-buttons__transparent.btn:focus:active,
+.action-buttons__transparent.btn:focus:active:hover {
+    outline: none;
+    border-color: transparent;
+    box-shadow: none;
+    background: transparent;
+    color: #222;
+}

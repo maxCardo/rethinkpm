@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import { loadProfileTableView, setActiveProfile, setFilter } from '../../../actions/profile'
 import axios from 'axios';
 import LoadingScreen from '../LoadingScreen/LoadingScreen'
-import TableView from '../TableView/TableView'
+import TableView from '../../core/TableView/TableView'
 import FilterModal from './profileList/modals/filterModel/FilterModal'
 import SaveFilterMod from './profileList/modals/saveFilterMod'
 
@@ -94,9 +94,9 @@ export class ProfileTableView extends Component {
   toggleTableType() {
     const actualType = this.state.tableType
     let nextType = 'tabbed'
-    if(actualType == 'tabbed') {
+    if(actualType === 'tabbed') {
       nextType = 'separated'
-    } else if(actualType == 'separated') {
+    } else if(actualType === 'separated') {
       nextType = 'select'
     }
     this.setState({tableType: nextType})
@@ -121,6 +121,8 @@ export class ProfileTableView extends Component {
           value: 'in',
           operator: '$in'
         },
+        // eslint-disable no-eval
+        // eslint-disable-next-line
         value: eval(this.props.settings.statusSelect.selectedQuery).map((status) => ({value: status}))
       }
     }

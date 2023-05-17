@@ -64,10 +64,15 @@ const buyerProsSchema = new mongoose.Schema({
     buyerType: String,
     inqListings:[
         {
-            listing: String,
+            address: String,
+            city: String,
+            state: String,
+            zip: String,
+            listingId: String,
             Date: {type: Date, default: new Date()}
         }
-    ]
+    ],
+    idxId: String
 })
 
 module.exports = mongoose.model('buyerPros', buyerProsSchema)

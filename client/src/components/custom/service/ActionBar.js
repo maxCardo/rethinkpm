@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Button} from 'react-bootstrap'
-import ProfileIcon from '../common/ProfileIcon'
+import ProfileIcon from '../../core/ProfileIcon'
 import ActionButtons from './ActionButtons'
 
 export class ActionBar extends Component {

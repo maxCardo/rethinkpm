@@ -1,0 +1,527 @@
+
+.ManageBuyers__check-group {
+    margin-bottom: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.Marketplace__DetailModal {
+    padding-left: 0 !important;
+}
+.Marketplace__DetailModal .modal {
+    overflow-y: hidden;
+}
+.Marketplace__DetailModal .modal-content {
+    margin-top: 0;
+    height: 100vh;
+}
+.Marketplace__DetailModal .VerticalTable > div {
+    max-height: 40vh;
+    overflow-y: auto;
+    margin: 20px auto;
+}
+.OwnedProperty {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    width: 100%;
+}
+.op__img-container {
+    max-width: 250px;
+}
+.op__details {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+.op__resultValue + p {
+    font-size: 22px;
+    line-height: 26px;
+}
+.OwnedProperty p {
+    margin-bottom: 0;
+}
+
+.op__box h4 {
+    margin-bottom: 0;
+}
+.op__box:nth-child(3) h4 {
+    text-align: center;
+    padding-left: 12px;
+}
+.opBox__double > div {
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    padding: 16px 0 0 0;
+}
+.op__details .op__box.opBox__double {
+    flex-grow: 1;
+    max-width: unset;
+    margin-left: 20px;
+}
+.op__details .op__box:nth-child(2){
+    width: 25%;
+    max-width: 250px;
+}
+.op__details .op__box {
+    width: 35%;
+    max-width: 300px;
+    text-align: center;
+}
+.op__estimateGain {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+}
+.op__userAvatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.op__userBox {
+    display: flex;
+    background: #fff;
+    padding: 12px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, .187);
+    position: relative;
+    min-width: 240px;
+}
+.op__userData {
+    margin-left: 10px;
+}
+
+.op__bigMoney {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.op__smCentered {
+    text-align: left;
+    font-size: 12px;
+    margin-bottom: 0;
+    margin-left: 30px;
+}
+p.sub {
+    font-size: 13px;
+    line-height: 15px;
+    font-weight: 600;
+}
+.Comps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-height: 54vh;
+    overflow-y: auto;
+    margin-top: -20px;
+    margin-left: auto;
+    padding: 20px 0 20px 20px;
+    scroll-behavior: smooth;
+}
+.Comps, .Map {
+    width: 49.5%;
+}
+.editComps__container .Comps{
+    width: 100%;
+}
+.Comps > li {
+    display: flex;
+    flex-direction: column;
+    width: 49%;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .22);
+    min-height: 240px;
+    position: relative;
+    color: #fff;
+    border-bottom: 4px solid #6f9dd4;
+}
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.Comps > li .Comp__details-container:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,.65);
+}
+.Comp__details-container {
+    padding: 12px;
+    position: relative;
+    background-position: top center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    flex-grow: 1;
+    cursor: pointer;
+    min-height: 220px;
+}
+.Comp__details {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    z-index: 2;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+}
+.Comp__details > span {
+    text-shadow: 0 1px 2px rgba(255, 255, 255, .45);
+}
+.Comp__details-address {
+    font-size: 13px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, .45);
+
+}
+.CompListing__details {
+    padding: 12px;
+    height: 0;
+    overflow-y: hidden;
+    z-index: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    transition: bottom 225ms, height 375ms, opacity 125ms;
+    display: flex;
+    flex-direction: column;
+}
+.Comp__details .Comp__details-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, .45);
+}
+.Comp__details-bar > span {
+    margin-right: 4px;
+    color: #fff;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 600;
+
+}
+.Comps > li .CompListing__details.open {
+    bottom: 0;
+    height: 100%;
+    z-index: 15;
+    background: rgba(55,55,55,.95);
+    opacity: 1;
+}
+.Comp__details-imgContainer {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.Comp__details-imgContainer img {
+    height: 192px;
+    width: auto;
+}
+.Comp__details-prices {
+    font-size: 18px;
+    line-height: 24px;
+    margin-top: 12px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, .45);
+}
+.Comp__details-prices > span {
+    font-size: 14px;
+}
+.Comps > li .table tr:hover {
+    background: #888;
+}
+.CompListing__details .table th,
+.CompListing__details .table td {
+    color: #fff;
+    width: 40%;
+    border: 1px solid #fff;
+}
+.CompListing__details .table td:nth-child(2) {
+    width: 60%;
+}
+.CompListing__details .VerticalTable > div {
+    margin: 0 0 0 0;
+}
+.CompListing__details .VerticalTable thead {
+    display: none;
+}
+.EditComp__card .action-buttons__button,
+.action-buttons__button.CardList__infoBtn  {
+    position: absolute;
+    z-index: 16;
+}
+.CardList__dislikeBtn.action-buttons__button,
+.CardList__infoBtn.action-buttons__button {
+    top: 5px;
+    right: 5px;
+}
+.CardList__likeBtn.action-buttons__button {
+    top: 5px;
+    right: 40px;
+}
+.CardList__doubleCheckBtn.action-buttons__button {
+    top: 5px;
+    right: 75px;
+}
+.CardList__mapBtn.action-buttons__button {
+    left: 5px;
+    top: 5px;
+}
+.CardList__compInfoBtn.action-buttons__button {
+    left: 85px;
+    top: 5px;
+}
+.CardList__galleryBtn.action-buttons__button {
+    left: 45px;
+    top: 5px;
+}
+
+.CardList__editBtn.action-buttons__button {
+    right: 150px;
+    bottom: 25px;
+}
+
+
+.listImage-container {
+    margin-right: 12px;
+}
+.Comp__details-footer {
+    color: #252525;
+    padding: 12px;
+}
+.Comp__details-footer p {
+    margin-bottom: 0;
+    font-size: 13px;
+    text-align: center;
+}
+
+.compDetails-modal {
+    display: block;
+    position: fixed;
+    z-index: 9999;
+    background: rgba(0,0,0,.33);
+}
+.Gallery__modal .slick-track {
+    display: flex;
+    flex-flow: row nowrap;
+    height: 50vh;
+}
+.Gallery__modal .slick-slide img {
+    height: 100% !important;
+    display: inline-block;
+    width: auto!important;
+}
+
+/*Property modal subnav*/
+.detailModal__tabs-container {
+    position: relative;
+    height: 100%;
+}
+.detailModal__tabs,
+.detailModal__tabs a.nav-item.nav-link {
+    color: #fff;
+    border-radius: 0;
+    font-size: .75em;
+}
+.detailModal__tabs .nav-item .nav-link {
+    background-color: transparent;
+    color: #252525;
+}
+.detailModal__tabs .nav-item .nav-link.active {
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    background: #fff;
+}
+.Marketplace__details .nav-tabs {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    background: transparent;
+    padding-top: 10px;
+    border-color: transparent;
+}
+.detailModal__tabs .nav-link.active,
+.detailModal__tabs .nav-link:hover,
+.detailModal__tabs .nav-link:focus {
+    outline: none;
+    border-bottom: 4px solid #2684ff;
+}
+.detailModal__tabs a.nav-item.nav-link.active {
+    background-color: #7bafed;
+    color: #fff;
+    border-radius: 0;
+    border-color: #fff;
+}
+.Marketplace__DetailModal .container-fluid.flex-row {
+    padding: 0 0 0 0;
+    display: flex;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+}
+.Marketplace__compReport-edit.Marketplace__DetailModal .editComps__container {
+    width: 80%;
+    background: #ededed;
+    box-shadow: 0px 0px 14px -5px inset rgba(0, 0, 0, .38);
+    padding-top: 20px;
+}
+.Marketplace__compReport-edit .Comps {
+    max-height: 77vh;
+    padding: 20px 20px 20px 20px;
+    justify-content: flex-start;
+}
+.Marketplace__compReport-edit .Comps > li {
+    width: calc(33.333% - 6px);
+    margin-right: 8px;
+}
+.Marketplace__compReport-edit .Comps > li:nth-child(3n) {
+    margin-right: 0;
+}
+.Marketplace__DetailModal .modal-body {
+    padding: 1rem 0;
+}
+.Gallery__modal .modal-footer {
+    margin-top: 20px;
+}
+.Gallery__modal .slick-next:before,
+.Gallery__modal .slick-prev:before {
+    font-size: 20px;
+    line-height: 1;
+    opacity: .75;
+    color: #252525;
+}
+.Gallery__modal .modal-dialog {
+    max-width: 90%;
+}
+.Gallery__modal .modal-content {
+    margin-top: 5%;
+    margin-bottom: 0;
+}
+.EditComp__card {
+    width: 100%;
+}
+.EditComp__card .Comp__details-imgContainer {
+    position: relative;
+}
+.EditComp__card .Comp__details {
+    padding: 10px;
+}
+.EditComp__card .Comp__details-bar,
+.EditComp__card .Comp__details span {
+    color: #000;
+}
+.EditComp__card .action-buttons__button {
+    width: 30px;
+    height: 30px;
+}
+.EditComp__card .action-buttons__button  i {
+    font-size: 16px !important;
+}
+.calcSidebar {
+    flex-grow: 1;
+    align-self: baseline;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 326px;
+    padding: 20px;
+}
+
+.userBox__comp {
+    min-width: 130px;
+    color: #252525;
+    position: absolute;
+    right: 12px;
+    max-height: 68px;
+    top: -40px;
+}
+.userBox__comp p {
+    margin-bottom: 0;
+}
+.userBox__comp img {
+    height: 50px;
+    width: 50px;
+}
+.userBox__comp .op__userData span {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 11px;
+}
+.cem__radioGroup,
+.cem__notesGroup,
+.cem__selectGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+.cem__radioGroup .btn.btn-primary {
+    z-index: 2;
+}
+.cem__selectGroup {
+    z-index: 15;
+    margin-top: 12px;
+    position: relative;
+}
+.cem__checkGroup {
+    margin: 12px 0;
+}
+.CompEdit__modal.modal {
+    overflow-y: hidden;
+}
+.CompEdit__modal .modal-content {
+    margin-top: 40px;
+}
+.CompEdit__modal label {
+    margin: 0 12px 0 0;
+}
+.CompEdit__modal .form-group {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+/* .action-buttons__button.selected {
+    box-shadow: 0 0 8px 2px rgba(63, 239, 63, 0.57);
+    color: rgb(63, 239, 63);
+} */
+
+.singleFieldEdit.CardList__likeBtn.selected {
+    box-shadow: 0 0 8px 2px rgba(63, 239, 63, 0.57);
+    color: rgb(63, 239, 63);
+}
+
+.singleFieldEdit.CardList__dislikeBtn.selected {
+    box-shadow: 0 0 8px 2px rgba(250, 87, 75, 0.57);
+    color: rgb(250, 87, 75);
+}
+
+@media (min-width: 1200px) {
+    .Marketplace__DetailModal .modal-xl {
+        transform: none;
+        max-width: 100%;
+        height: 100vh;
+        margin: 0 0 0 0;
+        max-height: 100vh;
+    }
+    .modal-open .Marketplace__DetailModal.modal {
+        overflow-y: hidden;
+    }
+}

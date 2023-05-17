@@ -15,14 +15,14 @@ const FilterModal = ({show, handleClose, settings:{filterFields, profileType},ge
       return () => {
         setState({})
       }
-    },[]);
+    },[getFilterOptions, profileType]);
 
 
     const onChange = (property,value ) => setState({ ...state, [property]: value})
 
     const onSubmit = (data, type) => {
         Object.keys(data).forEach((item) => {
-            if(`${data[item]['type']['value']}` === "in" && data[item]['value'] === "" || data[item]['value'].length === 0) {
+            if((`${data[item]['type']['value']}` === "in" && data[item]['value'] === "") || data[item]['value'].length === 0) {
                 data[item]['type'] = {label: "Don't filter", value: 'noFilter'};
             }
 
@@ -31,7 +31,7 @@ const FilterModal = ({show, handleClose, settings:{filterFields, profileType},ge
     };
 
     return (
-      <Modal size='xl' show={show} onHide={()=> {handleClose(); setState(filterFields)}}>
+      <Modal size='lg' show={show} onHide={()=> {handleClose(); setState(filterFields)}}>
         <Modal.Header closeButton>
           <Modal.Title>Create filter</Modal.Title>
         </Modal.Header>

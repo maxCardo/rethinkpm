@@ -9,6 +9,7 @@ import SaveFilterMod from './modals/saveFilterMod'
 import axios from 'axios'
 
 import {loadProfileList, loadSavedFilter, loadMoreDataProfileList, setFilter} from '../../../../actions/profile'
+import IconButton from "../../../core/IconButton/IconButton";
 
 
 const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, profileList, settings,activeFilter, setFilter, isFiltered }) => {
@@ -32,11 +33,11 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
       axios.get(`/api/profile/${profileType}/filters`).then((res) => {
         setSavedFilters(res.data)
       })
-    }, [])
+    }, [profileType])
 
     useEffect(() => {
         loadProfileList(profileType, selectedQuery)
-    }, [profileType])
+    }, [profileType, loadProfileList, selectedQuery])
 
     const loadNextPage = () => {
       loadMoreDataProfileList(profileType, selectStatus.selected.value, listPage + 1)
@@ -58,9 +59,9 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
             label: 'Filters',
             options: savedFilters.map((filter) => ({ value: filter._id, label: filter.name, filter: true, filterType: 'filter' }))
         })
-        setStatus({...selectStatus, options: optionsObj})  
+        setStatus(prevStatus => ({...prevStatus, options: optionsObj}))
       }
-    }, [audiences, savedFilters])
+    }, [audiences, savedFilters, options])
 
     const setListByStatus = (v) => {
         if(v.filter){
@@ -87,7 +88,6 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
       setFilter(filter, false)
       loadProfileList(profileType, selectedQuery)
     }
-    console.log(isFiltered)
 
     return profileList.loading ? <Loading/> :
         <Fragment>
@@ -99,19 +99,23 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
                 placeholder='Select Status'
                 value={selectStatus.selected}
             />
-            <div className="agent-list__search-container">
+            <div className="profile-list__search-container">
                 <input
-                    className='form-control agent-list__search-input'
+                    className='form-control profile-list__search-input'
                     tabIndex={0}
                     onChange={(e) => setSearchString( e.target.value)}
                     placeholder='Search'
                 />
-                <button className='agent-list__filter-icon' onClick={() => tglFilterMod(true)}>
-                    <i className="fas fa-filter"></i>
-                </button>
+                <IconButton placement='bottom'
+                            tooltipContent='Create filter'
+                            iconClass='fas fa-filter'
+                            btnClass='profile-list__filter-icon'
+                            variant='clean'
+                            fontSize={22}
+                            onClickFunc={() => tglFilterMod(true)}/>
             </div>
             {isFiltered ? (
-                <div className='agent-list__filtering-options-container'>
+                <div className='profile-list__filtering-options-container'>
                     <button onClick={clearFilter}>Clear filter</button>
                     <button onClick={() => tglSaveFltrMod(true)}>Save filter</button>
                 </div>
@@ -125,7 +129,6 @@ const ProfileList = ({loadProfileList,loadSavedFilter, loadMoreDataProfileList, 
                 hasMore={profileList.hasMore}
                 settings={settings}
             />
-            {searchString && (<a onClick={() => console.log('clcick')}> do not see the record you are </a>)}
             
             <FilterModal
                 show={showFilterMod}

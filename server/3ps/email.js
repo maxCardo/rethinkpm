@@ -1,11 +1,9 @@
-//comes from maintenance request app
-
+const sgMail = require('@sendgrid/mail') 
 const nodemailer = require('nodemailer');
-const {smtpAcct, smtpPass, testEmail} = require('./../config/creds')
+const {smtpAcct, smtpPass, testEmail, sendGridKey} = require('./../config/creds')
 const { availabilityLink } = require('./calandly');
 
-// make email less secure
-//https://myaccount.google.com/lesssecureapps?pli=1
+sgMail.setApiKey(sendGridKey);
 
 let transporter = nodemailer.createTransport({
     host: "smtpout.secureserver.net",
@@ -17,18 +15,17 @@ let transporter = nodemailer.createTransport({
     }
 });
 
+
 const sendEmail = (to, subject, body, html) => {
     let sendTo;
     process.env.NODE_ENV === 'production' ? (sendTo = to) : (sendTo = testEmail)
     let mailOptions = {
-        from: 'info@levanongrp.com',
+        from: 'adamp@fifthgrant.com',
         to: sendTo,
         subject: subject,
         text: body,
         html: html
     };
-
-    console.log(mailOptions)
 
     transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
@@ -59,6 +56,32 @@ const sendFirstEmail = (email, listing) => {
     sendEmail(email,subject,templet,html);
 }
 
+const sendRecomendationEmail = (property, buyer, customMessage) => {
+  let buyerEmail = buyer.email.filter((email) => email.isPrimary)[0]
+  if(!buyerEmail) {
+    buyerEmail = buyer.email[0]
+  }
+  const subject = `Property Recommendation`
+  const text = customMessage
+  const html = `
+    <p>${customMessage}</p>
+    <a href='http://cardo.idxbroker.com/idx/details/listing/d504/${property.listNumber}?bid=${buyer._id}&mode=recommend'>Property</a>
+  `
+  sendEmail(buyerEmail.address, subject, customMessage, html)
+}
+
+const sendGridEmail = (to, subject, text, html) => {
+
+    const msg = {
+        to,
+        from: 'adamp@fifthgrant.com',
+        subject,
+        text,
+        html,
+    };
+    sgMail.send(msg);    
+    
+}
 
 
-module.exports = { sendEmail, sendFirstEmail };
+module.exports = { sendEmail, sendFirstEmail, sendRecomendationEmail };

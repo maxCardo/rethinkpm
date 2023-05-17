@@ -7,7 +7,6 @@ import {
     LOAD_PROFILE_LIST,
     PROFILE_FILTER_OPTIONS,
     SET_FILTER,
-    SET_SAVED_FILTERS,
     PROFILE_PAST_SALES,
     START_LOADING_PROFILE_CHAT,
     START_LOADING_PROFILE,
@@ -20,15 +19,14 @@ import {
     STOP_LOAD_PROFILE_LIST_AND_TABLE,
     SET_PROFILE_TABLE_VIEW,
     RESET_PROFILE_INFO,
-    UPDATE_ACTIVE_PROFILE_CHAT, 
-    ALERT_SUCCESS, 
-    REMOVE_ALERT, 
-    ALERT_FAILURE, 
+    UPDATE_ACTIVE_PROFILE_CHAT,
+    ALERT_SUCCESS,
+    REMOVE_ALERT,
     TOGGLE_ADD_LEAD,
     UPDATE_PROFILE
 
 } from './type';
-import { Next } from 'react-bootstrap/PageItem';
+import {createErrorAlert} from './alert'
 
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
@@ -44,14 +42,7 @@ export const setActiveProfile = profile => async dispatch => {
             payload: profile
         })
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: "Server Error",
-                msg: "Something went wrong!",
-                location: "setActiveProfile malfunction"
-            }
-        });
+      dispatch(createErrorAlert(err.message, 'setActiveProfile action'))
     }
 };
 
@@ -87,14 +78,7 @@ export const loadProfileDefault = profileType => async dispatch => {
         });
     } catch (err) {
         console.log(err);
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: 'Server Error',
-                msg: 'Something Went Wrong',
-                location: 'loadProfileDefault malfunction'
-            },
-        });
+        dispatch(createErrorAlert(err.message, 'loadProfileDefault'))
     }
 };
 
@@ -114,6 +98,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
           value: 'in',
           operator: '$in'
         },
+        /* eslint-disable-next-line no-eval */
         value: eval(queryList).map((status) => ({value: status}))
       }
     }
@@ -141,14 +126,7 @@ export const loadProfileList = (profileType, queryList, pageNumber) =>async disp
     });
   } catch (err) {
     console.log(err);
-    dispatch({
-      type: ALERT_FAILURE,
-      payload: {
-          heading: 'Server Error',
-          msg: 'Could not get list at the moment',
-          location: "loadProfileList malfunction!"
-      },
-    });
+    dispatch(createErrorAlert(err.message, 'loadProfileList action'))
   }
 };
 
@@ -179,22 +157,12 @@ export const loadProfileTableView = (profileType, filters, cancelToken) => async
       return console.log('Cancelled by the user')
     }
     console.log(err);
-    dispatch({
-      type: ALERT_FAILURE,
-      payload: {
-          heading: "Server Error",
-          msg: "Could not load more data!",
-          location: "loadMoreDataProfileList malfunction"
-      },
-    });
+    dispatch(createErrorAlert(err.message, 'loadProfileTableView action'))
   }
 }
 
 export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => async dispatch => {
   try {
-    console.log(profileType)
-    console.log(queryList)
-    console.log(pageNumber)
     dispatch({
       type: LOAD_MORE_PROFILE_LIST,
     });
@@ -207,6 +175,7 @@ export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => a
           value: 'in',
           operator: '$in'
         },
+        // eslint-disable-next-line no-eval
         value: eval(queryList).map((status) => ({value: status}))
       }
     }
@@ -226,14 +195,7 @@ export const loadMoreDataProfileList = (profileType, queryList, pageNumber) => a
     })
   } catch (err) {
     console.log(err);
-    dispatch({
-      type: ALERT_FAILURE,
-      payload: {
-          heading: "Server Error",
-          msg: "Could not load more data!",
-          location: "loadMoreDataProfileList malfunction"
-      },
-    });
+    dispatch(createErrorAlert(err.message, 'loadMoreDataProfileList action'))
   }
 }
 
@@ -247,14 +209,7 @@ export const loadProfileSales = (profileType, id) => async dispatch => {
         });
     } catch (err) {
         console.log(err);
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                msg: "Something went wrong",
-                heading: "Server Error",
-                location: "loadProfileSales malfunction!"
-            },
-        });
+        dispatch(createErrorAlert(err.message, 'loadProfileSales action'))
     }
 };
 
@@ -267,11 +222,7 @@ export const tglAddPhoneMod = meh => async dispatch => {
         })
 
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {msg: 'could not open this modal'}
-        });
-
+      dispatch(createErrorAlert(err.message, 'tglAddPhoneMod action'))
     }
 }
 
@@ -299,13 +250,7 @@ export const addPhoneNumSubmit = (formData, id, profileType) => async dispatch =
             });
         })
         .catch(err => {
-            dispatch({
-                type: ALERT_FAILURE,
-                payload: {
-                    heading: 'Server error',
-                    msg: 'Could not update record'
-                }
-            });
+          dispatch(createErrorAlert(err.message, 'addPhoneNumSubmit action'))
         });
 
 }
@@ -328,13 +273,7 @@ export const updatePhone = (formData, id, profileType) => (dispatch) => {
             })
         })
         .catch(err => {
-            dispatch({
-                type: ALERT_FAILURE,
-                payload: {
-                    heading: 'Primary Phone Update',
-                    msg: 'Could not update record'
-                }
-            });
+          dispatch(createErrorAlert(err.message, 'updatePhone action'))
         });
 };
 
@@ -351,13 +290,7 @@ export const updateStatus = (formData, id, profileType) => (dispatch) => {
             });
         })
         .catch(err => {
-            dispatch({
-                type: ALERT_FAILURE,
-                payload: {
-                    heading: 'Status Update',
-                    msg: 'Could not update profile status'
-                }
-            });
+          dispatch(createErrorAlert(err.message, 'updateStatus action'))
         });
 };
 
@@ -370,10 +303,7 @@ export const tglAddEmailMod = action => async dispatch => {
         })
 
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {msg: 'could not open this modal'}
-        });
+      dispatch(createErrorAlert(err.message, 'tglAddEmailMod action'))
 
     }
 }
@@ -398,13 +328,7 @@ export const addEmailSubmit = (formData, id, profileType) => async dispatch => {
             });
         })
         .catch(err => {
-            dispatch({
-                type: ALERT_FAILURE,
-                payload: {
-                    heading: 'Email addition',
-                    msg: 'Could not add email address!'
-                }
-            });
+          dispatch(createErrorAlert(err.message, 'addEmailSubmit action'))
         });
 
 }
@@ -423,13 +347,7 @@ export const updateEmail = (formData, id, profileType) => (dispatch) => {
             });
         })
         .catch(err => {
-            dispatch({
-                type: ALERT_FAILURE,
-                payload: {
-                    heading: 'Email Update',
-                    msg: 'Could not update record'
-                }
-            });
+          dispatch(createErrorAlert(err.message, 'updateEmail action'))
         });
 };
 
@@ -457,14 +375,7 @@ export const submitFilterModal = (filters, profileType) => async dispatch => {
       });
     } catch (err) {
         console.log(err);
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: "Server error",
-                msg: "Something went wrong!",
-                location: "submitFilterModal malfunction"
-            },
-        });
+        dispatch(createErrorAlert(err.message, 'submitFilterModal action'))
     }
 }
 
@@ -485,15 +396,7 @@ export const getFilterOptions = (profileType) => async dispatch => {
         })
 
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: "Server error",
-                msg: "Something went wrong!",
-                location: "getFilterOptions malfunction"
-            }
-        });
-
+      dispatch(createErrorAlert(err.message, 'getFilterOptions action'))
     }
 }
 
@@ -501,19 +404,12 @@ export const getFilterOptions = (profileType) => async dispatch => {
 export const saveFilter = (data, type, profileType) => async dispatch => {
     try {
         if(type === 'audience') {
-          const res = await axios.post(`/api/profile/${profileType}/audiences`, data, config);
+          await axios.post(`/api/profile/${profileType}/audiences`, data, config);
         } else {
-          const res = await axios.post(`/api/profile/${profileType}/filters`, data, config);
+          await axios.post(`/api/profile/${profileType}/filters`, data, config);
         }
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: 'Action failed',
-                msg: 'Saving filter/audience unsuccessful',
-            }
-        });
-
+      dispatch(createErrorAlert(err.message, 'saveFilter action'))
     }
 }
 
@@ -547,13 +443,7 @@ export const loadSavedFilter = (id, profileType, filterType) => async dispatch =
 
     } catch (err) {
         console.log(err);
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: "Action failed",
-                msg: "Could not load filter"
-            },
-        });
+        dispatch(createErrorAlert(err.message, 'loadSavedFilter action'))
     }
 }
 
@@ -567,14 +457,7 @@ export const addNote = (data,id,profileType) => async dispatch =>{
         })
 
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: "Action failed",
-                msg: "Could not add note!",
-                location: "addNote malfunction"
-            }
-        });
+      dispatch(createErrorAlert(err.message, 'addNote action'))
     }
 };
 
@@ -591,38 +474,22 @@ export const getActiveChat = (chatOwner) => async dispatch =>{
         })
         
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: "Action failed",
-                msg: "Could not get active chat",
-                location: "getActiveChat malfunction",
-                status: err
-            }
-        })
+      dispatch(createErrorAlert(err.message, 'getActiveChat action'))
     }
 }
 
 //send chat from UI
 export const sendChat = (chatOwner, data) => async dispatch => {
     try {
-        console.log(chatOwner)
         const res = await axios.post(`/api/comms/profile/chat/${chatOwner}`, data, config)
-        console.log('res: ', res);
+
         dispatch({
             type: UPDATE_ACTIVE_PROFILE_CHAT,
             payload: res.data
         })
 
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: "Action failed",
-                msg: "Could not send message",
-                location: "sendChat malfunction",
-            }
-        })
+      dispatch(createErrorAlert(err.message, 'sendChat action'))
     }
 }
 
@@ -634,14 +501,7 @@ export const receiveSMS = (chat) => async dispatch =>{
         })
 
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {
-                heading: "Action failed",
-                msg: "Could not receive text message",
-                location: "receiveSMS malfunction",
-            }
-        })
+      dispatch(createErrorAlert(err.message, 'receiveSMS action'))
     }
 }
 
@@ -659,10 +519,7 @@ export const tglAddLeadMod = meh => async dispatch => {
         })
 
     } catch (err) {
-        dispatch({
-            type: ALERT_FAILURE,
-            payload: {msg: 'could not open this modal'}
-        });
+      dispatch(createErrorAlert(err.message, 'tglAddLeadMod action'))
 
     }
 }
@@ -674,7 +531,6 @@ export const addLeadSubmit = (formData, profileType) => async dispatch => {
     axios.post(`/api/profile/${profileType}/addLead`, formData, config)
         .then((res) => {
             const data = { ...res.data, profileType }
-            console.log(res.data);
 
             dispatch({
                 type: SET_ACTIVE_PROFILE,
@@ -694,13 +550,8 @@ export const addLeadSubmit = (formData, profileType) => async dispatch => {
             });
         })
         .catch(err => {
-            dispatch({
-                type: ALERT_FAILURE,
-                payload: {
-                    heading: 'Server error',
-                    msg: 'Could not add record'
-                }
-            });
+          dispatch(createErrorAlert(err.message, 'addLeadSubmit action'))
         });
 
 }
+

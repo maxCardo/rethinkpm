@@ -61,12 +61,10 @@ userSchema.pre('save', async function(next) {
 
 //Get Auth Token
 userSchema.methods.getToken = async function () {
-  console.log('token request');
   const user = this;
   const token = jwt.sign({_id: user._id.toString()},process.env.JWT_SECRET);
   user.tokens = user.tokens.concat({token});
   await user.save()
-  console.log('token:', token);
   return token;
 }
 

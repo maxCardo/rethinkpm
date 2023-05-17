@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import {login} from '../../actions/auth';
 import {loadUser} from '../../actions/auth';
+import BeatLoader from "react-spinners/BeatLoader";
 
 
 const Login = ({login,loadUser, isAuthenticated}) => {
@@ -13,12 +14,15 @@ const Login = ({login,loadUser, isAuthenticated}) => {
     }, [loadUser]);
 
     const [formData, setFormData] = useState({email:'', password:''});
+    const [loading, setLoading] = useState(false)
     const {email, password}= formData;
     const onChange = async(e) => setFormData({...formData, [e.target.name]: e.target.value});
 
     const onSubmit = async (e) => {
+        setLoading(true)
         e.preventDefault();
-        login(email, password);
+        await login(email, password);
+        setLoading(false)
     }
     
     //Redirect if logged in
@@ -36,6 +40,7 @@ const Login = ({login,loadUser, isAuthenticated}) => {
                         type="email"
                         placeholder="Email Address"
                         name="email"
+                        autoComplete='username'
                         value={email}
                         onChange={e => onChange(e)}
                         required
@@ -47,12 +52,21 @@ const Login = ({login,loadUser, isAuthenticated}) => {
                         type="password"
                         placeholder="Password"
                         name="password"
+                        autoComplete='current-password'
                         value={password}
                         onChange={e => onChange(e)}
                         minLength="6"
                     />
                 </div>
-                <input type="submit" className="btn btn-primary" value="Login" />
+                {loading ?
+                  <BeatLoader
+                    size={6}
+                    color={"#4285F4"}
+                    loading={true}
+                  />
+                  :
+                  <input type="submit" className="btn btn-primary" value="Login" />
+                }
             </form>
             <p className="my-1">
                 {/* Dont have an account? <Link className = 'btn' to="/register">Sign Up</Link> */}

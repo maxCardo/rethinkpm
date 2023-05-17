@@ -56,7 +56,8 @@ export default function (state = initialState, action) {
             profileList: state.profileList,
             filterOptions: state.filterOptions,
             activeFilter:state.activeFilter,
-            isFiltered: state.isFiltered
+            isFiltered: state.isFiltered,
+            activeProfile: state.activeProfile
           };
         case START_LOADING_PROFILE:
           return {
@@ -229,14 +230,9 @@ export default function (state = initialState, action) {
                 success: '',
             }
         case UPDATE_PROFILE:
-          console.log(payload)
           const profileList = state.profileList.list.slice()
-          console.log(profileList)
           const updatedProfileList = profileList.map(profile => {
-            console.log(profile._id)
-            console.log(payload._id)
             if(profile._id === payload._id) {
-              console.log('Matches one')
               return payload
             }
             return profile

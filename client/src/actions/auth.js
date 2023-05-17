@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_IN_PROGRESS, REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
-import { setAlert } from './alert';
+import {createErrorAlert} from './alert'
 
 //Load User
 export const loadUser = () => async dispatch => {
@@ -10,7 +10,6 @@ export const loadUser = () => async dispatch => {
         })
         const res = await axios.get('/api/users');
         if (!res.data) {
-            console.log('no user found')
             return dispatch({
                 type: AUTH_ERR0R
             })
@@ -38,18 +37,16 @@ export const login = (email, password) => async dispatch => {
 
     try {
         const res = await axios.post('/api/users/login', body, config);
-        console.log(res)
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
         });
     } catch (err) {
-        console.log(err);
         let errors = err.response.data.errors
-        console.log(errors);
 
         if (errors) {
-            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')))
+          console.log(errors)
+            errors.forEach(error => dispatch(createErrorAlert(error.msg, 'login')))
         }
         dispatch({
             type: LOGIN_FAIL
@@ -64,7 +61,6 @@ export const logout = () => async dispatch => {
         await axios.post('/api/users/logout');
         dispatch({type:LOGOUT});
     } catch (err) {
-        console.log('fire eroor on logout')
         console.error(err);
         
         // const errors = err.response.data.errors
@@ -76,8 +72,9 @@ export const logout = () => async dispatch => {
 }
 
 
-//not in play commented out api call 
+// TODO: comment was outdated, remove eslint comment when adding the post
 export const register = ({name, email,phone, password}) => async dispatch =>{
+    /* eslint-disable no-unused-vars*/
     const body = JSON.stringify({name, email,phone, password});
     const config = {headers:{'Content-Type': 'application/json'}}
 
@@ -91,11 +88,10 @@ export const register = ({name, email,phone, password}) => async dispatch =>{
        })
        
     } catch (err) {
-        console.log(err)
         const errors = err.response.data.errors;
 
         if (errors) {
-            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')))
+            errors.forEach(error => dispatch(createErrorAlert(error, 'login')))
         }
 
         dispatch({

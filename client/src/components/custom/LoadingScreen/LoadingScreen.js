@@ -19,7 +19,6 @@ export class LoadingScreen extends Component {
     if(this.props.loading) {
       if(!this.interval) {
         this.interval = setInterval(() => {
-          console.log(this.state)
           this.setState((prevState) => ({phrase: phrases[prevState.phraseIndex] ? phrases[prevState.phraseIndex] : prevState.phrase, phraseIndex: prevState.phraseIndex+1}))
         }, 5000)
       }

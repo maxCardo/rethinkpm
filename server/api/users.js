@@ -11,7 +11,7 @@ router.use(useUnless(auth, ['/', '/login']))
 
 // @route: Post /api/user;
 // @desc: create new user
-// @ access: Public
+// @ access: Public1
 router.post('/', async(req,res) => {
   try {
     const user =  await new User(req.body);

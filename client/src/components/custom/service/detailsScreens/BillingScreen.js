@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
-import Table from '../../Table'
+import Table from '../../../core/Table'
 import './screens.css'
 
 export class BillingScreen extends Component {

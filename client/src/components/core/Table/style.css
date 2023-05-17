@@ -1,0 +1,62 @@
+.table-with-search__container {
+  padding-top: 20px
+}
+
+.table-with-search__controls-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.table-with-search__search-input {
+  width: 200px;
+}
+
+.table-with-search__add-button {
+  background-color: palegreen;
+}
+
+.table-striped tbody tr:nth-of-type(odd):hover {
+  background-color: #DDD;
+}
+
+
+.table-striped thead tr:nth-of-type(odd):hover {
+  background-color: #FFF;
+}
+
+
+.table-scrollable tbody{
+  overflow: auto;
+  max-height: 400px;
+  width: 100%;
+  display: block;
+}
+
+.table-scrollable thead{
+  width: 100%;
+  display: block;
+}
+
+.table-scrollable {
+  display: block;
+  width: 100%;
+}
+
+.table-scrollable tr {
+  display: block;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+}
+
+.table-scrollable td, .table-scrollable th {
+  flex: 1;
+  text-align: center;
+}
+
+.table-scrollable th div {
+  display: block !important;
+  text-align: center;
+}

@@ -2,12 +2,13 @@ const express = require('express');
 const auth = require('../../middleware/auth')
 const mongoose = require('mongoose')
 
-const Agent = require('../../db/models/sales/agent')
+const Agent = require('../../db/models/prospects/agentPros/agent')
 const Office = require('../../db/models/sales/office')
-const FilterModel = require('../../db/models/sales/filters')
-const AudienceModel = require('../../db/models/sales/audience')
+const FilterModel = require('../../db/models/prospects/filters')
+const AudienceModel = require('../../db/models/prospects/audience')
 const singleFamilySalesModel = require('../../db/models/sales/singleFamilySales')
 const multiSalesModel = require('../../db/models/sales/multiSales')
+const NoteModel = require('../../db/models/common/Note')
 
 
 //filter options: refactor to get these from api
@@ -24,9 +25,7 @@ router.use(auth)
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
-        const record = await Agent.findOne().populate('notes.user, office')
-        const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
-        record.notes = notesPopulated
+        const record = await Agent.findOne().populate('office')
         res.status(200).send(record);
     } catch (error) {
         console.error(error);
@@ -138,7 +137,6 @@ router.put("/addEmail/:id", async (req, res) => {
     try {
         let { address, isPrimary } = req.body
         let agent = await Agent.findById(req.params.id).populate('office')
-        console.log(req.body);
         let newEmails = [];
         if (req.body.isPrimary) {
             newEmails = agent.email && agent.email.map((item) => {
@@ -367,7 +365,6 @@ router.post('/audiences', async (req,res) => {
   const {name, filters, audience} = req.body
   const audienceData = new AudienceModel({name, filters, audience, profileType: 'agentPros'});
   await audienceData.save()
-  console.log('Audience saved')
   res.json({result: 'ok'})
 })
 
@@ -388,7 +385,6 @@ router.post('/filters', async (req,res) => {
   const {name, filters} = req.body
   const filter = new FilterModel({name, filters,  profileType: 'agentPros'});
   await filter.save()
-  console.log('Filter saved')
   res.json({result: 'ok'})
 })
 

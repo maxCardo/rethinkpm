@@ -1,0 +1,127 @@
+/* does not do much , just changes shade in text area on select */
+.stringField__group input[disabled],
+.numberField__group input[disabled] {
+  background: rgb(242, 242, 242);
+  border-color: hsl(0,0%,90%);
+}
+
+/* CUSTOM CHECKBOX */
+.checkbox {
+    --background: #fff;
+    --border: #D1D6EE;
+    --border-hover: #BBC1E1;
+    --border-active: #1E2235;
+    --tick: #fff;
+    position: relative;
+  }
+  .checkbox input,
+  .checkbox svg {
+    width: 21px;
+    height: 21px;
+    display: block;
+  }
+  .checkbox input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    outline: none;
+    background: var(--background);
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: box-shadow 0.3s;
+    box-shadow: inset 0 0 0 var(--s, 1px) var(--b, var(--border));
+  }
+  .checkbox input:hover {
+    --s: 2px;
+    --b: var(--border-hover);
+  }
+  .checkbox input:checked {
+    --b: var(--border-active);
+  }
+  .checkbox svg {
+    pointer-events: none;
+    fill: none;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: var(--stroke, var(--border-active));
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 21px;
+    height: 21px;
+    transform: scale(var(--scale, 1)) translateZ(0);
+  }
+  .checkbox.path {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
+  }
+  .checkbox.path input {
+    margin: 0 0 0 0;
+  }
+  .checkbox.path input:checked {
+    --s: 2px;
+    transition-delay: 0.4s;
+  }
+  .checkbox.path input:checked + svg {
+    --a: 16.1 86.12;
+    --o: 102.22;
+  }
+  .checkbox.path svg {
+    stroke-dasharray: var(--a, 86.12);
+    stroke-dashoffset: var(--o, 86.12);
+    transition: stroke-dasharray 0.6s, stroke-dashoffset 0.6s;
+  }
+  .checkbox.bounce {
+    --stroke: var(--tick);
+  }
+  .checkbox.bounce input:checked {
+    --s: 11px;
+  }
+  .checkbox.bounce input:checked + svg {
+    animation: bounce 0.4s linear forwards 0.2s;
+  }
+  .checkbox.bounce svg {
+    --scale: 0;
+  }
+  
+  /* END OF CUSTOM CHECKBOX */
+
+  /* does not seem to do anything */
+  .filter-modal__body form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile-list__search-input:focus,
+  .profile-list__search-input:active,
+  .numberField__group input:not([type="checkbox"]):focus,
+  .numberField__group input:not([type="checkbox"]):active,
+  .modal input[type="text"]:focus,
+  .modal input[type="text"]:active {
+        border: 2px solid #007bff;
+        margin-right: 0;
+  }
+
+  .numberField__group .col-1 {
+        display: flex;
+        align-items: center;
+    }
+
+    .filter-modal__body form {
+      display: flex;
+      flex-direction: column;
+    }
+    
+
+
+
+
+
+  
+

@@ -2,9 +2,10 @@ const express = require('express');
 const auth = require('../../middleware/auth')
 const RentPros = require('../../db/models/prospects/RentLeads/RentPros')
 const RentInq = require('../../db/models/prospects/RentLeads/RentInq')
-const FilterModel = require('../../db/models/sales/filters')
-const AudienceModel = require('../../db/models/sales/audience')
-const Note = require('../../db/models/common/Note')
+const FilterModel = require('../../db/models/prospects/filters')
+const AudienceModel = require('../../db/models/prospects/audience')
+const NoteModel = require('../../db/models/common/Note')
+
 
 
 //filter options: refactor to get these from api
@@ -34,7 +35,6 @@ router.post('/', async (req, res) => {
         // validate phone number
         //if (phoneNumber) pros.phone.phoneType = await validateNum(phoneNumber);
 
-        console.log(phoneNumber);
 
         if (!pros) {
             pros = await new prosModel({
@@ -64,7 +64,6 @@ router.post('/', async (req, res) => {
             })
         };
 
-        console.log(inq);
         await inq.save();
         await pros.save();
         res.status(200).send(inq);
@@ -112,7 +111,7 @@ router.post("/addLead",auth, async (req, res) => {
 // @ access: Public * ToDo: update to make private
 router.get('/', async (req, res) => {
     try {
-        const record = await model.findOne().populate('prospect notes.user')
+        const record = await model.findOne().populate('prospect')
         const notesPopulated = await  Note.populate(record.notes, {path: 'user', select: 'name'})
         record.notes = notesPopulated
         const clone = { ...record.prospect._doc, ...record._doc }
@@ -329,9 +328,6 @@ router.post('/filter', async (req, res) => {
             delete clone.prospect
             return clone
         })
-        record.forEach((inq) => {
-          console.log(inq.notes[0])
-        } )
 
 
         record = await Promise.all(record.map(async (inquiry) => {
@@ -413,7 +409,6 @@ router.post('/audiences', async (req,res) => {
   const {name, filters, audience} = req.body
   const audienceData = new AudienceModel({name, filters, audience, profileType: 'rentPros'});
   await audienceData.save()
-  console.log('Audience saved')
   res.json({result: 'ok'})
 })
 
@@ -434,7 +429,6 @@ router.post('/filters', async (req,res) => {
   const {name, filters} = req.body
   const filter = new FilterModel({name, filters,  profileType: 'rentPros'});
   await filter.save()
-  console.log('Filter saved')
   res.json({result: 'ok'})
 })
 

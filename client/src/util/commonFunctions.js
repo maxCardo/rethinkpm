@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 export const filterData = function (data, filterString, headers, level = 0) {
   const newData = data.filter((elem) => {
@@ -91,4 +91,41 @@ export const formatMoney = (data) => {
   return (new Intl.NumberFormat('en-US',
       {style: 'currency', currency: 'USD'}
   ).format(data))
+}
+
+export const  useWindowSize = () => {
+  // Initialize state with undefined width/height so server and client renders match
+  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+  const [windowSize, setWindowSize] = useState({
+    width: undefined,
+    height: undefined,
+  });
+
+  useEffect(() => {
+    // Handler to call on window resize
+    function handleResize() {
+      // Set window width/height to state
+      /*eslint-disable*/
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Remove event listener on cleanup
+  }, []); // Empty array ensures that effect is only run on mount
+
+  return windowSize;
+}
+
+export const formatRange = (value) => {
+  const firstNumber = value && value.split(" - ")[0] && value.split(" - ")[0]
+  const secondNumber = value && value.split(" - ")[0] && value.split(" - ")[1]
+  return formatMoney(firstNumber) + ' - ' + formatMoney(secondNumber)
 }

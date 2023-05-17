@@ -52,7 +52,6 @@
   background: #f4f4f4;
   margin: 10% auto;
   padding: 20px;
-  width: 70%;
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2),0 7px 20px 0 rgba(0, 0, 0, 0.17);
   animation-name:modalopen;
   animation-duration:1s;
@@ -90,7 +89,14 @@
 }
 
 /* Global Styles */
-img
+.checkbox.path input[readonly] {
+  box-shadow: inset 0 0 0 2px gray;
+}
+input[readonly] + svg {
+  cursor: unset;
+  stroke: gray;
+  border: gray;
+}
 
 :root {
   --primary: #17a2b8;
@@ -134,7 +140,7 @@ img {
   /* background: #28a745; */
   margin: auto;
   overflow: auto;
-  padding-top: 8vh;
+  padding-top: 92px;
   /* new */
   height: 100vh;
 }
@@ -220,7 +226,9 @@ img {
 .my-3 {
   margin: 3rem 0;
 }
-
+.fade.modal {
+  background: rgba(0,0,0,.115);
+}
 .btn {
   display: inline-block;
   background: #f4f4f4;
@@ -232,6 +240,7 @@ img {
   margin-right: 0.5rem;
   transition: opacity 0.2s ease-in;
   outline: none;
+  position: relative;
 }
 
 .badge {
@@ -754,7 +763,7 @@ table th {
 }
 
 .table th, .table td {
-  padding: 5px;
+  padding: 0.3em;
   vertical-align: middle;
 }
 .agentsSearchContainer {
@@ -776,6 +785,11 @@ table th {
   white-space: nowrap;
   margin: 3px;
 }
+
+label {
+  cursor: pointer;
+}
+
 /*REMOVE FOCUS OUTLINE*/
 textarea:focus,
 textarea.form-control:focus,
@@ -804,7 +818,7 @@ input[type=number]:focus,
   justify-content: center;
   align-items: center;
   background: rgba(0,0,0,.19);
-  z-index: 20;
+  z-index: 99999;
 }
 .alert-container .alert {
   min-width: 290px;
@@ -819,4 +833,89 @@ input[type=number]:focus,
 
 .relative {
   position: relative;
+}
+.navbar {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  height: 92px;
+}
+.navbar h2 {
+  width: 100%;
+  background: #f7f7f7;
+  height: 26px;
+  font-size: 22px;
+  color: #000;
+}
+
+.navbar h2 a {
+  color: #000;
+  font-size: 16px;
+}
+.navbar .trigger {
+  padding: 12px;
+  font-size: 22px;
+}
+.navbar ul {
+  align-self: flex-start;
+  height: calc(100% - 26px);
+  width: 100%;
+}
+.navbar li a {
+  display: flex;
+  flex-direction: column;
+  min-width: 80px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.45rem 0 0.45rem;
+}
+.navbar li a span {
+  font-size: 12px;
+}
+.navbar li a:hover {
+  text-decoration: none;
+}
+.navbar svg {
+  width: 36px;
+  height: 36px;
+  color: #fff;
+  fill: #fff;
+  margin-bottom: 4px;
+}
+.navbar ul li i {
+  font-size: 36px;
+  align-self: center;
+  margin-bottom: 4px;
+}
+
+.navbar ul li:last-child {
+  margin-left: auto;
+}
+
+.agentIcon {
+  margin-left: 10px;
+}
+.servicesIcon {
+  margin-left: 12px;
+}
+.logOutIcon {
+  font-size: 34px;
+  margin-bottom: 6px;
+  margin-left: 4px;
+}
+
+.page-item.active .page-link {
+  background: #6f9dd4;
+  border-color: #6f9dd4;
+}
+/* Changing Defaults */
+.btn-primary,
+.bg-primary,
+.badge-primary,
+.alert-primary {
+  background: #6f9dd4;
+  color: #fff;
+}
+.btn.active.btn-primary {
+ background: #364d69;
 }
