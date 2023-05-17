@@ -39,6 +39,7 @@ app.use('/api/rent_lead', require('./api/rentLead'));
 app.use('/api/comms', require('./api/comms'));
 app.use('/api/profile', require('./api/profile/profile'));
 app.use('/api/marketplace', require('./api/marketplace/_marketplace'));
+app.use('/api/filteredData', require('./api/filteredData/filteredData'))
 
 //Socket.io socket and API calls
 require('./socket/chat')(io);

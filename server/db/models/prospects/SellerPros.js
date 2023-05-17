@@ -6,7 +6,7 @@ const sellerProsSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    userType: String, //listLead, wholesaler ,directBuyLead  
+    userType: String, //listLead, wholesaler ,directBuy,    
     firstName: String,
     lastName: String,
     fullName: String,

@@ -1,0 +1,59 @@
+  /* placed filter icons on end right */
+  .searchContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
+    position: relative;
+    
+  }
+
+  /* not sure what this did */
+  .agentsSearchContainer {
+    justify-content: space-between !important;
+  }
+  
+  .marketplace__filter-icons {
+    display: flex;
+  }
+  
+  .marketplace__filter-icons button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    color: #6f9dd4;
+    border-color: #fff;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.12), 1px 1px 2px rgba(0,0,0,0.24);
+    border-style: solid;
+    outline: none;
+    padding: 0 20px;
+    transition: color 250ms, box-shadow 250ms;
+    height: calc(1.5em + 0.75rem + 2px);
+    margin: 10px 10px 10px 5px;
+  }
+
+  .marketplace__filter-select {
+    width: 200px;
+    margin: 10px;
+    position: relative;
+  }
+
+/*blue border when focused or active on search input so it looks awesome like status select*/
+.form-control.searchInput:focus,
+.form-control.searchInput:active 
+{
+  box-shadow: 0px 0px 0 1px #2684ff !important;
+  border: 1px solid #2684ff;
+}
+
+.form-control {
+  margin: 10px;
+  width: 300px
+}
+
+
+
+
+
+  
+  
