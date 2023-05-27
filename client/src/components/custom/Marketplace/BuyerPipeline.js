@@ -11,7 +11,6 @@ import {Form } from "react-bootstrap";
 import IconButton from "../../core/IconButton/IconButton";
 import PropertyDetailsModal from "./PropertyDetailsModal";
 import {checkBoxCheck, useWindowSize} from "../../../util/commonFunctions";
-import { afterMain } from '@popperjs/core';
 import DetailModal from './DetailModal'
 
 const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal, syncManagedBuyer, pipeline:{buyerPipeline, loading}}) => {
@@ -59,7 +58,8 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal, s
   const checkBox = checkBoxCheck();
 
   const startShowDetailFlow = (item) => {
-    console.log(item.deal);
+    console.log("item.deal: ", item.deal);
+    console.log("item: ", item);
     setFocusedProperty(item.deal);
     setShowDetailModal(true);
   };
@@ -195,9 +195,10 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal, s
                 id='street-view-tooltip'
                 iconClass='fas fa-eye'
                 variant='action-button'
-                onClickFunc={() =>
-                  openStreetView(item.deal.streetName, item.deal.streetNumber)
-                }
+                onClickFunc={() => {
+                  console.log("item.deal: ", item.deal)
+                  openStreetView(item.deal.streetName, item.deal.streetNumber, item.deal.zipcode)
+                }}
               />
             )}
             {item.status && (
@@ -262,7 +263,7 @@ const BuyerPipeline = ({openStreetView, profile, getBuyerPipeline, updateDeal, s
       <StreetViewModal
         show={showStreetViewModal}
         handleClose={() => setShowStreetViewModal(false)}
-        apiKey='AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o'
+        apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
       />
       <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal} handleClose={() => setShowPropertyDetailsModal(false)} />
       <DetailModal show={showDetailModal} data={focusedProperty} handleClose={() => setShowDetailModal(false)}  addUnitSchedule={addUnitSchedule} modifyUnitSchedule={modifyUnitSchedule} deleteUnitSchedule={deleteUnitSchedule}/>

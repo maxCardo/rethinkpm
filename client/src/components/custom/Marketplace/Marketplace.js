@@ -293,7 +293,10 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
                             id='street-view-tooltip'
                             iconClass='fas fa-eye'
                             variant='action-button'
-                            onClickFunc={() => openStreetView(item.streetName, item.streetNumber)}
+                            onClickFunc={() => {
+                              console.log("item on openStreetView: ", item)
+                              openStreetView(item.streetName, item.streetNumber, item.zipcode)
+                            }}
                 />)}
             <IconButton placement='bottom'
                         tooltipContent='Input Listing Data'
@@ -616,8 +619,6 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
       }
     }
 
-    console.log('resized');
-
     if(!listings.length) {
       populateTable()
     }
@@ -734,7 +735,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
         <StreetViewModal
             show={showStreetViewModal}
             handleClose={() => setShowStreetViewModal(false)}
-            apiKey="AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o" />
+            apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} />
         <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal}
                               handleClose={() => setShowPropertyDetailsModal(false)}/>
         <RecommendationModal show={showRecommendationModal} handleClose={() => setShowRecommendationModal(false)} handleSubmit={submitRecommendationModal}/>
