@@ -1,30 +1,37 @@
 import React, {useEffect, useState} from 'react';
 import {Modal, Form, Button} from 'react-bootstrap';
+import Dayjs from 'dayjs'
 
 const SchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
   const [formData, setFormData] = useState({tech: null, date: null, time: null, notes: null })
+  const [showValid, setShowValid] = useState(false)
 
   useEffect(() => {
-    if(editingUnitSch) {
-      setRent(editingUnitSch.rent)
-    }
-  }, [editingUnitSch])
+   console.log('formData: ', formData)
+  }, [formData])
 
   const _setFormData = (data) => {
     console.log('something is changing ',  data)
+    setFormData(data)
+    console.log('formData: ', formData)
   }
-
   
-
   const onSubmit = () => {
     console.log('running on submit')
-    //resetData()
-    handleSubmit()
-    //handleClose()
+    const noNull = Object.values(formData).every(v => v) 
+    if (noNull) {
+      handleSubmit(formData)
+      //resetData()
+      //handleClose()  
+    }else {
+      setShowValid(true)
+      setTimeout(() => {setShowValid(false)}, 5000);
+    }
   }
 
   const resetData = () => {
-    setRent(0)
+    //setRent(0)
+    console.log('running reset data')
   }
 
   const onClose = () => {
@@ -41,7 +48,10 @@ const SchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
           <Form>
             <Form.Group>
               <Form.Label>Tech</Form.Label>
-              <Form.Control as="select" onChange={(e) => setRent(e.target.value)}>
+              
+              
+              <Form.Control as="select" placeholder='Please select' onChange={(e) => setFormData({...formData, tech:e.target.value})}>
+                <option value="" hidden>Please select</option>
                 <option value="20">Sean Cousins</option>
                 <option value="16">Cody Roberts</option>
                 <option value="7">David Knoll</option>
@@ -50,18 +60,19 @@ const SchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Date</Form.Label>
-              <Form.Control type="date" value={rent} onChange={(e) => setRent(e.target.value)}/>
-            </Form.Group>
+              <Form.Control type="date" format='MM/DD/YYYY' onChange={(e) => setFormData({...formData, date:Dayjs(e.target.value).format('MM/DD/YYYY')})}/>
+5            </Form.Group>
             <Form.Group>
               <Form.Label>Time</Form.Label>
-              <Form.Control type="time" value={rent} onChange={(e) => setRent(e.target.value)}/>
+              <Form.Control type="time" onChange={(e) => setFormData({...formData, time:e.target.value})}/>
             </Form.Group>
             <Form.Group>
               <Form.Label>Notes</Form.Label>
-              <Form.Control as="textarea" rows={3} onChange={(e) => setRent(e.target.value)}/>
+              <Form.Control as="textarea" rows={3} onChange={(e) => setFormData({...formData, notes:e.target.value})}/>
             </Form.Group>
           </Form>
       </Modal.Body>
+      {showValid === true && <div style={{color: 'red'}}>Please complete all field in the form</div> }
       <Modal.Footer>
         <Button variant='secondary' onClick={onClose}>
           Close
