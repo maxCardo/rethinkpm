@@ -1,13 +1,25 @@
 import React, {useEffect, useState} from 'react';
+import Loading from '../../../core/LoadingScreen/Loading';
 import {Modal, Form, Button} from 'react-bootstrap';
 import Dayjs from 'dayjs'
 
-const SchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
-  const [formData, setFormData] = useState({tech: null, date: null, time: null, notes: null })
+const SchModal = ({show, handleClose, handleSubmit, focusedProperty = null}) => {
+  const [formData, setFormData] = useState({tech: null, date: null, time: null, notes: null, property: null})
   const [showValid, setShowValid] = useState(false)
+  const [deal, setDeal] = useState({streetNumber: '', streetName:''})
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setDeal(focusedProperty)
+    if (focusedProperty) {
+      setFormData({...formData, property: focusedProperty})
+      setLoading(false)  
+    }   
+  },[focusedProperty])
 
   useEffect(() => {
    console.log('formData: ', formData)
+   console.log('property: ', focusedProperty)
   }, [formData])
 
   const _setFormData = (data) => {
@@ -39,10 +51,12 @@ const SchModal = ({show, handleClose, handleSubmit, editingUnitSch}) => {
     handleClose()
   }
 
-  return (
+  return loading ? (
+    <Loading />
+   ) :(
     <Modal size='lg' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Set Appointment</Modal.Title>
+        <Modal.Title>Set Appointment: {`${deal.streetNumber} ${deal.streetName}`}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
           <Form>

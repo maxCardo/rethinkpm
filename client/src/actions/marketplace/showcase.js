@@ -44,8 +44,8 @@ export const getShowcaseData = () => async dispatch => {
     }
 }
 
-export const createSchAppt = () => {
-    console.log('running create sch')
+export const createSchAppt = (data) => async dispatch => {
+    console.log('running create sch for : ', data)
 }
 
 

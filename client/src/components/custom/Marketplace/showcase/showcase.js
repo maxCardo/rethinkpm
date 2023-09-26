@@ -72,7 +72,10 @@ const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {li
                         tooltipContent='Input Appointment'
                         iconClass='fas fa-calendar'
                         variant='action-button'
-                        onClickFunc={() => setShowSchModal(true)}
+                        onClickFunc={() => {
+                          setFocusedProperty(item.deal_id)
+                          setShowSchModal(true)
+                        }}
             />
             {/* <IconButton placement='bottom'
                         tooltipContent='Recommend Deal'
@@ -98,7 +101,7 @@ const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {li
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [focusedProperty, setFocusedProperty] =  useState()
   const [showPropertyDetailsModal, setShowPropertyDetailsModal] = useState(false)
-  const [showSchModal, setShowSchModal] = useState(true)
+  const [showSchModal, setShowSchModal] = useState(false)
   const [iframeTarget, setIframeTarget] = useState('')
   
   // useEffect(() => {
@@ -119,9 +122,9 @@ const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {li
     //setLoading(false)
   }
 
-
   const handleSchSubmit = (data) => {
-    console.log('handeling the submit from the sch modal')
+    console.log('handeling the submit from the sch modal', data)
+    createSchAppt(data)
   }
   
 
@@ -153,6 +156,7 @@ const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {li
             show={showSchModal}
             handleClose={() => setShowSchModal(false)}
             handleSubmit={handleSchSubmit}
+            focusedProperty={focusedProperty}
           />
 
     </div>
