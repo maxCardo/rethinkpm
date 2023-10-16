@@ -116,6 +116,7 @@ const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {li
   const startShowDetailFlow = (item) => {
     console.log('item');
     console.log(item.deal_id);
+    item.deal_id.history.push(...item.history)  
     setFocusedProperty(item.deal_id)
     //setLoading(true)
     setShowDetailModal(true)
@@ -123,7 +124,6 @@ const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {li
   }
 
   const handleSchSubmit = (data) => {
-    console.log('handeling the submit from the sch modal', data)
     createSchAppt(data)
   }
   

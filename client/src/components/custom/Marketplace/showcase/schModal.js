@@ -4,7 +4,8 @@ import {Modal, Form, Button} from 'react-bootstrap';
 import Dayjs from 'dayjs'
 
 const SchModal = ({show, handleClose, handleSubmit, focusedProperty = null}) => {
-  const [formData, setFormData] = useState({tech: null, date: null, time: null, notes: null, property: null})
+  const initialFormState = {tech: null, date: null, time: null, notes: null, property: null}
+  const [formData, setFormData] = useState(initialFormState)
   const [showValid, setShowValid] = useState(false)
   const [deal, setDeal] = useState({streetNumber: '', streetName:''})
   const [loading, setLoading] = useState(true)
@@ -17,10 +18,10 @@ const SchModal = ({show, handleClose, handleSubmit, focusedProperty = null}) => 
     }   
   },[focusedProperty])
 
-  useEffect(() => {
-   console.log('formData: ', formData)
-   console.log('property: ', focusedProperty)
-  }, [formData])
+  // useEffect(() => {
+  //  console.log('formData: ', formData)
+  //  console.log('property: ', focusedProperty)
+  // }, [formData])
 
   const _setFormData = (data) => {
     console.log('something is changing ',  data)
@@ -33,21 +34,16 @@ const SchModal = ({show, handleClose, handleSubmit, focusedProperty = null}) => 
     const noNull = Object.values(formData).every(v => v) 
     if (noNull) {
       handleSubmit(formData)
-      //resetData()
-      //handleClose()  
+      setFormData(initialFormState)
+      handleClose()  
     }else {
       setShowValid(true)
       setTimeout(() => {setShowValid(false)}, 5000);
     }
   }
 
-  const resetData = () => {
-    //setRent(0)
-    console.log('running reset data')
-  }
-
   const onClose = () => {
-    resetData()
+    setFormData(initialFormState)
     handleClose()
   }
 

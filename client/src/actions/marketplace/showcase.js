@@ -1,6 +1,7 @@
 import axios from "axios";
 
-import {SET_SHOWCASE_LIST, UNFLAG_PROP} from '../type'
+import {SET_SHOWCASE_LIST, UNFLAG_PROP, UPDATE_SHOWCASE_SCH, SET_LOADING} from '../type'
+import {createSuccessAlert, createErrorAlert} from '../alert'
 
 const config = { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } };
 
@@ -45,7 +46,21 @@ export const getShowcaseData = () => async dispatch => {
 }
 
 export const createSchAppt = (data) => async dispatch => {
-    console.log('running create sch for : ', data)
+    try {
+        console.log('running create sch appt')
+        const res = await axios.post('/api/marketplace/showcase/sch', data, config)
+        console.log('res from sch: ', res)
+        dispatch({type: SET_LOADING})
+        dispatch({
+            type: UPDATE_SHOWCASE_SCH,
+            payload: res.data.record
+        })
+        dispatch(createSuccessAlert(`New Appointment Created Issue #${res.task}`, 'Delete Seller Record'))
+    } catch (err) {
+        dispatch(createErrorAlert('Error: We were unable to create appointment. Please contact Admin'))
+        console.log('error on action side')
+        console.error(err);
+    }
 }
 
 
