@@ -8,7 +8,7 @@ import IconButton from "../../core/IconButton/IconButton";
 
 const StreetViewModal = ({  apiKey, address, zip, modalOpen, closeStreetView}) => {
     const [streetView, setStreetView] = useState(true);
-
+    console.log("zip: ", zip)
     const loading = false;
 
     return (

@@ -5,7 +5,7 @@ import IconButton from "../../../../../core/IconButton/IconButton";
 
 const StreetMapViewModal = ({ modalOpen, openModal, activeComp, streetView, changeStreetView }) => {
 
-    const apiKey = 'AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o'
+    const apiKey = process.env.GOOGLE_MAPS_API_KEY
     const address = `${activeComp.listing_id.streetNumber} ${activeComp.listing_id.streetName}, Pittsburg, Pennsylvania`
 
     return (

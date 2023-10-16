@@ -786,7 +786,7 @@
 
     },
     "marketplace": {
-      "streetViewApiKey": "AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o"
+      "streetViewApiKey": "whatever"
     }
   }
 }
