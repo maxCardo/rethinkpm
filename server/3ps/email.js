@@ -71,17 +71,23 @@ const sendRecomendationEmail = (property, buyer, customMessage) => {
 }
 
 const sendGridEmail = (to, subject, text, html) => {
-
-    const msg = {
-        to,
-        from: 'adamp@fifthgrant.com',
-        subject,
-        text,
-        html,
-    };
-    sgMail.send(msg);    
+    
+    try {
+        const msg = {
+            to,
+            from: 'webuy@fifthgrant.com',
+            subject,
+            text,
+            html,
+        };
+        sgMail.send(msg);    
+        
+    } catch (err) {
+        console.log('Error sending email via SendGrid Email')
+        console.error(err);
+    }
     
 }
 
 
-module.exports = { sendEmail, sendFirstEmail, sendRecomendationEmail };
+module.exports = { sendEmail, sendFirstEmail, sendRecomendationEmail, sendGridEmail };
