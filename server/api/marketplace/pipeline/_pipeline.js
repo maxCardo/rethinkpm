@@ -1,4 +1,4 @@
-const { sendEmail } = require('../../../3ps/email')
+const { sendEmail, sendGridEmail } = require('../../../3ps/email')
 const express = require('express');
 const auth = require('../../../middleware/auth');
 const SalesListings = require('../../../db/models/sales/SalesListings');
@@ -135,7 +135,8 @@ router.post('/recommend', async (req, res) => {
             const subject = `Property Recommendation`
             const text = customMessage
             const html = await emailTemplate(propertiesFetched, customMessage);
-            sendEmail(buyerEmail.address, subject, customMessage, html)
+            console.log('ready to send this thing!')
+            sendGridEmail(buyerEmail.address, subject, customMessage, html)
         })
         res.status(200).send('ok')
     } catch (err) {
