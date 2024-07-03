@@ -1,0 +1,69 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-direction: column;
+    width: 100%;
+    margin: 7px 0px;
+  }
+  
+  .root .radioButton {
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: #fff;
+    position: relative;
+    background-color: #333;
+    padding: 8px;
+    width: fit-content;
+    box-sizing: border-box;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: capitalize;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .root .radioButton:hover {
+    background-color: #A0C6FF;
+    color: #333
+  }
+  
+  .root .radioButton input {
+    position: absolute;
+    display: none;
+  }
+  
+  .root .isActive {
+    background-color: #A0C6FF;
+    color: #333
+  }
+  
+  .root .isActive:hover {
+    /* background-color: var(--color-primary);
+    color: var(--color-text-light); */
+  }
+  
+  .root .fullWidthLabel {
+    width: 100%;
+  }
+  
+  .root .disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .root .disabled:hover {
+    /* color: var(--color-primary);
+    background-color: var(--color-blue-bg-notif); */
+  }
+  
+  .fullWidth {
+    width: 100%;
+  }
+  

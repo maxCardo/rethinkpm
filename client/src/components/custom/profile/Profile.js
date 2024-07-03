@@ -3,9 +3,7 @@ import {connect} from 'react-redux'
 import qs from 'query-string'
 import {Tab, Tabs} from 'react-bootstrap'
 import {Resizable} from 're-resizable'
-
 import './style.css'
-
 import {SET_INQUIRIES} from '../../../actions/type'
 import {loadBackUpProfile, loadProfileDefault, tglAddLeadMod} from '../../../actions/profile'
 import ProfileInfo from './profileInfo/ProfileInfo'

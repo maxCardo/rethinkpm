@@ -1,6 +1,6 @@
 import {Button, Modal} from "react-bootstrap";
 import React from "react";
-import {StreetView} from "react-google-map-street-view";
+// import {StreetView} from "react-google-map-street-view";
 import IconButton from "../../../../../core/IconButton/IconButton";
 
 const StreetMapViewModal = ({ modalOpen, openModal, activeComp, streetView, changeStreetView }) => {
@@ -19,9 +19,9 @@ const StreetMapViewModal = ({ modalOpen, openModal, activeComp, streetView, chan
                 <Modal.Title>{streetView ? 'Street' : 'Map'} View </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <StreetView address={address + ' ' + activeComp.listing_id.zipcode} APIkey={apiKey}
+                {/* <StreetView address={address + ' ' + activeComp.listing_id.zipcode} APIkey={apiKey}
                             streetView={streetView}
-                            zoomLevel={10}/>
+                            zoomLevel={10}/> */}
             </Modal.Body>
             <Modal.Footer>
                 <IconButton onClickFunc={() => changeStreetView(!streetView)}

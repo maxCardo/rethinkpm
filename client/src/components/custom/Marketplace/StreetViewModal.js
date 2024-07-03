@@ -2,7 +2,7 @@ import React, {Fragment, useState} from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button} from 'react-bootstrap';
 import Loading from '../../core/LoadingScreen/Loading';
-import {StreetView} from 'react-google-map-street-view';
+// import {StreetView} from 'react-google-map-street-view';
 import {closeStreetView} from "../../../actions/marketplace";
 import IconButton from "../../core/IconButton/IconButton";
 
@@ -24,8 +24,8 @@ const StreetViewModal = ({  apiKey, address, zip, modalOpen, closeStreetView}) =
             </Modal.Header>
             {loading ? <Loading/> : <Fragment>
                 <Modal.Body>
-                    <StreetView address={address + ', Pennsylvania' + ' ' + zip } APIkey={apiKey} streetView={streetView}
-                                zoomLevel={10}/>
+                    {/* <StreetView address={address + ', Pennsylvania' + ' ' + zip } APIkey={apiKey} streetView={streetView}
+                                zoomLevel={10}/> */}
                 </Modal.Body>
                 <Modal.Footer>
                     <IconButton onClickFunc={() => setStreetView(!streetView) }
