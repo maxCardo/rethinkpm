@@ -79,7 +79,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/showcase' component={ShowcaseRecords}/>
             <Route exact path='/playground' component={Playground} />
             <Route path='/vertical-table' component={TestVerticalTable} />
-            <Route path='/service/request' component={Login} />
+            <Route path='/servicerequest' component={Login} />
           </Switch>
           <Alert  />
         </section>
