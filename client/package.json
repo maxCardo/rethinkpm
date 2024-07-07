@@ -8,6 +8,7 @@
     "bootstrap": "^4.4.1",
     "dayjs": "^1.11.10",
     "google-map-react": "^2.1.9",
+    "joi": "^17.13.3",
     "js-file-download": "^0.4.12",
     "moment": "^2.24.0",
     "re-resizable": "^6.2.0",

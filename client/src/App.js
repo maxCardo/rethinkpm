@@ -31,6 +31,7 @@ import TestVerticalTable from './components/custom/TestVerticalTable';
 import PropertyRecords from './components/custom/PropertyRecords/PropertyRecords'
 import OwnerRecords from './components/custom/PropertyRecords/OwnerRecords'
 import ShowcaseRecords from './components/custom/Marketplace/showcase/showcase'
+import ServiceRequest from './components/custom/service/forms/req'
 
 
 const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
@@ -79,7 +80,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/showcase' component={ShowcaseRecords}/>
             <Route exact path='/playground' component={Playground} />
             <Route path='/vertical-table' component={TestVerticalTable} />
-            <Route path='/servicerequest' component={Login} />
+            <Route path='/servicerequest' component={ServiceRequest} />
           </Switch>
           <Alert  />
         </section>

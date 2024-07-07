@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from "./form.module.css";
 import Select from "react-select";
-import { isDictEmpty } from '../../utils/customFormValidators';
+import { isDictEmpty } from '../customFormValidators';
 import classNames from 'classnames'
 import RadioGroup from '../FormComponents/RadioGroup';
 
