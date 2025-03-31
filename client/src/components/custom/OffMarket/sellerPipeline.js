@@ -209,7 +209,7 @@ const SellerPipeline = ({ openStreetView, profile, getSellerPipeline, updateDeal
                 <StreetViewModal
                     show={showStreetViewModal}
                     handleClose={() => setShowStreetViewModal(false)}
-                    apiKey={process.env.GOOGLE_MAPS_API_KEY}
+                    apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
                 />
                 {/* <PropertyDetailsModal iframeTarget={iframeTarget} show={showPropertyDetailsModal} handleClose={() => setShowPropertyDetailsModal(false)} /> */}
                 <DetailModal show={showDetailModal} data={focusedProperty} type={'listLead'} handleClose={() => setShowDetailModal(false)} /> 
