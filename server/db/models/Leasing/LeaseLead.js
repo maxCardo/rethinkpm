@@ -55,6 +55,7 @@ const leaseLeadSchema = new mongoose.Schema({
         default: new Date()
     },
     lastContact: Date,
+    nextAction: Date,
     listingAddress: String, 
     listing: [
         {
