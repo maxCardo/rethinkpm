@@ -1,4 +1,5 @@
 import {SET_LOADING, SET_LEASELEAD_LIST} from '../actions/type';
+
 const initialState = {
     loading: true,
     list: [],

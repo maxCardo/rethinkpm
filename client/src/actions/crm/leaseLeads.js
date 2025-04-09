@@ -7,7 +7,7 @@ const config = { headers: { 'Content-Type': 'application/json', 'Accept': 'appli
 
 
 //@desc: get all flaged props deal for showcase comp 
-export const getShowcaseData = () => async dispatch => {
+export const getLeaseLeadData = () => async dispatch => {
 
     console.log('running get showcase data')
     try {
