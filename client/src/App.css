@@ -1,5 +1,11 @@
 /*----------------------------- New Stuff -------------------------------------*/
-
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent sideways scroll */
+  overflow-y: auto;   /* ENABLE vertical scrolling */
+}
 .dashboard {
   margin: auto;
   display: grid;
@@ -10,7 +16,11 @@
   overflow: hidden;
 
 }
-
+.profile__logs-container {
+  min-height: 1px;
+  flex-grow: 1;
+  overflow-y: auto; /* Allow scrolling */
+}
 
 .widget {
   display: grid;
@@ -136,13 +146,9 @@ img {
 
 /* Utilities */
 .container-b {
-  /* max-width: 1100px; */
-  /* background: #28a745; */
-  margin: auto;
-  overflow: auto;
-  padding-top: 92px;
-  /* new */
-  height: 100vh;
+  min-height: calc(100vh - 60px); /* full height minus navbar height */
+  padding-top: 60px; /* navbar height */
+  background: #f2f2f2;
 }
 
 /* Text Styles*/
@@ -446,16 +452,17 @@ button {
 
 /* Navbar */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.7rem 2rem;
-  position: fixed;
-  z-index: 1;
-  width: 100%;
-  height: 8%;
+  position: flex;
   top: 0;
-  opacity: 0.9;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #343a40;
+  z-index: 9999; /* Always on top */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
 }
 
 .navbar ul {

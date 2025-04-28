@@ -1,3 +1,28 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent sideways scroll */
+  overflow-y: auto;   /* Enable vertical scrolling */
+}
+
+.container-b {
+  min-height: calc(100vh - 60px); /* full height minus navbar height */
+  padding-top: 60px; /* Adjust according to navbar height */
+  overflow-y: auto; /* Make sure this scrolls independently */
+}
+
+.profile__main-container {
+  display: flex;
+  flex-direction: column;
+  height: auto;  /* Adjust height automatically */
+}
+
+.profile__logs-container {
+  overflow-y: auto; /* Ensure scrolling for this container */
+  max-height: calc(100vh - 200px);  /* Adjust height dynamically */
+}
+
 .profile__main-container {
   height: 100%;
   display: flex;

@@ -1,55 +1,62 @@
-import React, { Component } from 'react'
-import {withRouter} from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export class BottomNavigation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: 0,
-      lastLocation: ''
-    }
-    this.changeActive = this.changeActive.bind(this)
-    this.goToScreen = this.goToScreen.bind(this)
-  }
-  changeActive() {
-    const location = this.props.location.pathname
-    if(this.state.lastLocation === location) return
-    const last = location.split('/').pop()
-    for(let i=0; i< this.props.screens.length; i++) {
-      const screenRoute = this.props.screens[i].route
-      if(last === screenRoute) {
-        this.setState({active: i, lastLocation: location})
-        return
+const BottomNavigation = ({ screens }) => {
+  const [active, setActive] = useState(0);
+  const [lastLocation, setLastLocation] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    changeActive();
+    // eslint-disable-next-line
+  }, [location]);
+
+  const changeActive = () => {
+    const currentLocation = location.pathname;
+    if (lastLocation === currentLocation) return;
+    const last = currentLocation.split("/").pop();
+    for (let i = 0; i < screens.length; i++) {
+      const screenRoute = screens[i].route;
+      if (last === screenRoute) {
+        setActive(i);
+        setLastLocation(currentLocation);
+        return;
       }
     }
-    this.setState({active: 0, lastLocation: location})
-    const newLocation = location + '/' + this.props.screens[0].route
-    this.props.history.replace(newLocation)
-  }
-  render() {
-    this.changeActive()
-    return (
-      <div className='bottom-navigation__container'>
-        <div className='bottom-navigation__screen'>
-          {this.props.screens[this.state.active].component}
-        </div>
-        <div className='bottom-navigation__tabs'>
-          {this.props.screens.map((screen, index) => (
-            <button key={index} className='bottom-navigation__tab' active={(index === this.state.active).toString()} onClick={this.goToScreen.bind(this,index)}>
-              {screen.display}
-            </button>
-          ))}
-        </div>
-      </div>
-    )
-  }
-  goToScreen(index) {
-    this.setState({active: index})
-    const actualLocation = this.props.location.pathname
-    const newLocation = actualLocation.split('/')
-    newLocation[newLocation.length-1] = this.props.screens[index].route
-    this.props.history.push(newLocation.join('/'))
-  }
-}
+    setActive(0);
+    setLastLocation(currentLocation);
+    const newLocation = currentLocation + "/" + screens[0].route;
+    navigate(newLocation, { replace: true });
+  };
 
-export default withRouter(BottomNavigation)
+  const goToScreen = (index) => {
+    setActive(index);
+    const actualLocation = location.pathname;
+    const newLocationParts = actualLocation.split("/");
+    newLocationParts[newLocationParts.length - 1] = screens[index].route;
+    navigate(newLocationParts.join("/"));
+  };
+
+  return (
+    <div className="bottom-navigation__container">
+      <div className="bottom-navigation__screen">
+        {screens[active].component}
+      </div>
+      <div className="bottom-navigation__tabs">
+        {screens.map((screen, index) => (
+          <button
+            key={index}
+            className="bottom-navigation__tab"
+            active={(index === active).toString()}
+            onClick={() => goToScreen(index)}
+          >
+            {screen.display}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default BottomNavigation;

@@ -1,36 +1,46 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux'
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
 
-import {useStyles} from './styles'
-import {stableSort, getComparator, getData} from './scripts'
-import {setSelected} from '../../../actions/filteredData'
-import TableHeader from './TableHeader';
+import { useStyles } from "./styles";
+import { stableSort, getComparator, getData } from "./scripts";
+import { setSelected } from "../../../actions/filteredData";
+import TableHeader from "./TableHeader";
 
-const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _rowsPerPage = 10, selected, setSelected}) => {
-  
+const TableComp = ({
+  headers,
+  list,
+  handleClickRow,
+  sticky,
+  dense,
+  _orderBy,
+  _rowsPerPage = 10,
+  selected,
+  setSelected,
+}) => {
   //state for table comp
   const classes = useStyles();
-  const [tableData, setTableData] = useState([]) 
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState(_orderBy ? _orderBy : headers[0].accessor);
+  const [tableData, setTableData] = useState([]);
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState(
+    _orderBy ? _orderBy : headers[0].accessor
+  );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(_rowsPerPage);
 
-
   useEffect(() => {
-    setTableData(list)
-  },[list])
+    setTableData(list);
+  }, [list]);
 
-  //funcs for table comp 
+  //funcs for table comp
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = tableData.map((n) => n._id);
@@ -54,15 +64,15 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
     setSelected(newSelected);
   };
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -75,9 +85,9 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
     setPage(0);
   };
 
-  const isSelected = (name) => selected.map(x => x._id).indexOf(name) !== -1;
+  const isSelected = (name) => selected.map((x) => x._id).indexOf(name) !== -1;
 
-//ToDo: work on dynamic function to determain amonnt of space needed: is this neccecery??
+  //ToDo: work on dynamic function to determain amonnt of space needed: is this neccecery??
   //const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
   const emptyRows = 0;
 
@@ -87,16 +97,16 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <TableContainer className={classes.container}>
-          <Table 
-            stickyHeader = {sticky}
-            // sticky header creating issues with dropdown 
+          <Table
+            stickyHeader={sticky}
+            // sticky header creating issues with dropdown
             aria-label="sticky table"
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={dense ? "small" : "medium"}
           >
             <TableHeader
-              headers = {headers}
+              headers={headers}
               classes={classes}
               numSelected={selected.length}
               order={order}
@@ -107,8 +117,8 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
             />
             <TableBody>
               {stableSort(tableData, getComparator(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
                   const isItemSelected = isSelected(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -124,20 +134,22 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
+                          inputProps={{ "aria-labelledby": labelId }}
                           onChange={(event) => handleClick(event, row)}
                         />
                       </TableCell>
-                      {
-                        headers.map((header, i ) => (
-                          <TableCell align="left" key={i} onClick={(event) => handleClickRow(row)}>
-                            {getData(row, header)}
-                          </TableCell>  
-                        ))
-                      }
+                      {headers.map((header, i) => (
+                        <TableCell
+                          align="left"
+                          key={i}
+                          onClick={(event) => handleClickRow(row)}
+                        >
+                          {getData(row, header)}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   );
-              })}
+                })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                   <TableCell colSpan={6} />
@@ -158,10 +170,10 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
       </Paper>
     </div>
   );
-}
+};
 
-const mapStateToProps = state => ({
-  selected: state.filteredData.selectedData
-})
+const mapStateToProps = (state) => ({
+  selected: state.filteredData.selectedData,
+});
 
-export default connect (mapStateToProps, {setSelected})(TableComp)
+export default connect(mapStateToProps, { setSelected })(TableComp);
