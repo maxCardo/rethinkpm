@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
+import "./tailwind-output.css";
 
 //Components
 import PrivateRoute from "./components/core/routing/PrivateRoute";

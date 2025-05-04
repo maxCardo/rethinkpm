@@ -26,7 +26,6 @@ const PrivateRoute = ({
 
 const NotAuthenticatedInfo = () => (
   <p>
-    You are not logged in, maybe you wanted to go to{" "}
     <Link to="/login">Login</Link>
   </p>
 );

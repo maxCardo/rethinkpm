@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import { useLocation } from "react-router-dom"; // ✅ ADD THIS
+import { useLocation } from "react-router-dom";
 import qs from "query-string";
-import { Tab, Tabs } from "react-bootstrap";
 import { Resizable } from "re-resizable";
 
 import "./style.css";
@@ -22,6 +21,7 @@ import Loading from "../../core/LoadingScreen/Loading";
 import BuyerPipeline from "../Marketplace/BuyerPipeline";
 import SellerPipeline from "../OffMarket/sellerPipeline";
 import AddLeadModal from "./addLead/AddLeadModal";
+import TailwindTabs from "../../custom/Tabs/TailwindTabs";
 
 const Profile = ({
   profile: { activeProfile, loading },
@@ -30,7 +30,7 @@ const Profile = ({
   loadProfileDefault,
   tglAddLeadMod,
 }) => {
-  const location = useLocation(); // ✅ USE THIS
+  const location = useLocation();
   const { search } = location;
 
   const profileType = useRef("");
@@ -78,17 +78,30 @@ const Profile = ({
     search,
   ]);
 
+  const dynamicTabs = [
+    { key: "details", title: `${profileType.current} Details` },
+    { key: "table", title: "Table View" },
+    { key: "filters", title: "Filters" },
+  ];
+
+  if (profileType.current === "Buyer") {
+    dynamicTabs.push({ key: "manageBuyers", title: "Manage Pipeline" });
+  } else if (profileType.current === "Seller") {
+    dynamicTabs.push({ key: "manageSeller", title: "Seller Pipeline" });
+  }
+
   return loading ? (
     <Loading />
   ) : (
     <div className="profile__tabs-container">
-      <Tabs
-        id="profile__tabs"
-        className="profile__tabs"
-        activeKey={tabKey}
-        onSelect={(k) => setTabKey(k)}
-      >
-        <Tab eventKey="details" title={`${profileType.current} Details`}>
+      <TailwindTabs
+        tabs={dynamicTabs}
+        activeTab={tabKey}
+        setActiveTab={setTabKey}
+      />
+
+      <div className="mt-6">
+        {tabKey === "details" && (
           <div
             className={`agentProfile profile__main-container ${
               listWindow ? "left__sidebar-open" : ""
@@ -140,30 +153,19 @@ const Profile = ({
               <ProfileList settings={settings} />
             </div>
           </div>
-        </Tab>
-
-        <Tab eventKey="table" title="Table View">
-          {tabKey === "table" && (
-            <ProfileTableView settings={settings} changeTab={setTabKey} />
-          )}
-        </Tab>
-
-        <Tab eventKey="filters" title="Filters">
-          <div>Manage Filters</div>
-        </Tab>
-
-        {profileType.current === "Buyer" && (
-          <Tab eventKey="manageBuyers" title="Manage Pipeline">
-            <BuyerPipeline profile={activeProfile} />
-          </Tab>
         )}
 
-        {profileType.current === "Seller" && (
-          <Tab eventKey="manageSeller" title="Seller Pipeline">
-            <SellerPipeline profile={activeProfile} />
-          </Tab>
+        {tabKey === "table" && (
+          <ProfileTableView settings={settings} changeTab={setTabKey} />
         )}
-      </Tabs>
+        {tabKey === "filters" && <div>Manage Filters</div>}
+        {tabKey === "manageBuyers" && profileType.current === "Buyer" && (
+          <BuyerPipeline profile={activeProfile} />
+        )}
+        {tabKey === "manageSeller" && profileType.current === "Seller" && (
+          <SellerPipeline profile={activeProfile} />
+        )}
+      </div>
 
       <button
         className="action-buttons__button add-profile__button"

@@ -1,40 +1,44 @@
-import React, { Component } from 'react'
-import ChatUI from '../common/ChatUI'
-import Contacts from '../common/Contacts'
-import Profile from './Profile'
-import io from 'socket.io-client';
-import { connect } from 'react-redux';
-import {UPDATE_CHATS, SET_INQUIRIES} from '../../../../actions/type'
-import axios from 'axios';
-import ChatBar from './ChatBar'
+import React, { Component } from "react";
+import ChatUI from "../common/ChatUI";
+import Contacts from "../common/Contacts";
+import Profile from "./Profile";
+import io from "socket.io-client";
+import { connect } from "react-redux";
+import { UPDATE_CHATS, SET_INQUIRIES } from "../../../../actions/type";
+import axios from "axios";
+import ChatBar from "./ChatBar";
 
-import './chat-screen.css'
+import "./chat-screen.css";
 
 export class ChatScreen extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       activeChat: 0,
+    };
+    this.addChat = this.addChat.bind(this);
+    this.chatRef = React.createRef();
+    this.sendMessage = this.sendMessage.bind(this);
+    this.getChats = this.getChats.bind(this);
+    this.socket = io.connect(
+      process.env.REACT_APP_SOCKET_BACKEND
+        ? process.env.REACT_APP_SOCKET_BACKEND
+        : ""
+    );
+    if (!this.props.inquiries || !this.props.inquiries.length) {
+      this.getInquiries();
     }
-    this.addChat = this.addChat.bind(this)
-    this.chatRef = React.createRef()
-    this.sendMessage = this.sendMessage.bind(this)
-    this.getChats = this.getChats.bind(this)
-    this.socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND : '')
-    if(!this.props.inquiries || !this.props.inquiries.length) {
-      this.getInquiries()
+    if (!this.props.chats || !this.props.chats.length) {
+      this.getChats();
     }
-    if(!this.props.chats || !this.props.chats.length) {
-      this.getChats()
-    }
-    this.scrollToBottom = this.scrollToBottom.bind(this)
+    this.scrollToBottom = this.scrollToBottom.bind(this);
   }
   componentDidMount() {
-    this.scrollToBottom()
+    this.scrollToBottom();
   }
   async getInquiries() {
-    axios.get('/api/rent_lead/open_leads').then((res) => {
-      const properties = new Set()
+    axios.get("/api/rent_lead/open_leads").then((res) => {
+      const properties = new Set();
       const data = {
         upcoming: [],
         engaged: [],
@@ -43,43 +47,45 @@ export class ChatScreen extends Component {
         toured: [],
         application: [],
         new: [],
-      }
+      };
       res.data.forEach((lead) => {
-        properties.add(lead.listing)
-        data[lead.status.currentStatus].push(lead)
-      })
+        properties.add(lead.listing);
+        data[lead.status.currentStatus].push(lead);
+      });
 
-      this.props.setInquiries({inquiries: data, inquiriesRaw: res.data})
-    })
-    
+      this.props.setInquiries({ inquiries: data, inquiriesRaw: res.data });
+    });
   }
   async getChats() {
-    axios.get('/api/comms/chats').then((res) => {
-        this.props.updateChats(res.data)
-        this.forceUpdate(() => {
-          if(this.chatRef.current) {
-            this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
-          }
-        })
-      })
+    axios.get("/api/comms/chats").then((res) => {
+      this.props.updateChats(res.data);
+      this.forceUpdate(() => {
+        if (this.chatRef.current) {
+          this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight;
+        }
+      });
+    });
   }
   render() {
-    if(!this.props.chats || !this.props.chats.length ) return "";
-    let activeChat = undefined
-    if(this.props.inquiries && this.props.inquiries.length) {
-      activeChat = this.props.chats[this.state.activeChat]
+    if (!this.props.chats || !this.props.chats.length) return "";
+    let activeChat = undefined;
+    if (this.props.inquiries && this.props.inquiries.length) {
+      activeChat = this.props.chats[this.state.activeChat];
     }
     return (
-      <div className='container-fluid h-100'>
-        <div className='row h-100'>
-          <div className='col-sm-3 chat-screen__contacts-container'>
-            <Contacts contacts={this.props.chats} handleAddChat={this.addChat} />
+      <div className="container-fluid h-100">
+        <div className="row h-100">
+          <div className="col-sm-3 chat-screen__contacts-container">
+            <Contacts
+              contacts={this.props.chats}
+              handleAddChat={this.addChat}
+            />
           </div>
-          {activeChat ? 
-            <div className='col-sm-6 h-100 chat-screen__chat-container'>
-              <ChatBar info={activeChat}/>
-              <div className='chat-screen__chat-ui'>
-                <ChatUI 
+          {activeChat ? (
+            <div className="col-sm-6 h-100 chat-screen__chat-container">
+              <ChatBar info={activeChat} />
+              <div className="chat-screen__chat-ui">
+                <ChatUI
                   messages={activeChat.messages}
                   onSendMessage={this.sendMessage}
                   chatRef={this.chatRef}
@@ -88,64 +94,62 @@ export class ChatScreen extends Component {
                 />
               </div>
             </div>
-            :
-            ''
-          }
-          <div className='col-sm-3'>
-            {activeChat ?
-              <Profile chatId={activeChat._id} /> 
-              :
-              ''
-            }
+          ) : (
+            ""
+          )}
+          <div className="col-sm-3">
+            {activeChat ? <Profile chatId={activeChat._id} /> : ""}
           </div>
         </div>
+        <div className="pt">adsasdadssasdasdasdasdasdsdas</div>
       </div>
-    )
+    );
   }
   addChat(indexOfContact) {
-    this.setState({activeChat: indexOfContact})
-    this.scrollToBottom()
+    this.setState({ activeChat: indexOfContact });
+    this.scrollToBottom();
   }
   scrollToBottom() {
     this.forceUpdate(() => {
-      if(this.chatRef && this.chatRef.current) {
-        this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight
+      if (this.chatRef && this.chatRef.current) {
+        this.chatRef.current.scrollTop = this.chatRef.current.scrollHeight;
       }
-    })
+    });
   }
   sendMessage(messageContent) {
-    const chats = this.props.chats.slice()
-    const activeChat = chats[this.state.activeChat]
+    const chats = this.props.chats.slice();
+    const activeChat = chats[this.state.activeChat];
     activeChat.messages.push({
       userMessage: true,
-      sender: 'Admin',
+      sender: "Admin",
       content: messageContent,
-      date: new Date()
-    })
+      date: new Date(),
+    });
     const message = {
-      sender: 'Admin',
+      sender: "Admin",
       content: messageContent,
       date: new Date(),
       userMessage: true,
-    }
-    this.socket.emit('ui_msg', {chatID: activeChat._id, msg: message})
-    this.props.updateChats(chats)
-    this.scrollToBottom()
+    };
+    this.socket.emit("ui_msg", { chatID: activeChat._id, msg: message });
+    this.props.updateChats(chats);
+    this.scrollToBottom();
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    updateChats:(chats) => dispatch({type: UPDATE_CHATS, payload: chats}),
-    setInquiries:(inquiries) => dispatch({type: SET_INQUIRIES, payload: inquiries})
-  }
-}
+    updateChats: (chats) => dispatch({ type: UPDATE_CHATS, payload: chats }),
+    setInquiries: (inquiries) =>
+      dispatch({ type: SET_INQUIRIES, payload: inquiries }),
+  };
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     chats: state.chat.chats,
-    inquiries: state.dashboard.inquiriesRaw
-  }
-}
+    inquiries: state.dashboard.inquiriesRaw,
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen);

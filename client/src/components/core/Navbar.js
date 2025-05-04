@@ -91,11 +91,11 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
 
   return (
     <nav className="navbar navbar-fixed bg-dark">
-      <h2>
+      {/* <h2>
         <Link to="/">
           <i className="fas fa-code"></i> ReThink PM
         </Link>
-      </h2>
+      </h2> */}
       {links}
     </nav>
   );
