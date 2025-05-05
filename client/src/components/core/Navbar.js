@@ -163,11 +163,7 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
       </div>
 
       {/* Nav Content */}
-      <nav
-        ref={navRef}
-        style={{ display: "none" }}
-        className=" text-white border-b border-gray-800"
-      >
+      <nav ref={navRef} style={{ display: "none" }} className=" text-white ">
         {links}
       </nav>
     </>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const TailwindTabs = ({ tabs, activeTab, setActiveTab, children }) => {
   return (
-    <div className="w-full ">
+    <div className="w-full border-b border-gray-200 ">
       <div className="flex">
         {tabs.map((tab) => (
           <div
