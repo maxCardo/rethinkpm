@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #061331;
   --foreground: #171717;
 
 
@@ -17,8 +17,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ededed;
-    --foreground: #ededed;
+    --background: #061331;
+    --foreground: #061331;
   }
 }
 
@@ -38,4 +38,29 @@ body {
   --color-lightBlue:#0088FF;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+.bg-gradientBg {
+  background: transparent linear-gradient(3deg, #0088FF 0%, #061331 100%) 0% 0% no-repeat padding-box;
+}
 
+@media screen and (min-width: 2000px) {
+  .skew-fix {
+    transform: skewY(0deg) !important;
+    @apply mb-10
+
+   
+  }
+ 
+}
+@media screen and (min-width: 2200px) {
+  .img-small{
+    @apply min-h-[1250px]
+  }
+
+   .footer-pt{
+    @apply pt-48
+   }
+  }
+ 

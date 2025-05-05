@@ -100,7 +100,7 @@ const Profile = ({
         setActiveTab={setTabKey}
       />
 
-      <div className="mt-6">
+      <div className="">
         {tabKey === "details" && (
           <div
             className={`agentProfile profile__main-container ${

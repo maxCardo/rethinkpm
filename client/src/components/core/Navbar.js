@@ -1,75 +1,136 @@
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { loadUser, logout } from "../../actions/auth";
 import { getCookie } from "../../util/cookies";
-import AgentsIcon from "./NavbarIcons/AgentsIcon";
-import BuyersIcon from "./NavbarIcons/BuyersIcon";
-import MarketplaceIcon from "./NavbarIcons/MarketplaceIcon";
+
+import {
+  FaUserTie,
+  FaUserPlus,
+  FaUserCheck,
+  FaStore,
+  FaBuilding,
+  FaUsers,
+  FaStar,
+  FaSignOutAlt,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
+
+import gsap from "gsap";
 
 const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
+  const [showNav, setShowNav] = useState(false);
+  const navRef = useRef(null);
+  const arrowRef = useRef(null);
+
   useEffect(() => {
     loadUser();
   }, []);
+
+  useEffect(() => {
+    if (!navRef.current || !arrowRef.current) return;
+
+    if (showNav) {
+      gsap.to(navRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 0.2,
+        display: "block",
+        ease: "power1.out",
+      });
+
+      gsap.to(arrowRef.current, {
+        y: 68,
+        duration: 0.3,
+        ease: "power1.out",
+      });
+    } else {
+      gsap.to(navRef.current, {
+        y: -20,
+        opacity: 0,
+        duration: 0.2,
+        ease: "power1.in",
+        onComplete: () => {
+          if (navRef.current) navRef.current.style.display = "none";
+        },
+      });
+
+      gsap.to(arrowRef.current, {
+        y: 4,
+        duration: 0.3,
+        ease: "power1.in",
+      });
+    }
+  }, [showNav]);
 
   const handleLogout = () => {
     logout();
   };
 
+  const iconStyle =
+    "text-white w-6 h-6 transition-transform duration-200 group-hover:scale-110";
+  const linkStyle =
+    "flex flex-col text-white items-center gap-1 group text-sm ";
+
   const authLinks = (
-    <ul>
+    <ul className="flex mt-2 flex-wrap justify-center gap-6 text-white">
       <li>
-        <Link to="/profile/agentPros">
-          <AgentsIcon />
+        <Link to="/profile/agentPros" className={linkStyle}>
+          <FaUserTie className={iconStyle} />
           <span>Agents</span>
         </Link>
       </li>
       <li>
-        <Link to="/profile/buyerPros">
-          <BuyersIcon />
+        <Link to="/profile/buyerPros" className={linkStyle}>
+          <FaUserPlus className={iconStyle} />
           <span>Buyers</span>
         </Link>
       </li>
       <li>
-        <Link to="/profile/sellerPros">
-          <BuyersIcon />
+        <Link to="/profile/sellerPros" className={linkStyle}>
+          <FaUserCheck className={iconStyle} />
           <span>Seller</span>
         </Link>
       </li>
       <li>
-        <Link to="/marketplace">
-          <MarketplaceIcon />
+        <Link to="/marketplace" className={linkStyle}>
+          <FaStore className={iconStyle} />
           <span>Marketplace</span>
         </Link>
       </li>
       <li>
-        <Link to="/offmarket">
-          <MarketplaceIcon />
+        <Link to="/offmarket" className={linkStyle}>
+          <FaStore className={iconStyle} />
           <span>OffMarket</span>
         </Link>
       </li>
       <li>
-        <Link to="/propertyRecords">
-          <MarketplaceIcon />
+        <Link to="/propertyRecords" className={linkStyle}>
+          <FaBuilding className={iconStyle} />
           <span>Properties</span>
         </Link>
       </li>
       <li>
-        <Link to="/ownerRecords">
-          <MarketplaceIcon />
+        <Link to="/ownerRecords" className={linkStyle}>
+          <FaUsers className={iconStyle} />
           <span>Owners</span>
         </Link>
       </li>
       <li>
-        <Link to="/showcase">
-          <MarketplaceIcon />
+        <Link to="/showcase" className={linkStyle}>
+          <FaStar className={iconStyle} />
           <span>Showcase</span>
         </Link>
       </li>
       <li>
-        <a onClick={handleLogout} href="/">
-          <i className="fas fa-sign-out-alt logOutIcon"></i>
+        <a
+          onClick={handleLogout}
+          href="/"
+          className={`${linkStyle} text-red-400 hover:text-red-500`}
+        >
+          <FaSignOutAlt className={iconStyle} />
           <span>Logout</span>
         </a>
       </li>
@@ -77,9 +138,11 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
   );
 
   const guestLinks = (
-    <ul>
+    <ul className="p-4 text-white">
       <li>
-        <Link to="/login">Login</Link>
+        <Link to="/login" className="text-blue-500 hover:text-blue-400">
+          Login
+        </Link>
       </li>
     </ul>
   );
@@ -90,14 +153,24 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
       : guestLinks;
 
   return (
-    <nav className="navbar navbar-fixed bg-dark">
-      {/* <h2>
-        <Link to="/">
-          <i className="fas fa-code"></i> ReThink PM
-        </Link>
-      </h2> */}
-      {links}
-    </nav>
+    <>
+      <div
+        onClick={() => setShowNav(!showNav)}
+        ref={arrowRef}
+        className="absolute  left-1/2 -translate-x-1/2 z-50  p-1 rounded-2xl border  text-white hover:bg-gray-700 shadow-lg"
+      >
+        {showNav ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+      </div>
+
+      {/* Nav Content */}
+      <nav
+        ref={navRef}
+        style={{ display: "none" }}
+        className=" text-white border-b border-gray-800"
+      >
+        {links}
+      </nav>
+    </>
   );
 };
 
