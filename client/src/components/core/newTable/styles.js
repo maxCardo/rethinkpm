@@ -1,52 +1,15 @@
-import React from "react";
-import { lighten } from "@mui/material/styles"; // light/dark colors helper
-import { makeStyles } from "@mui/styles"; // hook for CSS-in-JS styling
-import { Hidden } from "@mui/material"; // responsive component
+export const toolbarClasses = {
+  root: "pl-2 pr-1",
+  highlightLight: "text-secondary bg-secondary-light/20",
+  highlightDark: "text-primary bg-secondary-dark",
+  title: "flex-1",
+};
 
-export const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-
-  highlight:
-    theme.palette.type === "light"
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: "1 1 100%",
-  },
-}));
-
-export const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
-  },
-  container: {
-    maxHeight: 700,
-  },
-  table: {
-    minWidth: 750,
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: "rect(0 0 0 0)",
-    height: 1,
-    margin: -1,
-    overflow: "hidden",
-    padding: 0,
-    position: "absolute",
-    top: 20,
-    width: 1,
-  },
-}));
+export const tableClasses = {
+  root: "w-full",
+  paper: "w-full mb-2",
+  container: "max-h-[700px] overflow-auto",
+  table: "min-w-[750px]",
+  visuallyHidden:
+    "absolute w-px h-px p-0 overflow-hidden clip-rect border-0 m-[-1px] top-5",
+};

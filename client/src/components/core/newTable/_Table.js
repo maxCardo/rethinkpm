@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 
-import { useStyles } from "./styles";
+import { tableClasses } from "./styles";
 import { stableSort, getComparator, getData } from "./scripts";
 import { setSelected } from "../../../actions/filteredData";
 import TableHeader from "./TableHeader";
@@ -26,8 +26,6 @@ const TableComp = ({
   selected,
   setSelected,
 }) => {
-  //state for table comp
-  const classes = useStyles();
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(
@@ -40,17 +38,14 @@ const TableComp = ({
     setTableData(list);
   }, [list]);
 
-  //funcs for table comp
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = tableData.map((n) => n._id);
       setSelected(tableData);
       return;
     }
     setSelected([]);
   };
 
-  //@desc handle click for checkbox
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -86,28 +81,21 @@ const TableComp = ({
   };
 
   const isSelected = (name) => selected.map((x) => x._id).indexOf(name) !== -1;
-
-  //ToDo: work on dynamic function to determain amonnt of space needed: is this neccecery??
-  //const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
   const emptyRows = 0;
 
-  //table props [pagination?, toolbar, denseity: small, medium, select   ]
-
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableContainer className={classes.container}>
+    <div className={tableClasses.root}>
+      <Paper className={tableClasses.paper}>
+        <TableContainer className={tableClasses.container}>
           <Table
             stickyHeader={sticky}
-            // sticky header creating issues with dropdown
             aria-label="sticky table"
-            className={classes.table}
+            className={tableClasses.table}
             aria-labelledby="tableTitle"
             size={dense ? "small" : "medium"}
           >
             <TableHeader
               headers={headers}
-              classes={classes}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -142,7 +130,7 @@ const TableComp = ({
                         <TableCell
                           align="left"
                           key={i}
-                          onClick={(event) => handleClickRow(row)}
+                          onClick={() => handleClickRow(row)}
                         >
                           {getData(row, header)}
                         </TableCell>
