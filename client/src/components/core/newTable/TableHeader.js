@@ -9,7 +9,6 @@ import Checkbox from "@mui/material/Checkbox";
 
 const TableHeader = ({
   headers,
-  classes,
   onSelectAllClick,
   order,
   orderBy,
@@ -29,7 +28,7 @@ const TableHeader = ({
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all desserts" }}
+            inputProps={{ "aria-label": "select all rows" }}
           />
         </TableCell>
         {headers.map((rec) => (
@@ -43,14 +42,13 @@ const TableHeader = ({
               active={orderBy === rec.accessor}
               direction={orderBy === rec.accessor ? order : "asc"}
               onClick={createSortHandler(rec.accessor)}
-              //hideSortIcon = {true} //if data is not sortable (reactcomp render in header for exmple we can hide icon and remove on click. could not find way to remove sortability through MUI comp
             >
               {rec.label}
-              {orderBy === rec.accessor ? (
-                <span className={classes.visuallyHidden}>
+              {orderBy === rec.accessor && (
+                <span className="sr-only">
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </span>
-              ) : null}
+              )}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -60,13 +58,13 @@ const TableHeader = ({
 };
 
 TableHeader.propTypes = {
-  classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
+  headers: PropTypes.array.isRequired,
 };
 
 export default TableHeader;

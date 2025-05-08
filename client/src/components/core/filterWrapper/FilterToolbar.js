@@ -1,30 +1,24 @@
-import React, { useState, Fragment } from "react";
-import IconButton from "../IconButton/IconButton";
-
-//dep for filter comp
+import React from "react";
 import Select from "react-select";
-import "./style.css";
 
 const FilterdToolbar = ({
   checkbox = true,
   dataModel,
-  selectedData,
-  filterActive,
-  showFilterModal,
-  filter,
-  saveFilter,
+  selectedData = [],
+  filterActive = () => {},
+  showFilterModal = () => {},
+  filter = [],
+  saveFilter = () => {},
   selected,
-  savedFilters,
-  onChange,
-  clearFilter,
+  savedFilters = [],
+  onChange = () => {},
+  clearFilter = () => {},
   bulkActions = [],
 }) => {
   const handleFilterChange = (e) => {
-    const {
-      label,
-      value: { filters, blacklist },
-    } = e;
-    onChange(dataModel, e.value, { label: e.label, _id: e.value._id });
+    if (!e || !e.value) return;
+    const { label, value } = e;
+    onChange(dataModel, value, { label, _id: value._id });
   };
 
   const selectedFilterBar = () => {
@@ -34,56 +28,58 @@ const FilterdToolbar = ({
   const numSelected = selectedData.length;
 
   return (
-    <div className="searchContainer agentsSearchContainer">
-      <div style={{ display: "flex" }}>
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 bg-white rounded shadow">
+      <div className="flex-grow flex items-center gap-4">
         <Select
-          className="marketplace__filter-select"
-          onChange={(e) => handleFilterChange(e)}
+          className="w-full md:w-64 text-sm"
+          onChange={handleFilterChange}
           onFocus={selectedFilterBar}
           onBlur={selectedFilterBar}
-          defaultValue="All"
           options={savedFilters}
           placeholder="Select Filter"
-          value={selected}
+          value={selected || null}
         />
-        {/* filter string can be added in the future.  */}
-        {/* <input
-                className='form-control searchInput'
-                tabIndex={0}
-                onChange={(e) => setFilterString(e.target.value)}
-                placeholder='Search'
-            /> */}
       </div>
-      <div className="marketplace__filter-icons">
-        {filter.length ? (
-          <Fragment>
-            {!selected && <button onClick={saveFilter}>Save filter</button>}
-            <button onClick={clearFilter}>Clear filter</button>
-          </Fragment>
-        ) : null}
+
+      <div className="flex items-center gap-2 text-sm flex-wrap justify-end">
+        {Array.isArray(filter) && filter.length > 0 && (
+          <>
+            {!selected && (
+              <button
+                onClick={saveFilter}
+                className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded transition"
+              >
+                Save filter
+              </button>
+            )}
+            <button
+              onClick={clearFilter}
+              className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded transition"
+            >
+              Clear filter
+            </button>
+          </>
+        )}
 
         {numSelected > 0 ? (
-          <Fragment>
-            {bulkActions.map((elem, i) => (
-              <button
-                key={i}
-                title={elem.action}
-                onClick={() => elem.function(selectedData)}
-              >
-                <i className={elem.icon}></i>
-              </button>
-            ))}
-          </Fragment>
+          bulkActions.map((elem, i) => (
+            <button
+              key={i}
+              title={elem.action}
+              onClick={() => elem.function(selectedData)}
+              className="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded transition"
+            >
+              <i className={elem.icon}></i>
+            </button>
+          ))
         ) : (
-          <button onClick={() => showFilterModal(true)}>
+          <button
+            onClick={() => showFilterModal(true)}
+            className="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded transition"
+          >
             <i className="fas fa-filter"></i>
           </button>
         )}
-        {/* {!checkbox && (
-                <button onClick={toggleCheckFlow}>
-                    <i className="fas fa-check-square"></i>
-                </button>
-            )} */}
       </div>
     </div>
   );

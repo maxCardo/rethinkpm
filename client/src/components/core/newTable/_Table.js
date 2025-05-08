@@ -16,20 +16,20 @@ import { setSelected } from "../../../actions/filteredData";
 import TableHeader from "./TableHeader";
 
 const TableComp = ({
-  headers,
-  list,
-  handleClickRow,
-  sticky,
-  dense,
+  headers = [],
+  list = [],
+  handleClickRow = () => {},
+  sticky = false,
+  dense = false,
   _orderBy,
   _rowsPerPage = 10,
-  selected,
+  selected = [],
   setSelected,
 }) => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(
-    _orderBy ? _orderBy : headers[0].accessor
+    _orderBy || headers[0]?.accessor || ""
   );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(_rowsPerPage);
@@ -41,27 +41,21 @@ const TableComp = ({
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       setSelected(tableData);
-      return;
+    } else {
+      setSelected([]);
     }
-    setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, row) => {
+    const selectedIndex = selected.findIndex((r) => r._id === row._id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+      newSelected = [...selected, row];
+    } else {
+      newSelected = selected.filter((_, i) => i !== selectedIndex);
     }
+
     setSelected(newSelected);
   };
 
@@ -76,11 +70,11 @@ const TableComp = ({
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value));
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const isSelected = (name) => selected.map((x) => x._id).indexOf(name) !== -1;
+  const isSelected = (id) => selected.some((r) => r._id === id);
   const emptyRows = 0;
 
   return (
@@ -116,7 +110,7 @@ const TableComp = ({
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.symbol}
+                      key={row._id || row.symbol || index}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -140,7 +134,7 @@ const TableComp = ({
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={headers.length + 1} />
                 </TableRow>
               )}
             </TableBody>
@@ -161,7 +155,7 @@ const TableComp = ({
 };
 
 const mapStateToProps = (state) => ({
-  selected: state.filteredData.selectedData,
+  selected: state.filteredData?.selectedData || [],
 });
 
 export default connect(mapStateToProps, { setSelected })(TableComp);
