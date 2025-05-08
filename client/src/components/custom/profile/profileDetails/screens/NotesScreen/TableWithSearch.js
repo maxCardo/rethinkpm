@@ -20,8 +20,8 @@ export class TableWithSearch extends Component {
   }
   render() {
     return (
-      <div className="table-with-search__container overflow-auto">
-        <div className="table-with-search__controls-container">
+      <div className="overflow-auto flex flex-col justify-center  ">
+        <div className="flex justify-between items-center ">
           <IconButton
             placement="bottom"
             tooltipContent="Add new note"
@@ -30,12 +30,9 @@ export class TableWithSearch extends Component {
             variant="clean"
             onClickFunc={this.handleAdd}
           />
-          <Form.Control
-            className="table-with-search__search-input"
-            onChange={this.handleSearch}
-          />
+          <Form.Control className="w-5 h-7" onChange={this.handleSearch} />
         </div>
-        <div className="table-with-search__table">
+        <div className="">
           <Table {...this.props} filter={this.state.searchString} />
         </div>
         <AddNoteModal

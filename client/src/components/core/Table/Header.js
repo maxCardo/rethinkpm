@@ -1,31 +1,32 @@
-import React, { Component } from 'react'
-import SortButtons from './SortButtons'
+import React from "react";
+import SortButtons from "./SortButtons";
 
-export class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this)
-  }
-  render() {
-    return (
-      <th onClick={this.handleClick} className={this.props.className}>
-        <div 
-          style={{display: 'flex', alignItems: 'center', cursor: this.props.sortable ? 'pointer': ''}}
-        >
-          {this.props.label}
+const Header = ({
+  label,
+  className,
+  sortable,
+  handleSort,
+  sortDirection,
+  fontSize,
+}) => {
+  const onClick = () => {
+    if (sortable) handleSort();
+  };
 
-          {this.props.sortable && 
-            <SortButtons sortDirection={this.props.sortDirection} fontSize={this.props.fontSize}/>
-          }
-        </div>
-      </th>
-    )
-  }
-  handleClick() {
-    if(this.props.sortable) {
-      this.props.handleSort()
-    }
-  }
-}
+  return (
+    <th onClick={onClick} className={className}>
+      <div
+        className={`flex items-center gap-1 ${
+          sortable ? "cursor-pointer" : "cursor-default"
+        }`}
+      >
+        {label}
+        {sortable && (
+          <SortButtons sortDirection={sortDirection} fontSize={fontSize} />
+        )}
+      </div>
+    </th>
+  );
+};
 
-export default Header
+export default Header;

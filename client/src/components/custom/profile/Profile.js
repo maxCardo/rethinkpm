@@ -95,6 +95,7 @@ const Profile = ({
   ) : (
     <div className="profile__tabs-container">
       <TailwindTabs
+        className={"py-2"}
         tabs={dynamicTabs}
         activeTab={tabKey}
         setActiveTab={setTabKey}
