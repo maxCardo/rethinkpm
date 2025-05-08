@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import ProfileIcon from "../../../core/ProfileIcon";
-import InfoField from "./infoFields/InfoFields";
-import Loading from "../../../core/LoadingScreen/Loading";
-import AddPhoneModal from "./AddPhoneModal";
-import AddEmailModal from "./AddEmailModal";
 import IconButton from "../../../core/IconButton/IconButton";
+import Loading from "../../../core/LoadingScreen/Loading";
+import AddEmailModal from "./AddEmailModal";
+import AddPhoneModal from "./AddPhoneModal";
+import InfoField from "./infoFields/InfoFields";
 
 const ProfileInfo = ({
   settings: { profileInfo, profileNamePlural },
@@ -58,7 +57,7 @@ const ProfileInfo = ({
         {Object.keys(columns).map((col, index) => (
           <div
             key={index}
-            className="flex-1 bg-white rounded-md border border-gray-200 shadow-2xs shadow-black"
+            className="flex-1 bg-white rounded-md border border-black shadow-2xs shadow-white"
           >
             <h2 className="text-lg font-semibold p-2 text-gray-800 border-b">
               {colHeader[col]}

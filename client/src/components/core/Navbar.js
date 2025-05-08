@@ -70,58 +70,58 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
   };
 
   const iconStyle =
-    "text-white w-6 h-6 transition-transform duration-200 group-hover:scale-110";
+    "text-darkBlue w-6 h-6 transition-transform duration-200 group-hover:scale-110";
   const linkStyle =
-    "flex flex-col text-white items-center gap-1 group text-sm ";
+    "flex flex-col text-darkBlue items-center gap-1 group text-sm ";
 
   const authLinks = (
-    <ul className="flex mt-2 flex-wrap justify-center gap-6 text-white">
+    <ul className="flex mt-2 flex-wrap justify-center gap-6 text-darkBlue">
       <li>
         <Link to="/profile/agentPros" className={linkStyle}>
           <FaUserTie className={iconStyle} />
-          <span>Agents</span>
+          <span className="text-darkBlue">Agents</span>
         </Link>
       </li>
       <li>
         <Link to="/profile/buyerPros" className={linkStyle}>
           <FaUserPlus className={iconStyle} />
-          <span>Buyers</span>
+          <span className="text-darkBlue">Buyers</span>
         </Link>
       </li>
       <li>
         <Link to="/profile/sellerPros" className={linkStyle}>
           <FaUserCheck className={iconStyle} />
-          <span>Seller</span>
+          <span className="text-darkBlue">Seller</span>
         </Link>
       </li>
       <li>
         <Link to="/marketplace" className={linkStyle}>
           <FaStore className={iconStyle} />
-          <span>Marketplace</span>
+          <span className="text-darkBlue">Marketplace</span>
         </Link>
       </li>
       <li>
         <Link to="/offmarket" className={linkStyle}>
           <FaStore className={iconStyle} />
-          <span>OffMarket</span>
+          <span className="text-darkBlue">OffMarket</span>
         </Link>
       </li>
       <li>
         <Link to="/propertyRecords" className={linkStyle}>
           <FaBuilding className={iconStyle} />
-          <span>Properties</span>
+          <span className="text-darkBlue">Properties</span>
         </Link>
       </li>
       <li>
         <Link to="/ownerRecords" className={linkStyle}>
           <FaUsers className={iconStyle} />
-          <span>Owners</span>
+          <span className="text-darkBlue">Owners</span>
         </Link>
       </li>
       <li>
         <Link to="/showcase" className={linkStyle}>
           <FaStar className={iconStyle} />
-          <span>Showcase</span>
+          <span className="text-darkBlue">Showcase</span>
         </Link>
       </li>
       <li>
@@ -131,14 +131,14 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
           className={`${linkStyle} text-red-400 hover:text-red-500`}
         >
           <FaSignOutAlt className={iconStyle} />
-          <span>Logout</span>
+          <span className="text-darkBlue">Logout</span>
         </a>
       </li>
     </ul>
   );
 
   const guestLinks = (
-    <ul className="p-4 text-white">
+    <ul className="p-4 text-darkBlue">
       <li>
         <Link to="/login" className="text-blue-500 hover:text-blue-400">
           Login
@@ -157,7 +157,7 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
       <div
         onClick={() => setShowNav(!showNav)}
         ref={arrowRef}
-        className="absolute  left-1/2 -translate-x-1/2 z-50  p-1 rounded-2xl border  text-white hover:bg-gray-700 shadow-lg"
+        className="absolute  left-1/2 -translate-x-1/2 z-50  p-1 rounded-2xl border  text-darkBlue shadow-lg"
       >
         {showNav ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
       </div>

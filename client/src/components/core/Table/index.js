@@ -1,9 +1,9 @@
 // Table.jsx - Rewritten for simplicity and modern clarity using functional components and hooks
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import { filterData, getData } from "../../../util/commonFunctions";
 import Header from "./Header";
 import Pagination from "./Pagination";
 import commonMappers from "./commonMappers";
-import { filterData, getData } from "../../../util/commonFunctions";
 import "./style.css";
 
 const Table = ({
