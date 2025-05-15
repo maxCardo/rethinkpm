@@ -12,8 +12,6 @@ import missingImage from '../../../../../img/missingImage.jpg'
 import '../style.css'
 import { clippingParents } from '@popperjs/core';
 
-
-
 const CompView = ({focusedProp, type}) => {
 
     const [comps, setComps] = useState([])
@@ -191,7 +189,7 @@ const CompView = ({focusedProp, type}) => {
             </div>
             <div className="Map">
                 <div className="googleMapContainer" style={{height: '52vh', width: 'auto'}}>
-                    <GoogleMapReact bootstrapURLKeys={{ key: 'AIzaSyCvc3X9Obw3lUWtLhAlYwnzjnREqEA-o3o' }}
+                    <GoogleMapReact bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY}}
                                     defaultCenter={defaultMapProps.center}
                                     defaultZoom={defaultMapProps.zoom} >
                         {mapMarkerList}

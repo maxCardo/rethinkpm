@@ -5,11 +5,12 @@ import Table from '../../../core/newTable/_Table'
 import Loading from '../../../core/LoadingScreen/Loading';
 import DetailModal from '../DetailModal'
 import PropertyDetailsModal from '../PropertyDetailsModal';
+import SchModal from './schModal';
 
-import {getShowcaseData, unflag} from '../../../../actions/marketplace/showcase'
+import {getShowcaseData, unflag, createSchAppt} from '../../../../actions/marketplace/showcase'
 
 
-const ShowcaseRecords = ({getShowcaseData, unflag,  showcase: {list, loading}}) => {
+const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {list, loading}}) => {
 
   //---------- Data Maps --------------//
   const headers = [
@@ -67,13 +68,16 @@ const ShowcaseRecords = ({getShowcaseData, unflag,  showcase: {list, loading}}) 
                         href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
             /> */}
             
-            {/* <IconButton placement='bottom'
-                        tooltipContent='Input Listing Data'
-                        iconClass='fas fa-plus'
-                        variant='action-button'
-                        //onClickFunc={() => startAddDataFlow(item)}
-            />
             <IconButton placement='bottom'
+                        tooltipContent='Input Appointment'
+                        iconClass='fas fa-calendar'
+                        variant='action-button'
+                        onClickFunc={() => {
+                          setFocusedProperty(item.deal_id)
+                          setShowSchModal(true)
+                        }}
+            />
+            {/* <IconButton placement='bottom'
                         tooltipContent='Recommend Deal'
                         iconClass='fas fa-star'
                         variant='action-button'
@@ -97,6 +101,7 @@ const ShowcaseRecords = ({getShowcaseData, unflag,  showcase: {list, loading}}) 
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [focusedProperty, setFocusedProperty] =  useState()
   const [showPropertyDetailsModal, setShowPropertyDetailsModal] = useState(false)
+  const [showSchModal, setShowSchModal] = useState(false)
   const [iframeTarget, setIframeTarget] = useState('')
   
   // useEffect(() => {
@@ -111,11 +116,17 @@ const ShowcaseRecords = ({getShowcaseData, unflag,  showcase: {list, loading}}) 
   const startShowDetailFlow = (item) => {
     console.log('item');
     console.log(item.deal_id);
+    item.deal_id.history.push(...item.history)  
     setFocusedProperty(item.deal_id)
     //setLoading(true)
     setShowDetailModal(true)
     //setLoading(false)
   }
+
+  const handleSchSubmit = (data) => {
+    createSchAppt(data)
+  }
+  
 
  return loading ? (
   <Loading />
@@ -140,7 +151,14 @@ const ShowcaseRecords = ({getShowcaseData, unflag,  showcase: {list, loading}}) 
             iframeTarget={iframeTarget} 
             show={showPropertyDetailsModal}
             handleClose={() => setShowPropertyDetailsModal(false)}
-          />  
+          />
+          <SchModal  
+            show={showSchModal}
+            handleClose={() => setShowSchModal(false)}
+            handleSubmit={handleSchSubmit}
+            focusedProperty={focusedProperty}
+          />
+
     </div>
   )
 }
@@ -150,5 +168,5 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getShowcaseData, unflag})(ShowcaseRecords)
+export default connect(mapStateToProps, {getShowcaseData, unflag, createSchAppt})(ShowcaseRecords)
 

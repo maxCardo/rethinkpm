@@ -1,11 +1,9 @@
-
 const express = require('express')
 
+const {schShowcase} = require('../../../3ps/rentmanager')
+
+
 const Showcase = require('../../../db/models/sales/ShowcaseList')
-
-
-
-
 
 const router = express.Router()
 
@@ -62,7 +60,7 @@ router.get('/showcasedeals', async (req, res) => {
 });
 
 // @route: delete /api/showcase/showcasedeals
-// @desc: get all showcase deals
+// @desc: delete showcase deal (in dev??)
 // @ access: Public * ToDo: update to make private
 router.delete('/showcasedeals', async (req, res) => {
     try {
@@ -75,7 +73,28 @@ router.delete('/showcasedeals', async (req, res) => {
     }    
 });
 
+// @route: delete /api/showcase/sch
+// @desc: create ticket in RM ans sch deal viewing
+// @ access: Public * ToDo: update to make private
+router.post('/sch', async (req, res) => {
+    try {
 
+        const deal_id = req.body.property._id
+        //tasks: 
+         // - update note on deal that appointment was set ie ticket opened. add issue number
+         // create ticket in RM, return issue number with success to add to notification and log
+        const rmIssue = await schShowcase(req.body)
+        console.log('rm reture: ', rmIssue[0].ServiceManagerIssueID)
+        const dealRec = await Showcase.findOne({deal_id})
+        dealRec.history.push({type:'log', content: `Scheduled Appointment: Issue #${rmIssue[0].ServiceManagerIssuesID}`})
+        const record = await dealRec.save()
+        //dispath issue number back to client state
+        res.status(200).send({task: rmIssue[0].ServiceManagerIssueID, record})
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err)
+    }    
+});
 
 
 

@@ -1,4 +1,4 @@
-import {SET_LOADING, SET_SHOWCASE_LIST, UNFLAG_PROP} from '../actions/type';
+import {SET_LOADING, SET_SHOWCASE_LIST, UNFLAG_PROP, UPDATE_SHOWCASE_SCH} from '../actions/type';
 const initialState = {
     loading: true,
     list: [],
@@ -22,6 +22,12 @@ export default function (state = initialState, action) {
             return {
                 ... state,
                 list : state.list.filter(prop => prop._id != payload)
+            }
+        case UPDATE_SHOWCASE_SCH:
+            return {
+                ...state,
+                list: state.list.map(item => item._id === payload._id ? payload : item),
+                loading: false
             }
 
         default:

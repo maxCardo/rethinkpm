@@ -5,8 +5,9 @@
   align-items: stretch;
 }
 
-.profile-list__search-input {
+.profile-list__search-input.form-control {
   width: 80%;
+  margin-left: 0;
 }
 
 .profile-list__filter-icon {

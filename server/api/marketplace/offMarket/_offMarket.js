@@ -41,7 +41,7 @@ router.get('/deals', async (req, res) => {
 })
 
 // @route: Get api/marketplace/off_market/seller_pipeline/:id
-// @desc: get pipeline deals for a buyerPros
+// @desc:
 // @ access: private
 router.delete('/seller_pipeline/:id', async (req, res) => {
     const id = req.params.id;
