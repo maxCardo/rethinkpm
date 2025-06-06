@@ -1,14 +1,18 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export class ChildTask extends Component {
-  render() {
-    return (
-      <div className='go-to-parent-card__container' onClick={() => this.props.history.push(`/services/${this.props.parentId}`)}>
-        <p>Go back to parent</p>
-      </div>
-    )
-  }
-}
+const GoToParentCard = ({ parentId }) => {
+  const navigate = useNavigate();
 
-export default withRouter(ChildTask)
+  const handleClick = () => {
+    navigate(`/services/${parentId}`);
+  };
+
+  return (
+    <div className="go-to-parent-card__container" onClick={handleClick}>
+      <p>Go back to parent</p>
+    </div>
+  );
+};
+
+export default GoToParentCard;

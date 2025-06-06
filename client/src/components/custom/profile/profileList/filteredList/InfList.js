@@ -1,70 +1,75 @@
-import React, {Component, Fragment} from 'react'
-import {connect} from 'react-redux'
+import React from "react";
+import { connect } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 
-import {setActiveProfile} from '../../../../../actions/profile'
+import { setActiveProfile } from "../../../../../actions/profile";
 
-export class InfiniteList extends Component {
+const InfiniteList = ({
+  data = [],
+  hasMore,
+  loadingMore,
+  loadNextPage,
+  settings,
+  setActiveProfile,
+}) => {
+  const moneyFormat = (sum) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(sum);
+  };
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            items: [],
-            hasMore: true
-        }
-    }
+  return (
+    <div className="space-y-4">
+      <div
+        className="inf-scroll overflow-y-auto max-h-[calc(100vh-18rem)]
+ pr-2"
+      >
+        {data.map((val) => (
+          <div
+            onClick={() => setActiveProfile(val)}
+            key={val._id}
+            className="list__picker cursor-pointer border rounded-lg p-4 transition"
+          >
+            <div className="list__picker-header flex justify-between mb-2">
+              <span className="font-medium text-darkBlue">
+                {val.firstName} {val.lastName}
+              </span>
+              <span className="label__gray bg-gray-200 text-darkBlue text-xs px-2 py-1 rounded">
+                {val.status}
+              </span>
+            </div>
+            <div className="list__picker-body flex justify-between text-sm text-darkBlue">
+              <span>skills status</span>
+              <span>{moneyFormat(val.sales)}</span>
+            </div>
+          </div>
+        ))}
 
+        {hasMore && (
+          <div className="flex justify-center mt-4">
+            <button
+              className="infinite-list__load-more bg-blue-500 text-white text-sm px-4 py-2 rounded disabled:opacity-50"
+              disabled={loadingMore}
+              onClick={loadNextPage}
+            >
+              {loadingMore ? (
+                <ClipLoader size={14} color="#ffffff" loading={true} />
+              ) : (
+                "Load More"
+              )}
+            </button>
+          </div>
+        )}
+      </div>
 
-    moneyFormat(sum) {
-        return (new Intl.NumberFormat('en-US',
-            {style: 'currency', currency: 'USD'}
-        ).format(sum))
-    }
+      <div className="infinite-list__length-info text-center text-sm text-darkBlue mt-2">
+        <p>
+          Total of {settings.profileNamePlural}: {data.length}
+        </p>
+      </div>
+    </div>
+  );
+};
 
-    onClick = (profile) => {
-        this.props.setActiveProfile(profile)
-    }
-
-    render() {
-        return (
-            <Fragment>
-                <div className="inf-scroll">
-                    {this.props.data ? (
-                        this.props.data.map((val) => {
-                            return (
-                                <div onClick={() => this.onClick(val)} key={val._id} className="list__picker">
-                                    <div className="list__picker-header"><span>{val.firstName} {val.lastName}</span>
-                                        <span
-                                            className="label__gray">{val.status}</span></div>
-                                    <div className="list__picker-body">
-                                        <span>skills status</span><span>{this.moneyFormat(val.sales)}</span>
-                                    </div>
-                                </div>
-                            )
-                        })) : ''}
-                  {this.props.hasMore ?
-                    <button className='infinite-list__load-more' disabled={this.props.loadingMore} onClick={this.props.loadNextPage}>
-                      {this.props.loadingMore ? 
-                        <ClipLoader 
-                          size={10}
-                          color={"#4285F4"}
-                          loading={true}
-                        />
-                        :
-                        'Load More'
-                      }
-                    </button>
-                    :
-                    ''
-                  }
-                </div>
-                <div className='infinite-list__length-info'>
-                    <p>Total of {this.props.settings.profileNamePlural}: {this.props.data.length}</p>
-                </div>
-            </Fragment>
-        )
-    }
-}
-
-
-export default connect(null, {setActiveProfile})(InfiniteList)
+export default connect(null, { setActiveProfile })(InfiniteList);
