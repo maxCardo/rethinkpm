@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client"; // <-- updated import
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { Provider } from "react-redux";
@@ -21,4 +21,7 @@ const RootComponent = () => (
   </Provider>
 );
 
-ReactDOM.render(<RootComponent />, document.getElementById("root"));
+// Updated React 18 root rendering
+const container = document.getElementById("root");
+const root = ReactDOM.createRoot(container);
+root.render(<RootComponent />);
