@@ -1,4 +1,4 @@
-  /* placed filter icons on end right */
+  placed filter icons on end right
   .searchContainer {
     display: flex;
     justify-content: flex-end;
@@ -16,7 +16,7 @@
     display: flex;
   }
   
-  .marketplace__filter-icons button {
+  .marketplace__filter-icons  {
     display: flex;
     justify-content: center;
     align-items: center;
