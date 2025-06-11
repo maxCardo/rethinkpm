@@ -173,7 +173,7 @@ const FILTERFIELDS = {
 //   ]
 // }
 
-const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
+const Marketplace = ({createErrorAlert, openStreetView, getAreaRents, isNavbarShown}) => {
 
   const [loading, setLoading] = useState(false)
   const [listings, setListings] = useState([])
@@ -197,6 +197,8 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
   const [propertyToBlackList, setPropertyToBlackList] = useState(undefined)
   const tableContainerHeight = useRef(null);
   const size = useWindowSize();
+  const NAVBAR_HEIGHT = 80;
+
 
   const conditionsMap = {
     1: 'D-',
@@ -655,7 +657,7 @@ const Marketplace = ({createErrorAlert, openStreetView, getAreaRents}) => {
   }, [size.height, listings.length, tablePageSize, version]); // Empty array ensures that effect is only run on mount
 
   return loading ? <Loading /> : (
-      <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+      <div className="tableWithActions marketplace" style={{display: 'flex', flexDirection: 'column', height:`calc(100% - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`}}>
         {/* <KpiBar/> */}
 
         <div style={{flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column'}}>

@@ -7,7 +7,7 @@
   display: flex;
 }
 
-.marketplace__filter-icons  {
+.marketplace__filter-icons button  {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,6 +71,7 @@
 .marketplace__filter-select {
   width: 200px;
   margin: 10px;
+  z-index: 9999;
 }
 
 .marketplace__table-icon {
@@ -127,8 +128,9 @@
   justify-content: space-between;
 }
 
-.marketplace .searchContainer {
+.marketplace .searchContainer { 
   margin: 0;
+  justify-content: space-between !important
 }
 td.Marketplace__address {
   display: flex;

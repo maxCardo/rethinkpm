@@ -20,7 +20,7 @@ import {
 
 import gsap from "gsap";
 
-const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
+const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout, setIsNavbarShown }) => {
   const [showNav, setShowNav] = useState(false);
   const navRef = useRef(null);
   const arrowRef = useRef(null);
@@ -30,8 +30,10 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
   }, []);
 
   useEffect(() => {
+    // for UI purposes use in different components
+    setIsNavbarShown(showNav);
+    
     if (!navRef.current || !arrowRef.current) return;
-
     if (showNav) {
       gsap.to(navRef.current, {
         y: 0,

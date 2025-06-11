@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -33,6 +33,8 @@ import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
 import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
 
 const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
+  const [isNavbarShown, setIsNavbarShown] = useState(false);
+
   if (Notification.permission === "default") {
     Notification.requestPermission();
   }
@@ -60,7 +62,7 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   return (
     <Router>
       <Fragment>
-        <Navbar />
+        <Navbar  setIsNavbarShown={setIsNavbarShown}/>
         <Routes>
           <Route path="/" element={<Landing />} />
 
@@ -150,6 +152,7 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
               <PrivateRoute>
                 <Marketplace
                   apiKey={routeSettings.marketplace.streetViewApiKey}
+                  isNavbarShown={isNavbarShown}
                 />
               </PrivateRoute>
             }
