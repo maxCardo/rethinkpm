@@ -31,6 +31,7 @@ import TestVerticalTable from './components/custom/TestVerticalTable';
 import PropertyRecords from './components/custom/PropertyRecords/PropertyRecords'
 import OwnerRecords from './components/custom/PropertyRecords/OwnerRecords'
 import ShowcaseRecords from './components/custom/Marketplace/showcase/showcase'
+import leaseleadRecords from './components/custom/CRM/leaseLead'
 
 
 const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
@@ -77,6 +78,7 @@ const App = ({loadUser, receiveMessage, receiveSMS, activeChat}) => {
             <PrivateRoute exact path='/propertyRecords' component={PropertyRecords}/>
             <PrivateRoute exact path='/ownerRecords' component={OwnerRecords}/>
             <PrivateRoute exact path='/showcase' component={ShowcaseRecords}/>
+            <PrivateRoute exact path='/crm/leaselead' component={leaseleadRecords}/>
             <Route exact path='/playground' component={Playground} />
             <Route path='/vertical-table' component={TestVerticalTable} />
             <Route path='/servicerequest' component={Login} />

@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
-import IconButton from "../../../core/IconButton/IconButton";
-import Table from '../../../core/newTable/_Table'
-import Loading from '../../../core/LoadingScreen/Loading';
-import DetailModal from '../DetailModal'
-import PropertyDetailsModal from '../PropertyDetailsModal';
-import SchModal from './schModal';
+import IconButton from "../../core/IconButton/IconButton";
+import Table from '../../core/newTable/_Table'
+import Loading from '../../core/LoadingScreen/Loading';
 
 import {getLeaseLeadData} from '../../../actions/crm/leaseLeads'
 import leaseLeads from '../../../reducers/leaseLeads';
@@ -15,14 +12,14 @@ const LeaseLeadRecords = ({getLeaseLeadData, leaseLeads: {list, loading}}) => {
 
   //---------- Data Maps --------------//
   const headers = [
-    // {
-    //   accessor: "deal_id.propertyType",
-    //   label: "useCode"
-    // },
-    // {
-    //   accessor: "deal_id.city",
-    //   label: "Area"
-    // },
+    {
+      accessor: "fullName",
+      label: "Name"
+    },
+    {
+      accessor: "leadSource",
+      label: "Source"
+    },
     // {
     //   reactComponent: true,
     //   label: "Address",
@@ -115,13 +112,13 @@ const LeaseLeadRecords = ({getLeaseLeadData, leaseLeads: {list, loading}}) => {
  ) : (
     <div>
       <div>
-        Showcase Deals
+        Leasing Leads
       </div>   
       
         <Table
         headers={headers}
         list = {list}
-        handleClickRow={startShowDetailFlow}
+        // handleClickRow={}
         sticky = {sticky}
         />
     </div>
@@ -133,5 +130,5 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getShowcaseData, unflag, createSchAppt})(ShowcaseRecords)
+export default connect(mapStateToProps, {getLeaseLeadData})(LeaseLeadRecords)
 
