@@ -35,7 +35,7 @@
     "mongodb": "^3.7.4",
     "mongoose": "^5.13.23",
     "multer": "^2.0.0",
-    "node-cron": "^2.0.3",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.6.1",
     "query-string": "^6.12.1",
     "react-popper-tooltip": "^3.1.0",
