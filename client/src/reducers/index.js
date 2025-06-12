@@ -10,7 +10,8 @@ import marketplace from "./marketplace";
 import offMarket from "./offMarket";
 import filteredData from './filteredData'
 import showcase from './showcase';
+import leaseLeads from './leaseLeads';
 
 
 
-export default combineReducers({alert, auth, chat, dashboard, services, brokerDashboard,profile,marketplace,offMarket, filteredData, showcase});
+export default combineReducers({alert, auth, chat, dashboard, services, brokerDashboard,profile,marketplace,offMarket, filteredData, showcase, leaseLeads});

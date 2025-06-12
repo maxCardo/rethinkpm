@@ -26,11 +26,12 @@ import { connect } from "react-redux";
 import io from "socket.io-client";
 import settings from "./settings.json";
 import Alert from "./components/core/Alert";
-import Dash from "./components/custom/Dash";
-import TestVerticalTable from "./components/custom/TestVerticalTable";
-import PropertyRecords from "./components/custom/PropertyRecords/PropertyRecords";
-import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
-import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
+import Dash from "./components/custom/Dash"
+import TestVerticalTable from './components/custom/TestVerticalTable';
+import PropertyRecords from './components/custom/PropertyRecords/PropertyRecords'
+import OwnerRecords from './components/custom/PropertyRecords/OwnerRecords'
+import ShowcaseRecords from './components/custom/Marketplace/showcase/showcase'
+import LeaseLeadRecords from './components/custom/CRM/leaseLead'
 
 const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
@@ -191,6 +192,15 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/crm/leaselead"
+            element={
+              <PrivateRoute>
+                <LeaseLeadRecords />
+              </PrivateRoute>
+            }
+          />
+          
         </Routes>
 
         <Alert />

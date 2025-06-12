@@ -11,7 +11,7 @@ export const getLeaseLeadData = () => async dispatch => {
 
     console.log('running get showcase data')
     try {
-        const res = await axios.get('/api/')
+        const res = await axios.get('/api/crm/leaselead')
         console.log('res: ', res)
         dispatch({
             type: SET_LEASELEAD_LIST,
