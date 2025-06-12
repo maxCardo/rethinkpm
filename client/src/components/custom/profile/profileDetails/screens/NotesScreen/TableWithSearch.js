@@ -1,53 +1,61 @@
-import React, { Component } from 'react'
-import Form from 'react-bootstrap/Form'
-import Table from '../../../../../core/Table'
-import AddNoteModal from './AddNoteModel'
-import '../../../style.css'
+import React, { Component } from "react";
+import "../../../../../../../src/App.css";
+import Form from "react-bootstrap/Form";
+import Table from "../../../../../core/Table";
+import AddNoteModal from "./AddNoteModel";
+import "../../../style.css";
 import IconButton from "../../../../../core/IconButton/IconButton";
 
 export class TableWithSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchString: '',
-      showModal: false
-    }
-    this.handleSearch = this.handleSearch.bind(this)
-    this.handleAdd = this.handleAdd.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+      searchString: "",
+      showModal: false,
+    };
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   render() {
     return (
-      <div className='table-with-search__container'>
-        <div className='table-with-search__controls-container'>
-          <IconButton placement='bottom'
-                      tooltipContent='Add new note'
-                      iconClass='fas fa-plus'
-                      btnClass='btn-success'
-                      variant='clean'
-                      onClickFunc={this.handleAdd}/>
-          <Form.Control className='table-with-search__search-input' onChange={this.handleSearch}/>
+      <div className="overflow-auto flex flex-col justify-center  ">
+        <div className="flex justify-between items-center ">
+          <IconButton
+            placement="bottom"
+            tooltipContent="Add new note"
+            iconClass="fas fa-plus"
+            btnClass="btn-success"
+            variant="clean"
+            onClickFunc={this.handleAdd}
+          />
+          <Form.Control className="w-5 h-7" onChange={this.handleSearch} />
         </div>
-        <div className='table-with-search__table'>
-          <Table {...this.props}  filter={this.state.searchString}   />
+        <div className="">
+          <Table {...this.props} filter={this.state.searchString} />
         </div>
-        <AddNoteModal show={this.state.showModal} profileType={this.props.profileType} handleClose={this.handleClose} handleSubmit={this.handleSubmit}/>
+        <AddNoteModal
+          show={this.state.showModal}
+          profileType={this.props.profileType}
+          handleClose={this.handleClose}
+          handleSubmit={this.handleSubmit}
+        />
       </div>
-    )
+    );
   }
   handleAdd() {
-    this.setState({showModal: true})
+    this.setState({ showModal: true });
   }
   handleSearch(e) {
-    this.setState({searchString: e.target.value})
+    this.setState({ searchString: e.target.value });
   }
   handleClose() {
-    this.setState({showModal: false})
+    this.setState({ showModal: false });
   }
   handleSubmit(data) {
-    this.props.handleSubmit(data)
+    this.props.handleSubmit(data);
   }
 }
 
-export default TableWithSearch
+export default TableWithSearch;
