@@ -41,7 +41,7 @@
     "request-promise": "^4.2.4",
     "socket.io": "^2.4.1",
     "twilio": "^3.34.0",
-    "uuid": "^3.4.0"
+    "uuid": "^9.0.1"
   },
   "proxy": {
     "api": {
