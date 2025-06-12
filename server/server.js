@@ -15,7 +15,7 @@ const { propertyNum } = require('./3ps/calandly');
 
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+const io = require('socket.io')(server);
 const cors = require('cors');
 // const uuid = require('uuid/v1');
 
