@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Roboto", sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+}
+
+
+/* color-scheme - only works for system/browser dark mode! */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background:  #061331 ;
+    --foreground: #ffffff;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.box{
+  @apply max-w-[1344px]
+}
+
+@theme{
+  --color-darkBlue: #061331;
+  --color-turquoise:#87B8A1;
+  --color-lightBlue:#0088FF;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+.bg-gradientBg {
+  background: transparent linear-gradient(3deg, #0088FF 0%, #061331 100%) 0% 0% no-repeat padding-box;
+}
+
+@media screen and (min-width: 2000px) {
+  .skew-fix {
+    transform: skewY(0deg) !important;
+    @apply mb-10
+
+   
+  }
+ 
+}
+@media screen and (min-width: 2200px) {
+  .img-small{
+    @apply min-h-[1250px]
+  }
+
+   .footer-pt{
+    @apply pt-48
+   }
+  }
+ 

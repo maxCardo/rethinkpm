@@ -1,72 +1,95 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import { Tabs, Tab } from 'react-bootstrap'
-import TableWithSearch from './TableWithSearch'
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import TableWithSearch from "./TableWithSearch";
+import TailwindTabs from "../../../../Tabs/TailwindTabs";
 
+const NotesScreen = ({ profileType, activeProfile }) => {
+  const [activeTab, setActiveTab] = useState("all");
 
-const NotesScreen = ({profileType, activeProfile}) => {
+  const allNotes = activeProfile.notes || [];
 
-    const allNotes = activeProfile.notes
+  const all = allNotes;
+  const notes = allNotes.filter((note) => note.type === "note");
+  const logs = allNotes.filter((note) => note.type === "log");
 
-    var all = allNotes && allNotes.length ? allNotes  : []
-    var notes = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'note' ) : []
-    var logs = allNotes && allNotes.length ? allNotes.filter((note) => note.type === 'log') : []
+  const headers = [
+    { accessor: "content", label: "Record" },
+    { accessor: "date", label: "Date", mapper: "date" },
+    { accessor: "user.name", label: "User" },
+  ];
 
-    var headers = [
-        {
-            accessor: 'content',
-            label: 'Record'
-        },
-        {
-            accessor: 'date',
-            label: 'Date',
-            mapper: 'date'
-        },
-        {
-            accessor: 'user.name',
-            label: 'User'
-        }
-    ]
-    var logHeaders = headers.slice()
-    logHeaders.unshift({
-        accessor: 'type',
-        label: 'Type',
-        mapper: (data) => data ? data.charAt(0).toUpperCase() + data.slice(1) : ''
-    })
+  const logHeaders = [
+    {
+      accessor: "type",
+      label: "Type",
+      mapper: (data) =>
+        data ? data.charAt(0).toUpperCase() + data.slice(1) : "",
+    },
+    ...headers,
+  ];
 
-    const onSubmit = (data) => {
-        console.log('onSubmit fired: ', data)
-    } 
+  const tabs = [
+    { key: "all", title: "All" },
+    { key: "notes", title: "Notes" },
+    { key: "logs", title: "Logs" },
+  ];
 
-    
-    return (
-        <div className='profile-tables__container'>
-            <Tabs defaultActiveKey="All">
-                <Tab eventKey="All" title="All">
-                    <TableWithSearch
-                        data={all}
-                        headers={logHeaders}
-                        handleSubmit={()=> onSubmit()}
-                        sortBy='date'
-                        sortDirection='desc'
-                        sorting={true}
-                        profileType={profileType}
-                    />
-                </Tab>
-                <Tab eventKey="notes" title="Notes">
-                    <TableWithSearch data={notes} headers={headers} profileType={profileType} handleSubmit={() => onSubmit()} />
-                </Tab>
-                <Tab eventKey="Logs" title="Logs">
-                    <TableWithSearch data={logs} headers={headers} profileType={profileType} handleSubmit={() => onSubmit()} />
-                </Tab>
-            </Tabs>
+  const onSubmit = (data) => {
+    console.log("onSubmit fired: ", data);
+  };
 
-        </div>
-    )
-}
+  const renderTable = () => {
+    switch (activeTab) {
+      case "notes":
+        return (
+          <div>
+            <TableWithSearch
+              data={notes}
+              headers={headers}
+              profileType={profileType}
+              handleSubmit={onSubmit}
+            />
+          </div>
+        );
+      case "logs":
+        return (
+          <TableWithSearch
+            data={logs}
+            headers={headers}
+            profileType={profileType}
+            handleSubmit={onSubmit}
+          />
+        );
+      default:
+        return (
+          <TableWithSearch
+            data={all}
+            headers={logHeaders}
+            profileType={profileType}
+            handleSubmit={onSubmit}
+            sortBy="date"
+            sortDirection="desc"
+            sorting={true}
+          />
+        );
+    }
+  };
 
-const mapStateToProps = state => ({
-    activeProfile: state.profile.activeProfile
-})
+  return (
+    <div className="">
+      <TailwindTabs
+        className={"py-0"}
+        tabs={tabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      >
+        <div className="">{renderTable()}</div>
+      </TailwindTabs>
+    </div>
+  );
+};
+const mapStateToProps = (state) => ({
+  activeProfile: state.profile.activeProfile,
+});
 
-export default connect(mapStateToProps)(NotesScreen)
+export default connect(mapStateToProps)(NotesScreen);

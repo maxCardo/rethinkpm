@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 import IconButton from "../../../core/IconButton/IconButton";
 import Table from '../../../core/newTable/_Table'
@@ -133,5 +134,5 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getShowcaseData, unflag, createSchAppt})(ShowcaseRecords)
+export default connect(mapStateToProps, {getShowcaseData, unflag, createSchAppt})(n)
 

@@ -1,42 +1,46 @@
-import React, {useEffect} from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux'; 
-import {loadUser} from '../../actions/auth';
-import PropTypes from 'prop-types';
+import React, { useEffect } from "react";
+import { Link, Navigate } from "react-router-dom"; // ✅ Correct
+import { connect } from "react-redux";
+import { loadUser } from "../../actions/auth";
+import PropTypes from "prop-types";
 
+const Landing = ({ loadUser, isAuthenticated }) => {
+  //check token and redirect if logged in
+  useEffect(() => {
+    loadUser();
+  }, [loadUser]);
 
+  if (isAuthenticated) {
+    return <Navigate to="/dash" />;
+  }
 
-
-const Landing = ({loadUser, isAuthenticated}) => {
-
-    //check token and redirect if logged in
-    useEffect(() => {loadUser();},[loadUser]);
-    if (isAuthenticated) { return <Redirect to='/dash' /> }
-    
-    return (
-        <section className="landing">
-            <div className="dark-overlay">
-                <div className="landing-inner">
-                    <h2 className="large">Rethink Property Managment</h2>
-                    <p className="lead">
-                      Simple Tech Bassed Solutions for Single Family and Multifamily Rental Owners and Residents.
-                    </p>
-                    <div className="buttons">
-                        {/* <Link to="/register" className="btn btn-primary">Sign Up</Link> */}
-                        <Link to="/login" className="btn btn-light">Login</Link>
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
-}
+  return (
+    <section className="landing">
+      <div className="dark-overlay">
+        <div className="landing-inner">
+          <h2 className="large">Rethink Property Managment</h2>
+          <p className="lead">
+            Simple Tech Bassed Solutions for Single Family and Multifamily
+            Rental Owners and Residents.
+          </p>
+          <div className="buttons">
+            {/* <Link to="/register" className="btn btn-primary">Sign Up</Link> */}
+            <Link to="/login" className="btn btn-light">
+              Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 Landing.propTypes = {
-    loadUser: PropTypes.func.isRequired,
-}
+  loadUser: PropTypes.func.isRequired,
+};
 
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-})
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
 
-export default connect(mapStateToProps, {loadUser})(Landing)
+export default connect(mapStateToProps, { loadUser })(Landing);
