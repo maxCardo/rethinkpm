@@ -38,7 +38,7 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.10.1",
     "query-string": "^8.0.0",
-    "react-popper-tooltip": "^3.1.0",
+    "react-popper-tooltip": "^3.1.1",
     "react-select": "^3.1.0",
     "react-slick": "^0.28.1",
     "react-spinners": "^0.8.1",
