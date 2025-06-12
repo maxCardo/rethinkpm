@@ -9,7 +9,6 @@
     "@mui/styles": "^6.4.11",
     "ajv": "^6.12.6",
     "ajv-keywords": "^3.5.2",
-    "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "dayjs": "^1.11.13",
     "google-map-react": "^2.2.0",
@@ -35,8 +34,7 @@
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.2",
-    "socket.io-client": "^4.7.4",
-    "uuid": "^9.0.1"
+    "socket.io-client": "^4.7.4"
   },
   "scripts": {
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
