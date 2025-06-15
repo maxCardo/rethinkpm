@@ -32,6 +32,7 @@ import PropertyRecords from './components/custom/PropertyRecords/PropertyRecords
 import OwnerRecords from './components/custom/PropertyRecords/OwnerRecords'
 import ShowcaseRecords from './components/custom/Marketplace/showcase/showcase'
 import LeaseLeadRecords from './components/custom/CRM/leaseLead'
+import LeaseTest from './components/custom/CRM/test'
 
 const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
@@ -197,6 +198,14 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
             element={
               <PrivateRoute>
                 <LeaseLeadRecords />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/crm/test"
+            element={
+              <PrivateRoute>
+                <LeaseTest />
               </PrivateRoute>
             }
           />
