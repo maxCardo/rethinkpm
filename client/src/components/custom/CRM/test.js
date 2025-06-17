@@ -1,125 +1,165 @@
-import React, {useEffect, useState} from 'react'
-import {connect} from 'react-redux'
-import IconButton from "../../core/IconButton/IconButton";
-import Table from '../../core/newTable/_Table'
-import Loading from '../../core/LoadingScreen/Loading';
-import TailwindTabs from '../Tabs/TailwindTabs';
-import {getLeaseLeadData} from '../../../actions/crm/leaseLeads'
-import leaseLeads from '../../../reducers/leaseLeads';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+// import IconButton from "../../core/IconButton/IconButton";
+import Table from "../../core/newTable/_Table";
+import Loading from "../../core/LoadingScreen/Loading";
+import TailwindTabs from "../Tabs/TailwindTabs";
+import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
+// import leaseLeads from "../../../reducers/leaseLeads";
+import { Chip } from "@mui/material";
+import { FaFire, FaSnowflake, FaCloudSun } from "react-icons/fa";
 
-
-const LeaseTest = ({getLeaseLeadData, leaseLeads: {list, loading}}) => {
+const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   const TABS_KEY = {
     Table: "table",
     Details: "details",
-    Tour: "tour"
+    Tour: "tour",
   };
 
   const [tabKey, setTabKey] = useState(TABS_KEY.Table);
+  const [leadsData, setLeadsData] = useState([]);
 
-  //---------- Data Maps --------------//
-  const headers = [
-    {
-      accessor: "fullName",
-      label: "Name"
-    },
-    {
-      accessor: "leadSource",
-      label: "Source"
-    },
-    // {
-    //   reactComponent: true,
-    //   label: "Address",
-    //   render: (item) => (
-    //       <div>
-    //         <p>{item.deal_id.streetNumber} {item.deal_id.streetName}</p>
-    //       </div>
-    //   ),
-    //   className: "Marketplace__address"
-    // },
-    // {
-    //   label: 'Zip',
-    //   accessor: 'deal_id.zipcode'
-    // },
-    // {
-    //   accessor: 'deal_id.bedrooms',
-    //   label: 'Bed'
-    // },
-    // {
-    //   accessor: 'deal_id.totalBaths',
-    //   label: 'Bath'
-    // },
-    // {
-    //   reactComponent: true,
-    //   label: 'Actions',
-    //   className: "Marketplace__actions",
-    //   render: (item) => (
-    //       <div style={{display: 'flex'}}>
-    //         <IconButton placement='bottom'
-    //                     tooltipContent='View property details'
-    //                     id='property-details-tooltip'
-    //                     iconClass='fas fa-list'
-    //                     variant='action-button'
-    //                     onClickFunc={() => {
-    //                       setIframeTarget(`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.deal_id.listNumber}`);
-    //                       setShowPropertyDetailsModal(true);
-    //                     }}
-    //         />
-    //         {/* <IconButton placement='bottom'
-    //                     tooltipContent='View On Site'
-    //                     id='link-tooltip'
-    //                     iconClass='fas fa-link'
-    //                     variant='link'
-    //                     href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
-    //         /> */}
-            
-    //         <IconButton placement='bottom'
-    //                     tooltipContent='Input Appointment'
-    //                     iconClass='fas fa-calendar'
-    //                     variant='action-button'
-    //                     onClickFunc={() => {
-    //                       setFocusedProperty(item.deal_id)
-    //                       setShowSchModal(true)
-    //                     }}
-    //         />
-    //         {/* <IconButton placement='bottom'
-    //                     tooltipContent='Recommend Deal'
-    //                     iconClass='fas fa-star'
-    //                     variant='action-button'
-    //                     //onClickFunc={() => startRecommendationFlow([item])}
-    //         /> */}
-    //         <IconButton placement='bottom'
-    //                     tooltipContent='Blacklist Deal'
-    //                     iconClass='fas fa-trash'
-    //                     variant='action-button'
-    //                     btnClass='text-danger'
-    //                     //needsConfirmation={true}
-    //                     onClickFunc={() => unflag(item._id)}
-    //         />
-    //       </div>
-    //   )
-    // }
-  ]
-
-  //--- Bug Fix for filter Select CSS with Sticky Header ---//
-  const [sticky, setSticky] = useState(true)
- 
-  
-
-const dynamicTabs = [
+  /* Tabs option */
+  const dynamicTabs = [
     { key: TABS_KEY.Table, title: "Table View" },
     { key: TABS_KEY.Details, title: "Lead Details" },
     { key: TABS_KEY.Tour, title: "Tour Tracking" },
   ];
 
+  /* Lead fileds value types store in one place. Prevents typos and errors */
+  const LEAD_VALUE_TYPES = {
+    Status: {
+      New: "New",
+      Lost: "Lost",
+    },
+    Temp: {
+      Hot: "Hot",
+      Warm: "Warm",
+      Cold: "Cold",
+    },
+  };
+
+  /* Headers */
+  const headers = [
+    {
+      accessor: "fullName",
+      label: "Name",
+    },
+    {
+      accessor: "email",
+      label: "Email",
+    },
+    {
+      accessor: "phoneNumbers",
+      label: "Phone",
+    },
+    {
+      accessor: "listingAddress",
+      label: "Address",
+    },
+    {
+      reactComponent: true,
+      accessor: "status",
+      label: "Status",
+      render: (item) => (
+        <>
+          <Chip
+            variant="outlined"
+            label={item.status}
+            color={
+              item.status === LEAD_VALUE_TYPES.Status.New ? "success" : "error"
+            }
+          />
+        </>
+      ),
+    },
+    {
+      accessor: "leadOwner",
+      label: "Lead Owner",
+    },
+    {
+      reactComponent: true,
+      accessor: "leadTemperature",
+      label: "Temp",
+      render: (item) => (
+        <>
+          {/* Lead Temperatures: Hot, Warm, Cold */}
+          {item.leadTemperature === LEAD_VALUE_TYPES.Temp.Hot && (
+            <FaFire color="orangered" size={"1.5rem"} title="hot-lead" />
+          )}
+          {item.leadTemperature === LEAD_VALUE_TYPES.Temp.Warm && (
+            <FaCloudSun color="orange" size={"1.5rem"} title="warm-lead" />
+          )}
+          {item.leadTemperature === LEAD_VALUE_TYPES.Temp.Cold && (
+            <FaSnowflake
+              color="lightskyblue"
+              size={"1.5rem"}
+              title="cold-lead"
+            />
+          )}
+        </>
+      ),
+    },
+    {
+      accessor: "followUpDate",
+      label: "Next Contact",
+    },
+    {
+      accessor: "tourDate",
+      label: "Tour Date",
+    },
+  ];
+
+  /* List for test */
+  const dummy_list = [
+    {
+      fullName: "Max Doe",
+      email: "max@gmail.com",
+      phoneNumbers: ["516-889-0988"],
+      listingAddress: "St Loren lef, Abc, Arizona 334234",
+      status: "New",
+      leadOwner: "Jimmy",
+      leadTemperature: "Hot",
+      followUpDate: "05/12/2025",
+      tourDate: "05/13/2025",
+    },
+    {
+      fullName: "Ben Carson",
+      email: "carson123@yahoo.com",
+      phoneNumbers: ["516-889-1111"],
+      listingAddress: "St Timlead, Abc, Florida",
+      status: "New",
+      leadOwner: "Jimmy",
+      leadTemperature: "Warm",
+      followUpDate: "06/25/2025",
+      tourDate: "06/28/2025",
+    },
+    {
+      fullName: "Danny",
+      email: "danny-office@gmail.com",
+      phoneNumbers: ["516-889-0988"],
+      listingAddress: "Blv street name, New York 432234",
+      status: "Lost",
+      leadOwner: "Marina",
+      leadTemperature: "Cold",
+      followUpDate: "",
+      tourDate: "",
+    },
+  ];
+
   useEffect(() => {
     getLeaseLeadData();
   }, []);
-  
 
- return loading ? (
-  <Loading />
- ) : (
+  useEffect(() => {
+    if (list.length > 0) {
+      setLeadsData(list);
+    }
+  }, [list]);
+
+  return loading ? (
+    <Loading />
+  ) : (
     <>
       <TailwindTabs
         className={"py-2"}
@@ -128,30 +168,26 @@ const dynamicTabs = [
         setActiveTab={setTabKey}
       />
 
-      <div className='tab-view'>
+      <div className="tab-view">
         {/* Lease Leads List (table) */}
         {tabKey === TABS_KEY.Table && (
-          <div>I am table!</div>
+          <>
+            <Table headers={headers} list={dummy_list} />
+          </>
         )}
 
         {/* Lease details */}
-        {tabKey === TABS_KEY.Details && (
-          <div>I am details!</div>
-        )}
+        {tabKey === TABS_KEY.Details && <div>I am details!</div>}
 
         {/* Lease Tour Tracking (info) */}
-        {tabKey === TABS_KEY.Tour && (
-          <div>I am Tour tracking!</div>
-        )}
+        {tabKey === TABS_KEY.Tour && <div>I am Tour tracking!</div>}
       </div>
     </>
-  )
-}
+  );
+};
 
-const mapStateToProps = state => ({
-  leaseLeads: state.leaseLeads
-})
+const mapStateToProps = (state) => ({
+  leaseLeads: state.leaseLeads,
+});
 
-
-export default connect(mapStateToProps, {getLeaseLeadData})(LeaseTest);
-
+export default connect(mapStateToProps, { getLeaseLeadData })(LeaseTest);
