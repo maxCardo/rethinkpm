@@ -36,7 +36,7 @@ const TableComp = ({
 
   useEffect(() => {
     setTableData(list);
-  }, [list]);
+  }, []);
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
