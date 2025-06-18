@@ -5,24 +5,35 @@ const LeasingTableFilter = ({ updateTableList }) => {
   const [selectedField, setSelectedField] = useState({});
   const [fieldValOptions, setFieldValOptions] = useState({});
 
+  const FIELDS = [
+    {
+      label: "Status",
+      value: "status",
+      valOptions: [
+        { label: "New", value: "new" },
+        { label: "Lost", value: "lost" },
+      ],
+    },
+    {
+      label: "Temperatures",
+      value: "leadTemperature",
+      valOptions: [
+        { label: "Hot", value: "hot" },
+        { label: "Warm", value: "warm" },
+        { label: "Cold", value: "cold" },
+      ],
+    },
+    { label: "Owner", value: "leadOwner", valOptions: [] },
+    { label: "Next Follow-Up", value: "followUpDate", valOptions: [] },
+    { label: "Tour Date", value: "tourDate", valOptions: [] },
+  ];
+
   const handleFieldChange = (field) => {
-    console.log("Selcted field:", field);
     setSelectedField(field);
   };
 
   useEffect(() => {
-    if (selectedField.value === "status") {
-      setFieldValOptions([
-        { label: "New", value: "new" },
-        { label: "Lost", value: "lost" },
-      ]);
-    } else if (selectedField.value === "leadTemperature") {
-      setFieldValOptions([
-        { label: "Hot", value: "hot" },
-        { label: "Warm", value: "warm" },
-        { label: "Cold", value: "cold" },
-      ]);
-    }
+    setFieldValOptions(selectedField.valOptions);
   }, [selectedField]);
 
   const handleFieldValChange = (fieldVal) => {
@@ -36,21 +47,16 @@ const LeasingTableFilter = ({ updateTableList }) => {
           className="marketplace__filter-select"
           onChange={handleFieldChange}
           defaultValue="All"
-          options={[
-            { label: "Status", value: "status" },
-            { label: "Temperatures", value: "leadTemperature" },
-          ]}
+          options={FIELDS}
           placeholder="Select Filter"
-          // value={selectedFilter}
         />
-        {fieldValOptions.length > 0 && (
+        {fieldValOptions?.length > 0 && (
           <Select
             className="marketplace__filter-select"
             onChange={handleFieldValChange}
             defaultValue="All"
             options={fieldValOptions}
             placeholder="Select Filter"
-            // value={selectedFilter}
           />
         )}
       </div>
