@@ -8,6 +8,7 @@ import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
 // import leaseLeads from "../../../reducers/leaseLeads";
 import { Chip } from "@mui/material";
 import { FaFire, FaSnowflake, FaCloudSun } from "react-icons/fa";
+import LeasingTableFilters from "./leasingComponents/LeasingTableFilters";
 
 const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   const TABS_KEY = {
@@ -16,8 +17,46 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
     Tour: "tour",
   };
 
+  let dummy_list = [
+    {
+      fullName: "Max Doe",
+      email: "max@gmail.com",
+      phoneNumbers: ["516-889-0988"],
+      listingAddress: "St Loren lef, Abc, Arizona 334234",
+      status: "New",
+      leadOwner: "Jimmy",
+      leadTemperature: "Hot",
+      followUpDate: "05/12/2025",
+      tourDate: "05/13/2025",
+    },
+    {
+      fullName: "Ben Carson",
+      email: "carson123@yahoo.com",
+      phoneNumbers: ["516-889-1111"],
+      listingAddress: "St Timlead, Abc, Florida",
+      status: "New",
+      leadOwner: "Jimmy",
+      leadTemperature: "Warm",
+      followUpDate: "06/25/2025",
+      tourDate: "06/28/2025",
+    },
+    {
+      fullName: "Danny",
+      email: "danny-office@gmail.com",
+      phoneNumbers: ["516-889-0988"],
+      listingAddress: "Blv street name, New York 432234",
+      status: "Lost",
+      leadOwner: "Marina",
+      leadTemperature: "Cold",
+      followUpDate: "",
+      tourDate: "",
+    },
+  ];
+
   const [tabKey, setTabKey] = useState(TABS_KEY.Table);
-  const [leadsData, setLeadsData] = useState([]);
+  const [initLeadsList, setInitLeadsList] = useState(dummy_list);
+  const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
+  // const [leadsList, setLeadsList] = useState(dummy_list);
 
   /* Tabs option */
   const dynamicTabs = [
@@ -27,7 +66,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   ];
 
   /* Lead fileds value types store in one place. Prevents typos and errors */
-  const LEAD_VALUE_TYPES = {
+  const LEAD_FIELDS_VALUE_TYPES = {
     Status: {
       New: "New",
       Lost: "Lost",
@@ -67,7 +106,9 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
             variant="outlined"
             label={item.status}
             color={
-              item.status === LEAD_VALUE_TYPES.Status.New ? "success" : "error"
+              item.status === LEAD_FIELDS_VALUE_TYPES.Status.New
+                ? "success"
+                : "error"
             }
           />
         </>
@@ -84,13 +125,13 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       render: (item) => (
         <>
           {/* Lead Temperatures: Hot, Warm, Cold */}
-          {item.leadTemperature === LEAD_VALUE_TYPES.Temp.Hot && (
+          {item.leadTemperature === LEAD_FIELDS_VALUE_TYPES.Temp.Hot && (
             <FaFire color="orangered" size={"1.5rem"} title="hot-lead" />
           )}
-          {item.leadTemperature === LEAD_VALUE_TYPES.Temp.Warm && (
+          {item.leadTemperature === LEAD_FIELDS_VALUE_TYPES.Temp.Warm && (
             <FaCloudSun color="orange" size={"1.5rem"} title="warm-lead" />
           )}
-          {item.leadTemperature === LEAD_VALUE_TYPES.Temp.Cold && (
+          {item.leadTemperature === LEAD_FIELDS_VALUE_TYPES.Temp.Cold && (
             <FaSnowflake
               color="lightskyblue"
               size={"1.5rem"}
@@ -111,41 +152,6 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   ];
 
   /* List for test */
-  const dummy_list = [
-    {
-      fullName: "Max Doe",
-      email: "max@gmail.com",
-      phoneNumbers: ["516-889-0988"],
-      listingAddress: "St Loren lef, Abc, Arizona 334234",
-      status: "New",
-      leadOwner: "Jimmy",
-      leadTemperature: "Hot",
-      followUpDate: "05/12/2025",
-      tourDate: "05/13/2025",
-    },
-    {
-      fullName: "Ben Carson",
-      email: "carson123@yahoo.com",
-      phoneNumbers: ["516-889-1111"],
-      listingAddress: "St Timlead, Abc, Florida",
-      status: "New",
-      leadOwner: "Jimmy",
-      leadTemperature: "Warm",
-      followUpDate: "06/25/2025",
-      tourDate: "06/28/2025",
-    },
-    {
-      fullName: "Danny",
-      email: "danny-office@gmail.com",
-      phoneNumbers: ["516-889-0988"],
-      listingAddress: "Blv street name, New York 432234",
-      status: "Lost",
-      leadOwner: "Marina",
-      leadTemperature: "Cold",
-      followUpDate: "",
-      tourDate: "",
-    },
-  ];
 
   useEffect(() => {
     getLeaseLeadData();
@@ -153,9 +159,17 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
 
   useEffect(() => {
     if (list.length > 0) {
-      setLeadsData(list);
+      // setInitLeadsList(list);
     }
   }, [list]);
+
+  const updateLeadsList = (field, fieldVal) => {
+    /* Filter from the inital array */
+    const fillteredList = initLeadsList.filter((item) => {
+      return item[field] === fieldVal;
+    });
+    setUpdatedLeadsList(fillteredList);
+  };
 
   return loading ? (
     <Loading />
@@ -172,7 +186,8 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
         {/* Lease Leads List (table) */}
         {tabKey === TABS_KEY.Table && (
           <>
-            <Table headers={headers} list={dummy_list} />
+            <LeasingTableFilters updateTableList={updateLeadsList} />
+            <Table headers={headers} list={updatedLeadsList} />
           </>
         )}
 
