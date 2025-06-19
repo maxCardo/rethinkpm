@@ -1,7 +1,7 @@
 import TextField from "../../profile/addLead/InputFields/TextField";
 import MaterialCheckbox from "../../profile/addLead/InputFields/MaterialCheckbox";
 
-const LeasingFormPhoneField = ({}) => {
+const LeasingFormPhoneField = ({ isPrimary, isOkToText }) => {
   return (
     <>
       <TextField
@@ -11,8 +11,8 @@ const LeasingFormPhoneField = ({}) => {
         type="tel"
       />
       <div className="ml-5 mt-auto"></div>
-      <MaterialCheckbox label={"Primary"} />
-      <MaterialCheckbox label={"Ok to text"} />
+      <MaterialCheckbox label={"Primary"} checked={isPrimary} />
+      <MaterialCheckbox label={"Ok to text"} checked={isOkToText} />
     </>
   );
 };

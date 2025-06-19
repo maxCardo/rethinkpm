@@ -44,7 +44,10 @@ const LeasingLeadsLeads = () => {
           <div className="flex flex-col">
             {phoneFileds.map((item, index) => (
               <div className="flex">
-                <LeasingFormPhoneField />
+                <LeasingFormPhoneField
+                  isPrimary={index === 0 ? true : false}
+                  isOkToText={true}
+                />
                 {index === 0 && (
                   <Button
                     variant="outlined"
