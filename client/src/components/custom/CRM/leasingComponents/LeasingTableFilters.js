@@ -42,7 +42,7 @@ const LeasingTableFilter = ({ updateTableList }) => {
 
   return (
     <>
-      <div className="leads-table-filters flex flex-row my-4 ">
+      <div className="leads-table-filters flex flex-row">
         <Select
           className="marketplace__filter-select"
           onChange={handleFieldChange}

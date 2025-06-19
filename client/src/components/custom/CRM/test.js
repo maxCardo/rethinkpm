@@ -6,8 +6,8 @@ import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
 // import leaseLeads from "../../../reducers/leaseLeads";
-import { Chip } from "@mui/material";
-import { FaFire, FaSnowflake, FaCloudSun } from "react-icons/fa";
+import { Chip, Button } from "@mui/material";
+import { FaFire, FaSnowflake, FaCloudSun, FaPlus } from "react-icons/fa";
 import LeasingTableFilters from "./leasingComponents/LeasingTableFilters";
 
 const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
@@ -186,7 +186,20 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
         {/* Lease Leads List (table) */}
         {tabKey === TABS_KEY.Table && (
           <>
-            <LeasingTableFilters updateTableList={updateLeadsList} />
+            <div className="table-top flex flex-row my-4 justify-between items-center">
+              <LeasingTableFilters updateTableList={updateLeadsList} />
+              <div className="add-lead-btn px-2">
+                <Button
+                  color="primary"
+                  className="self-end"
+                  startIcon={<FaPlus size={"0.8rem"} />}
+                  style={{ textTransform: "none" }}
+                  // variant="outlined"
+                >
+                  Add Lead
+                </Button>
+              </div>
+            </div>
             <Table headers={headers} list={updatedLeadsList} />
           </>
         )}
