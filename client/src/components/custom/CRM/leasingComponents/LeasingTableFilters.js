@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-const LeasingTableFilter = ({ updateTableList }) => {
+const LeasingTableFilter = ({ filterListByField, filterListBySearch }) => {
   const [selectedField, setSelectedField] = useState({});
   const [fieldValOptions, setFieldValOptions] = useState({});
 
@@ -24,7 +24,7 @@ const LeasingTableFilter = ({ updateTableList }) => {
       ],
     },
     { label: "Owner", value: "leadOwner", valOptions: [] },
-    { label: "Next Follow-Up", value: "followUpDate", valOptions: [] },
+    { label: "Next Follow-Up", value: "nextAction", valOptions: [] },
     { label: "Tour Date", value: "tourDate", valOptions: [] },
   ];
 
@@ -37,12 +37,22 @@ const LeasingTableFilter = ({ updateTableList }) => {
   }, [selectedField]);
 
   const handleFieldValChange = (fieldVal) => {
-    updateTableList(selectedField.value, fieldVal.label);
+    filterListByField(selectedField.value, fieldVal.label);
+  };
+
+  const handleInputChange = (expression) => {
+    filterListBySearch(expression);
   };
 
   return (
     <>
       <div className="leads-table-filters flex flex-row">
+        <input
+          className="form-control searchInput"
+          tabIndex={0}
+          onChange={(e) => handleInputChange(e.target.value)}
+          placeholder="Search"
+        />
         <Select
           className="marketplace__filter-select"
           onChange={handleFieldChange}

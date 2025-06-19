@@ -33,7 +33,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       status: "New",
       leadOwner: "Jimmy",
       leadTemperature: "Hot",
-      followUpDate: "05/12/2025",
+      nextAction: "05/12/2025",
       tourDate: "05/13/2025",
     },
     {
@@ -44,7 +44,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       status: "New",
       leadOwner: "Jimmy",
       leadTemperature: "Warm",
-      followUpDate: "06/25/2025",
+      nextAction: "06/25/2025",
       tourDate: "06/28/2025",
     },
     {
@@ -55,7 +55,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       status: "Lost",
       leadOwner: "Marina",
       leadTemperature: "Cold",
-      followUpDate: "",
+      nextAction: "",
       tourDate: "",
     },
   ];
@@ -149,8 +149,8 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       ),
     },
     {
-      accessor: "followUpDate",
-      label: "Next Contact",
+      accessor: "nextAction",
+      label: "Next Action",
     },
     {
       accessor: "tourDate",
@@ -182,11 +182,25 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
     }
   }, [list]);
 
-  const updateLeadsList = (field, fieldVal) => {
+  const filterListByField = (field, fieldVal) => {
     /* Filter from the inital array */
     const fillteredList = initLeadsList.filter((item) => {
       return item[field] === fieldVal;
     });
+    setUpdatedLeadsList(fillteredList);
+  };
+
+  const filterListBySearch = (expression) => {
+    const searchRegexp = new RegExp(expression);
+    /* Filter from the inital array */
+    const fillteredList = initLeadsList.filter((item) => {
+      return (
+        searchRegexp.test(item.fullName) ||
+        searchRegexp.test(item.email) ||
+        searchRegexp.test(item.listingAddress)
+      );
+    });
+
     setUpdatedLeadsList(fillteredList);
   };
 
@@ -206,7 +220,10 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
         {tabKey === TABS_KEY.Table && (
           <>
             <div className="table-top flex flex-row my-4 justify-between items-center">
-              <LeasingTableFilters updateTableList={updateLeadsList} />
+              <LeasingTableFilters
+                filterListByField={filterListByField}
+                filterListBySearch={filterListBySearch}
+              />
               <div className="add-lead-btn px-2">
                 <Button
                   color="primary"
