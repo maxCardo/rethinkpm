@@ -16,6 +16,7 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 import LeasingTableFilters from "./leasingComponents/LeasingTableFilters";
+import LeasingModal from "./leasingComponents/LeasingModal";
 
 const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   const TABS_KEY = {
@@ -63,7 +64,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   const [tabKey, setTabKey] = useState(TABS_KEY.Table);
   const [initLeadsList, setInitLeadsList] = useState(dummy_list);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
-  // const [leadsList, setLeadsList] = useState(dummy_list);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /* Tabs option */
   const DYNAMIC_TABS = [
@@ -230,6 +231,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
                   className="self-end"
                   startIcon={<FaPlus size={"0.8rem"} />}
                   style={{ textTransform: "none" }}
+                  onClick={() => setIsModalOpen(!isModalOpen)}
                   // variant="outlined"
                 >
                   Add Lead
@@ -240,6 +242,10 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
               headers={TABLE_HEADERS}
               list={updatedLeadsList}
               withCheckboxSelection={false}
+            />
+            <LeasingModal
+              isModalOpen={isModalOpen}
+              closeModal={() => setIsModalOpen(false)}
             />
           </>
         )}
