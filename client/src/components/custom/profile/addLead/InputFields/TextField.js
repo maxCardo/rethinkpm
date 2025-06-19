@@ -1,19 +1,30 @@
-import React from 'react';
+import React from "react";
 
-import { Form, Col } from 'react-bootstrap';
+import { Form, Col } from "react-bootstrap";
 
+const TextField = ({
+  field,
+  data,
+  onChange,
+  type = "text",
+  col = 12,
+  withLabel = true,
+}) => {
+  return (
+    <Col lg={col}>
+      <Form.Group>
+        {withLabel && (
+          <Form.Label htmlFor={field.name}>{field.name}:</Form.Label>
+        )}
+        <Form.Control
+          name={field.accessor}
+          type={type}
+          placeholder={"Enter " + field.name}
+          onChange={(e) => onChange(e)}
+        />
+      </Form.Group>
+    </Col>
+  );
+};
 
-const TextField = ({field, data, onChange}) => {
-
-    return (
-        <Col lg={12}>
-            <Form.Group>
-                <Form.Label htmlFor={field.name}>{field.name}:</Form.Label>
-                <Form.Control name={field.accessor} type="text" placeholder={'Enter ' + field.name} onChange={(e) => onChange(e)}/>
-            </Form.Group>
-        </Col>
-    )
-}
-
-
-export default TextField
+export default TextField;

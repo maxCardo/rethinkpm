@@ -1,4 +1,7 @@
-import LeasingInput from "./LeasingInput";
+import TextField from "../../profile/addLead/InputFields/TextField";
+import Select from "react-select";
+import { TextareaAutosize } from "@mui/material";
+import MaterialCheckbox from "../../profile/addLead/InputFields/MaterialCheckbox";
 
 const LeasingForm = () => {
   //  first name
@@ -19,96 +22,98 @@ const LeasingForm = () => {
       {/* Lead contact info */}
       <div className="contact-info w-100 h-100 flex flex-col justify-between">
         <div className="contact-info-name d-flex mb-3">
-          <LeasingInput
-            inputComponent={1}
-            placeholder={"Enter First Name"}
-            className={"w-100"}
+          <TextField
+            field={{ name: "First Name", accessor: "firstName" }}
+            withLabel={false}
+            col={4}
           />
-          <LeasingInput
-            inputComponent={1}
-            placeholder={"Enter Last Name"}
-            className={"w-100 mx-4"}
+          <TextField
+            field={{ name: "Last Name", accessor: "lastName" }}
+            withLabel={false}
+            col={4}
           />
-          <LeasingInput
-            inputComponent={1}
-            placeholder={"Enter Email"}
+          <TextField
+            field={{ name: "Email", accessor: "email" }}
+            withLabel={false}
+            col={4}
             type="email"
-            className={"w-100"}
           />
         </div>
         <div className="contact-info-phone flex mb-3">
-          <LeasingInput
-            inputComponent={1}
-            placeholder={"Enter Phone Number"}
+          <TextField
+            field={{ name: "Phone", accessor: "phoneNumbers" }}
+            withLabel={false}
+            col={4}
             type="tel"
           />
-          <div className="ml-10"></div>
-          <LeasingInput
-            inputComponent={4}
-            checkboxLabel={"Primary"}
-            className={"mx-3"}
-          />
-          <LeasingInput
-            inputComponent={4}
-            checkboxLabel={"Ok to text"}
-            className={"mx-3"}
-          />
+          <div className="ml-10 mt-auto"></div>
+          <MaterialCheckbox label={"Primary"} />
+          <MaterialCheckbox label={"Ok to text"} />
         </div>
       </div>
       {/* Location info */}
-      <div className="location-info flex mb-3">
-        <LeasingInput
-          inputComponent={1}
-          placeholder={"Enter Street Address"}
-          className={"w-100"}
+      <div className="location-info flex mb-3 items-center">
+        <TextField
+          field={{ name: "Address", accessor: "address" }}
+          withLabel={false}
+          col={4}
         />
-        <LeasingInput
-          inputComponent={1}
-          placeholder={"Enter State"}
-          className={"w-100 px-4"}
+        <Select
+          className="marketplace__filter-select"
+          // onChange={handleFieldChange}
+          defaultValue="All"
+          // options={FIELDS}
+          placeholder="State"
         />
-        <LeasingInput
-          inputComponent={1}
-          placeholder={"Enter Zip Code"}
-          className={"w-1 flex-1/2"}
+        <TextField
+          field={{ name: "Zip Code", accessor: "zipCode" }}
+          withLabel={false}
+          col={3}
         />
       </div>
       {/* Lead Info */}
-      <div className="lead-info ">
-        <div className="lead-info-status flex mb-3">
-          <LeasingInput
-            inputComponent={2}
-            placeholder={"Lead Temperature"}
-            className={"w-100"}
-          />
-          <LeasingInput
-            inputComponent={2}
-            placeholder={"Lead Source"}
-            className={"w-100 px-4"}
-          />
-          <LeasingInput
-            inputComponent={2}
-            placeholder={"Lead Owner"}
-            className={"w-100"}
-          />
-        </div>
-        <div className="lead-info-date flex mb-3">
-          <LeasingInput
-            inputComponent={1}
-            placeholder={"Last Contact (date)"}
-          />
-          <LeasingInput
-            inputComponent={1}
-            placeholder={"Next Action (date)"}
-            className={"mx-4"}
-          />
-        </div>
+      <div className="lead-info-status flex mb-3">
+        <Select
+          className="marketplace__filter-select"
+          // onChange={handleFieldChange}
+          defaultValue="All"
+          // options={FIELDS}
+          placeholder="Lead Temperature"
+        />
+        <Select
+          className="marketplace__filter-select"
+          // onChange={handleFieldChange}
+          defaultValue="All"
+          // options={FIELDS}
+          placeholder="Lead Source"
+        />
+        <Select
+          className="marketplace__filter-select"
+          // onChange={handleFieldChange}
+          defaultValue="All"
+          // options={FIELDS}
+          placeholder="Lead Owner"
+        />
+      </div>
+      <div className="lead-info-date flex mb-3">
+        <TextField
+          field={{ name: "Last Contact (date)", accessor: "lastContact" }}
+          withLabel={false}
+          col={6}
+        />
+        <TextField
+          field={{ name: "Next Action (date)", accessor: "nextAction" }}
+          withLabel={false}
+          col={6}
+        />
       </div>
       <div className="lead-notes">
-        <LeasingInput
-          inputComponent={3}
+        <TextareaAutosize
           placeholder={" Write your notes here ...."}
-          className={"w-100"}
+          className="w-100"
+          minRows={10}
+          maxRows={10}
+          style={{ border: "1px solid lightgrey" }}
         />
       </div>
     </form>
