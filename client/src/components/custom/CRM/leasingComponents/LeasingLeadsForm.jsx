@@ -3,7 +3,7 @@ import Select from "react-select";
 import { TextareaAutosize } from "@mui/material";
 import MaterialCheckbox from "../../profile/addLead/InputFields/MaterialCheckbox";
 
-const LeasingForm = () => {
+const LeasingLeadsLeads = () => {
   //  first name
   // last name
   // email
@@ -111,8 +111,8 @@ const LeasingForm = () => {
         <TextareaAutosize
           placeholder={" Write your notes here ...."}
           className="w-100"
-          minRows={10}
-          maxRows={10}
+          minRows={5}
+          maxRows={5}
           style={{ border: "1px solid lightgrey" }}
         />
       </div>
@@ -120,4 +120,4 @@ const LeasingForm = () => {
   );
 };
 
-export default LeasingForm;
+export default LeasingLeadsLeads;
