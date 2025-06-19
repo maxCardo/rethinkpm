@@ -7,7 +7,14 @@ import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
 // import leaseLeads from "../../../reducers/leaseLeads";
 import { Chip, Button } from "@mui/material";
-import { FaFire, FaSnowflake, FaCloudSun, FaPlus } from "react-icons/fa";
+import {
+  FaFire,
+  FaSnowflake,
+  FaCloudSun,
+  FaPlus,
+  FaPencilAlt,
+  FaTrashAlt,
+} from "react-icons/fa";
 import LeasingTableFilters from "./leasingComponents/LeasingTableFilters";
 
 const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
@@ -59,7 +66,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   // const [leadsList, setLeadsList] = useState(dummy_list);
 
   /* Tabs option */
-  const dynamicTabs = [
+  const DYNAMIC_TABS = [
     { key: TABS_KEY.Table, title: "Table View" },
     { key: TABS_KEY.Details, title: "Lead Details" },
     { key: TABS_KEY.Tour, title: "Tour Tracking" },
@@ -79,7 +86,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   };
 
   /* Headers */
-  const headers = [
+  const TABLE_HEADERS = [
     {
       accessor: "fullName",
       label: "Name",
@@ -149,6 +156,17 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       accessor: "tourDate",
       label: "Tour Date",
     },
+    {
+      reactComponent: true,
+      accessor: "actions",
+      label: "Actions",
+      render: () => (
+        <div className="flex flex-row">
+          <FaPencilAlt />
+          <FaTrashAlt className="mx-2" />
+        </div>
+      ),
+    },
   ];
 
   /* List for test */
@@ -177,7 +195,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
     <>
       <TailwindTabs
         className={"py-2"}
-        tabs={dynamicTabs}
+        tabs={DYNAMIC_TABS}
         activeTab={tabKey}
         setActiveTab={setTabKey}
       />
@@ -200,7 +218,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
                 </Button>
               </div>
             </div>
-            <Table headers={headers} list={updatedLeadsList} />
+            <Table headers={TABLE_HEADERS} list={updatedLeadsList} />
           </>
         )}
 
