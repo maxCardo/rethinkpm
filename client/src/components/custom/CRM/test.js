@@ -160,8 +160,9 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       reactComponent: true,
       accessor: "actions",
       label: "Actions",
+      align: "center",
       render: () => (
-        <div className="flex flex-row">
+        <div className="flex flex-row w-100 ml-3">
           <FaPencilAlt />
           <FaTrashAlt className="mx-2" />
         </div>
@@ -200,7 +201,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
         setActiveTab={setTabKey}
       />
 
-      <div className="tab-view">
+      <div className="table-view">
         {/* Lease Leads List (table) */}
         {tabKey === TABS_KEY.Table && (
           <>

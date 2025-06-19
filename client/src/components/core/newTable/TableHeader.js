@@ -21,6 +21,17 @@ const TableHeader = ({
     onRequestSort(event, property);
   };
 
+  const DEFAULT_ALIGN = "left";
+  const setHeaderAlign = (header) => {
+    /* Added new prop for different alignment values ('center', 'inharit' etc) 
+    without changin the exist allignRight prop that might be in use already in the app */
+    let align = DEFAULT_ALIGN;
+
+    if (header.allignRight) align = "right";
+    if (header.align) align = header.align;
+    return align;
+  };
+
   return (
     <TableHead>
       <TableRow>
@@ -37,7 +48,7 @@ const TableHeader = ({
         {headers.map((rec) => (
           <TableCell
             key={rec.label}
-            align={rec.allignRight ? "right" : "left"}
+            align={setHeaderAlign(rec)}
             padding={rec.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === rec.accessor ? order : false}
           >
