@@ -5,11 +5,7 @@ import LeasingLeadsForm from "./LeasingLeadsForm";
 const LeasingModal = ({ isModalOpen, closeModal }) => {
   // const [isOpen, setIsOpen] = useState(true);
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+  const boxStyle = {
     width: "50%",
     bgcolor: "background.paper",
     border: "2px solid #000",
@@ -17,12 +13,21 @@ const LeasingModal = ({ isModalOpen, closeModal }) => {
     p: 4,
     borderWidth: "1px",
     borderRadius: "4px",
+    height: "80%",
+    overflowY: "auto",
+  };
+
+  const modalStyle = {
+    zIndex: "999999",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   };
 
   return (
     <>
-      <Modal open={isModalOpen} style={{ zIndex: "999999" }}>
-        <Box sx={style}>
+      <Modal open={isModalOpen} style={modalStyle}>
+        <Box sx={boxStyle}>
           <p className="leasing-modal__title text-3xl">Add Lead</p>
           <Divider />
           <div className="leasing-modal__content my-8">
