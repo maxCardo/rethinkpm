@@ -15,6 +15,7 @@ const TableHeader = ({
   numSelected,
   rowCount,
   onRequestSort,
+  withCheckboxSelection = true,
 }) => {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -23,14 +24,16 @@ const TableHeader = ({
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all rows" }}
-          />
-        </TableCell>
+        {withCheckboxSelection && (
+          <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{ "aria-label": "select all rows" }}
+            />
+          </TableCell>
+        )}
         {headers.map((rec) => (
           <TableCell
             key={rec.label}

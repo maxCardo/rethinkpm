@@ -218,7 +218,11 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
                 </Button>
               </div>
             </div>
-            <Table headers={TABLE_HEADERS} list={updatedLeadsList} />
+            <Table
+              headers={TABLE_HEADERS}
+              list={updatedLeadsList}
+              withCheckboxSelection={false}
+            />
           </>
         )}
 

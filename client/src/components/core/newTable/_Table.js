@@ -25,6 +25,7 @@ const TableComp = ({
   _rowsPerPage = 10,
   selected = [],
   setSelected,
+  withCheckboxSelection = true,
 }) => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
@@ -96,6 +97,7 @@ const TableComp = ({
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={tableData.length}
+              withCheckboxSelection={withCheckboxSelection}
             />
             <TableBody>
               {stableSort(tableData, getComparator(order, orderBy))
@@ -113,13 +115,15 @@ const TableComp = ({
                       key={row._id || row.symbol || index}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                          onChange={(event) => handleClick(event, row)}
-                        />
-                      </TableCell>
+                      {withCheckboxSelection && (
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={isItemSelected}
+                            inputProps={{ "aria-labelledby": labelId }}
+                            onChange={(event) => handleClick(event, row)}
+                          />
+                        </TableCell>
+                      )}
                       {headers.map((header, i) => (
                         <TableCell
                           align="left"
