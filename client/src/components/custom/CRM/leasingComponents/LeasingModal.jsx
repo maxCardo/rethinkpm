@@ -3,7 +3,7 @@ import { Modal, Box, Button, Divider, IconButton } from "@mui/material";
 import { AiOutlineClose } from "react-icons/ai";
 import LeasingLeadsForm from "./LeasingLeadsForm";
 import axios from "axios";
-import MaterialAlert from "./MaterialAlert";
+import MaterialAlert from "../../../core/MaterialAlert";
 
 const LeasingModal = ({ isModalOpen, closeModal }) => {
   const [formData, setFormData] = useState({});
