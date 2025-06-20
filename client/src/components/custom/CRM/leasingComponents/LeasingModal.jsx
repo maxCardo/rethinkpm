@@ -3,10 +3,12 @@ import { Modal, Box, Button, Divider, IconButton } from "@mui/material";
 import { AiOutlineClose } from "react-icons/ai";
 import LeasingLeadsForm from "./LeasingLeadsForm";
 import axios from "axios";
+import MaterialAlert from "./MaterialAlert";
 
 const LeasingModal = ({ isModalOpen, closeModal }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState("");
+  const [successAlert, setSuccessAlert] = useState(false);
   const formRef = useRef();
 
   const boxStyle = {
@@ -47,8 +49,11 @@ const LeasingModal = ({ isModalOpen, closeModal }) => {
     setFormError("");
     try {
       const response = await axios.post("/api/crm/leaselead", formData);
-      console.log("Lead saved successfully:", response.data);
-      closeModal();
+
+      if (response?.data) {
+        setSuccessAlert(true);
+        closeModal();
+      }
     } catch (error) {
       setFormError(
         error.response?.data?.message ||
@@ -100,6 +105,13 @@ const LeasingModal = ({ isModalOpen, closeModal }) => {
           </div>
         </Box>
       </Modal>
+      <MaterialAlert
+        open={successAlert}
+        onClose={() => setSuccessAlert(false)}
+        message="Lead saved successfully!"
+        severity="success"
+        duration={3000}
+      />
     </>
   );
 };
