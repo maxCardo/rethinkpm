@@ -1,7 +1,9 @@
 const express = require("express");
 const leaseLead = require("../../db/models/Leasing/LeaseLead");
+const auth = require("../../middleware/auth");
 
 const router = express.Router();
+router.use(auth);
 
 // @route: Get api/crm/leaselead
 // @desc: get all leaseLead data
@@ -20,11 +22,16 @@ router.get("/", async (req, res) => {
 // @route: POST api/crm/leaselead
 // @desc: create a new leaseLead
 // @access: private
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
-    const newLead = new leaseLead(req.body);
-    console.log("new lead??", newLead);
+    if (Array.isArray(req.body.notes) && req.body.notes.length > 0) {
+      req.body.notes = req.body.notes.map((note) => ({
+        ...note,
+        user: req.user._id,
+      }));
+    }
 
+    const newLead = new leaseLead(req.body);
     const savedLead = await newLead.save();
     res.status(201).json(savedLead);
   } catch (err) {
