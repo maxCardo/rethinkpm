@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Modal, Box, Button, Divider, IconButton } from "@mui/material";
 import { AiOutlineClose } from "react-icons/ai";
 import LeasingLeadsForm from "./LeasingLeadsForm";
+import axios from "axios";
 
 const LeasingModal = ({ isModalOpen, closeModal }) => {
   const [formData, setFormData] = useState({});
@@ -41,10 +42,19 @@ const LeasingModal = ({ isModalOpen, closeModal }) => {
     return !errorMsg;
   };
 
-  const saveData = () => {
+  const saveData = async () => {
     if (!validateForm()) return;
     setFormError("");
-    console.log("SAVE THE CHANGES:", formData);
+    try {
+      const response = await axios.post("/api/crm/leaselead", formData);
+      console.log("Lead saved successfully:", response.data);
+      closeModal();
+    } catch (error) {
+      setFormError(
+        error.response?.data?.message ||
+          "Failed to save lead. Please try again."
+      );
+    }
   };
 
   useEffect(() => {
