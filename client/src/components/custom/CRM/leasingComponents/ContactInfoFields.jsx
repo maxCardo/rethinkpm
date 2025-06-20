@@ -19,7 +19,7 @@ const ContactInfoFields = ({
     <div className="flex flex-wrap gap-4 mb-4">
       <TextField
         field={{ name: "First Name", accessor: "firstName" }}
-        withLabel={true}
+        withLabel={false}
         col={5}
         onChange={(e) => handleInputChange(e, "firstName")}
         style={{ minWidth: 180 }}
@@ -27,7 +27,7 @@ const ContactInfoFields = ({
       />
       <TextField
         field={{ name: "Last Name", accessor: "lastName" }}
-        withLabel={true}
+        withLabel={false}
         col={5}
         onChange={(e) => handleInputChange(e, "lastName")}
         style={{ minWidth: 180 }}
@@ -35,7 +35,7 @@ const ContactInfoFields = ({
       />
       <TextField
         field={{ name: "Email", accessor: "email.address" }}
-        withLabel={true}
+        withLabel={false}
         col={5}
         type="email"
         onChange={(e) => handleInputChange(e, "email.address")}
