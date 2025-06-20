@@ -1,5 +1,5 @@
 import TextField from "../../profile/addLead/InputFields/TextField";
-import MaterialCheckbox from "../../profile/addLead/InputFields/MaterialCheckbox";
+import MaterialCheckbox from "../../../core/MaterialCheckbox";
 
 const LeasingFormPhoneField = ({ isPrimary, isOkToText }) => {
   return (
