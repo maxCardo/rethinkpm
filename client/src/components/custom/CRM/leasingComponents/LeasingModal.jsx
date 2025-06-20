@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { Modal, Box, Button, Divider } from "@mui/material";
+import { useState, useEffect, useRef } from "react";
+import { Modal, Box, Button, Divider, IconButton } from "@mui/material";
+import { AiOutlineClose } from "react-icons/ai";
 import LeasingLeadsForm from "./LeasingLeadsForm";
 
 const LeasingModal = ({ isModalOpen, closeModal }) => {
-  // const [isOpen, setIsOpen] = useState(true);
+  const [formData, setFormData] = useState({});
+  const [formError, setFormError] = useState("");
+  const formRef = useRef();
 
   const boxStyle = {
     width: "50%",
@@ -24,30 +27,64 @@ const LeasingModal = ({ isModalOpen, closeModal }) => {
     justifyContent: "center",
   };
 
+  // Validate email and phone on submit
+  const validateForm = () => {
+    const email = formData.email && formData.email[0]?.address;
+    const phone = formData.phoneNumbers && formData.phoneNumbers[0]?.number;
+    let errorMsg = "";
+    if (!email || !window.validateEmail(email)) {
+      errorMsg = "Please enter a valid email address.";
+    } else if (!phone || !window.validatePhoneNum(phone)) {
+      errorMsg = "Please enter a valid phone number.";
+    }
+    setFormError(errorMsg);
+    return !errorMsg;
+  };
+
+  const saveData = () => {
+    if (!validateForm()) return;
+    setFormError("");
+    console.log("SAVE THE CHANGES:", formData);
+  };
+
+  useEffect(() => {
+    // Expose validation functions globally for this modal (since LeasingLeadsForm uses them from commonFunctions)
+    if (!window.validateEmail) {
+      import("../../../../util/commonFunctions").then((mod) => {
+        window.validateEmail = mod.validateEmail;
+        window.validatePhoneNum = mod.validatePhoneNum;
+      });
+    }
+  }, []);
+
   return (
     <>
       <Modal open={isModalOpen} style={modalStyle}>
         <Box sx={boxStyle}>
-          <p className="leasing-modal__title text-3xl">Add Lead</p>
+          <div className="flex items-center justify-between mb-2">
+            <p className="leasing-modal__title text-3xl">Add Lead</p>
+            <IconButton aria-label="close" onClick={closeModal} size="large">
+              <AiOutlineClose size={24} />
+            </IconButton>
+          </div>
           <Divider />
           <div className="leasing-modal__content my-8">
-            <LeasingLeadsForm />
+            <LeasingLeadsForm
+              getFormData={(data) => setFormData(data)}
+              ref={formRef}
+            />
+            {formError && (
+              <div className="mt-4 p-2 bg-red-100 text-red-700 rounded border border-red-300 text-center">
+                {formError}
+              </div>
+            )}
           </div>
           <Divider />
           <div className="lesing-modal__actions flex justify-end mt-8">
-            <Button
-              // variant="outlined"
-              color="error"
-              onClick={() => closeModal()}
-              className="mx-2"
-            >
+            <Button color="error" onClick={() => closeModal()} className="mx-2">
               Cancel
             </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              // onClick={() => closeModal()}
-            >
+            <Button variant="outlined" color="primary" onClick={saveData}>
               Save
             </Button>
           </div>

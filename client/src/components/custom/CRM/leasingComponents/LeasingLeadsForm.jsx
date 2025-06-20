@@ -1,129 +1,166 @@
-import { useState } from "react";
-import TextField from "../../profile/addLead/InputFields/TextField";
-import Select from "react-select";
-import { Button, TextareaAutosize } from "@mui/material";
-import LeasingFormPhoneField from "./LeasingFormPhoneField";
-import { FaPlus } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { Paper } from "@mui/material";
+import {
+  validateEmail,
+  validatePhoneNum,
+} from "../../../../util/commonFunctions";
+import ContactInfoFields from "./ContactInfoFields";
+import PropertyLocationFields from "./PropertyLocationFields";
+import LeadDetailsFields from "./LeadDetailsFields";
 
-const LeasingLeadsLeads = () => {
-  const NUMBER_FIELD_OBJECT = { number: "", isPrimary: false, okToText: true };
-  const [phoneFileds, setPhoneFields] = useState([{ ...NUMBER_FIELD_OBJECT }]);
+const LeasingLeadsForm = ({ getFormData }) => {
+  const [phoneFields, setPhoneFields] = useState([
+    { number: "", isPrimary: true, okToText: true },
+  ]);
+  const [noteField, setNoteField] = useState([
+    { type: "", content: "", user: "", date: new Date() },
+  ]);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    fullName: "",
+    email: [{ address: "", isPrimary: true }],
+    phoneNumbers: phoneFields,
+    notes: noteField,
+    status: "new",
+    reasonForLoss: "",
+    leadOwner: "System",
+    leadSource: "",
+    leadTemperature: "",
+    createDate: new Date(),
+    leadDate: new Date(),
+    lastContact: "",
+    nextAction: "",
+    listingAddress: "",
+    listing: [],
+  });
+  const [errors, setErrors] = useState({ email: "", phone: "" });
+  const [formError, setFormError] = useState("");
 
+  // Update parent with form data
+  useEffect(() => {
+    getFormData(formData);
+  }, [formData, getFormData]);
+
+  // Handle input changes
+  const handleInputChange = (event, field, value) => {
+    if (field === "email.address") {
+      const emailValue = event ? event.target.value : value;
+      setFormData((prev) => ({
+        ...prev,
+        email: [{ address: emailValue, isPrimary: true }],
+      }));
+      setErrors((prev) => ({
+        ...prev,
+        email: validateEmail(emailValue) ? "" : "Invalid email",
+      }));
+    } else if (field === "phoneNumbers") {
+      // handled separately
+    } else if (event) {
+      setFormData((prevData) => ({ ...prevData, [field]: event.target.value }));
+    } else if (!event && value) {
+      setFormData((prevData) => ({ ...prevData, [field]: value }));
+    }
+  };
+
+  // Handle phone field changes
+  const handlePhoneChange = (index, key, value) => {
+    const updatedPhones = phoneFields.map((item, idx) =>
+      idx === index ? { ...item, [key]: value } : item
+    );
+    setPhoneFields(updatedPhones);
+    setFormData((prev) => ({ ...prev, phoneNumbers: updatedPhones }));
+    // Validate phone number
+    if (key === "number") {
+      setErrors((prev) => ({
+        ...prev,
+        phone: validatePhoneNum(value) ? "" : "Invalid phone number",
+      }));
+    }
+  };
+
+  // Add new phone field
   const addPhoneField = () => {
-    let _phoneFieldsCopy = [...phoneFileds];
-    let _newPhoneNumber = { ...NUMBER_FIELD_OBJECT };
+    setPhoneFields((prev) => {
+      const newFields = [
+        ...prev,
+        { number: "", isPrimary: false, okToText: false },
+      ];
+      setFormData((f) => ({ ...f, phoneNumbers: newFields }));
+      return newFields;
+    });
+  };
 
-    _phoneFieldsCopy.push(_newPhoneNumber);
+  // Handle notes
+  const handleNotesFieldChange = (e) => {
+    const content = e?.target?.value.trim() || "";
+    const updatedNote = [{ ...noteField[0], content, date: new Date() }];
+    setNoteField(updatedNote);
+    setFormData((prev) => ({ ...prev, notes: updatedNote }));
+  };
 
-    setPhoneFields(_phoneFieldsCopy);
+  // Add a form validation function
+  const validateForm = () => {
+    if (!formData.firstName || !formData.lastName) {
+      setFormError("First name and last name are required.");
+      return false;
+    }
+    if (!formData.email[0].address || errors.email) {
+      setFormError("A valid email is required.");
+      return false;
+    }
+    if (!formData.phoneNumbers[0].number || errors.phone) {
+      setFormError("A valid phone number is required.");
+      return false;
+    }
+    setFormError("");
+    return true;
+  };
+
+  // Example submit handler (add this to your form or parent component as needed)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    // ...submit logic here
   };
 
   return (
-    <form className="flex flex-col gap-3">
-      {/* Lead contact info */}
-      <div className="contact-info w-100 h-100 flex flex-col justify-between gap-3">
-        <div className="contact-info-name d-flex gap-3">
-          <TextField
-            field={{ name: "First Name", accessor: "firstName" }}
-            withLabel={false}
-            col={3}
-          />
-          <TextField
-            field={{ name: "Last Name", accessor: "lastName" }}
-            withLabel={false}
-            col={3}
-          />
-          <TextField
-            field={{ name: "Email", accessor: "email" }}
-            withLabel={false}
-            col={5}
-            type="email"
-          />
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-6 max-w-3xl mx-auto p-6 bg-gray-50 rounded-lg shadow-md"
+    >
+      {formError && (
+        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded border border-red-300">
+          {formError}
         </div>
-        <div className="contact-info-phone ">
-          <div className="flex flex-col">
-            {phoneFileds.map((item, index) => (
-              <div className="flex">
-                <LeasingFormPhoneField
-                  isPrimary={index === 0 ? true : false}
-                  isOkToText={true}
-                />
-                {index === 0 && (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<FaPlus size={"0.8rem"} />}
-                    style={{ textTransform: "none" }}
-                    onClick={() => addPhoneField()}
-                  >
-                    Add Number
-                  </Button>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      {/* Location info */}
-      <div className="location-info flex items-center">
-        <TextField
-          field={{ name: "Address", accessor: "address" }}
-          withLabel={false}
-          col={5}
+      )}
+      <Paper elevation={2} className="p-5 mb-6">
+        <ContactInfoFields
+          formData={formData}
+          errors={errors}
+          phoneFields={phoneFields}
+          handleInputChange={handleInputChange}
+          handlePhoneChange={handlePhoneChange}
+          addPhoneField={addPhoneField}
         />
-        <Select
-          className="marketplace__filter-select"
-          defaultValue="All"
-          placeholder="State"
+      </Paper>
+      <Paper elevation={2} className="p-5 mb-6">
+        <PropertyLocationFields
+          formData={formData}
+          handleInputChange={handleInputChange}
         />
-        <TextField
-          field={{ name: "Zip Code", accessor: "zipCode" }}
-          withLabel={false}
-          col={3}
+      </Paper>
+      <Paper elevation={2} className="p-5 mb-6">
+        <LeadDetailsFields
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleNotesFieldChange={handleNotesFieldChange}
+          errors={errors}
+          noteField={noteField}
         />
-      </div>
-      {/* Lead Info */}
-      <div className="lead-info-status flex ">
-        <Select
-          className="marketplace__filter-select"
-          defaultValue="All"
-          placeholder="Lead Temperature"
-          style={{ width: "200px" }}
-        />
-        <Select
-          className="marketplace__filter-select"
-          defaultValue="All"
-          placeholder="Lead Source"
-        />
-        <Select
-          className="marketplace__filter-select"
-          defaultValue="All"
-          placeholder="Lead Owner"
-        />
-      </div>
-      <div className="lead-info-date flex gap-3">
-        <TextField
-          field={{ name: "Last Contact (date)", accessor: "lastContact" }}
-          withLabel={false}
-          col={5}
-        />
-        <TextField
-          field={{ name: "Next Action (date)", accessor: "nextAction" }}
-          withLabel={false}
-          col={5}
-        />
-      </div>
-      <div className="lead-notes">
-        <TextareaAutosize
-          placeholder={" Write your notes here ...."}
-          className="w-100"
-          minRows={5}
-          maxRows={5}
-          style={{ border: "1px solid lightgrey" }}
-        />
-      </div>
+      </Paper>
     </form>
   );
 };
 
-export default LeasingLeadsLeads;
+export default LeasingLeadsForm;
