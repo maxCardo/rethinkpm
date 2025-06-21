@@ -62,7 +62,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   ];
 
   const [tabKey, setTabKey] = useState(TABS_KEY.Table);
-  const [initLeadsList, setInitLeadsList] = useState(dummy_list);
+  const [initLeadsList, setInitLeadsList] = useState([]);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -76,13 +76,13 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   /* Lead fileds value types store in one place. Prevents typos and errors */
   const LEAD_FIELDS_VALUE_TYPES = {
     Status: {
-      New: "New",
-      Lost: "Lost",
+      New: "new",
+      Lost: "lost",
     },
     Temp: {
-      Hot: "Hot",
-      Warm: "Warm",
-      Cold: "Cold",
+      Hot: "hot",
+      Warm: "warm",
+      Cold: "cold",
     },
   };
 
@@ -93,12 +93,30 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       label: "Name",
     },
     {
+      reactComponent: true,
       accessor: "email",
       label: "Email",
+      render: (item) => (
+        <>
+          {item.email?.length > 0
+            ? item.email.map((item, idx) => <div key={idx}>{item.address}</div>)
+            : ""}
+        </>
+      ),
     },
     {
+      reactComponent: true,
       accessor: "phoneNumbers",
       label: "Phone",
+      render: (item) => (
+        <>
+          {item.phoneNumbers?.length > 0
+            ? item.phoneNumbers.map((phone, idx) => (
+                <div key={idx}>{phone.number}</div>
+              ))
+            : ""}
+        </>
+      ),
     },
     {
       accessor: "listingAddress",
@@ -171,17 +189,21 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
     },
   ];
 
-  /* List for test */
-
   useEffect(() => {
     getLeaseLeadData();
   }, []);
 
   useEffect(() => {
+    // set the default/init list before any filters
     if (list.length > 0) {
-      // setInitLeadsList(list);
+      setInitLeadsList(list);
     }
   }, [list]);
+
+  useEffect(() => {
+    // start with the init list
+    setUpdatedLeadsList(initLeadsList);
+  }, [initLeadsList]);
 
   const filterListByField = (field, fieldVal) => {
     /* Filter from the inital array */
