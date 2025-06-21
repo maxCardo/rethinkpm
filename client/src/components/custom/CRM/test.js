@@ -264,6 +264,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
               headers={TABLE_HEADERS}
               list={updatedLeadsList}
               withCheckboxSelection={false}
+              sticky={true}
             />
             <LeasingModal
               isModalOpen={isModalOpen}
