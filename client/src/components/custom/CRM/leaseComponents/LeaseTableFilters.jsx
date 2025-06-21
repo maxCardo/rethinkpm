@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-const LeasingTableFilter = ({
+const LeaseTableFilters = ({
   filterListByField,
   filterListBySearch,
   settings,
@@ -78,4 +78,4 @@ const LeasingTableFilter = ({
   );
 };
 
-export default LeasingTableFilter;
+export default LeaseTableFilters;

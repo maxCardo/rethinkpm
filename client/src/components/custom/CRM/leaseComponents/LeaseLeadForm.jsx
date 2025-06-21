@@ -8,7 +8,7 @@ import ContactInfoFields from "./ContactInfoFields";
 import PropertyLocationFields from "./PropertyLocationFields";
 import LeadDetailsFields from "./LeadDetailsFields";
 
-const LeasingLeadsForm = ({ getFormData }) => {
+const LeaseLeadForm = ({ getFormData }) => {
   const [phoneFields, setPhoneFields] = useState([
     { number: "", isPrimary: true, okToText: true },
   ]);
@@ -163,4 +163,4 @@ const LeasingLeadsForm = ({ getFormData }) => {
   );
 };
 
-export default LeasingLeadsForm;
+export default LeaseLeadForm;

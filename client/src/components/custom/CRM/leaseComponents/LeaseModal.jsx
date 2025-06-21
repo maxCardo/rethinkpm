@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Modal, Box, Button, Divider, IconButton } from "@mui/material";
 import { AiOutlineClose } from "react-icons/ai";
-import LeasingLeadsForm from "./LeasingLeadsForm";
+import LeaseLeadForm from "./LeaseLeadForm";
 import axios from "axios";
 import MaterialAlert from "../../../core/MaterialAlert";
 
-const LeasingModal = ({ isModalOpen, closeModal }) => {
+const LeaseModal = ({ isModalOpen, closeModal }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState("");
   const [successAlert, setSuccessAlert] = useState(false);
@@ -63,7 +63,7 @@ const LeasingModal = ({ isModalOpen, closeModal }) => {
   };
 
   useEffect(() => {
-    // Expose validation functions globally for this modal (since LeasingLeadsForm uses them from commonFunctions)
+    // Expose validation functions globally for this modal (since LeaseLeadForm uses them from commonFunctions)
     if (!window.validateEmail) {
       import("../../../../util/commonFunctions").then((mod) => {
         window.validateEmail = mod.validateEmail;
@@ -84,7 +84,7 @@ const LeasingModal = ({ isModalOpen, closeModal }) => {
           </div>
           <Divider />
           <div className="leasing-modal__content my-8">
-            <LeasingLeadsForm
+            <LeaseLeadForm
               getFormData={(data) => setFormData(data)}
               ref={formRef}
             />
@@ -116,4 +116,4 @@ const LeasingModal = ({ isModalOpen, closeModal }) => {
   );
 };
 
-export default LeasingModal;
+export default LeaseModal;

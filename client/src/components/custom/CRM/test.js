@@ -15,8 +15,8 @@ import {
   FaPencilAlt,
   FaTrashAlt,
 } from "react-icons/fa";
-import LeasingTableFilters from "./leasingComponents/LeasingTableFilters";
-import LeasingModal from "./leasingComponents/LeasingModal";
+import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
+import LeaseModal from "./leaseComponents/LeaseModal";
 
 const LeaseTest = ({
   getLeaseLeadData,
@@ -196,7 +196,7 @@ const LeaseTest = ({
         {tabKey === TABS_KEY.Table && (
           <>
             <div className="table-top flex flex-row my-4 justify-between items-center">
-              <LeasingTableFilters
+              <LeaseTableFilters
                 filterListByField={filterListByField}
                 filterListBySearch={filterListBySearch}
                 settings={settings}
@@ -220,7 +220,7 @@ const LeaseTest = ({
               withCheckboxSelection={false}
               sticky={true}
             />
-            <LeasingModal
+            <LeaseModal
               isModalOpen={isModalOpen}
               closeModal={() => setIsModalOpen(false)}
               settings={settings}
