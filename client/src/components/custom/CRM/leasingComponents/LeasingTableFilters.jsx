@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
-const LeasingTableFilter = ({ filterListByField, filterListBySearch }) => {
+const LeasingTableFilter = ({
+  filterListByField,
+  filterListBySearch,
+  settings,
+}) => {
   const [selectedField, setSelectedField] = useState({});
   const [fieldValOptions, setFieldValOptions] = useState({});
 
@@ -10,17 +14,17 @@ const LeasingTableFilter = ({ filterListByField, filterListBySearch }) => {
       label: "Status",
       value: "status",
       valOptions: [
-        { label: "New", value: "new" },
-        { label: "Lost", value: "lost" },
+        { label: "New", value: settings.statusOptions.new },
+        { label: "Lost", value: settings.statusOptions.lost },
       ],
     },
     {
       label: "Temperatures",
       value: "leadTemperature",
       valOptions: [
-        { label: "Hot", value: "hot" },
-        { label: "Warm", value: "warm" },
-        { label: "Cold", value: "cold" },
+        { label: "Hot", value: settings.temperatureOptions.hot },
+        { label: "Warm", value: settings.temperatureOptions.warm },
+        { label: "Cold", value: settings.temperatureOptions.cold },
       ],
     },
     { label: "Owner", value: "leadOwner", valOptions: [] },
@@ -37,7 +41,7 @@ const LeasingTableFilter = ({ filterListByField, filterListBySearch }) => {
   }, [selectedField]);
 
   const handleFieldValChange = (fieldVal) => {
-    filterListByField(selectedField.value, fieldVal.label);
+    filterListByField(selectedField.value, fieldVal.value);
   };
 
   const handleInputChange = (expression) => {

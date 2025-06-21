@@ -26,13 +26,13 @@ import { connect } from "react-redux";
 import io from "socket.io-client";
 import settings from "./settings.json";
 import Alert from "./components/core/Alert";
-import Dash from "./components/custom/Dash"
-import TestVerticalTable from './components/custom/TestVerticalTable';
-import PropertyRecords from './components/custom/PropertyRecords/PropertyRecords'
-import OwnerRecords from './components/custom/PropertyRecords/OwnerRecords'
-import ShowcaseRecords from './components/custom/Marketplace/showcase/showcase'
-import LeaseLeadRecords from './components/custom/CRM/leaseLead'
-import LeaseTest from './components/custom/CRM/test'
+import Dash from "./components/custom/Dash";
+import TestVerticalTable from "./components/custom/TestVerticalTable";
+import PropertyRecords from "./components/custom/PropertyRecords/PropertyRecords";
+import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
+import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
+import LeaseLeadRecords from "./components/custom/CRM/leaseLead";
+import LeaseTest from "./components/custom/CRM/test";
 
 const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
@@ -64,7 +64,7 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   return (
     <Router>
       <Fragment>
-        <Navbar  setIsNavbarShown={setIsNavbarShown}/>
+        <Navbar setIsNavbarShown={setIsNavbarShown} />
         <Routes>
           <Route path="/" element={<Landing />} />
 
@@ -205,11 +205,10 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
             path="/crm/test"
             element={
               <PrivateRoute>
-                <LeaseTest />
+                <LeaseTest settings={routeSettings.leaseLead} />
               </PrivateRoute>
             }
           />
-          
         </Routes>
 
         <Alert />

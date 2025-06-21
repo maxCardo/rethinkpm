@@ -18,48 +18,16 @@ import {
 import LeasingTableFilters from "./leasingComponents/LeasingTableFilters";
 import LeasingModal from "./leasingComponents/LeasingModal";
 
-const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
+const LeaseTest = ({
+  getLeaseLeadData,
+  leaseLeads: { list, loading },
+  settings,
+}) => {
   const TABS_KEY = {
     Table: "table",
     Details: "details",
     Tour: "tour",
   };
-
-  let dummy_list = [
-    {
-      fullName: "Max Doe",
-      email: "max@gmail.com",
-      phoneNumbers: ["516-889-0988"],
-      listingAddress: "St Loren lef, Abc, Arizona 334234",
-      status: "New",
-      leadOwner: "Jimmy",
-      leadTemperature: "Hot",
-      nextAction: "05/12/2025",
-      tourDate: "05/13/2025",
-    },
-    {
-      fullName: "Ben Carson",
-      email: "carson123@yahoo.com",
-      phoneNumbers: ["516-889-1111"],
-      listingAddress: "St Timlead, Abc, Florida",
-      status: "New",
-      leadOwner: "Jimmy",
-      leadTemperature: "Warm",
-      nextAction: "06/25/2025",
-      tourDate: "06/28/2025",
-    },
-    {
-      fullName: "Danny",
-      email: "danny-office@gmail.com",
-      phoneNumbers: ["516-889-0988"],
-      listingAddress: "Blv street name, New York 432234",
-      status: "Lost",
-      leadOwner: "Marina",
-      leadTemperature: "Cold",
-      nextAction: "",
-      tourDate: "",
-    },
-  ];
 
   const [tabKey, setTabKey] = useState(TABS_KEY.Table);
   const [initLeadsList, setInitLeadsList] = useState([]);
@@ -72,19 +40,6 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
     { key: TABS_KEY.Details, title: "Lead Details" },
     { key: TABS_KEY.Tour, title: "Tour Tracking" },
   ];
-
-  /* Lead fileds value types store in one place. Prevents typos and errors */
-  const LEAD_FIELDS_VALUE_TYPES = {
-    Status: {
-      New: "new",
-      Lost: "lost",
-    },
-    Temp: {
-      Hot: "hot",
-      Warm: "warm",
-      Cold: "cold",
-    },
-  };
 
   /* Headers */
   const TABLE_HEADERS = [
@@ -132,9 +87,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
             variant="outlined"
             label={item.status}
             color={
-              item.status === LEAD_FIELDS_VALUE_TYPES.Status.New
-                ? "success"
-                : "error"
+              item.status === settings.statusOptions.new ? "success" : "error"
             }
           />
         </>
@@ -151,13 +104,13 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
       render: (item) => (
         <>
           {/* Lead Temperatures: Hot, Warm, Cold */}
-          {item.leadTemperature === LEAD_FIELDS_VALUE_TYPES.Temp.Hot && (
+          {item.leadTemperature === settings.temperatureOptions.hot && (
             <FaFire color="orangered" size={"1.5rem"} title="hot-lead" />
           )}
-          {item.leadTemperature === LEAD_FIELDS_VALUE_TYPES.Temp.Warm && (
+          {item.leadTemperature === settings.temperatureOptions.warm && (
             <FaCloudSun color="orange" size={"1.5rem"} title="warm-lead" />
           )}
-          {item.leadTemperature === LEAD_FIELDS_VALUE_TYPES.Temp.Cold && (
+          {item.leadTemperature === settings.temperatureOptions.cold && (
             <FaSnowflake
               color="lightskyblue"
               size={"1.5rem"}
@@ -214,7 +167,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
   };
 
   const filterListBySearch = (expression) => {
-    const searchRegexp = new RegExp(expression);
+    const searchRegexp = new RegExp(expression, "i");
     /* Filter from the inital array */
     const fillteredList = initLeadsList.filter((item) => {
       return (
@@ -246,6 +199,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
               <LeasingTableFilters
                 filterListByField={filterListByField}
                 filterListBySearch={filterListBySearch}
+                settings={settings}
               />
               <div className="add-lead-btn px-2">
                 <Button
@@ -269,6 +223,7 @@ const LeaseTest = ({ getLeaseLeadData, leaseLeads: { list, loading } }) => {
             <LeasingModal
               isModalOpen={isModalOpen}
               closeModal={() => setIsModalOpen(false)}
+              settings={settings}
             />
           </>
         )}
