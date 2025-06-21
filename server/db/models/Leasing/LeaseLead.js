@@ -49,7 +49,7 @@ const leaseLeadSchema = new mongoose.Schema({
   leadTemperature: {
     type: String,
     enum: ["hot", "warm", "cold"],
-    default: "new",
+    default: "",
   },
   createDate: {
     type: Date,

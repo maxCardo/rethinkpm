@@ -7,6 +7,7 @@ const LeadDetailsFields = ({
   formData,
   handleInputChange,
   handleNotesFieldChange,
+  settings,
   errors,
   noteField,
 }) => {
@@ -26,15 +27,19 @@ const LeadDetailsFields = ({
       <div className="flex flex-wrap gap-4 mb-4">
         <Select
           className="marketplace__filter-select min-w-[180px]"
-          defaultValue="All"
           options={[
-            { label: "Hot", value: "hot" },
-            { label: "Warm", value: "warm" },
-            { label: "Cold", value: "cold" },
+            { label: "", value: "" },
+            { label: "Hot", value: settings.temperatureOptions.hot },
+            { label: "Warm", value: settings.temperatureOptions.warm },
+            { label: "Cold", value: settings.temperatureOptions.cold },
           ]}
           placeholder="Lead Temperature"
           onChange={(selected) =>
-            handleInputChange(null, "leadTemperature", selected.value)
+            handleInputChange(
+              null,
+              "leadTemperature",
+              selected ? selected.value : ""
+            )
           }
           value={
             formData.leadTemperature

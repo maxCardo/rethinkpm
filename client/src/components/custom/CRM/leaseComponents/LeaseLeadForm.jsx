@@ -8,7 +8,12 @@ import ContactInfoFields from "./ContactInfoFields";
 import PropertyLocationFields from "./PropertyLocationFields";
 import LeadDetailsFields from "./LeadDetailsFields";
 
-const LeaseLeadForm = ({ getFormData, isEditMode, selectedLeadItem }) => {
+const LeaseLeadForm = ({
+  getFormData,
+  settings,
+  isEditMode,
+  selectedLeadItem,
+}) => {
   const [phoneFields, setPhoneFields] = useState([
     { number: "", isPrimary: true, okToText: true },
   ]);
@@ -182,6 +187,7 @@ const LeaseLeadForm = ({ getFormData, isEditMode, selectedLeadItem }) => {
           handleNotesFieldChange={handleNotesFieldChange}
           errors={errors}
           noteField={noteField}
+          settings={settings}
         />
       </Paper>
     </form>

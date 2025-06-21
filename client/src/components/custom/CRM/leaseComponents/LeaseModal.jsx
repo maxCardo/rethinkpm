@@ -9,6 +9,7 @@ const LeaseModal = ({
   isModalOpen,
   closeModal,
   getLeaseLeadData,
+  settings,
   isEditMode,
   selectedLeadItem,
 }) => {
@@ -106,6 +107,7 @@ const LeaseModal = ({
               ref={formRef}
               isEditMode={isEditMode}
               selectedLeadItem={selectedLeadItem}
+              settings={settings}
             />
             {formError && (
               <div className="mt-4 p-2 bg-red-100 text-red-700 rounded border border-red-300 text-center">
