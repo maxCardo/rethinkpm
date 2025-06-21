@@ -1,14 +1,14 @@
 import React from "react";
-
 import { Form, Col } from "react-bootstrap";
 
 const TextField = ({
   field,
-  data,
+  value = "",
   onChange,
   type = "text",
   col = 12,
   withLabel = true,
+  ...rest
 }) => {
   return (
     <Col lg={col}>
@@ -20,7 +20,9 @@ const TextField = ({
           name={field.accessor}
           type={type}
           placeholder={"Enter " + field.name}
-          onChange={(e) => onChange(e)}
+          value={value}
+          onChange={onChange}
+          {...rest}
         />
       </Form.Group>
     </Col>

@@ -36,6 +36,8 @@ const LeaseTest = ({
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedLeadItem, setSelectedLeadItem] = useState({});
 
   /* Tabs option */
   const DYNAMIC_TABS = [
@@ -179,7 +181,10 @@ const LeaseTest = ({
       align: "center",
       render: (item) => (
         <div className="flex flex-row w-100 ml-3">
-          <FaPencilAlt onClick={() => handleEditLead(item)} />
+          <FaPencilAlt
+            onClick={() => handleEditLead(item)}
+            style={{ cursor: "pointer" }}
+          />
           <FaTrashAlt
             className="mx-2"
             onClick={() => handleDeleteLead(item)}
@@ -229,6 +234,8 @@ const LeaseTest = ({
   };
 
   const handleEditLead = async (leadItem) => {
+    setIsEditMode(true);
+    setSelectedLeadItem(leadItem);
     setIsModalOpen(true);
   };
 
@@ -286,9 +293,15 @@ const LeaseTest = ({
             />
             <LeaseModal
               isModalOpen={isModalOpen}
-              closeModal={() => setIsModalOpen(false)}
+              closeModal={() => {
+                setIsModalOpen(false);
+                setIsEditMode(false);
+                setSelectedLeadItem({});
+              }}
               settings={settings}
               getLeaseLeadData={getLeaseLeadData}
+              isEditMode={isEditMode}
+              selectedLeadItem={selectedLeadItem}
             />
             <MaterialAlert
               open={deleteAlert}

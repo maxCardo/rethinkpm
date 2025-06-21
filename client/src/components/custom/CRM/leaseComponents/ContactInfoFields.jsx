@@ -1,4 +1,3 @@
-import React from "react";
 import TextField from "../../profile/addLead/InputFields/TextField";
 import { Button, Typography, Divider } from "@mui/material";
 import { FaPlus } from "react-icons/fa";
@@ -49,7 +48,10 @@ const ContactInfoFields = ({
       {phoneFields.map((item, index) => (
         <div className="flex items-center gap-3 mb-2" key={index}>
           <TextField
-            field={{ name: "Phone", accessor: `phoneNumbers[${index}].number` }}
+            field={{
+              name: "Phone",
+              accessor: `phoneNumbers[${index}].number`,
+            }}
             withLabel={false}
             col={4}
             type="tel"

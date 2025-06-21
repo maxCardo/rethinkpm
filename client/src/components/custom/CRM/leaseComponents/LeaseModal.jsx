@@ -5,7 +5,13 @@ import LeaseLeadForm from "./LeaseLeadForm";
 import axios from "axios";
 import MaterialAlert from "../../../core/MaterialAlert";
 
-const LeaseModal = ({ isModalOpen, closeModal, getLeaseLeadData }) => {
+const LeaseModal = ({
+  isModalOpen,
+  closeModal,
+  getLeaseLeadData,
+  isEditMode,
+  selectedLeadItem,
+}) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState("");
   const [successAlert, setSuccessAlert] = useState(false);
@@ -78,7 +84,9 @@ const LeaseModal = ({ isModalOpen, closeModal, getLeaseLeadData }) => {
       <Modal open={isModalOpen} style={modalStyle}>
         <Box sx={boxStyle}>
           <div className="flex items-center justify-between mb-2">
-            <p className="leasing-modal__title text-3xl">Add Lead</p>
+            <p className="leasing-modal__title text-3xl">
+              {!isEditMode ? "Add" : "Edit"} Lead
+            </p>
             <IconButton aria-label="close" onClick={closeModal} size="large">
               <AiOutlineClose size={24} />
             </IconButton>
@@ -88,6 +96,8 @@ const LeaseModal = ({ isModalOpen, closeModal, getLeaseLeadData }) => {
             <LeaseLeadForm
               getFormData={(data) => setFormData(data)}
               ref={formRef}
+              isEditMode={isEditMode}
+              selectedLeadItem={selectedLeadItem}
             />
             {formError && (
               <div className="mt-4 p-2 bg-red-100 text-red-700 rounded border border-red-300 text-center">

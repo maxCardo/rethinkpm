@@ -8,7 +8,7 @@ import ContactInfoFields from "./ContactInfoFields";
 import PropertyLocationFields from "./PropertyLocationFields";
 import LeadDetailsFields from "./LeadDetailsFields";
 
-const LeaseLeadForm = ({ getFormData }) => {
+const LeaseLeadForm = ({ getFormData, isEditMode, selectedLeadItem }) => {
   const [phoneFields, setPhoneFields] = useState([
     { number: "", isPrimary: true, okToText: true },
   ]);
@@ -42,6 +42,13 @@ const LeaseLeadForm = ({ getFormData }) => {
     getFormData(formData);
     // eslint-disable-next-line
   }, [formData, getFormData]);
+
+  useEffect(() => {
+    if (isEditMode) {
+      const populatedData = Object.assign(formData, selectedLeadItem);
+      setFormData({ ...populatedData });
+    }
+  }, [isEditMode]);
 
   // Handle input changes
   const handleInputChange = (event, field, value) => {
