@@ -17,6 +17,8 @@ import {
 } from "react-icons/fa";
 import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
 import LeaseModal from "./leaseComponents/LeaseModal";
+import axios from "axios";
+import MaterialAlert from "../../core/MaterialAlert";
 
 const LeaseTest = ({
   getLeaseLeadData,
@@ -33,6 +35,7 @@ const LeaseTest = ({
   const [initLeadsList, setInitLeadsList] = useState([]);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteAlert, setDeleteAlert] = useState(false);
 
   /* Tabs option */
   const DYNAMIC_TABS = [
@@ -174,10 +177,14 @@ const LeaseTest = ({
       accessor: "actions",
       label: "Actions",
       align: "center",
-      render: () => (
+      render: (item) => (
         <div className="flex flex-row w-100 ml-3">
-          <FaPencilAlt />
-          <FaTrashAlt className="mx-2" />
+          <FaPencilAlt onClick={() => handleEditLead(item)} />
+          <FaTrashAlt
+            className="mx-2"
+            onClick={() => handleDeleteLead(item)}
+            style={{ cursor: "pointer" }}
+          />
         </div>
       ),
     },
@@ -219,6 +226,22 @@ const LeaseTest = ({
     });
 
     setUpdatedLeadsList(fillteredList);
+  };
+
+  const handleEditLead = async (leadItem) => {
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteLead = async (leadItem) => {
+    if (!leadItem || !leadItem._id) return;
+    try {
+      await axios.delete(`/api/crm/leaselead/${leadItem._id}`);
+      getLeaseLeadData(); // Refresh the list after deletion
+      setDeleteAlert(true); // Show success alert
+    } catch (err) {
+      // Optionally show an error alert here
+      console.error("Failed to delete lead", err);
+    }
   };
 
   return loading ? (
@@ -266,6 +289,13 @@ const LeaseTest = ({
               closeModal={() => setIsModalOpen(false)}
               settings={settings}
               getLeaseLeadData={getLeaseLeadData}
+            />
+            <MaterialAlert
+              open={deleteAlert}
+              onClose={() => setDeleteAlert(false)}
+              message="Lead deleted successfully!"
+              severity="success"
+              duration={3000}
             />
           </>
         )}

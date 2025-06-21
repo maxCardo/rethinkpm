@@ -42,4 +42,22 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
+// @route: DELETE api/crm/leaselead/:id
+// @desc: delete a leaseLead by id
+// @access: private
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const deleted = await leaseLead.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ message: "Lease lead not found" });
+    }
+    res.status(200).json({ message: "Lease lead deleted", id: req.params.id });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "Failed to delete lease lead", error: err });
+  }
+});
+
 module.exports = router;

@@ -109,7 +109,7 @@ const LeaseModal = ({ isModalOpen, closeModal, getLeaseLeadData }) => {
       <MaterialAlert
         open={successAlert}
         onClose={() => setSuccessAlert(false)}
-        message="Saved successfully!"
+        message="Lead saved successfully!"
         severity="success"
         duration={3000}
       />
