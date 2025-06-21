@@ -40,6 +40,7 @@ const LeaseLeadForm = ({ getFormData }) => {
   // Update parent with form data
   useEffect(() => {
     getFormData(formData);
+    // eslint-disable-next-line
   }, [formData, getFormData]);
 
   // Handle input changes
@@ -53,6 +54,18 @@ const LeaseLeadForm = ({ getFormData }) => {
       setErrors((prev) => ({
         ...prev,
         email: validateEmail(emailValue) ? "" : "Invalid email",
+      }));
+    } else if (field === "firstName") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [field]: event.target.value,
+        fullName: `${event.target.value} ${prevData.lastName}`.trim(),
+      }));
+    } else if (field === "lastName") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [field]: event.target.value,
+        fullName: `${prevData.firstName} ${event.target.value}`.trim(),
       }));
     } else if (field === "phoneNumbers") {
       // handled separately
