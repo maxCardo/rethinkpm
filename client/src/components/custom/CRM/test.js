@@ -85,7 +85,11 @@ const LeaseTest = ({
         <>
           <Chip
             variant="outlined"
-            label={item.status}
+            label={
+              item.status
+                ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
+                : ""
+            }
             color={
               item.status === settings.statusOptions.new ? "success" : "error"
             }
@@ -120,13 +124,50 @@ const LeaseTest = ({
         </>
       ),
     },
+    // {
+    //   accessor: "createDate",
+    //   label: "Created",
+    //   reactComponent: true,
+    //   render: (item) => {
+    //     if (!item.createDate) return "";
+    //     const date = new Date(item.createDate);
+    //     return isNaN(date)
+    //       ? ""
+    //       : `${(date.getMonth() + 1).toString().padStart(2, "0")}/${date
+    //           .getDate()
+    //           .toString()
+    //           .padStart(2, "0")}/${date.getFullYear()}`;
+    //   },
+    // },
     {
       accessor: "nextAction",
       label: "Next Action",
+      reactComponent: true,
+      render: (item) => {
+        if (!item.nextAction) return "";
+        const date = new Date(item.nextAction);
+        return isNaN(date)
+          ? ""
+          : `${(date.getMonth() + 1).toString().padStart(2, "0")}/${date
+              .getDate()
+              .toString()
+              .padStart(2, "0")}/${date.getFullYear()}`;
+      },
     },
     {
       accessor: "tourDate",
       label: "Tour Date",
+      reactComponent: true,
+      render: (item) => {
+        if (!item.tourDate) return "";
+        const date = new Date(item.tourDate);
+        return isNaN(date)
+          ? ""
+          : `${(date.getMonth() + 1).toString().padStart(2, "0")}/${date
+              .getDate()
+              .toString()
+              .padStart(2, "0")}/${date.getFullYear()}`;
+      },
     },
     {
       reactComponent: true,
