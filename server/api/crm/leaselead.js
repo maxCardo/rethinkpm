@@ -60,4 +60,26 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
+// @route: PUT api/crm/leaselead/:id
+// @desc: update an existing leaseLead by id
+// @access: private
+router.put("/:id", auth, async (req, res) => {
+  try {
+    const updatedLead = await leaseLead.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedLead) {
+      return res.status(404).json({ message: "Lease lead not found" });
+    }
+    res.status(200).json(updatedLead);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "Failed to update lease lead", error: err });
+  }
+});
+
 module.exports = router;

@@ -54,7 +54,15 @@ const LeaseModal = ({
     if (!validateForm()) return;
     setFormError("");
     try {
-      const response = await axios.post("/api/crm/leaselead", formData);
+      let response;
+      if (isEditMode && formData._id) {
+        response = await axios.put(
+          `/api/crm/leaselead/${formData._id}`,
+          formData
+        );
+      } else {
+        response = await axios.post("/api/crm/leaselead", formData);
+      }
 
       if (response?.data) {
         setSuccessAlert(true);
