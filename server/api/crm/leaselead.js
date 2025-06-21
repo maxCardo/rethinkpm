@@ -11,7 +11,7 @@ router.use(auth);
 router.get("/", async (req, res) => {
   console.log("calling leaselead");
   try {
-    const data = await leaseLead.find().limit(10);
+    const data = await leaseLead.find({});
     res.status(200).send(data);
   } catch (err) {
     console.error(err);

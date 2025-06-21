@@ -224,6 +224,7 @@ const LeaseTest = ({
               isModalOpen={isModalOpen}
               closeModal={() => setIsModalOpen(false)}
               settings={settings}
+              getLeaseLeadData={getLeaseLeadData}
             />
           </>
         )}

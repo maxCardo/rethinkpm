@@ -5,7 +5,7 @@ import LeaseLeadForm from "./LeaseLeadForm";
 import axios from "axios";
 import MaterialAlert from "../../../core/MaterialAlert";
 
-const LeaseModal = ({ isModalOpen, closeModal }) => {
+const LeaseModal = ({ isModalOpen, closeModal, getLeaseLeadData }) => {
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState("");
   const [successAlert, setSuccessAlert] = useState(false);
@@ -53,6 +53,7 @@ const LeaseModal = ({ isModalOpen, closeModal }) => {
       if (response?.data) {
         setSuccessAlert(true);
         closeModal();
+        if (getLeaseLeadData) getLeaseLeadData(); // Refresh lease leads list
       }
     } catch (error) {
       setFormError(
