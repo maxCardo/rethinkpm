@@ -39,7 +39,9 @@ const LeadDetailsFields = ({
           value={
             formData.leadTemperature
               ? {
-                  label: formData.leadTemperature,
+                  label:
+                    formData.leadTemperature.charAt(0).toUpperCase() +
+                    formData.leadTemperature.slice(1),
                   value: formData.leadTemperature,
                 }
               : null
@@ -95,7 +97,7 @@ const LeadDetailsFields = ({
           col={5}
           type="date"
           onChange={(e) => handleInputChange(e, "lastContact")}
-          value={formData.lastContact}
+          value={formData.lastContact ? formData.lastContact.slice(0, 10) : ""}
         />
         <TextField
           field={{ name: "Next Action", accessor: "nextAction" }}
@@ -103,7 +105,7 @@ const LeadDetailsFields = ({
           col={5}
           type="date"
           onChange={(e) => handleInputChange(e, "nextAction")}
-          value={formData.nextAction}
+          value={formData.nextAction ? formData.nextAction.slice(0, 10) : ""}
         />
       </div>
       <div className="mb-2">
@@ -114,7 +116,11 @@ const LeadDetailsFields = ({
           minRows={5}
           maxRows={5}
           onChange={handleNotesFieldChange}
-          value={noteField[0]?.content || ""}
+          value={
+            Array.isArray(formData.notes) && formData.notes[0]?.content
+              ? formData.notes[0].content
+              : ""
+          }
         />
       </div>
     </div>

@@ -44,11 +44,16 @@ const LeaseLeadForm = ({ getFormData, isEditMode, selectedLeadItem }) => {
   }, [formData, getFormData]);
 
   useEffect(() => {
-    if (isEditMode) {
+    if (isEditMode && selectedLeadItem) {
+      if (selectedLeadItem.phoneNumbers) {
+        setPhoneFields(selectedLeadItem.phoneNumbers);
+      }
       const populatedData = Object.assign(formData, selectedLeadItem);
       setFormData({ ...populatedData });
+    } else if (!isEditMode) {
+      setPhoneFields([{ number: "", isPrimary: true, okToText: true }]);
     }
-  }, [isEditMode]);
+  }, [isEditMode, selectedLeadItem]);
 
   // Handle input changes
   const handleInputChange = (event, field, value) => {

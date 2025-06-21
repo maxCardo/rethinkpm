@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import TextField from "../../profile/addLead/InputFields/TextField";
 import { Typography, Divider } from "@mui/material";
 
 const PropertyLocationFields = ({ formData, handleInputChange }) => {
-  const [address, setAddress] = useState("");
-  const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
+  // Helper to split listingAddress into address, state, zipCode
+  const [address, state, zipCode] = (formData.listingAddress || "  ")
+    .split(",")
+    .map((s) => s.trim());
 
-  useEffect(() => {
-    const addressString = [address, state, zipCode].filter(Boolean).join(", ");
-    if (formData.listingAddress !== addressString) {
-      handleInputChange(null, "listingAddress", addressString);
-    }
-  }, [address, state, zipCode, handleInputChange, formData.listingAddress]);
+  // When any field changes, join and update listingAddress in parent
+  const handleFieldChange = (field, value) => {
+    let newAddress = address,
+      newState = state,
+      newZip = zipCode;
+    if (field === "address") newAddress = value;
+    if (field === "state") newState = value;
+    if (field === "zipCode") newZip = value;
+    const joined = [newAddress, newState, newZip].filter(Boolean).join(", ");
+    handleInputChange(null, "listingAddress", joined);
+  };
 
   return (
     <div>
@@ -22,25 +28,25 @@ const PropertyLocationFields = ({ formData, handleInputChange }) => {
       <Divider className="mb-4" />
       <div className="flex flex-wrap gap-4 items-center mb-2">
         <TextField
-          field={{ name: "Address", accessor: "listingAddress" }}
+          field={{ name: "Address", accessor: "address" }}
           withLabel={false}
           col={5}
-          onChange={(e) => setAddress(e.target.value)}
-          value={address}
+          onChange={(e) => handleFieldChange("address", e.target.value)}
+          value={address || ""}
         />
         <TextField
           field={{ name: "State", accessor: "state" }}
           withLabel={false}
           col={4}
-          onChange={(e) => setState(e.target.value)}
-          value={state}
+          onChange={(e) => handleFieldChange("state", e.target.value)}
+          value={state || ""}
         />
         <TextField
           field={{ name: "Zip Code", accessor: "zipCode" }}
           withLabel={false}
           col={3}
-          onChange={(e) => setZipCode(e.target.value)}
-          value={zipCode}
+          onChange={(e) => handleFieldChange("zipCode", e.target.value)}
+          value={zipCode || ""}
         />
       </div>
     </div>
