@@ -165,12 +165,12 @@ const LeaseTest = ({
       },
     },
     {
-      accessor: "tourDate",
-      label: "Tour Date",
+      accessor: "lastContact",
+      label: "Last Contact",
       reactComponent: true,
       render: (item) => {
-        if (!item.tourDate) return "";
-        const date = new Date(item.tourDate);
+        if (!item.lastContact) return "";
+        const date = new Date(item.lastContact);
         return isNaN(date)
           ? ""
           : `${(date.getMonth() + 1).toString().padStart(2, "0")}/${date
