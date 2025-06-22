@@ -65,6 +65,13 @@ router.delete("/:id", auth, async (req, res) => {
 // @access: private
 router.put("/:id", auth, async (req, res) => {
   try {
+    if (Array.isArray(req.body.notes) && req.body.notes.length > 0) {
+      req.body.notes = req.body.notes.map((note) => ({
+        ...note,
+        user: req.user._id,
+      }));
+    }
+
     const updatedLead = await leaseLead.findByIdAndUpdate(
       req.params.id,
       req.body,
