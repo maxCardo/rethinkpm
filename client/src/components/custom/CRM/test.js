@@ -264,7 +264,7 @@ const LeaseTest = ({
     const leadItem = deleteConfirm.lead;
     if (!leadItem || !leadItem._id) return;
     try {
-      await axios.delete(`/api/crm/leaselead/${leadItem._id}`);
+      await axios.patch(`/api/crm/leaselead/${leadItem._id}`);
       getLeaseLeadData(); // Refresh the list after deletion
       setDeleteAlert(true); // Show success alert
     } catch (err) {

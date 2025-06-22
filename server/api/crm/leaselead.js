@@ -6,12 +6,12 @@ const router = express.Router();
 router.use(auth);
 
 // @route: Get api/crm/leaselead
-// @desc: get all leaseLead data
+// @desc: get all leaseLead data with isEnabled: true
 // @ access: private
 router.get("/", async (req, res) => {
   console.log("calling leaselead");
   try {
-    const data = await leaseLead.find({});
+    const data = await leaseLead.find({ isEnabled: true });
     res.status(200).send(data);
   } catch (err) {
     console.error(err);
@@ -30,7 +30,6 @@ router.post("/", auth, async (req, res) => {
         user: req.user._id,
       }));
     }
-
     const newLead = new leaseLead(req.body);
     const savedLead = await newLead.save();
     res.status(201).json(savedLead);
@@ -42,21 +41,26 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// @route: DELETE api/crm/leaselead/:id
-// @desc: delete a leaseLead by id
+// @route: PATCH api/crm/leaselead/:id
+// @desc: soft delete a leaseLead by id (set isEnabled to false)
 // @access: private
-router.delete("/:id", auth, async (req, res) => {
+router.patch("/:id", auth, async (req, res) => {
   try {
-    const deleted = await leaseLead.findByIdAndDelete(req.params.id);
-    if (!deleted) {
+    const updated = await leaseLead.findByIdAndUpdate(
+      req.params.id,
+      { isEnabled: false, updateDate: new Date() },
+      { new: true }
+    );
+
+    if (!updated) {
       return res.status(404).json({ message: "Lease lead not found" });
     }
-    res.status(200).json({ message: "Lease lead deleted", id: req.params.id });
+    res.status(200).json({ message: "Lease lead disabled", id: req.params.id });
   } catch (err) {
     console.error(err);
     res
       .status(500)
-      .json({ message: "Failed to delete lease lead", error: err });
+      .json({ message: "Failed to disable lease lead", error: err });
   }
 });
 
@@ -72,6 +76,7 @@ router.put("/:id", auth, async (req, res) => {
       }));
     }
 
+    req.body.updateDate = new Date();
     const updatedLead = await leaseLead.findByIdAndUpdate(
       req.params.id,
       req.body,
