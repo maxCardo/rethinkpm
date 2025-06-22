@@ -40,6 +40,10 @@ const LeaseTest = ({
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState({
+    open: false,
+    lead: null,
+  });
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const NAVBAR_HEIGHT = 80;
@@ -253,6 +257,12 @@ const LeaseTest = ({
 
   const handleDeleteLead = async (leadItem) => {
     if (!leadItem || !leadItem._id) return;
+    setDeleteConfirm({ open: true, lead: leadItem });
+  };
+
+  const confirmDelete = async () => {
+    const leadItem = deleteConfirm.lead;
+    if (!leadItem || !leadItem._id) return;
     try {
       await axios.delete(`/api/crm/leaselead/${leadItem._id}`);
       getLeaseLeadData(); // Refresh the list after deletion
@@ -261,6 +271,11 @@ const LeaseTest = ({
       // Optionally show an error alert here
       console.error("Failed to delete lead", err);
     }
+    setDeleteConfirm({ open: false, lead: null });
+  };
+
+  const cancelDelete = () => {
+    setDeleteConfirm({ open: false, lead: null });
   };
 
   const handleWatchLeadDetails = (leadItem) => {
@@ -333,6 +348,56 @@ const LeaseTest = ({
               severity="success"
               duration={3000}
             />
+            {/* Delete Confirmation Dialog */}
+            {deleteConfirm.open && (
+              <div
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100vw",
+                  height: "100vh",
+                  background: "rgba(0,0,0,0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  zIndex: 9999,
+                }}
+              >
+                <div
+                  style={{
+                    background: "#fff",
+                    padding: 32,
+                    borderRadius: 8,
+                    minWidth: 320,
+                    boxShadow: "0 2px 16px rgba(0,0,0,0.2)",
+                    textAlign: "center",
+                  }}
+                >
+                  <p style={{ fontSize: 18, marginBottom: 24 }}>
+                    Are you sure you want to delete this lead?
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: 16,
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={confirmDelete}
+                    >
+                      Delete
+                    </Button>
+                    <Button variant="outlined" onClick={cancelDelete}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
 
