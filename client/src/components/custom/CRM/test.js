@@ -21,6 +21,7 @@ import LeaseModal from "./leaseComponents/LeaseModal";
 import axios from "axios";
 import MaterialAlert from "../../core/MaterialAlert";
 import LeadDetails from "./leaseComponents/LeadDetails";
+import LeadTourTracking from "./leaseComponents/LeadTourTracking";
 
 const LeaseTest = ({
   getLeaseLeadData,
@@ -297,7 +298,7 @@ const LeaseTest = ({
                   startIcon={<FaPlus size={"0.8rem"} />}
                   style={{ textTransform: "none" }}
                   onClick={() => setIsModalOpen(!isModalOpen)}
-                  // variant="outlined"
+                  variant="contained"
                 >
                   Add Lead
                 </Button>
@@ -344,7 +345,9 @@ const LeaseTest = ({
         )}
 
         {/* Lease Tour Tracking (info) */}
-        {tabKey === TAB_KEYS.Tour && <div>I am Tour tracking!</div>}
+        {tabKey === TAB_KEYS.Tour && (
+          <LeadTourTracking selectedLeadItem={selectedLeadItem} />
+        )}
       </div>
     </>
   );
