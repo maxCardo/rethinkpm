@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
+import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 
 const LeaseTableFilters = ({
   filterListByField,
@@ -14,17 +15,32 @@ const LeaseTableFilters = ({
       label: "Status",
       value: "status",
       valOptions: [
-        { label: "New", value: settings.statusOptions.new },
-        { label: "Lost", value: settings.statusOptions.lost },
+        {
+          label: capitalizeFirstLetter(settings.statusOptions.new),
+          value: settings.statusOptions.new,
+        },
+        {
+          label: capitalizeFirstLetter(settings.statusOptions.lost),
+          value: settings.statusOptions.lost,
+        },
       ],
     },
     {
       label: "Temperatures",
       value: "leadTemperature",
       valOptions: [
-        { label: "Hot", value: settings.temperatureOptions.hot },
-        { label: "Warm", value: settings.temperatureOptions.warm },
-        { label: "Cold", value: settings.temperatureOptions.cold },
+        {
+          label: capitalizeFirstLetter(settings.temperatureOptions.hot),
+          value: settings.temperatureOptions.hot,
+        },
+        {
+          label: capitalizeFirstLetter(settings.temperatureOptions.warm),
+          value: settings.temperatureOptions.warm,
+        },
+        {
+          label: capitalizeFirstLetter(settings.temperatureOptions.cold),
+          value: settings.temperatureOptions.cold,
+        },
       ],
     },
     { label: "Owner", value: "leadOwner", valOptions: [] },

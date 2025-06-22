@@ -14,11 +14,13 @@ import {
   FaPlus,
   FaPencilAlt,
   FaTrashAlt,
+  FaEye,
 } from "react-icons/fa";
 import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
 import LeaseModal from "./leaseComponents/LeaseModal";
 import axios from "axios";
 import MaterialAlert from "../../core/MaterialAlert";
+import LeadDetails from "./leaseComponents/LeadDetails";
 
 const LeaseTest = ({
   getLeaseLeadData,
@@ -26,13 +28,13 @@ const LeaseTest = ({
   settings,
   isNavbarShown,
 }) => {
-  const TABS_KEY = {
+  const TAB_KEYS = {
     Table: "table",
     Details: "details",
     Tour: "tour",
   };
 
-  const [tabKey, setTabKey] = useState(TABS_KEY.Table);
+  const [tabKey, setTabKey] = useState(TAB_KEYS.Table);
   const [initLeadsList, setInitLeadsList] = useState([]);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,9 +45,9 @@ const LeaseTest = ({
 
   /* Tabs option */
   const DYNAMIC_TABS = [
-    { key: TABS_KEY.Table, title: "Table View" },
-    { key: TABS_KEY.Details, title: "Lead Details" },
-    { key: TABS_KEY.Tour, title: "Tour Tracking" },
+    { key: TAB_KEYS.Table, title: "Table View" },
+    { key: TAB_KEYS.Details, title: "Lead Details" },
+    { key: TAB_KEYS.Tour, title: "Tour Tracking" },
   ];
 
   /* Headers */
@@ -186,11 +188,18 @@ const LeaseTest = ({
           <FaPencilAlt
             onClick={() => handleEditLead(item)}
             style={{ cursor: "pointer" }}
+            title="Edit"
           />
           <FaTrashAlt
             className="mx-2"
             onClick={() => handleDeleteLead(item)}
             style={{ cursor: "pointer" }}
+            title="Delete"
+          />
+          <FaEye
+            title="Details"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleWatchLeadDetails(item)}
           />
         </div>
       ),
@@ -253,6 +262,13 @@ const LeaseTest = ({
     }
   };
 
+  const handleWatchLeadDetails = (leadItem) => {
+    console.log("SELECTED ITEM => ", leadItem);
+
+    setTabKey(TAB_KEYS.Details);
+    setSelectedLeadItem(leadItem);
+  };
+
   return loading ? (
     <Loading />
   ) : (
@@ -266,7 +282,7 @@ const LeaseTest = ({
 
       <div className="table-view">
         {/* Lease Leads List (table) */}
-        {tabKey === TABS_KEY.Table && (
+        {tabKey === TAB_KEYS.Table && (
           <>
             <div className="table-top flex flex-row my-4 justify-between items-center">
               <LeaseTableFilters
@@ -320,10 +336,15 @@ const LeaseTest = ({
         )}
 
         {/* Lease details */}
-        {tabKey === TABS_KEY.Details && <div>I am details!</div>}
+        {tabKey === TAB_KEYS.Details && (
+          <LeadDetails
+            selectedLeadItem={selectedLeadItem}
+            onGoToTourTab={() => setTabKey(TAB_KEYS.Tour)}
+          />
+        )}
 
         {/* Lease Tour Tracking (info) */}
-        {tabKey === TABS_KEY.Tour && <div>I am Tour tracking!</div>}
+        {tabKey === TAB_KEYS.Tour && <div>I am Tour tracking!</div>}
       </div>
     </>
   );
