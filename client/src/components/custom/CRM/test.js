@@ -24,6 +24,7 @@ const LeaseTest = ({
   getLeaseLeadData,
   leaseLeads: { list, loading },
   settings,
+  isNavbarShown,
 }) => {
   const TABS_KEY = {
     Table: "table",
@@ -38,6 +39,7 @@ const LeaseTest = ({
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
+  const NAVBAR_HEIGHT = 80;
 
   /* Tabs option */
   const DYNAMIC_TABS = [
@@ -290,6 +292,10 @@ const LeaseTest = ({
               list={updatedLeadsList}
               withCheckboxSelection={false}
               sticky={true}
+              tableWrapperStyle={{
+                height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
+                overflowY: "auto",
+              }}
             />
             <LeaseModal
               isModalOpen={isModalOpen}

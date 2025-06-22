@@ -117,10 +117,15 @@ const LeaseModal = ({
           </div>
           <Divider />
           <div className="lesing-modal__actions flex justify-end mt-8">
-            <Button color="error" onClick={() => closeModal()} className="mx-2">
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => closeModal()}
+              className="mx-2"
+            >
               Cancel
             </Button>
-            <Button variant="outlined" color="primary" onClick={saveData}>
+            <Button variant="contained" color="primary" onClick={saveData}>
               Save
             </Button>
           </div>

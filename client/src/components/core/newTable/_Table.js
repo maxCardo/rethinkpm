@@ -26,6 +26,7 @@ const TableComp = ({
   selected = [],
   setSelected,
   withCheckboxSelection = true,
+  tableWrapperStyle,
 }) => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState("asc");
@@ -83,7 +84,7 @@ const TableComp = ({
       <Paper className={tableClasses.paper}>
         <TableContainer className={tableClasses.container}>
           {/* Wrap the table in a scrollable container */}
-          <div style={{ maxHeight: "75vh", overflowY: "auto" }}>
+          <div className="table-wrapper" style={tableWrapperStyle}>
             <Table
               stickyHeader={sticky}
               aria-label="sticky table"

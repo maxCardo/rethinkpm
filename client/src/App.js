@@ -205,7 +205,10 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
             path="/crm/test"
             element={
               <PrivateRoute>
-                <LeaseTest settings={routeSettings.leaseLead} />
+                <LeaseTest
+                  settings={routeSettings.leaseLead}
+                  isNavbarShown={isNavbarShown}
+                />
               </PrivateRoute>
             }
           />
