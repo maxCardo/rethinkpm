@@ -335,6 +335,8 @@ const LeaseTest = ({
                   height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
                   overflowY: "auto",
                 }}
+                _orderBy={"createDate"}
+                _order={"desc"}
               />
             )}
             <LeaseModal

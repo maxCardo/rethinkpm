@@ -22,6 +22,7 @@ const TableComp = ({
   sticky = false,
   dense = false,
   _orderBy,
+  _order,
   _rowsPerPage = 10,
   selected = [],
   setSelected,
@@ -29,7 +30,7 @@ const TableComp = ({
   tableWrapperStyle,
 }) => {
   const [tableData, setTableData] = useState([]);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState(_order || "asc");
   const [orderBy, setOrderBy] = useState(
     _orderBy || headers[0]?.accessor || ""
   );
