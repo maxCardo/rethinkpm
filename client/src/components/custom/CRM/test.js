@@ -185,7 +185,7 @@ const LeaseTest = ({
       label: "Actions",
       align: "center",
       render: (item) => (
-        <div className="flex flex-row w-100 ml-3">
+        <div className="flex flex-row w-100">
           <FaPencilAlt
             onClick={() => handleEditLead(item)}
             style={{ cursor: "pointer" }}
