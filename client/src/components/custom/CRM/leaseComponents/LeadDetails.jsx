@@ -109,6 +109,8 @@ const LeadDetails = ({ selectedLeadItem, onGoToTourTab }) => {
           p: 3,
           boxShadow: 2,
           borderRadius: 3,
+          maxHeight: 700,
+          overflowY: "auto",
         }}
       >
         <Typography variant="h6" fontWeight={600} gutterBottom>
@@ -126,7 +128,11 @@ const LeadDetails = ({ selectedLeadItem, onGoToTourTab }) => {
                     p={1}
                     sx={{ background: "#f5f5f5", borderRadius: 1 }}
                   >
-                    <Typography variant="body2" fontWeight={500}>
+                    <Typography
+                      variant="body2"
+                      fontWeight={500}
+                      sx={{ wordBreak: "break-word", whiteSpace: "pre-line" }}
+                    >
                       • {note.content}
                     </Typography>
                     <Typography variant="caption" color="textSecondary">
