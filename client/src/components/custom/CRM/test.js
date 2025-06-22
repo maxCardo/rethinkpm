@@ -319,16 +319,24 @@ const LeaseTest = ({
                 </Button>
               </div>
             </div>
-            <Table
-              headers={TABLE_HEADERS}
-              list={updatedLeadsList}
-              withCheckboxSelection={false}
-              sticky={true}
-              tableWrapperStyle={{
-                height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
-                overflowY: "auto",
-              }}
-            />
+            {updatedLeadsList.length === 0 ? (
+              <div
+                style={{ textAlign: "center", padding: "2rem", color: "#888" }}
+              >
+                No data available.
+              </div>
+            ) : (
+              <Table
+                headers={TABLE_HEADERS}
+                list={updatedLeadsList}
+                withCheckboxSelection={false}
+                sticky={true}
+                tableWrapperStyle={{
+                  height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
+                  overflowY: "auto",
+                }}
+              />
+            )}
             <LeaseModal
               isModalOpen={isModalOpen}
               closeModal={() => {
