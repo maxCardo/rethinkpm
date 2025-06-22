@@ -55,9 +55,17 @@ const leaseLeadSchema = new mongoose.Schema({
     type: Date,
     default: new Date(),
   },
+  updateDate: {
+    type: Date,
+    default: new Date(),
+  },
   leadDate: {
     type: Date,
     default: new Date(),
+  },
+  isEnabled: {
+    type: Boolean,
+    default: true,
   },
   lastContact: Date,
   nextAction: Date,
