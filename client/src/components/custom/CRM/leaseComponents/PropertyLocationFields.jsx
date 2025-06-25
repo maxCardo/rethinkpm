@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import TextField from "../../profile/addLead/InputFields/TextField";
 import { Typography, Divider } from "@mui/material";
 

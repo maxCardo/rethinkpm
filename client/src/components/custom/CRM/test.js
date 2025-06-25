@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa";
 import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
 import LeaseModal from "./leaseComponents/LeaseModal";
+import LeaseConfirmModal from "./leaseComponents/LeaseConfirmModal";
 import axios from "axios";
 import MaterialAlert from "../../core/MaterialAlert";
 import LeadDetails from "./leaseComponents/LeadDetails";
@@ -358,56 +359,13 @@ const LeaseTest = ({
               severity="success"
               duration={3000}
             />
-            {/* Delete Confirmation Dialog */}
-            {deleteConfirm.open && (
-              <div
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  width: "100vw",
-                  height: "100vh",
-                  background: "rgba(0,0,0,0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  zIndex: 9999,
-                }}
-              >
-                <div
-                  style={{
-                    background: "#fff",
-                    padding: 32,
-                    borderRadius: 8,
-                    minWidth: 320,
-                    boxShadow: "0 2px 16px rgba(0,0,0,0.2)",
-                    textAlign: "center",
-                  }}
-                >
-                  <p style={{ fontSize: 18, marginBottom: 24 }}>
-                    Are you sure you want to delete this lead?
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      gap: 16,
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={confirmDelete}
-                    >
-                      Delete
-                    </Button>
-                    <Button variant="outlined" onClick={cancelDelete}>
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
+            <LeaseConfirmModal
+              open={deleteConfirm.open}
+              title="Confirm Delete"
+              message="Are you sure you want to delete this lead?"
+              onConfirm={confirmDelete}
+              onCancel={cancelDelete}
+            />
           </>
         )}
 
