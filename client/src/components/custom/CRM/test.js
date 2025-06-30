@@ -354,6 +354,7 @@ const LeaseTest = ({
                 list={updatedLeadsList}
                 withCheckboxSelection={false}
                 sticky={true}
+                focusedOnItem={selectedLeadItem}
                 tableWrapperStyle={{
                   height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
                   overflowY: "auto",

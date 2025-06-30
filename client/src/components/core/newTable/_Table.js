@@ -28,6 +28,7 @@ const TableComp = ({
   setSelected,
   withCheckboxSelection = true,
   tableWrapperStyle,
+  focusedOnItem,
 }) => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState(_order || "asc");
@@ -117,7 +118,9 @@ const TableComp = ({
                         aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row._id || row.symbol || index}
-                        selected={isItemSelected}
+                        selected={
+                          isItemSelected || focusedOnItem._id === row._id
+                        }
                       >
                         {withCheckboxSelection && (
                           <TableCell padding="checkbox">
