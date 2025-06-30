@@ -12,6 +12,7 @@ router.get("/", async (req, res) => {
   console.log("calling leaselead with params:", req.query);
   try {
     const filters = { isEnabled: true };
+    const sortBy = { nextAction: -1 }; // -1 = descending, 1 = ascending
 
     // Handle field-based filtering
     if (req.query.field && req.query.value) {
@@ -30,7 +31,7 @@ router.get("/", async (req, res) => {
       ];
     }
 
-    let data = await leaseLead.find(filters);
+    let data = await leaseLead.find(filters).sort(sortBy);
 
     res.status(200).send(data);
   } catch (err) {
