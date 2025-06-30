@@ -239,7 +239,7 @@ const LeaseTest = ({
         }
 
         // Add field and value parameters if both provided
-        if (field && value) {
+        if (field && field !== settings.filterFields.all && value) {
           queryParams.append("field", field);
           queryParams.append("value", value);
         }

@@ -833,6 +833,14 @@
         "hot": "hot",
         "warm": "warm",
         "cold": "cold"
+      },
+      "filterFields": {
+        "all": "all",
+        "status": "status",
+        "leadTemperature": "leadTemperature",
+        "leadOwner": "leadOwner",
+        "nextAction": "nextAction",
+        "tourDate": "tourDate"
       }
     }
   }

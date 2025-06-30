@@ -4,13 +4,18 @@ import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 
 const LeaseTableFilters = ({ filterListByQuery, settings }) => {
   const [selectedField, setSelectedField] = useState({});
+  const [selectedValue, setSelectedValue] = useState(null);
   const [fieldValOptions, setFieldValOptions] = useState({});
   const [filters, setFilters] = useState({ search: "", field: "", value: "" });
 
   const FIELDS = [
     {
+      label: "All",
+      value: settings.filterFields.all,
+    },
+    {
       label: "Status",
-      value: "status",
+      value: settings.filterFields.status,
       valOptions: [
         {
           label: capitalizeFirstLetter(settings.statusOptions.new),
@@ -24,7 +29,7 @@ const LeaseTableFilters = ({ filterListByQuery, settings }) => {
     },
     {
       label: "Temperatures",
-      value: "leadTemperature",
+      value: settings.filterFields.leadTemperature,
       valOptions: [
         {
           label: capitalizeFirstLetter(settings.temperatureOptions.hot),
@@ -40,9 +45,17 @@ const LeaseTableFilters = ({ filterListByQuery, settings }) => {
         },
       ],
     },
-    { label: "Owner", value: "leadOwner", valOptions: [] },
-    { label: "Next Follow-Up", value: "nextAction", valOptions: [] },
-    { label: "Tour Date", value: "tourDate", valOptions: [] },
+    { label: "Owner", value: settings.filterFields.leadOwner, valOptions: [] },
+    {
+      label: "Next Action",
+      value: settings.filterFields.nextAction,
+      valOptions: [],
+    },
+    {
+      label: "Tour Date",
+      value: settings.filterFields.tourDate,
+      valOptions: [],
+    },
   ];
 
   const handleFieldChange = (field) => {
@@ -50,7 +63,14 @@ const LeaseTableFilters = ({ filterListByQuery, settings }) => {
   };
 
   useEffect(() => {
+    // if selected 'All' - show all (no field filter)
+    if (selectedField.value === settings.filterFields.all) {
+      handleFieldValChange("");
+    }
+
     setFieldValOptions(selectedField.valOptions);
+    // Reset selected value when field changes
+    setSelectedValue(null);
   }, [selectedField]);
 
   useEffect(() => {
@@ -58,10 +78,11 @@ const LeaseTableFilters = ({ filterListByQuery, settings }) => {
   }, [filters, filterListByQuery]);
 
   const handleFieldValChange = (fieldVal) => {
+    setSelectedValue(fieldVal);
     setFilters((prevFilters) => ({
       ...prevFilters,
       field: selectedField.value,
-      value: fieldVal.value,
+      value: fieldVal.value || "",
     }));
   };
 
@@ -99,9 +120,9 @@ const LeaseTableFilters = ({ filterListByQuery, settings }) => {
           <Select
             className="marketplace__filter-select"
             onChange={handleFieldValChange}
-            defaultValue="All"
+            value={selectedValue}
             options={fieldValOptions}
-            placeholder="Select Filter"
+            placeholder="Select Filter Value"
           />
         )}
       </div>
