@@ -2,13 +2,10 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 
-const LeaseTableFilters = ({
-  filterListByField,
-  filterListBySearch,
-  settings,
-}) => {
+const LeaseTableFilters = ({ filterListByQuery, settings }) => {
   const [selectedField, setSelectedField] = useState({});
   const [fieldValOptions, setFieldValOptions] = useState({});
+  const [filters, setFilters] = useState({ search: "", field: "", value: "" });
 
   const FIELDS = [
     {
@@ -56,12 +53,24 @@ const LeaseTableFilters = ({
     setFieldValOptions(selectedField.valOptions);
   }, [selectedField]);
 
+  useEffect(() => {
+    filterListByQuery(filters);
+  }, [filters, filterListByQuery]);
+
   const handleFieldValChange = (fieldVal) => {
-    filterListByField(selectedField.value, fieldVal.value);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      field: selectedField.value,
+      value: fieldVal.value,
+    }));
   };
 
   const handleInputChange = (expression) => {
-    filterListBySearch(expression);
+    // TODO: senitize expression
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      search: expression,
+    }));
   };
 
   return (

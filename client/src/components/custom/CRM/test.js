@@ -228,27 +228,38 @@ const LeaseTest = ({
     setUpdatedLeadsList(initLeadsList);
   }, [initLeadsList]);
 
-  const filterListByField = (field, fieldVal) => {
-    /* Filter from the inital array */
-    const fillteredList = initLeadsList.filter((item) => {
-      return item[field] === fieldVal;
-    });
-    setUpdatedLeadsList(fillteredList);
-  };
+  const filterListByQuery = React.useCallback(
+    async (filters) => {
+      const { search, field, value } = filters;
+      try {
+        let queryParams = new URLSearchParams();
+        // Add search parameter if provided
+        if (search && search.trim().length > 2) {
+          queryParams.append("search", search.trim());
+        }
 
-  const filterListBySearch = (expression) => {
-    const searchRegexp = new RegExp(expression, "i");
-    /* Filter from the inital array */
-    const fillteredList = initLeadsList.filter((item) => {
-      return (
-        searchRegexp.test(item.fullName) ||
-        searchRegexp.test(item.email) ||
-        searchRegexp.test(item.listingAddress)
-      );
-    });
+        // Add field and value parameters if both provided
+        if (field && value) {
+          queryParams.append("field", field);
+          queryParams.append("value", value);
+        }
 
-    setUpdatedLeadsList(fillteredList);
-  };
+        const queryString = queryParams.toString();
+        const url = `/api/crm/leaselead${queryString ? `?${queryString}` : ""}`;
+
+        console.log("Making filter request to:", url);
+
+        const response = await axios.get(url);
+
+        setUpdatedLeadsList(response.data);
+      } catch (err) {
+        console.error("Failed to filter leads:", err);
+        // Fallback to showing all leads if query fails
+        setUpdatedLeadsList(initLeadsList);
+      }
+    },
+    [initLeadsList]
+  );
 
   const handleEditLead = async (leadItem) => {
     setIsEditMode(true);
@@ -303,8 +314,7 @@ const LeaseTest = ({
           <>
             <div className="table-top flex flex-row my-4 justify-between items-center">
               <LeaseTableFilters
-                filterListByField={filterListByField}
-                filterListBySearch={filterListBySearch}
+                filterListByQuery={filterListByQuery}
                 settings={settings}
               />
               <div className="add-lead-btn px-2">

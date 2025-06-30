@@ -6,12 +6,32 @@ const router = express.Router();
 router.use(auth);
 
 // @route: Get api/crm/leaselead
-// @desc: get all leaseLead data with isEnabled: true
+// @desc: get all leaseLead data with isEnabled: true, supports search and field filtering
 // @ access: private
 router.get("/", async (req, res) => {
-  console.log("calling leaselead");
+  console.log("calling leaselead with params:", req.query);
   try {
-    const data = await leaseLead.find({ isEnabled: true });
+    const filters = { isEnabled: true };
+
+    // Handle field-based filtering
+    if (req.query.field && req.query.value) {
+      filters[req.query.field] = req.query.value;
+    }
+
+    // Handle search-based filtering
+    if (req.query.search) {
+      const { search } = req.query;
+      const orQuery = "$or";
+      filters[orQuery] = [
+        { fullName: { $regex: search, $options: "i" } },
+        { "email.address": { $regex: search, $options: "i" } },
+        { "phoneNumbers.number": { $regex: search, $options: "i" } },
+        { listingAddress: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    let data = await leaseLead.find(filters);
+
     res.status(200).send(data);
   } catch (err) {
     console.error(err);
