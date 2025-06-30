@@ -5,7 +5,7 @@ import axios from "axios";
 import MaterialAlert from "../../../core/MaterialAlert";
 import MaterialModal from "../../../../ui/MaterialModal";
 
-const LeaseModal = ({
+const LeaseLeadModal = ({
   isModalOpen,
   closeModal,
   getLeaseLeadData,
@@ -110,4 +110,4 @@ const LeaseModal = ({
   );
 };
 
-export default LeaseModal;
+export default LeaseLeadModal;

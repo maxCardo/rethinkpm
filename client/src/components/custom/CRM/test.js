@@ -17,7 +17,7 @@ import {
   FaEye,
 } from "react-icons/fa";
 import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
-import LeaseModal from "./leaseComponents/LeaseModal";
+import LeaseLeadModal from "./leaseComponents/LeaseLeadModal";
 import LeaseConfirmModal from "./leaseComponents/LeaseConfirmModal";
 import axios from "axios";
 import MaterialAlert from "../../core/MaterialAlert";
@@ -350,7 +350,7 @@ const LeaseTest = ({
                 _order={"desc"}
               />
             )}
-            <LeaseModal
+            <LeaseLeadModal
               isModalOpen={isModalOpen}
               closeModal={() => {
                 setIsModalOpen(false);
