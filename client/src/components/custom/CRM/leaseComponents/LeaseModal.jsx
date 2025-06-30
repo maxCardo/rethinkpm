@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { Modal, Box, Button, Divider, IconButton } from "@mui/material";
-import { AiOutlineClose } from "react-icons/ai";
+import { Button } from "@mui/material";
 import LeaseLeadForm from "./LeaseLeadForm";
 import axios from "axios";
 import MaterialAlert from "../../../core/MaterialAlert";
+import MaterialModal from "../../../../ui/MaterialModal";
 
 const LeaseModal = ({
   isModalOpen,
@@ -17,25 +17,6 @@ const LeaseModal = ({
   const [formError, setFormError] = useState("");
   const [successAlert, setSuccessAlert] = useState(false);
   const formRef = useRef();
-
-  const boxStyle = {
-    width: "50%",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-    borderWidth: "1px",
-    borderRadius: "4px",
-    height: "80%",
-    overflowY: "auto",
-  };
-
-  const modalStyle = {
-    zIndex: "999999",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
 
   // Validate email and phone on submit
   const validateForm = () => {
@@ -90,42 +71,34 @@ const LeaseModal = ({
 
   return (
     <>
-      <Modal open={isModalOpen} style={modalStyle}>
-        <Box sx={boxStyle}>
-          <div className="flex items-center justify-between mb-2">
-            <p className="leasing-modal__title text-3xl">
-              {!isEditMode ? "Add" : "Edit"} Lead
-            </p>
-            <IconButton aria-label="close" onClick={closeModal} size="large">
-              <AiOutlineClose size={24} />
-            </IconButton>
-          </div>
-          <Divider />
-          <div className="leasing-modal__content my-8">
-            <LeaseLeadForm
-              getFormData={(data) => setFormData(data)}
-              ref={formRef}
-              isEditMode={isEditMode}
-              selectedLeadItem={selectedLeadItem}
-              settings={settings}
-            />
-            {formError && (
-              <div className="mt-4 p-2 bg-red-100 text-red-700 rounded border border-red-300 text-center">
-                {formError}
-              </div>
-            )}
-          </div>
-          <Divider />
-          <div className="lesing-modal__actions flex justify-end mt-8">
-            <Button color="error" onClick={() => closeModal()} className="mx-2">
+      <MaterialModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={`${!isEditMode ? "Add" : "Edit"} Lead`}
+        actions={
+          <>
+            <Button color="error" onClick={closeModal} className="mx-2">
               Cancel
             </Button>
             <Button variant="contained" color="primary" onClick={saveData}>
               Save
             </Button>
+          </>
+        }
+      >
+        <LeaseLeadForm
+          getFormData={(data) => setFormData(data)}
+          ref={formRef}
+          isEditMode={isEditMode}
+          selectedLeadItem={selectedLeadItem}
+          settings={settings}
+        />
+        {formError && (
+          <div className="mt-4 p-2 bg-red-100 text-red-700 rounded border border-red-300 text-center">
+            {formError}
           </div>
-        </Box>
-      </Modal>
+        )}
+      </MaterialModal>
       <MaterialAlert
         open={successAlert}
         onClose={() => setSuccessAlert(false)}
