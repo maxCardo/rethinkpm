@@ -45,17 +45,21 @@ const LeaseTableFilters = ({ filterListByQuery, settings }) => {
         },
       ],
     },
-    { label: "Owner", value: settings.filterFields.leadOwner, valOptions: [] },
     {
-      label: "Next Action",
-      value: settings.filterFields.nextAction,
-      valOptions: [],
+      label: "Owner",
+      value: settings.filterFields.leadOwner,
+      valOptions: [{ label: "System", value: "System" }],
     },
-    {
-      label: "Tour Date",
-      value: settings.filterFields.tourDate,
-      valOptions: [],
-    },
+    // {
+    //   label: "Next Action",
+    //   value: settings.filterFields.nextAction,
+    //   valOptions: [],
+    // },
+    // {
+    //   label: "Tour Date",
+    //   value: settings.filterFields.tourDate,
+    //   valOptions: [],
+    // },
   ];
 
   const handleFieldChange = (field) => {
