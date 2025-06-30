@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Typography, Divider, Box, Chip, Button } from "@mui/material";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 import LeadNoteModal from "./LeadNoteModal";
@@ -13,7 +13,7 @@ const LeadDetails = ({ selectedLeadItem, onGoToTourTab }) => {
   const [notes, setNotes] = useState(selectedLeadItem.notes || []);
   const [alertOpen, setAlertOpen] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setNotes(selectedLeadItem.notes || []);
   }, [selectedLeadItem]);
 

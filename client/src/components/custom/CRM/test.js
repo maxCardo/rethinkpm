@@ -23,6 +23,7 @@ import axios from "axios";
 import MaterialAlert from "../../core/MaterialAlert";
 import LeadDetails from "./leaseComponents/LeadDetails";
 import LeadTourTracking from "./leaseComponents/LeadTourTracking";
+import MaterialModal from "../../../ui/MaterialModal";
 
 const LeaseTest = ({
   getLeaseLeadData,
@@ -47,12 +48,12 @@ const LeaseTest = ({
   });
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const NAVBAR_HEIGHT = 80;
 
   /* Tabs option */
   const DYNAMIC_TABS = [
     { key: TAB_KEYS.Table, title: "Table View" },
-    { key: TAB_KEYS.Details, title: "Lead Details" },
     { key: TAB_KEYS.Tour, title: "Tour Tracking" },
   ];
 
@@ -292,9 +293,18 @@ const LeaseTest = ({
 
   const handleWatchLeadDetails = (leadItem) => {
     console.log("SELECTED ITEM => ", leadItem);
-
-    setTabKey(TAB_KEYS.Details);
     setSelectedLeadItem(leadItem);
+    setIsDetailsModalOpen(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setIsDetailsModalOpen(false);
+    setSelectedLeadItem({});
+  };
+
+  const handleGoToTourTab = () => {
+    setIsDetailsModalOpen(false);
+    setTabKey(TAB_KEYS.Tour);
   };
 
   return loading ? (
@@ -379,18 +389,25 @@ const LeaseTest = ({
           </>
         )}
 
-        {/* Lease details */}
-        {tabKey === TAB_KEYS.Details && (
-          <LeadDetails
-            selectedLeadItem={selectedLeadItem}
-            onGoToTourTab={() => setTabKey(TAB_KEYS.Tour)}
-          />
-        )}
-
         {/* Lease Tour Tracking (info) */}
         {tabKey === TAB_KEYS.Tour && (
           <LeadTourTracking selectedLeadItem={selectedLeadItem} />
         )}
+
+        {/* Lead Details Modal */}
+        <MaterialModal
+          isOpen={isDetailsModalOpen}
+          onClose={handleCloseDetailsModal}
+          title="Lead Details"
+          width="90%"
+          height="90%"
+          showActions={false}
+        >
+          <LeadDetails
+            selectedLeadItem={selectedLeadItem}
+            onGoToTourTab={handleGoToTourTab}
+          />
+        </MaterialModal>
       </div>
     </>
   );
