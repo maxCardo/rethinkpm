@@ -193,18 +193,20 @@ const LeaseTest = ({
       render: (item) => (
         <div className="flex flex-row w-100">
           <FaPencilAlt
+            className="ml-3"
             onClick={() => handleEditLead(item)}
             style={{ cursor: "pointer" }}
             title="Edit"
           />
-          <FaTrashAlt
+          {/* <FaTrashAlt
             className="mx-2"
             onClick={() => handleDeleteLead(item)}
             style={{ cursor: "pointer" }}
             title="Delete"
-          />
+          /> */}
           <FaEye
             title="Details"
+            className="ml-3"
             style={{ cursor: "pointer" }}
             onClick={() => handleWatchLeadDetails(item)}
           />
