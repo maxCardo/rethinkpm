@@ -66,10 +66,16 @@ const LeaseTableFilters = ({ filterListByQuery, settings }) => {
   };
 
   const handleInputChange = (expression) => {
-    // TODO: senitize expression
+    // Sanitize the input expression
+    const sanitizedExpression = expression
+      .trim() // Remove leading/trailing whitespace
+      .replace(/[<>]/g, "") // Remove potential HTML tags
+      .replace(/['"]/g, "") // Remove quotes that could break queries
+      .substring(0, 100); // Limit length to prevent overly long searches
+
     setFilters((prevFilters) => ({
       ...prevFilters,
-      search: expression,
+      search: sanitizedExpression,
     }));
   };
 
