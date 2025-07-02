@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import LeaseLeadForm from "./LeaseLeadForm";
 import axios from "axios";
 import MaterialAlert from "../../../core/MaterialAlert";
-import MaterialModal from "../../../../ui/MaterialModal";
+import MaterialModal from "../../../ui/MaterialModal";
 
 const LeaseLeadModal = ({
   isModalOpen,

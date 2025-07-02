@@ -23,7 +23,7 @@ import axios from "axios";
 import MaterialAlert from "../../core/MaterialAlert";
 import LeadDetails from "./leaseComponents/LeadDetails";
 import LeadTourTracking from "./leaseComponents/LeadTourTracking";
-import MaterialModal from "../../../ui/MaterialModal";
+import MaterialModal from "../../ui/MaterialModal";
 
 const LeaseTest = ({
   getLeaseLeadData,
