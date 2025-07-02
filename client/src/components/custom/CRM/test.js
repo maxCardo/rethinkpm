@@ -16,13 +16,13 @@ import {
   FaTrashAlt,
   FaEye,
 } from "react-icons/fa";
-import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
-import LeaseLeadModal from "./leaseComponents/LeaseLeadModal";
-import LeaseConfirmModal from "./leaseComponents/LeaseConfirmModal";
+import LeaseTableFilters from "./comps/LeaseTableFilters";
+import LeaseLeadModal from "./comps/LeaseLeadModal";
+import LeaseConfirmModal from "./comps/LeaseConfirmModal";
 import axios from "axios";
 import MaterialAlert from "../../ui/MaterialAlert";
-import LeadDetails from "./leaseComponents/LeadDetails";
-import LeadTourTracking from "./leaseComponents/LeadTourTracking";
+import LeadDetails from "./comps/LeadDetails";
+import LeadTourTracking from "./comps/LeadTourTracking";
 import MaterialModal from "../../ui/MaterialModal";
 
 const LeaseTest = ({
