@@ -3,7 +3,7 @@ import { Card, Typography, Divider, Box, Chip, Button } from "@mui/material";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 import LeadNoteModal from "./LeadNoteModal";
 import axios from "axios";
-import MaterialAlert from "../../../core/MaterialAlert";
+import MaterialAlert from "../../../ui/MaterialAlert";
 
 const LeadDetails = ({ selectedLeadItem, onGoToTourTab }) => {
   const [noteModalOpen, setNoteModalOpen] = useState(false);
