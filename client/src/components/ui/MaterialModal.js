@@ -30,9 +30,15 @@ const MaterialModal = ({
     alignItems: "center",
     justifyContent: "center",
   };
+  const handleKeyDown = (event) => {
+    // Close modal on 'esc' keyboard
+    if (event.key === "Escape") {
+      onClose();
+    }
+  };
 
   return (
-    <Modal open={isOpen} style={modalStyle}>
+    <Modal open={isOpen} style={modalStyle} onKeyDown={handleKeyDown}>
       <Box sx={boxStyle}>
         {/* Title && Close Button */}
         {(title || showCloseButton) && (
