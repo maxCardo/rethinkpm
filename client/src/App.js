@@ -31,8 +31,7 @@ import TestVerticalTable from "./components/custom/TestVerticalTable";
 import PropertyRecords from "./components/custom/PropertyRecords/PropertyRecords";
 import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
 import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
-import LeaseLeadRecords from "./components/custom/CRM/leaseLead";
-import LeaseTest from "./components/custom/CRM/test";
+import LeaseLeadRecords from "./components/custom/CRM/LeaseLeadRecords";
 
 const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
@@ -197,15 +196,7 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
             path="/crm/leaselead"
             element={
               <PrivateRoute>
-                <LeaseLeadRecords />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/crm/test"
-            element={
-              <PrivateRoute>
-                <LeaseTest
+                <LeaseLeadRecords
                   settings={routeSettings.leaseLead}
                   isNavbarShown={isNavbarShown}
                 />
