@@ -24,8 +24,10 @@ import MaterialAlert from "../../ui/MaterialAlert";
 import LeadDetails from "./leaseComponents/LeadDetails";
 import LeadTourTracking from "./leaseComponents/LeadTourTracking";
 import MaterialModal from "../../ui/MaterialModal";
+import { capitalizeFirstLetter } from "../../../util/commonFunctions";
+import dayjs from "dayjs";
 
-const LeaseTest = ({
+const LeaseLeadRecords = ({
   getLeaseLeadData,
   leaseLeads: { list, loading },
   settings,
@@ -64,34 +66,12 @@ const LeaseTest = ({
       label: "Name",
     },
     {
-      reactComponent: true,
-      accessor: "email",
-      label: "Email",
-      render: (item) => (
-        <>
-          {item.email?.length > 0
-            ? item.email.map((item, idx) => <div key={idx}>{item.address}</div>)
-            : ""}
-        </>
-      ),
-    },
-    {
-      reactComponent: true,
-      accessor: "phoneNumbers",
-      label: "Phone",
-      render: (item) => (
-        <>
-          {item.phoneNumbers?.length > 0
-            ? item.phoneNumbers.map((phone, idx) => (
-                <div key={idx}>{phone.number}</div>
-              ))
-            : ""}
-        </>
-      ),
-    },
-    {
       accessor: "listingAddress",
       label: "Address",
+    },
+    {
+      accessor: "leadSource",
+      label: "Lead Source",
     },
     {
       reactComponent: true,
@@ -101,11 +81,7 @@ const LeaseTest = ({
         <>
           <Chip
             variant="outlined"
-            label={
-              item.status
-                ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
-                : ""
-            }
+            label={item.status ? capitalizeFirstLetter(item.status) : ""}
             color={
               item.status === settings.statusOptions.new ? "success" : "error"
             }
@@ -120,54 +96,21 @@ const LeaseTest = ({
     {
       reactComponent: true,
       accessor: "leadTemperature",
-      label: "Temp",
+      label: "Temperature",
       render: (item) => (
         <>
-          {/* Lead Temperatures: Hot, Warm, Cold */}
-          {item.leadTemperature === settings.temperatureOptions.hot && (
-            <FaFire color="orangered" size={"1.5rem"} title="hot-lead" />
-          )}
-          {item.leadTemperature === settings.temperatureOptions.warm && (
-            <FaCloudSun color="orange" size={"1.5rem"} title="warm-lead" />
-          )}
-          {item.leadTemperature === settings.temperatureOptions.cold && (
-            <FaSnowflake
-              color="lightskyblue"
-              size={"1.5rem"}
-              title="cold-lead"
-            />
-          )}
+          <td>{capitalizeFirstLetter(item.leadTemperature)}</td>
         </>
       ),
     },
-    // {
-    //   accessor: "createDate",
-    //   label: "Created",
-    //   reactComponent: true,
-    //   render: (item) => {
-    //     if (!item.createDate) return "";
-    //     const date = new Date(item.createDate);
-    //     return isNaN(date)
-    //       ? ""
-    //       : `${(date.getMonth() + 1).toString().padStart(2, "0")}/${date
-    //           .getDate()
-    //           .toString()
-    //           .padStart(2, "0")}/${date.getFullYear()}`;
-    //   },
-    // },
     {
       accessor: "nextAction",
       label: "Next Action",
       reactComponent: true,
       render: (item) => {
         if (!item.nextAction) return "";
-        const date = new Date(item.nextAction);
-        return isNaN(date)
-          ? ""
-          : `${(date.getMonth() + 1).toString().padStart(2, "0")}/${date
-              .getDate()
-              .toString()
-              .padStart(2, "0")}/${date.getFullYear()}`;
+        const date = dayjs(item.nextAction);
+        return date.isValid() ? date.format("MM/DD/YYYY") : "";
       },
     },
     {
@@ -176,13 +119,8 @@ const LeaseTest = ({
       reactComponent: true,
       render: (item) => {
         if (!item.lastContact) return "";
-        const date = new Date(item.lastContact);
-        return isNaN(date)
-          ? ""
-          : `${(date.getMonth() + 1).toString().padStart(2, "0")}/${date
-              .getDate()
-              .toString()
-              .padStart(2, "0")}/${date.getFullYear()}`;
+        const date = dayjs(item.lastContact);
+        return date.isValid() ? date.format("MM/DD/YYYY") : "";
       },
     },
     {
@@ -420,4 +358,4 @@ const mapStateToProps = (state) => ({
   leaseLeads: state.leaseLeads,
 });
 
-export default connect(mapStateToProps, { getLeaseLeadData })(LeaseTest);
+export default connect(mapStateToProps, { getLeaseLeadData })(LeaseLeadRecords);
