@@ -5,9 +5,9 @@ const LeadNotes = ({ selectedLeadItem }) => {
   return (
     <>
       {/* Title */}
-      <div className="lead-notes_title text-2xl mb-3">Lead Notes</div>
+      <div className="lead-notes__title text-2xl mb-3">Lead Notes</div>
       <div
-        className="lead-notes_box h-full w-full border border-gray-600 bg-gray-50 rounded-md p-3 space-y-3 shadow-sm relative"
+        className="lead-notes__box h-full w-full border border-gray-600 bg-gray-50 rounded-md p-3 space-y-3 shadow-sm relative"
         style={{ maxHeight: "100%", overflowY: "auto" }}
       >
         {/* List Of Notes */}
