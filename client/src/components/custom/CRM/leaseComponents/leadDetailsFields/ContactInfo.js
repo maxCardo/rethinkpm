@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import CustomInput from "../../../../ui/CustomInput/CustomInput";
+import MaterialCheckbox from "../../../../ui/MaterialCheckbox";
 import { FaPlus } from "react-icons/fa";
 
 const ContactInfo = ({
@@ -20,7 +21,18 @@ const ContactInfo = ({
 
   // Handle input changes
   const handleInputChange = (field, value) => {
-    setContactInfoData((prevData) => ({ ...prevData, [field]: value }));
+    setContactInfoData((prevData) => {
+      const updatedData = { ...prevData, [field]: value };
+
+      // Automatically update fullName when firstName or lastName changes
+      if (field === "firstName" || field === "lastName") {
+        const firstName = field === "firstName" ? value : prevData.firstName;
+        const lastName = field === "lastName" ? value : prevData.lastName;
+        updatedData.fullName = `${firstName || ""} ${lastName || ""}`.trim();
+      }
+
+      return updatedData;
+    });
   };
 
   const handleEmailChange = (index, value) => {
@@ -58,12 +70,49 @@ const ContactInfo = ({
     }));
   };
 
+  // Handle email primary checkbox change
+  const handleEmailPrimaryChange = (index, checked) => {
+    setContactInfoData((prevData) => {
+      const updatedEmail = [...prevData.email];
+      updatedEmail[index] = { ...updatedEmail[index], isPrimary: checked };
+      return { ...prevData, email: updatedEmail };
+    });
+  };
+
+  // Handle phone primary checkbox change
+  const handlePhonePrimaryChange = (index, checked) => {
+    setContactInfoData((prevData) => {
+      const updatedPhones = [...prevData.phoneNumbers];
+      updatedPhones[index] = { ...updatedPhones[index], isPrimary: checked };
+      return { ...prevData, phoneNumbers: updatedPhones };
+    });
+  };
+
   // Send contactInfoData to parent when it changes
   useEffect(() => {
     if (onContactInfoChange) {
       onContactInfoChange(contactInfoData);
     }
   }, [contactInfoData, onContactInfoChange]);
+
+  // Filter out empty fields when not in edit mode
+  const getDisplayEmails = () => {
+    if (isEditMode) {
+      return contactInfoData.email || [];
+    }
+    return (contactInfoData.email || []).filter(
+      (em) => em.address && em.address.trim() !== ""
+    );
+  };
+
+  const getDisplayPhoneNumbers = () => {
+    if (isEditMode) {
+      return contactInfoData.phoneNumbers || [];
+    }
+    return (contactInfoData.phoneNumbers || []).filter(
+      (ph) => ph.number && ph.number.trim() !== ""
+    );
+  };
 
   return (
     <div className="contact-info__wrapper">
@@ -91,45 +140,121 @@ const ContactInfo = ({
         />
       </div>
       {/* Email */}
-      {Array.isArray(contactInfoData.email) &&
-        contactInfoData.email.length > 0 && (
-          <div className="flex flex-col w-full">
-            {contactInfoData.email.map((em, idx) => (
-              <CustomInput
-                key={`email-${idx}`}
-                inputId={`email-${idx}`}
-                label={`Email${
-                  contactInfoData.email.length > 1 ? ` #${idx + 1}` : ""
-                }`}
-                inputStyle={{ width: "100%" }}
-                value={em.address}
-                readonly={!isEditMode}
-                onChange={(e) => handleEmailChange(idx, e.target.value)}
-                appendIcon={isEditMode && idx === 0 ? <FaPlus /> : null}
-                onAppendClick={idx === 0 ? handleAddEmail : null}
-              />
-            ))}
-          </div>
-        )}
+      {Array.isArray(getDisplayEmails()) && getDisplayEmails().length > 0 && (
+        <div className="flex flex-col w-full">
+          {getDisplayEmails().map((em, idx) => {
+            // Get the original index for edit mode operations
+            const originalIndex = isEditMode
+              ? idx
+              : contactInfoData.email.findIndex((email) => email === em);
+            return (
+              <div
+                key={`email-container-${originalIndex}`}
+                className="flex flex-row items-end gap-3 w-full mb-2"
+              >
+                <div className="flex-1">
+                  <CustomInput
+                    inputId={`email-${originalIndex}`}
+                    label={`Email${
+                      getDisplayEmails().length > 1 ? ` #${idx + 1}` : ""
+                    }`}
+                    inputStyle={{ width: "100%" }}
+                    value={em.address}
+                    readonly={!isEditMode}
+                    onChange={(e) =>
+                      handleEmailChange(originalIndex, e.target.value)
+                    }
+                    appendIcon={
+                      isEditMode && idx === getDisplayEmails().length - 1 ? (
+                        <FaPlus />
+                      ) : null
+                    }
+                    onAppendClick={
+                      idx === getDisplayEmails().length - 1
+                        ? handleAddEmail
+                        : null
+                    }
+                  />
+                </div>
+                {isEditMode && (
+                  <div className="flex-shrink-0">
+                    <MaterialCheckbox
+                      label="Primary"
+                      checked={em.isPrimary || false}
+                      onChange={(e) =>
+                        handleEmailPrimaryChange(
+                          originalIndex,
+                          e.target.checked
+                        )
+                      }
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
       {/* Phone Numbers */}
-      {Array.isArray(contactInfoData.phoneNumbers) &&
-        contactInfoData.phoneNumbers.length > 0 && (
+      {Array.isArray(getDisplayPhoneNumbers()) &&
+        getDisplayPhoneNumbers().length > 0 && (
           <div className="flex flex-col w-full mb-2">
-            {contactInfoData.phoneNumbers.map((ph, idx) => (
-              <CustomInput
-                key={`phone-${idx}`}
-                inputId={`phone-${idx}`}
-                label={`Phone${
-                  contactInfoData.phoneNumbers.length > 1 ? ` #${idx + 1}` : ""
-                }`}
-                inputStyle={{ width: "100%" }}
-                value={ph.number}
-                readonly={!isEditMode}
-                onChange={(e) => handlePhoneChange(idx, e.target.value)}
-                appendIcon={isEditMode && idx === 0 ? <FaPlus /> : null}
-                onAppendClick={idx === 0 ? handleAddPhone : null}
-              />
-            ))}
+            {getDisplayPhoneNumbers().map((ph, idx) => {
+              // Get the original index for edit mode operations
+              const originalIndex = isEditMode
+                ? idx
+                : contactInfoData.phoneNumbers.findIndex(
+                    (phone) => phone === ph
+                  );
+              return (
+                <div
+                  key={`phone-container-${originalIndex}`}
+                  className="flex flex-row items-end gap-3 w-full mb-2"
+                >
+                  <div className="flex-1">
+                    <CustomInput
+                      inputId={`phone-${originalIndex}`}
+                      label={`Phone${
+                        getDisplayPhoneNumbers().length > 1
+                          ? ` #${idx + 1}`
+                          : ""
+                      }`}
+                      inputStyle={{ width: "100%" }}
+                      value={ph.number}
+                      readonly={!isEditMode}
+                      onChange={(e) =>
+                        handlePhoneChange(originalIndex, e.target.value)
+                      }
+                      appendIcon={
+                        isEditMode &&
+                        idx === getDisplayPhoneNumbers().length - 1 ? (
+                          <FaPlus />
+                        ) : null
+                      }
+                      onAppendClick={
+                        idx === getDisplayPhoneNumbers().length - 1
+                          ? handleAddPhone
+                          : null
+                      }
+                    />
+                  </div>
+                  {isEditMode && (
+                    <div className="flex-shrink-0">
+                      <MaterialCheckbox
+                        label="Primary"
+                        checked={ph.isPrimary || false}
+                        onChange={(e) =>
+                          handlePhonePrimaryChange(
+                            originalIndex,
+                            e.target.checked
+                          )
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
     </div>
