@@ -36,11 +36,6 @@ const LeadDetailsTest = ({ selectedLeadItem, onLeadUpdated }) => {
         Object.keys(contactInfoData).length > 0 ? contactInfoData : {}
       );
 
-      console.log("Original lead item:", selectedLeadItem);
-      console.log("Lead info changes:", leadInfoData);
-      console.log("Contact info changes:", contactInfoData);
-      console.log("Final merged data being sent:", updatedLead);
-
       // Update lead
       const response = await axios.put(
         `/api/crm/leaselead/${selectedLeadItem._id}`,
