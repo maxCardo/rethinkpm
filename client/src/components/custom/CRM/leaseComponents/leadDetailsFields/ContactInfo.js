@@ -1,6 +1,6 @@
 import CustomInput from "../../../../ui/CustomInput/CustomInput";
 
-const ContactInfo = ({ selectedLeadItem }) => {
+const ContactInfo = ({ selectedLeadItem, isEditMode = false }) => {
   return (
     <div className="contact-info__wrapper">
       <div className="contact-info__title text-2xl mb-3">
@@ -13,7 +13,7 @@ const ContactInfo = ({ selectedLeadItem }) => {
           label={"First Name"}
           inputStyle={{ width: "20vw" }}
           value={selectedLeadItem.firstName}
-          readonly={true}
+          readonly={!isEditMode}
         />
         {/* Last Name */}
         <CustomInput
@@ -21,7 +21,7 @@ const ContactInfo = ({ selectedLeadItem }) => {
           label={"Last Name"}
           inputStyle={{ width: "20vw" }}
           value={selectedLeadItem.lastName}
-          readonly={true}
+          readonly={!isEditMode}
         />
       </div>
       {/* Email */}
@@ -37,7 +37,7 @@ const ContactInfo = ({ selectedLeadItem }) => {
                 }`}
                 inputStyle={{ width: "100%" }}
                 value={em.address}
-                readonly={true}
+                readonly={!isEditMode}
               />
             ))}
           </div>
@@ -55,7 +55,7 @@ const ContactInfo = ({ selectedLeadItem }) => {
                 }`}
                 inputStyle={{ width: "100%" }}
                 value={ph.number}
-                readonly={true}
+                readonly={!isEditMode}
               />
             ))}
           </div>

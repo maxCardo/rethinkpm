@@ -1,8 +1,7 @@
 import CustomInput from "../../../../ui/CustomInput/CustomInput";
-import CustomReactSelect from "../../../../ui/CustomReactSelect";
 import { capitalizeFirstLetter } from "../../../../../util/commonFunctions";
 
-const LeadNextAction = ({ selectedLeadItem }) => {
+const LeadNextAction = ({ selectedLeadItem, isEditMode = false }) => {
   const actionTypesValues = [
     "contact",
     "scheduleTour",
@@ -14,18 +13,6 @@ const LeadNextAction = ({ selectedLeadItem }) => {
     label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
     value,
   }));
-  const contactByValues = ["call", "email", "sms", ""];
-
-  const contactByOptions = contactByValues.map((value) => ({
-    label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
-    value,
-  }));
-
-  const nextAction = {
-    actionDate: new Date(),
-    actionType: "contact",
-    contactBy: "",
-  };
 
   return (
     <div className="lead-next-action__wrapper">
@@ -39,7 +26,7 @@ const LeadNextAction = ({ selectedLeadItem }) => {
           inputId={"nextActionDate"}
           label={"Next Action Date"}
           inputStyle={{ width: "20vw" }}
-          value={new Date(nextAction.actionDate).toLocaleString()}
+          value={new Date(selectedLeadItem.nextAction).toLocaleString()}
           readonly={true}
         />
         {/* Next Action Type */}
@@ -48,8 +35,7 @@ const LeadNextAction = ({ selectedLeadItem }) => {
             inputId={"nextActionType"}
             label={"Next Action Type"}
             inputStyle={{ width: "20vw" }}
-            // value={new Date(nextAction.actionDate).toLocaleString()}
-            placeholder={capitalizeFirstLetter(nextAction.actionType)}
+            placeholder={capitalizeFirstLetter("contact")}
             readonly={true}
           />
         </div>

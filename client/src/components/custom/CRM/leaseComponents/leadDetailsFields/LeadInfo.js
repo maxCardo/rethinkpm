@@ -3,7 +3,7 @@ import { capitalizeFirstLetter } from "../../../../../util/commonFunctions";
 import { Chip } from "@mui/material";
 import CustomInput from "../../../../ui/CustomInput/CustomInput";
 
-const LeadInfo = ({ selectedLeadItem }) => {
+const LeadInfo = ({ selectedLeadItem, isEditMode = false }) => {
   const statusValues = [
     "new",
     "inProgress",
@@ -38,7 +38,7 @@ const LeadInfo = ({ selectedLeadItem }) => {
               label={"Status"}
               value={selectedLeadItem.status}
               placeholder={capitalizeFirstLetter(selectedLeadItem.status)}
-              isDisabled={true}
+              isDisabled={!isEditMode}
             />
           </div>
           <div
@@ -67,7 +67,7 @@ const LeadInfo = ({ selectedLeadItem }) => {
             placeholder={capitalizeFirstLetter(
               selectedLeadItem.leadTemperature
             )}
-            isDisabled={true}
+            isDisabled={!isEditMode}
           />
         </div>
         {/* Lead Source */}
