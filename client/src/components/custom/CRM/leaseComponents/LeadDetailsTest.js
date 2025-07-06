@@ -18,7 +18,7 @@ const LeadDetailsTest = ({ selectedLeadItem }) => {
         </div>
       </div>
       {/* Row 2 */}
-      <div className="second-row flex w-full gap-5">
+      <div className="second-row mt-5 flex w-full gap-5">
         {/* Lead Info */}
         <div className="lead-info flex-1/2">
           <LeadInfo selectedLeadItem={selectedLeadItem} />
