@@ -1,30 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { capitalizeFirstLetter } from "../../../../../util/commonFunctions";
 import { AiOutlinePlus } from "react-icons/ai";
-import { Button } from "@mui/material";
+import { Button, Snackbar, Alert } from "@mui/material";
 import MaterialModal from "../../../../ui/MaterialModal";
+import axios from "axios";
 
 const LeadNotes = ({ selectedLeadItem }) => {
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
-  const [newNote, setNewNote] = useState("");
+  const [leadNotesList, setLeadNotesList] = useState([]);
+  const [newNote, setNewNote] = useState({ type: "note", content: "" });
+  const [isSaving, setIsSaving] = useState(false);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+
+  useEffect(() => {
+    setLeadNotesList(selectedLeadItem.notes || []);
+  }, [selectedLeadItem.notes]);
 
   const handleAddNote = () => {
     setIsAddNoteModalOpen(true);
   };
 
-  const handleSaveNote = () => {
-    // Add logic to save the note here
-    console.log("New note:", newNote);
-    setNewNote("");
-    setIsAddNoteModalOpen(false);
+  const handleSaveNote = async () => {
+    try {
+      setIsSaving(true);
+      const response = await axios.patch(
+        `/api/crm/leaselead/${selectedLeadItem._id}/notes`,
+        {
+          content: newNote.content,
+          type: "note",
+        }
+      );
+
+      if (response.status === 200) {
+        const updatedLead = response.data;
+        console.log("Note added successfully:", updatedLead);
+        setLeadNotesList(updatedLead.notes);
+        setNewNote({ type: "note", content: "" });
+        setIsAddNoteModalOpen(false);
+        setShowSuccessSnackbar(true);
+
+        // Scroll to bottom of notes box
+        setTimeout(() => {
+          const notesBox = document.querySelector(".lead-notes__box");
+          if (notesBox) {
+            notesBox.scrollTop = notesBox.scrollHeight - 600;
+          }
+        }, 100);
+      } else {
+        console.error("Failed to add note:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error adding note:", error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancelNote = () => {
-    setNewNote("");
+    setNewNote({ type: "", content: "" });
     setIsAddNoteModalOpen(false);
   };
   return (
-    <div className="lead-notes__wrapper flex flex-col h-full">
+    <div
+      className="lead-notes__wrapper flex flex-col h-full"
+      style={{ maxHeight: "50vh" }}
+    >
       {/* Title */}
       <div className="lead-notes__title text-2xl mb-3">Lead Notes</div>
       <div
@@ -32,9 +72,8 @@ const LeadNotes = ({ selectedLeadItem }) => {
         style={{ maxHeight: "100%", overflowY: "auto" }}
       >
         {/* List Of Notes */}
-        {Array.isArray(selectedLeadItem.notes) &&
-        selectedLeadItem.notes.length > 0 ? (
-          selectedLeadItem.notes.map((note, idx) => (
+        {Array.isArray(leadNotesList) && leadNotesList.length > 0 ? (
+          leadNotesList.map((note, idx) => (
             <div
               key={note._id || idx}
               className="p-3 bg-white rounded shadow border border-gray-200"
@@ -57,7 +96,7 @@ const LeadNotes = ({ selectedLeadItem }) => {
         )}
         {/* Add Note Button */}
         <button
-          className="absolute bottom-3 right-5 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12"
+          className="sticky bottom-0 left-130 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10"
           style={{ borderRadius: "9999px" }}
           title="Add Note"
           onClick={handleAddNote}
@@ -81,22 +120,38 @@ const LeadNotes = ({ selectedLeadItem }) => {
             <Button
               onClick={handleSaveNote}
               variant="contained"
-              disabled={!newNote.trim()}
+              disabled={!newNote.content.trim() || isSaving}
             >
-              Save Note
+              {isSaving ? "Saving..." : "Save Note"}
             </Button>
           </div>
         }
       >
         <textarea
           rows={4}
-          value={newNote}
-          onChange={(e) => setNewNote(e.target.value)}
+          value={newNote.content}
+          onChange={(e) => setNewNote({ ...newNote, content: e.target.value })}
           placeholder="Enter your note here..."
           className="form-control w-full"
           style={{ resize: "vertical", minHeight: "100px" }}
         />
       </MaterialModal>
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={showSuccessSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccessSnackbar(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setShowSuccessSnackbar(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Note added successfully!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
