@@ -1,7 +1,13 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip, CircularProgress } from "@mui/material";
 import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 
-const LeadEditControls = ({ isEditMode, onToggleEdit, onSave, onCancel }) => {
+const LeadEditControls = ({
+  isEditMode,
+  isSaving,
+  onToggleEdit,
+  onSave,
+  onCancel,
+}) => {
   return (
     <div className="edit-controls absolute top-0 right-2 flex gap-2 z-10">
       {!isEditMode ? (
@@ -13,12 +19,16 @@ const LeadEditControls = ({ isEditMode, onToggleEdit, onSave, onCancel }) => {
       ) : (
         <div className="flex gap-2">
           <Tooltip title="Save Changes">
-            <IconButton onClick={onSave} color="success">
-              <FaSave />
+            <IconButton onClick={onSave} color="success" disabled={isSaving}>
+              {isSaving ? (
+                <CircularProgress size={20} color="success" />
+              ) : (
+                <FaSave />
+              )}
             </IconButton>
           </Tooltip>
           <Tooltip title="Cancel Changes">
-            <IconButton onClick={onCancel} color="error">
+            <IconButton onClick={onCancel} color="error" disabled={isSaving}>
               <FaTimes />
             </IconButton>
           </Tooltip>

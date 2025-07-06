@@ -254,6 +254,25 @@ const LeaseLeadRecords = ({
     setSelectedLeadItem({});
   };
 
+  const handleRefreshLeadData = async () => {
+    // Refresh the main list
+    await getLeaseLeadData();
+
+    // If we have a selectedLeadItem, refresh it with the latest data (get a lead by id)
+    if (selectedLeadItem && selectedLeadItem._id) {
+      try {
+        const response = await axios.get(
+          `/api/crm/leaselead/${selectedLeadItem._id}`
+        );
+        if (response.status === 200) {
+          setSelectedLeadItem(response.data);
+        }
+      } catch (err) {
+        console.error("Failed to refresh selected lead item:", err);
+      }
+    }
+  };
+
   const handleGoToTourTab = () => {
     setIsDetailsModalOpen(false);
     setTabKey(TAB_KEYS.Tour);
@@ -322,7 +341,10 @@ const LeaseLeadRecords = ({
               width="90%"
               height="90%"
             >
-              <LeadDetailsTest selectedLeadItem={selectedLeadItem} />
+              <LeadDetailsTest
+                selectedLeadItem={selectedLeadItem}
+                onLeadUpdated={handleRefreshLeadData}
+              />
             </MaterialModal>
             {/* END OF TEST */}
             <LeaseLeadModal

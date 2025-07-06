@@ -3,39 +3,98 @@ import LeadInfo from "./leadDetailsFields/LeadInfo";
 import LeadNotes from "./leadDetailsFields/LeadNotes";
 import LeadNextAction from "./leadDetailsFields/LeadNextAction";
 import LeadEditControls from "./leadDetailsFields/LeadEditControls";
-import { Divider } from "@mui/material";
+import { Divider, Snackbar, Alert } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
 
-const LeadDetailsTest = ({ selectedLeadItem }) => {
+const LeadDetailsTest = ({ selectedLeadItem, onLeadUpdated }) => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [leadInfoData, setLeadInfoData] = useState({});
+  const [contactInfoData, setContactInfoData] = useState({});
+  const [isSaving, setIsSaving] = useState(false);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
   const handleToggleEdit = () => {
     setIsEditMode(!isEditMode);
+    if (!isEditMode) {
+      // Clear any existing data when entering edit mode
+      setLeadInfoData({});
+      setContactInfoData({});
+    }
   };
 
-  const handleSave = () => {
-    // TODO: Implement save logic
-    console.log("Saving changes...");
-    setIsEditMode(false);
+  const handleSave = async () => {
+    try {
+      setIsSaving(true);
+
+      // Merge the updated data with the original lead item
+      const updatedLead = Object.assign(
+        {},
+        selectedLeadItem,
+        Object.keys(leadInfoData).length > 0 ? leadInfoData : {},
+        Object.keys(contactInfoData).length > 0 ? contactInfoData : {}
+      );
+
+      console.log("Original lead item:", selectedLeadItem);
+      console.log("Lead info changes:", leadInfoData);
+      console.log("Contact info changes:", contactInfoData);
+      console.log("Final merged data being sent:", updatedLead);
+
+      // Update lead
+      const response = await axios.put(
+        `/api/crm/leaselead/${selectedLeadItem._id}`,
+        updatedLead
+      );
+
+      if (response.status === 200) {
+        console.log("Lead updated successfully:", response.data);
+        setShowSuccessSnackbar(true);
+        setIsEditMode(false);
+        // Clear the temporary data
+        setLeadInfoData({});
+        setContactInfoData({});
+        // Refresh the data in the parent component
+        if (onLeadUpdated) {
+          await onLeadUpdated();
+        }
+      } else {
+        console.error("Failed to update lead:", response.statusText);
+        setShowErrorSnackbar(true);
+      }
+    } catch (err) {
+      console.error("Error updating lead:", err);
+      if (err.response) {
+        console.error("Error response data:", err.response.data);
+        console.error("Error response status:", err.response.status);
+      }
+      setShowErrorSnackbar(true);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
     setIsEditMode(false);
+    // Clear any unsaved changes
+    setLeadInfoData({});
+    setContactInfoData({});
   };
 
-  const handleLeadInfoChange = (leadInfoData) => {
+  const handleLeadInfoChange = (leadInfoDataReceived) => {
     if (isEditMode) {
-      console.log("Lead info data received from child:", leadInfoData);
-      // Here you can do whatever you need with the leadInfoData
-      // For example, store it in state, send it to an API, etc.
+      console.log("Lead info data received from child:", leadInfoDataReceived);
+      setLeadInfoData(leadInfoDataReceived);
     }
   };
 
-  const handleContactInfoChange = (contactInfoData) => {
+  const handleContactInfoChange = (contactInfoDataReceived) => {
     if (isEditMode) {
-      console.log("Contact info data received from child:", contactInfoData);
-      // Here you can do whatever you need with the contactInfoData
-      // For example, store it in state, send it to an API, etc.
+      console.log(
+        "Contact info data received from child:",
+        contactInfoDataReceived
+      );
+      setContactInfoData(contactInfoDataReceived);
     }
   };
 
@@ -44,6 +103,7 @@ const LeadDetailsTest = ({ selectedLeadItem }) => {
       {/* Edit Controls */}
       <LeadEditControls
         isEditMode={isEditMode}
+        isSaving={isSaving}
         onToggleEdit={handleToggleEdit}
         onSave={handleSave}
         onCancel={handleCancel}
@@ -86,7 +146,38 @@ const LeadDetailsTest = ({ selectedLeadItem }) => {
           />
         </div>
       </div>
-      {/* PropertyCondition */}
+      {/* TODO: Change it to a simple snackbar */}
+      {/* Success Snackbar */}
+      <Snackbar
+        open={showSuccessSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccessSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setShowSuccessSnackbar(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Lead details updated successfully!
+        </Alert>
+      </Snackbar>
+
+      {/* Error Snackbar */}
+      <Snackbar
+        open={showErrorSnackbar}
+        autoHideDuration={4000}
+        onClose={() => setShowErrorSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setShowErrorSnackbar(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Failed to update lead details. Please try again.
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

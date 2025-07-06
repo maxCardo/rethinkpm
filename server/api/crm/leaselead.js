@@ -40,6 +40,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+// @route: GET api/crm/leaselead/:id
+// @desc: get a single leaseLead by id
+// @access: private
+router.get("/:id", auth, async (req, res) => {
+  try {
+    const lead = await leaseLead.findById(req.params.id);
+
+    if (!lead) {
+      return res.status(404).json({ message: "Lease lead not found" });
+    }
+
+    if (!lead.isEnabled) {
+      return res.status(404).json({ message: "Lease lead is disabled" });
+    }
+
+    res.status(200).json(lead);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch lease lead", error: err });
+  }
+});
+
 // @route: POST api/crm/leaselead
 // @desc: create a new leaseLead
 // @access: private
@@ -126,7 +148,7 @@ router.patch("/:id/notes", auth, async (req, res) => {
     }
     const note = {
       content,
-      type: type || "",
+      type: type || "note",
       user: req.user?._id,
       date: new Date(),
     };
