@@ -2,12 +2,12 @@ import CustomInput from "../../../../ui/CustomInput/CustomInput";
 
 const ContactInfo = ({ selectedLeadItem }) => {
   return (
-    <div>
-      <div className="contact-info_title text-2xl mb-3">
+    <div className="contact-info__wrapper">
+      <div className="contact-info__title text-2xl mb-3">
         Contact Information
       </div>
-      {/* First Name */}
-      <div className="flex flex-row w-full justify-between">
+      <div className="contact-info__content flex flex-row w-full justify-between">
+        {/* First Name */}
         <CustomInput
           inputId={"firstName"}
           label={"First Name"}
@@ -27,7 +27,7 @@ const ContactInfo = ({ selectedLeadItem }) => {
       {/* Email */}
       {Array.isArray(selectedLeadItem.email) &&
         selectedLeadItem.email.length > 0 && (
-          <div className="flex flex-col w-full mb-2">
+          <div className="flex flex-col w-full">
             {selectedLeadItem.email.map((em, idx) => (
               <CustomInput
                 key={`email-${idx}`}

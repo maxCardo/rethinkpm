@@ -24,7 +24,7 @@ const LeadInfo = ({ selectedLeadItem }) => {
   }));
 
   return (
-    <div className="lead-info">
+    <div className="lead-info__wrapper">
       {/* Title */}
       <div className="lead-info__title text-2xl mb-3">Lead Information</div>
       {/* Content */}
@@ -53,7 +53,6 @@ const LeadInfo = ({ selectedLeadItem }) => {
                     st.value === selectedLeadItem.status ? "primary" : "default"
                   }
                   label={st.label}
-                  variant="outlined"
                 />
               );
             })}

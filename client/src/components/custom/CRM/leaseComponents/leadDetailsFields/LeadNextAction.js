@@ -28,7 +28,7 @@ const LeadNextAction = ({ selectedLeadItem }) => {
   };
 
   return (
-    <div className="lead-next-action">
+    <div className="lead-next-action__wrapper">
       {/* Title */}
       <div className="lead-next-action__title text-2xl mb-3">
         Lead Next Action

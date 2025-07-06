@@ -2,6 +2,7 @@ import ContactInfo from "./leadDetailsFields/ContactInfo";
 import LeadInfo from "./leadDetailsFields/LeadInfo";
 import LeadNotes from "./leadDetailsFields/LeadNotes";
 import LeadNextAction from "./leadDetailsFields/LeadNextAction";
+import { Divider } from "@mui/material";
 
 const LeadDetailsTest = ({ selectedLeadItem }) => {
   return (
@@ -17,6 +18,7 @@ const LeadDetailsTest = ({ selectedLeadItem }) => {
           <LeadNotes selectedLeadItem={selectedLeadItem} />
         </div>
       </div>
+      <Divider />
       {/* Row 2 */}
       <div className="second-row mt-5 flex w-full gap-5">
         {/* Lead Info */}

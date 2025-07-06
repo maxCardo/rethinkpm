@@ -3,7 +3,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 
 const LeadNotes = ({ selectedLeadItem }) => {
   return (
-    <>
+    <div className="lead-notes__wrapper flex flex-col h-full">
       {/* Title */}
       <div className="lead-notes__title text-2xl mb-3">Lead Notes</div>
       <div
@@ -43,7 +43,7 @@ const LeadNotes = ({ selectedLeadItem }) => {
           <AiOutlinePlus size={500} />
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

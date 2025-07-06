@@ -15,7 +15,7 @@ const CustomInput = ({
       <label htmlFor={inputId}>{label}</label>
       <input
         id={inputId}
-        className="form-control mt-2 custom-input"
+        className="form-control my-2 custom-input"
         style={inputStyle}
         tabIndex={0}
         // onChange={(e) => onChange}
