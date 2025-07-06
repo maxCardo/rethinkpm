@@ -1,13 +1,13 @@
-import ContactInfo from "./leadDetailsFields/ContactInfo";
-import LeadInfo from "./leadDetailsFields/LeadInfo";
-import LeadNotes from "./leadDetailsFields/LeadNotes";
-import LeadNextAction from "./leadDetailsFields/LeadNextAction";
-import LeadEditControls from "./leadDetailsFields/LeadEditControls";
+import ContactInfo from "../leadDetailsFields/ContactInfo";
+import LeadInfo from "../leadDetailsFields/LeadInfo";
+import LeadNotes from "../leadDetailsFields/LeadNotes";
+import LeadNextAction from "../leadDetailsFields/LeadNextAction";
+import LeadEditControls from "../leadDetailsFields/LeadEditControls";
 import { Divider, Snackbar, Alert } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 
-const LeadDetailsTest = ({ selectedLeadItem, onLeadUpdated }) => {
+const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [leadInfoData, setLeadInfoData] = useState({});
   const [contactInfoData, setContactInfoData] = useState({});
@@ -177,4 +177,4 @@ const LeadDetailsTest = ({ selectedLeadItem, onLeadUpdated }) => {
   );
 };
 
-export default LeadDetailsTest;
+export default LeadDetails;

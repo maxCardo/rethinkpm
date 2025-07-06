@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { capitalizeFirstLetter } from "../../../../../util/commonFunctions";
+import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Button, Snackbar, Alert } from "@mui/material";
-import MaterialModal from "../../../../ui/MaterialModal";
+import MaterialModal from "../../../ui/MaterialModal";
 import axios from "axios";
 
 const LeadNotes = ({ selectedLeadItem }) => {

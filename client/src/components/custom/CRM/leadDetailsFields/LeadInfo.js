@@ -1,8 +1,8 @@
-import CustomReactSelect from "../../../../ui/CustomReactSelect";
-import { capitalizeFirstLetter } from "../../../../../util/commonFunctions";
+import CustomReactSelect from "../../../ui/CustomReactSelect";
+import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 import { Chip } from "@mui/material";
-import CustomInput from "../../../../ui/CustomInput/CustomInput";
-import settings from "../../../../../settings.json";
+import CustomInput from "../../../ui/CustomInput/CustomInput";
+import settings from "../../../../settings.json";
 import { useEffect, useState } from "react";
 
 const LeadInfo = ({

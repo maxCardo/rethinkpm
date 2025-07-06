@@ -1,5 +1,5 @@
-import CustomInput from "../../../../ui/CustomInput/CustomInput";
-import { capitalizeFirstLetter } from "../../../../../util/commonFunctions";
+import CustomInput from "../../../ui/CustomInput/CustomInput";
+import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 
 const LeadNextAction = ({ selectedLeadItem, isEditMode = false }) => {
   const actionTypesValues = [

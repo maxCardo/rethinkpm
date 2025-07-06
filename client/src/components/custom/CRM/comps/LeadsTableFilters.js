@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 
-const LeaseTableFilters = ({ filterListByQuery, settings }) => {
+const LeadsTableFilters = ({ filterListByQuery, settings }) => {
   const [selectedField, setSelectedField] = useState({});
   const [selectedValue, setSelectedValue] = useState(null);
   const [fieldValOptions, setFieldValOptions] = useState({});
@@ -134,4 +134,4 @@ const LeaseTableFilters = ({ filterListByQuery, settings }) => {
   );
 };
 
-export default LeaseTableFilters;
+export default LeadsTableFilters;

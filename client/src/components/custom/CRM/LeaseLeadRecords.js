@@ -9,12 +9,12 @@ import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
 import { Chip, Button } from "@mui/material";
 import { FaFire, FaSnowflake, FaCloudSun, FaPlus } from "react-icons/fa";
 import { FcNeutralTrading } from "react-icons/fc";
-import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
+import LeadsTableFilters from "./comps/LeadsTableFilters";
 import axios from "axios";
 import MaterialModal from "../../ui/MaterialModal";
 import { capitalizeFirstLetter } from "../../../util/commonFunctions";
 import dayjs from "dayjs";
-import LeadDetailsTest from "./leaseComponents/LeadDetailsTest";
+import LeadDetails from "./comps/LeadDetails";
 
 const LeaseLeadRecords = ({
   getLeaseLeadData,
@@ -241,7 +241,7 @@ const LeaseLeadRecords = ({
         {tabKey === TAB_KEYS.Table && (
           <>
             <div className="table-top flex flex-row my-4 justify-between items-center">
-              <LeaseTableFilters
+              <LeadsTableFilters
                 filterListByQuery={filterListByQuery}
                 settings={settings}
               />
@@ -288,7 +288,7 @@ const LeaseLeadRecords = ({
               width="90%"
               height="90%"
             >
-              <LeadDetailsTest
+              <LeadDetails
                 selectedLeadItem={selectedLeadItem}
                 onLeadUpdated={handleRefreshLeadData}
               />

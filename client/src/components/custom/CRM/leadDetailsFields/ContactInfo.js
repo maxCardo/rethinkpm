@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import CustomInput from "../../../../ui/CustomInput/CustomInput";
-import MaterialCheckbox from "../../../../ui/MaterialCheckbox";
+import CustomInput from "../../../ui/CustomInput/CustomInput";
+import MaterialCheckbox from "../../../ui/MaterialCheckbox";
 import { FaPlus } from "react-icons/fa";
 
 const ContactInfo = ({
