@@ -8,6 +8,7 @@ const CustomInput = ({
   onChange,
   value,
   readonly = false,
+  type,
 }) => {
   return (
     <div className="flex flex-col">
@@ -21,6 +22,7 @@ const CustomInput = ({
         placeholder={placeholder || label}
         value={value || ""}
         readOnly={readonly}
+        type={type}
       />
     </div>
   );

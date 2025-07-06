@@ -40,7 +40,7 @@ const LeadNextAction = ({ selectedLeadItem }) => {
           label={"Next Action Date"}
           inputStyle={{ width: "20vw" }}
           value={new Date(nextAction.actionDate).toLocaleString()}
-          readonly={false}
+          readonly={true}
         />
         {/* Next Action Type */}
         <div style={{ width: "20vw" }}>
