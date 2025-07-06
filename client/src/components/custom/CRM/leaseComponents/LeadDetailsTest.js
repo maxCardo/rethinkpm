@@ -6,7 +6,7 @@ import { Divider } from "@mui/material";
 
 const LeadDetailsTest = ({ selectedLeadItem }) => {
   return (
-    <div className="lead-details flex flex-col gap-5 px-2 h-full">
+    <div className="lead-details flex flex-col gap-5 px-2 h-auto">
       {/* Row 1 */}
       <div className="first-row flex w-full gap-5">
         {/* Contact Info */}
@@ -20,7 +20,7 @@ const LeadDetailsTest = ({ selectedLeadItem }) => {
       </div>
       <Divider />
       {/* Row 2 */}
-      <div className="second-row mt-5 flex w-full gap-5">
+      <div className="second-row flex w-full gap-5">
         {/* Lead Info */}
         <div className="lead-info flex-1/2">
           <LeadInfo selectedLeadItem={selectedLeadItem} />

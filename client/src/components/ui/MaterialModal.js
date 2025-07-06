@@ -57,7 +57,7 @@ const MaterialModal = ({
           </>
         )}
         {/* Content */}
-        <div className="material-modal__content my-8 h-full">{children}</div>
+        <div className="material-modal__content my-8 h-auto">{children}</div>
         {/* Action Buttons */}
         {showActions && actions && (
           <>

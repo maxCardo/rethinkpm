@@ -44,22 +44,13 @@ const LeadNextAction = ({ selectedLeadItem }) => {
         />
         {/* Next Action Type */}
         <div style={{ width: "20vw" }}>
-          <CustomReactSelect
-            options={actionTypes}
+          <CustomInput
+            inputId={"nextActionType"}
             label={"Next Action Type"}
-            // value={selectedLeadItem.status}
+            inputStyle={{ width: "20vw" }}
+            // value={new Date(nextAction.actionDate).toLocaleString()}
             placeholder={capitalizeFirstLetter(nextAction.actionType)}
-            isDisabled={true}
-          />
-        </div>
-        {/* Next Action Contact By */}
-        <div style={{ width: "20vw" }}>
-          <CustomReactSelect
-            options={contactByOptions}
-            label={"Contact By"}
-            // value={selectedLeadItem.status}
-            placeholder={capitalizeFirstLetter(nextAction.contactBy)}
-            isDisabled={true}
+            readonly={true}
           />
         </div>
         {/* Last Contact */}
