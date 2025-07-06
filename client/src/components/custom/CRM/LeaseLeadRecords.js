@@ -26,6 +26,7 @@ import LeadTourTracking from "./leaseComponents/LeadTourTracking";
 import MaterialModal from "../../ui/MaterialModal";
 import { capitalizeFirstLetter } from "../../../util/commonFunctions";
 import dayjs from "dayjs";
+import LeadDetailsTest from "./leaseComponents/LeadDetailsTest";
 
 const LeaseLeadRecords = ({
   getLeaseLeadData,
@@ -122,34 +123,6 @@ const LeaseLeadRecords = ({
         const date = dayjs(item.lastContact);
         return date.isValid() ? date.format("MM/DD/YYYY") : "";
       },
-    },
-    {
-      reactComponent: true,
-      accessor: "actions",
-      label: "Actions",
-      align: "center",
-      render: (item) => (
-        <div className="flex flex-row w-100">
-          <FaPencilAlt
-            className="ml-3"
-            onClick={() => handleEditLead(item)}
-            style={{ cursor: "pointer" }}
-            title="Edit"
-          />
-          {/* <FaTrashAlt
-            className="mx-2"
-            onClick={() => handleDeleteLead(item)}
-            style={{ cursor: "pointer" }}
-            title="Delete"
-          /> */}
-          <FaEye
-            title="Details"
-            className="ml-3"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleWatchLeadDetails(item)}
-          />
-        </div>
-      ),
     },
   ];
 
@@ -299,8 +272,20 @@ const LeaseLeadRecords = ({
                 }}
                 _orderBy={"nextAction"}
                 _order={"desc"}
+                handleClickRow={handleWatchLeadDetails}
               />
             )}
+            {/* TEST */}
+            <MaterialModal
+              isOpen={isDetailsModalOpen}
+              onClose={handleCloseDetailsModal}
+              title="Lead Details"
+              width="90%"
+              height="90%"
+            >
+              <LeadDetailsTest selectedLeadItem={selectedLeadItem} />
+            </MaterialModal>
+            {/* END OF TEST */}
             <LeaseLeadModal
               isModalOpen={isModalOpen}
               closeModal={() => {
@@ -336,7 +321,7 @@ const LeaseLeadRecords = ({
         )}
 
         {/* Lead Details Modal */}
-        <MaterialModal
+        {/* <MaterialModal
           isOpen={isDetailsModalOpen}
           onClose={handleCloseDetailsModal}
           title="Lead Details"
@@ -348,7 +333,7 @@ const LeaseLeadRecords = ({
             selectedLeadItem={selectedLeadItem}
             onGoToTourTab={handleGoToTourTab}
           />
-        </MaterialModal>
+        </MaterialModal> */}
       </div>
     </>
   );
