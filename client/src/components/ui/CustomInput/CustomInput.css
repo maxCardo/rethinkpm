@@ -4,3 +4,15 @@
   background: transparent !important;
   color: grey;
 }
+
+/* Append icon styles */
+.append-icon {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.append-icon.cursor-pointer:hover {
+  color: #374151;
+}
