@@ -14,8 +14,8 @@ import {
   FaPlus,
   FaPencilAlt,
   FaTrashAlt,
-  FaEye,
 } from "react-icons/fa";
+import { FcNeutralTrading } from "react-icons/fc";
 import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
 import LeaseLeadModal from "./leaseComponents/LeaseLeadModal";
 import LeaseConfirmModal from "./leaseComponents/LeaseConfirmModal";
@@ -80,13 +80,13 @@ const LeaseLeadRecords = ({
       label: "Status",
       render: (item) => (
         <>
-          <Chip
-            variant="outlined"
-            label={item.status ? capitalizeFirstLetter(item.status) : ""}
-            color={
-              item.status === settings.statusOptions.new ? "success" : "error"
-            }
-          />
+          <div
+            className={`text-white ${setLeadStatusBgColor(
+              item.status
+            )} max-w-fit px-2 text-center`}
+          >
+            {capitalizeFirstLetter(item.status)}
+          </div>
         </>
       ),
     },
@@ -100,7 +100,12 @@ const LeaseLeadRecords = ({
       label: "Temperature",
       render: (item) => (
         <>
-          <td>{capitalizeFirstLetter(item.leadTemperature)}</td>
+          {item.leadTemperature && (
+            <Chip
+              avatar={setLeadTempIcon(item.leadTemperature)}
+              label={capitalizeFirstLetter(item.leadTemperature)}
+            />
+          )}
         </>
       ),
     },
@@ -174,6 +179,40 @@ const LeaseLeadRecords = ({
     },
     [initLeadsList]
   );
+
+  const setLeadStatusBgColor = (status) => {
+    switch (status) {
+      case settings.statusOptions.new:
+        return "bg-darkBlue";
+      case settings.statusOptions.inProgress:
+        return "bg-yellow-500";
+      // case settings.statusOptions.tourPending:
+      //   return "amber-600";
+      // case settings.statusOptions.toured:
+      //   return "amber-600";
+      case settings.statusOptions.applied:
+        return "bg-emerald-500";
+      case settings.statusOptions.lost:
+        return "bg-red-500";
+      default:
+        return "";
+    }
+  };
+
+  const setLeadTempIcon = (leadTemperature) => {
+    switch (leadTemperature) {
+      case settings.temperatureOptions.neutral:
+        return <FcNeutralTrading size={5} />;
+      case settings.temperatureOptions.hot:
+        return <FaFire size={5} />;
+      case settings.temperatureOptions.warm:
+        return <FaCloudSun size={5} />;
+      case settings.temperatureOptions.cold:
+        return <FaSnowflake size={5} />;
+      default:
+        return "";
+    }
+  };
 
   const handleEditLead = async (leadItem) => {
     setIsEditMode(true);

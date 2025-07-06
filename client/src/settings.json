@@ -827,9 +827,14 @@
     "leaseLead": {
       "statusOptions": {
         "new": "new",
+        "inProgress": "inProgress",
+        "tourPending": "tourPending",
+        "toured": "toured",
+        "applied": "applied",
         "lost": "lost"
       },
       "temperatureOptions": {
+        "neutral": "neutral",
         "hot": "hot",
         "warm": "warm",
         "cold": "cold"
