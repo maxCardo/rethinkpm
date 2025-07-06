@@ -22,6 +22,23 @@ const LeadDetailsTest = ({ selectedLeadItem }) => {
   const handleCancel = () => {
     setIsEditMode(false);
   };
+
+  const handleLeadInfoChange = (leadInfoData) => {
+    if (isEditMode) {
+      console.log("Lead info data received from child:", leadInfoData);
+      // Here you can do whatever you need with the leadInfoData
+      // For example, store it in state, send it to an API, etc.
+    }
+  };
+
+  const handleContactInfoChange = (contactInfoData) => {
+    if (isEditMode) {
+      console.log("Contact info data received from child:", contactInfoData);
+      // Here you can do whatever you need with the contactInfoData
+      // For example, store it in state, send it to an API, etc.
+    }
+  };
+
   return (
     <div className="lead-details relative flex flex-col gap-5 px-2 h-auto">
       {/* Edit Controls */}
@@ -39,6 +56,7 @@ const LeadDetailsTest = ({ selectedLeadItem }) => {
           <ContactInfo
             selectedLeadItem={selectedLeadItem}
             isEditMode={isEditMode}
+            onContactInfoChange={handleContactInfoChange}
           />
         </div>
         {/* Lead Notes */}
@@ -57,6 +75,7 @@ const LeadDetailsTest = ({ selectedLeadItem }) => {
           <LeadInfo
             selectedLeadItem={selectedLeadItem}
             isEditMode={isEditMode}
+            onLeadInfoChange={handleLeadInfoChange}
           />
         </div>
         {/* Next Action */}
