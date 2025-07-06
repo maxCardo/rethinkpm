@@ -7,22 +7,10 @@ import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
 // import leaseLeads from "../../../reducers/leaseLeads";
 import { Chip, Button } from "@mui/material";
-import {
-  FaFire,
-  FaSnowflake,
-  FaCloudSun,
-  FaPlus,
-  FaPencilAlt,
-  FaTrashAlt,
-} from "react-icons/fa";
+import { FaFire, FaSnowflake, FaCloudSun, FaPlus } from "react-icons/fa";
 import { FcNeutralTrading } from "react-icons/fc";
 import LeaseTableFilters from "./leaseComponents/LeaseTableFilters";
-import LeaseLeadModal from "./leaseComponents/LeaseLeadModal";
-import LeaseConfirmModal from "./leaseComponents/LeaseConfirmModal";
 import axios from "axios";
-import MaterialAlert from "../../ui/MaterialAlert";
-import LeadDetails from "./leaseComponents/LeadDetails";
-import LeadTourTracking from "./leaseComponents/LeadTourTracking";
 import MaterialModal from "../../ui/MaterialModal";
 import { capitalizeFirstLetter } from "../../../util/commonFunctions";
 import dayjs from "dayjs";
@@ -44,12 +32,6 @@ const LeaseLeadRecords = ({
   const [initLeadsList, setInitLeadsList] = useState([]);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteAlert, setDeleteAlert] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState({
-    open: false,
-    lead: null,
-  });
-  const [isEditMode, setIsEditMode] = useState(false);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const NAVBAR_HEIGHT = 80;
@@ -57,7 +39,7 @@ const LeaseLeadRecords = ({
   /* Tabs option */
   const DYNAMIC_TABS = [
     { key: TAB_KEYS.Table, title: "Table View" },
-    { key: TAB_KEYS.Tour, title: "Tour Tracking" },
+    // { key: TAB_KEYS.Tour, title: "Tour Tracking" },
   ];
 
   /* Headers */
@@ -214,37 +196,7 @@ const LeaseLeadRecords = ({
     }
   };
 
-  const handleEditLead = async (leadItem) => {
-    setIsEditMode(true);
-    setSelectedLeadItem(leadItem);
-    setIsModalOpen(true);
-  };
-
-  const handleDeleteLead = async (leadItem) => {
-    if (!leadItem || !leadItem._id) return;
-    setDeleteConfirm({ open: true, lead: leadItem });
-  };
-
-  const confirmDelete = async () => {
-    const leadItem = deleteConfirm.lead;
-    if (!leadItem || !leadItem._id) return;
-    try {
-      await axios.patch(`/api/crm/leaselead/${leadItem._id}`);
-      getLeaseLeadData(); // Refresh the list after deletion
-      setDeleteAlert(true); // Show success alert
-    } catch (err) {
-      // Optionally show an error alert here
-      console.error("Failed to delete lead", err);
-    }
-    setDeleteConfirm({ open: false, lead: null });
-  };
-
-  const cancelDelete = () => {
-    setDeleteConfirm({ open: false, lead: null });
-  };
-
   const handleWatchLeadDetails = (leadItem) => {
-    console.log("SELECTED ITEM => ", leadItem);
     setSelectedLeadItem(leadItem);
     setIsDetailsModalOpen(true);
   };
@@ -273,11 +225,6 @@ const LeaseLeadRecords = ({
     }
   };
 
-  const handleGoToTourTab = () => {
-    setIsDetailsModalOpen(false);
-    setTabKey(TAB_KEYS.Tour);
-  };
-
   return loading ? (
     <Loading />
   ) : (
@@ -298,7 +245,7 @@ const LeaseLeadRecords = ({
                 filterListByQuery={filterListByQuery}
                 settings={settings}
               />
-              <div className="add-lead-btn px-2">
+              {/* <div className="add-lead-btn px-2">
                 <Button
                   color="primary"
                   className="self-end"
@@ -309,7 +256,7 @@ const LeaseLeadRecords = ({
                 >
                   Add Lead
                 </Button>
-              </div>
+              </div> */}
             </div>
             {updatedLeadsList.length === 0 ? (
               <div
@@ -333,7 +280,7 @@ const LeaseLeadRecords = ({
                 handleClickRow={handleWatchLeadDetails}
               />
             )}
-            {/* TEST */}
+            {/* Lead Details Modal */}
             <MaterialModal
               isOpen={isDetailsModalOpen}
               onClose={handleCloseDetailsModal}
@@ -346,55 +293,8 @@ const LeaseLeadRecords = ({
                 onLeadUpdated={handleRefreshLeadData}
               />
             </MaterialModal>
-            {/* END OF TEST */}
-            <LeaseLeadModal
-              isModalOpen={isModalOpen}
-              closeModal={() => {
-                setIsModalOpen(false);
-                setIsEditMode(false);
-                setSelectedLeadItem({});
-              }}
-              settings={settings}
-              getLeaseLeadData={getLeaseLeadData}
-              isEditMode={isEditMode}
-              selectedLeadItem={selectedLeadItem}
-            />
-            <MaterialAlert
-              open={deleteAlert}
-              onClose={() => setDeleteAlert(false)}
-              message="Lead deleted successfully!"
-              severity="success"
-              duration={3000}
-            />
-            <LeaseConfirmModal
-              open={deleteConfirm.open}
-              title="Confirm Delete"
-              message="Are you sure you want to delete this lead?"
-              onConfirm={confirmDelete}
-              onCancel={cancelDelete}
-            />
           </>
         )}
-
-        {/* Lease Tour Tracking (info) */}
-        {tabKey === TAB_KEYS.Tour && (
-          <LeadTourTracking selectedLeadItem={selectedLeadItem} />
-        )}
-
-        {/* Lead Details Modal */}
-        {/* <MaterialModal
-          isOpen={isDetailsModalOpen}
-          onClose={handleCloseDetailsModal}
-          title="Lead Details"
-          width="90%"
-          height="90%"
-          showActions={false}
-        >
-          <LeadDetails
-            selectedLeadItem={selectedLeadItem}
-            onGoToTourTab={handleGoToTourTab}
-          />
-        </MaterialModal> */}
       </div>
     </>
   );
