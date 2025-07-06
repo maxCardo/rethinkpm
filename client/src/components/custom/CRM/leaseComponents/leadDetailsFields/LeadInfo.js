@@ -2,26 +2,60 @@ import CustomReactSelect from "../../../../ui/CustomReactSelect";
 import { capitalizeFirstLetter } from "../../../../../util/commonFunctions";
 import { Chip } from "@mui/material";
 import CustomInput from "../../../../ui/CustomInput/CustomInput";
+import settings from "../../../../../settings.json";
+import { useEffect, useState } from "react";
 
-const LeadInfo = ({ selectedLeadItem, isEditMode = false }) => {
-  const statusValues = [
-    "new",
-    "inProgress",
-    "tourPending",
-    "toured",
-    "applied",
-    "lost",
-  ];
-  const status = statusValues.map((value) => ({
+const LeadInfo = ({
+  selectedLeadItem,
+  isEditMode = false,
+  onLeadInfoChange,
+}) => {
+  const SETTINGS = settings.routes.leaseLead;
+
+  const [leadInfoData, setLeadInfoData] = useState({
+    // Deault values - from server
+    status: selectedLeadItem.status,
+    leadTemperature: selectedLeadItem.leadTemperature,
+  });
+
+  // Take status and temperature options from settings
+  // Turn them to an strings array (from object)
+  // Create new object array with 'label' and 'value'
+  const statusValues = Object.values(SETTINGS.statusOptions);
+  const statusOpt = statusValues.map((value) => ({
     label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
     value,
   }));
 
-  const tempValues = ["neutral", "hot", "warm", "cold", ""];
-  const temperatures = tempValues.map((value) => ({
+  const tempValues = Object.values(SETTINGS.temperatureOptions);
+  const temperatureOpt = tempValues.map((value) => ({
     label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
     value,
   }));
+  // End of option conversion
+
+  // Helper function to find the selected option object
+  const getSelectedOption = (options, value) => {
+    return options.find((option) => option.value === value) || null;
+  };
+
+  const handleStatusChange = (selected) => {
+    setLeadInfoData((prevData) => ({ ...prevData, status: selected.value }));
+  };
+
+  const handleLeadTempChange = (selected) => {
+    setLeadInfoData((prevData) => ({
+      ...prevData,
+      leadTemperature: selected.value,
+    }));
+  };
+
+  useEffect(() => {
+    // Send leadInfoData to parent when it changes
+    if (onLeadInfoChange) {
+      onLeadInfoChange(leadInfoData);
+    }
+  }, [leadInfoData, onLeadInfoChange]);
 
   return (
     <div className="lead-info__wrapper">
@@ -34,18 +68,18 @@ const LeadInfo = ({ selectedLeadItem, isEditMode = false }) => {
         <div className="lead-info-status">
           <div style={{ width: "20vw" }}>
             <CustomReactSelect
-              options={status}
+              options={statusOpt}
               label={"Status"}
-              value={selectedLeadItem.status}
-              placeholder={capitalizeFirstLetter(selectedLeadItem.status)}
+              value={getSelectedOption(statusOpt, leadInfoData.status)}
               isDisabled={!isEditMode}
+              onChange={handleStatusChange}
             />
           </div>
           <div
             className="lead-status-chip mt-2 flex flex-wrap gap-1"
             style={{ width: "20vw" }}
           >
-            {status.map((st, index) => {
+            {statusOpt.map((st, index) => {
               return (
                 <Chip
                   key={index}
@@ -61,13 +95,17 @@ const LeadInfo = ({ selectedLeadItem, isEditMode = false }) => {
         {/* Lead Temperature */}
         <div style={{ width: "20vw" }}>
           <CustomReactSelect
-            options={temperatures}
+            options={temperatureOpt}
             label={"Lead Temperature"}
-            value={selectedLeadItem.status}
+            value={getSelectedOption(
+              temperatureOpt,
+              leadInfoData.leadTemperature
+            )}
             placeholder={capitalizeFirstLetter(
               selectedLeadItem.leadTemperature
             )}
             isDisabled={!isEditMode}
+            onChange={handleLeadTempChange}
           />
         </div>
         {/* Lead Source */}
