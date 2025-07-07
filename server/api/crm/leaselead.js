@@ -119,6 +119,14 @@ router.put("/:id", auth, async (req, res) => {
       }));
     }
 
+    // Check if lead status is "applied" or "lost" and disable the lead
+    if (
+      req.body.status &&
+      (req.body.status === "applied" || req.body.status === "lost")
+    ) {
+      req.body.isEnabled = false;
+    }
+
     req.body.updateDate = new Date();
     const updatedLead = await leaseLead.findByIdAndUpdate(
       req.params.id,
