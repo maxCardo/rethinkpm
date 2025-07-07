@@ -1,9 +1,17 @@
+import { useEffect } from "react";
 import CustomInput from "../../../ui/CustomInput/CustomInput";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 import { useState } from "react";
 import dayjs from "dayjs";
+import settings from "../../../../settings.json";
 
-const LeadNextAction = ({ selectedLeadItem, isEditMode = false }) => {
+const LeadNextAction = ({
+  selectedLeadItem,
+  isEditMode = false,
+  updatedLeadStatus,
+}) => {
+  const SETTINGS = settings.routes.leaseLead;
+
   const [nextActionDate, setNextActionDate] = useState(
     selectedLeadItem.nextAction
   );
@@ -20,7 +28,26 @@ const LeadNextAction = ({ selectedLeadItem, isEditMode = false }) => {
     value,
   }));
 
-  const handleDateChange = (event) => {
+  useEffect(() => {
+    console.log("status has changed?", updatedLeadStatus);
+    if (updatedLeadStatus) {
+      switch (updatedLeadStatus) {
+        case SETTINGS.statusOptions.inProgress:
+          // Set next action date to tomorrow when status becomes inProgress
+          const tomorrow = dayjs().add(1, "day").toDate();
+          setNextActionDate(tomorrow);
+          break;
+
+        default:
+          setNextActionDate(selectedLeadItem.nextAction);
+
+          break;
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatedLeadStatus]);
+
+  const handleActionDateChange = (event) => {
     const inputValue = event.target.value; // This will be in YYYY-MM-DD format from date input
 
     if (inputValue) {
@@ -68,7 +95,7 @@ const LeadNextAction = ({ selectedLeadItem, isEditMode = false }) => {
           }
           readonly={!isEditMode}
           type={isEditMode ? "date" : "text"}
-          onChange={handleDateChange}
+          onChange={handleActionDateChange}
         />
         {/* Next Action Type */}
         <div style={{ width: "20vw" }}>
