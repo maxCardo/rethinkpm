@@ -16,31 +16,31 @@ const LeadNextAction = ({
     selectedLeadItem.nextAction
   );
 
-  const actionTypesValues = [
-    "contact",
-    "scheduleTour",
-    "performTour",
-    "apply",
-    "",
-  ];
-  const actionTypes = actionTypesValues.map((value) => ({
-    label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
-    value,
-  }));
+  // Action types available for future implementation
+  // const actionTypesValues = [
+  //   "contact",
+  //   "scheduleTour",
+  //   "performTour",
+  //   "apply",
+  //   "",
+  // ];
+  // const actionTypes = actionTypesValues.map((value) => ({
+  //   label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
+  //   value,
+  // }));
 
   useEffect(() => {
-    console.log("status has changed?", updatedLeadStatus);
     if (updatedLeadStatus) {
       switch (updatedLeadStatus) {
         case SETTINGS.statusOptions.inProgress:
-          // Set next action date to tomorrow when status becomes inProgress
+        case SETTINGS.statusOptions.toured:
+          // Set next action date to tomorrow when status becomes inProgress or toured
           const tomorrow = dayjs().add(1, "day").toDate();
           setNextActionDate(tomorrow);
           break;
 
         default:
           setNextActionDate(selectedLeadItem.nextAction);
-
           break;
       }
     }
