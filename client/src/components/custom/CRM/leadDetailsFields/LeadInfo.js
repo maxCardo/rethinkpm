@@ -43,18 +43,32 @@ const LeadInfo = ({
     setLeadInfoData((prevData) => ({ ...prevData, status: selected.value }));
   };
 
-  const handleLeadTempChange = (selected) => {
+  const handleLeadTempChange = (tempValue) => {
     setLeadInfoData((prevData) => ({
       ...prevData,
-      leadTemperature: selected.value,
+      leadTemperature: tempValue,
     }));
+  };
+
+  const handleLeadStatusChange = (selectedStatus) => {
+    switch (selectedStatus) {
+      case SETTINGS.statusOptions.tourPending:
+        // If tour is pendign - changed the leadTemperature to "hot" by default
+        handleLeadTempChange(SETTINGS.temperatureOptions.hot);
+        break;
+      default:
+        handleLeadTempChange(selectedLeadItem.leadTemperature);
+        break;
+    }
   };
 
   useEffect(() => {
     // Send leadInfoData to parent when it changes
     if (onLeadInfoChange) {
+      handleLeadStatusChange(leadInfoData.status);
       onLeadInfoChange(leadInfoData);
     }
+    // eslint-disable-next-line
   }, [leadInfoData, onLeadInfoChange]);
 
   return (
