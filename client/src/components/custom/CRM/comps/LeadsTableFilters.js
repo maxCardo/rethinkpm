@@ -1,12 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Select from "react-select";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
+import { useDebounce } from "../../../../util/hooks";
 
 const LeadsTableFilters = ({ filterListByQuery, settings }) => {
   const [selectedField, setSelectedField] = useState({});
   const [selectedValue, setSelectedValue] = useState(null);
   const [fieldValOptions, setFieldValOptions] = useState({});
   const [filters, setFilters] = useState({ search: "", field: "", value: "" });
+
+  // Debounce the search input with 500ms delay
+  const debouncedSearchTerm = useDebounce(filters.search, 500);
+
+  // Memoized debounced filters object
+  const debouncedFilters = useMemo(
+    () => ({
+      ...filters,
+      search: debouncedSearchTerm,
+    }),
+    [filters, debouncedSearchTerm]
+  );
 
   const FIELDS = [
     {
@@ -66,6 +79,18 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     setSelectedField(field);
   };
 
+  const handleFieldValChange = useCallback(
+    (fieldVal) => {
+      setSelectedValue(fieldVal);
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        field: selectedField.value,
+        value: fieldVal.value || "",
+      }));
+    },
+    [selectedField.value]
+  );
+
   useEffect(() => {
     // if selected 'All' - show all (no field filter)
     if (selectedField.value === settings.filterFields.all) {
@@ -75,20 +100,12 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     setFieldValOptions(selectedField.valOptions);
     // Reset selected value when field changes
     setSelectedValue(null);
-  }, [selectedField]);
+  }, [selectedField, handleFieldValChange, settings.filterFields.all]);
 
   useEffect(() => {
-    filterListByQuery(filters);
-  }, [filters, filterListByQuery]);
-
-  const handleFieldValChange = (fieldVal) => {
-    setSelectedValue(fieldVal);
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      field: selectedField.value,
-      value: fieldVal.value || "",
-    }));
-  };
+    // Call API with debounced search term and immediate field/value changes
+    filterListByQuery(debouncedFilters);
+  }, [debouncedFilters, filterListByQuery]);
 
   const handleInputChange = (expression) => {
     // Sanitize the input expression

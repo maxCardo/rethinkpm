@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { connect } from "react-redux";
-// import IconButton from "../../core/IconButton/IconButton";
 import Table from "../../core/newTable/_Table";
 import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
-// import leaseLeads from "../../../reducers/leaseLeads";
-import { Chip, Button } from "@mui/material";
-import { FaFire, FaSnowflake, FaCloudSun, FaPlus } from "react-icons/fa";
+import { Chip } from "@mui/material";
+import { FaFire, FaSnowflake, FaCloudSun } from "react-icons/fa";
 import { FcNeutralTrading } from "react-icons/fc";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
 import axios from "axios";
@@ -33,6 +31,9 @@ const LeaseLeadRecords = ({
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+
+  // Ref to store the current request's abort controller
+  const abortControllerRef = useRef(null);
   const NAVBAR_HEIGHT = 80;
 
   /* Tabs option */
@@ -128,9 +129,19 @@ const LeaseLeadRecords = ({
     setUpdatedLeadsList(initLeadsList);
   }, [initLeadsList]);
 
-  const filterListByQuery = React.useCallback(
+  const filterListByQuery = useCallback(
     async (filters) => {
       const { search, field, value } = filters;
+
+      // Cancel previous request if it exists
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      // Create new abort controller for this request
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
+
       try {
         let queryParams = new URLSearchParams();
         // Add search parameter if provided
@@ -149,17 +160,37 @@ const LeaseLeadRecords = ({
 
         console.log("Making filter request to:", url);
 
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          signal: abortController.signal,
+        });
 
-        setUpdatedLeadsList(response.data);
+        // Only update state if the request wasn't aborted
+        if (!abortController.signal.aborted) {
+          setUpdatedLeadsList(response.data);
+        }
       } catch (err) {
+        // Don't show error if request was aborted
+        if (err.name === "AbortError") {
+          console.log("Request was aborted");
+          return;
+        }
+
         console.error("Failed to filter leads:", err);
         // Fallback to showing all leads if query fails
         setUpdatedLeadsList(initLeadsList);
       }
     },
-    [initLeadsList]
+    [initLeadsList, settings.filterFields.all]
   );
+
+  // Cleanup function to abort pending requests on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   const setLeadStatusBgColor = (status) => {
     switch (status) {
