@@ -7,6 +7,8 @@ const ContactInfo = ({
   selectedLeadItem,
   isEditMode = false,
   onContactInfoChange,
+  validationErrors = {},
+  clearValidationError,
 }) => {
   // Default values from the server
   const { firstName, lastName, fullName, email, phoneNumbers } =
@@ -41,6 +43,11 @@ const ContactInfo = ({
       updatedEmail[index] = { ...updatedEmail[index], address: value };
       return { ...prevData, email: updatedEmail };
     });
+
+    // Clear validation error when user starts typing
+    if (clearValidationError) {
+      clearValidationError(`email_${index}`);
+    }
   };
 
   const handlePhoneChange = (index, value) => {
@@ -49,6 +56,11 @@ const ContactInfo = ({
       updatedPhones[index] = { ...updatedPhones[index], number: value };
       return { ...prevData, phoneNumbers: updatedPhones };
     });
+
+    // Clear validation error when user starts typing
+    if (clearValidationError) {
+      clearValidationError(`phone_${index}`);
+    }
   };
 
   // Add new email field
@@ -195,6 +207,16 @@ const ContactInfo = ({
                       ? handleAddEmail
                       : null
                   }
+                  hasError={
+                    !!validationErrors[
+                      `email_${originalIndex >= 0 ? originalIndex : idx}`
+                    ]
+                  }
+                  errorMessage={
+                    validationErrors[
+                      `email_${originalIndex >= 0 ? originalIndex : idx}`
+                    ] || ""
+                  }
                 />
               </div>
               <div className="flex-shrink-0 mb-1">
@@ -258,6 +280,16 @@ const ContactInfo = ({
                     idx === getDisplayPhoneNumbers().length - 1
                       ? handleAddPhone
                       : null
+                  }
+                  hasError={
+                    !!validationErrors[
+                      `phone_${originalIndex >= 0 ? originalIndex : idx}`
+                    ]
+                  }
+                  errorMessage={
+                    validationErrors[
+                      `phone_${originalIndex >= 0 ? originalIndex : idx}`
+                    ] || ""
                   }
                 />
               </div>

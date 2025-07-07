@@ -11,6 +11,8 @@ const CustomInput = ({
   type,
   appendIcon,
   onAppendClick,
+  hasError = false,
+  errorMessage = "",
 }) => {
   return (
     <div className="flex flex-col">
@@ -21,7 +23,10 @@ const CustomInput = ({
           className={`form-control my-2 custom-input ${
             appendIcon ? "pr-10" : ""
           }`}
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            borderColor: hasError ? "red" : undefined,
+          }}
           tabIndex={0}
           onChange={onChange}
           placeholder={placeholder || label}
@@ -40,6 +45,9 @@ const CustomInput = ({
           </div>
         )}
       </div>
+      {hasError && errorMessage && (
+        <div className="text-red-500 text-sm mt-1">{errorMessage}</div>
+      )}
     </div>
   );
 };

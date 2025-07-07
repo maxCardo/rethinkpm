@@ -11,6 +11,10 @@ import {
   createSuccessAlert,
   createErrorAlert,
 } from "../../../../actions/alert";
+import {
+  validateEmail,
+  validatePhoneNum,
+} from "../../../../util/commonFunctions";
 import axios from "axios";
 
 const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
@@ -19,6 +23,37 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
   const [leadInfoData, setLeadInfoData] = useState({});
   const [contactInfoData, setContactInfoData] = useState({});
   const [isSaving, setIsSaving] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+
+  // Validation function
+  const validateContactData = (data) => {
+    const errors = {};
+
+    // Validate emails (skip index 0)
+    if (data.email && Array.isArray(data.email)) {
+      data.email.forEach((emailObj, index) => {
+        if (index > 0 && emailObj.address && emailObj.address.trim()) {
+          if (!validateEmail(emailObj.address)) {
+            errors[`email_${index}`] = "Please enter a valid email address";
+          }
+        }
+      });
+    }
+
+    // Validate phone numbers (skip index 0)
+    if (data.phoneNumbers && Array.isArray(data.phoneNumbers)) {
+      data.phoneNumbers.forEach((phoneObj, index) => {
+        if (index > 0 && phoneObj.number && phoneObj.number.trim()) {
+          if (!validatePhoneNum(phoneObj.number)) {
+            errors[`phone_${index}`] =
+              "Please enter a valid phone number (10 digits)";
+          }
+        }
+      });
+    }
+
+    return errors;
+  };
 
   const handleToggleEdit = () => {
     setIsEditMode(!isEditMode);
@@ -40,6 +75,23 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
         Object.keys(leadInfoData).length > 0 ? leadInfoData : {},
         Object.keys(contactInfoData).length > 0 ? contactInfoData : {}
       );
+
+      // Validate contact data before saving
+      const errors = validateContactData(updatedLead);
+      if (Object.keys(errors).length > 0) {
+        setValidationErrors(errors);
+        dispatch(
+          createErrorAlert(
+            "Please fix validation errors before saving.",
+            "LeadDetails"
+          )
+        );
+        setIsSaving(false);
+        return;
+      }
+
+      // Clear validation errors if validation passes
+      setValidationErrors({});
 
       // Update lead
       const response = await axios.put(
@@ -108,6 +160,14 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
     }
   };
 
+  const clearValidationError = (errorKey) => {
+    setValidationErrors((prev) => {
+      const updated = { ...prev };
+      delete updated[errorKey];
+      return updated;
+    });
+  };
+
   return (
     <div className="lead-details relative flex flex-col gap-5 px-2 h-auto">
       {/* Edit Controls */}
@@ -127,6 +187,8 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
             selectedLeadItem={selectedLeadItem}
             isEditMode={isEditMode}
             onContactInfoChange={handleContactInfoChange}
+            validationErrors={validationErrors}
+            clearValidationError={clearValidationError}
           />
         </div>
         {/* Lead Notes */}
