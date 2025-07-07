@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 import { AiOutlinePlus } from "react-icons/ai";
-import { Button, Snackbar, Alert } from "@mui/material";
+import { Button } from "@mui/material";
 import MaterialModal from "../../../ui/MaterialModal";
+import UpdateAlert from "../../../core/Alert";
+import { useDispatch } from "react-redux";
+import {
+  createSuccessAlert,
+  createErrorAlert,
+} from "../../../../actions/alert";
 import axios from "axios";
 
 const LeadNotes = ({ selectedLeadItem }) => {
+  const dispatch = useDispatch();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
   const [leadNotesList, setLeadNotesList] = useState([]);
   const [newNote, setNewNote] = useState({ type: "note", content: "" });
   const [isSaving, setIsSaving] = useState(false);
-  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
 
   useEffect(() => {
     setLeadNotesList(selectedLeadItem.notes || []);
@@ -37,7 +43,7 @@ const LeadNotes = ({ selectedLeadItem }) => {
         setLeadNotesList(updatedLead.notes);
         setNewNote({ type: "note", content: "" });
         setIsAddNoteModalOpen(false);
-        setShowSuccessSnackbar(true);
+        dispatch(createSuccessAlert("Note added successfully!", "LeadNotes"));
 
         // Scroll to bottom of notes box
         setTimeout(() => {
@@ -48,9 +54,15 @@ const LeadNotes = ({ selectedLeadItem }) => {
         }, 100);
       } else {
         console.error("Failed to add note:", response.statusText);
+        dispatch(
+          createErrorAlert("Failed to add note. Please try again.", "LeadNotes")
+        );
       }
     } catch (error) {
       console.error("Error adding note:", error);
+      dispatch(
+        createErrorAlert("Failed to add note. Please try again.", "LeadNotes")
+      );
     } finally {
       setIsSaving(false);
     }
@@ -137,21 +149,8 @@ const LeadNotes = ({ selectedLeadItem }) => {
         />
       </MaterialModal>
 
-      {/* Success Snackbar */}
-      <Snackbar
-        open={showSuccessSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setShowSuccessSnackbar(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setShowSuccessSnackbar(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Note added successfully!
-        </Alert>
-      </Snackbar>
+      {/* Alert System */}
+      <UpdateAlert />
     </div>
   );
 };

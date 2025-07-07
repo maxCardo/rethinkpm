@@ -197,20 +197,19 @@ const ContactInfo = ({
                   }
                 />
               </div>
-              {isEditMode && (
-                <div className="flex-shrink-0">
-                  <MaterialCheckbox
-                    label="Primary"
-                    checked={em.isPrimary || false}
-                    onChange={(e) =>
-                      handleEmailPrimaryChange(
-                        originalIndex >= 0 ? originalIndex : idx,
-                        e.target.checked
-                      )
-                    }
-                  />
-                </div>
-              )}
+              <div className="flex-shrink-0 mb-1">
+                <MaterialCheckbox
+                  label="Primary"
+                  checked={em.isPrimary || false}
+                  disabled={!isEditMode}
+                  onChange={(e) =>
+                    handleEmailPrimaryChange(
+                      originalIndex >= 0 ? originalIndex : idx,
+                      e.target.checked
+                    )
+                  }
+                />
+              </div>
             </div>
           );
         })}
@@ -262,20 +261,19 @@ const ContactInfo = ({
                   }
                 />
               </div>
-              {isEditMode && (
-                <div className="flex-shrink-0">
-                  <MaterialCheckbox
-                    label="Primary"
-                    checked={ph.isPrimary || false}
-                    onChange={(e) =>
-                      handlePhonePrimaryChange(
-                        originalIndex >= 0 ? originalIndex : idx,
-                        e.target.checked
-                      )
-                    }
-                  />
-                </div>
-              )}
+              <div className="flex-shrink-0 mb-1">
+                <MaterialCheckbox
+                  label="Primary"
+                  checked={ph.isPrimary || false}
+                  disabled={!isEditMode}
+                  onChange={(e) =>
+                    handlePhonePrimaryChange(
+                      originalIndex >= 0 ? originalIndex : idx,
+                      e.target.checked
+                    )
+                  }
+                />
+              </div>
             </div>
           );
         })}

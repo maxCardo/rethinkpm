@@ -98,8 +98,9 @@ const LeadInfo = ({
               return (
                 <Chip
                   key={index}
+                  size="small"
                   color={
-                    st.value === selectedLeadItem.status ? "primary" : "default"
+                    st.value === leadInfoData.status ? "primary" : "default"
                   }
                   label={st.label}
                 />

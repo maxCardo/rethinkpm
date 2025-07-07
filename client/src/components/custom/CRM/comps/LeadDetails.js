@@ -3,17 +3,22 @@ import LeadInfo from "../leadDetailsFields/LeadInfo";
 import LeadNotes from "../leadDetailsFields/LeadNotes";
 import LeadNextAction from "../leadDetailsFields/LeadNextAction";
 import LeadEditControls from "../leadDetailsFields/LeadEditControls";
-import { Divider, Snackbar, Alert } from "@mui/material";
+import UpdateAlert from "../../../core/Alert";
+import { Divider } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  createSuccessAlert,
+  createErrorAlert,
+} from "../../../../actions/alert";
 import axios from "axios";
 
 const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
+  const dispatch = useDispatch();
   const [isEditMode, setIsEditMode] = useState(false);
   const [leadInfoData, setLeadInfoData] = useState({});
   const [contactInfoData, setContactInfoData] = useState({});
   const [isSaving, setIsSaving] = useState(false);
-  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
   const handleToggleEdit = () => {
     setIsEditMode(!isEditMode);
@@ -44,7 +49,12 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
 
       if (response.status === 200) {
         console.log("Lead updated successfully:", response.data);
-        setShowSuccessSnackbar(true);
+        dispatch(
+          createSuccessAlert(
+            "Lead details updated successfully!",
+            "LeadDetails"
+          )
+        );
         setIsEditMode(false);
         // Clear the temporary data
         setLeadInfoData({});
@@ -55,7 +65,12 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
         }
       } else {
         console.error("Failed to update lead:", response.statusText);
-        setShowErrorSnackbar(true);
+        dispatch(
+          createErrorAlert(
+            "Failed to update lead details. Please try again.",
+            "LeadDetails"
+          )
+        );
       }
     } catch (err) {
       console.error("Error updating lead:", err);
@@ -63,7 +78,12 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
         console.error("Error response data:", err.response.data);
         console.error("Error response status:", err.response.status);
       }
-      setShowErrorSnackbar(true);
+      dispatch(
+        createErrorAlert(
+          "Failed to update lead details. Please try again.",
+          "LeadDetails"
+        )
+      );
     } finally {
       setIsSaving(false);
     }
@@ -144,38 +164,9 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
           />
         </div>
       </div>
-      {/* TODO: Change it to a simple snackbar */}
-      {/* Success Snackbar */}
-      <Snackbar
-        open={showSuccessSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setShowSuccessSnackbar(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setShowSuccessSnackbar(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Lead details updated successfully!
-        </Alert>
-      </Snackbar>
 
-      {/* Error Snackbar */}
-      <Snackbar
-        open={showErrorSnackbar}
-        autoHideDuration={4000}
-        onClose={() => setShowErrorSnackbar(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setShowErrorSnackbar(false)}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          Failed to update lead details. Please try again.
-        </Alert>
-      </Snackbar>
+      {/* Alert System */}
+      <UpdateAlert />
     </div>
   );
 };
