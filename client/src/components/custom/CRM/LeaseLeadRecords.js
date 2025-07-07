@@ -31,7 +31,6 @@ const LeaseLeadRecords = ({
   const [tabKey, setTabKey] = useState(TAB_KEYS.Table);
   const [initLeadsList, setInitLeadsList] = useState([]);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const NAVBAR_HEIGHT = 80;
@@ -102,12 +101,12 @@ const LeaseLeadRecords = ({
       },
     },
     {
-      accessor: "lastContact",
-      label: "Last Contact",
+      accessor: "updateDate",
+      label: "Update Date",
       reactComponent: true,
       render: (item) => {
-        if (!item.lastContact) return "";
-        const date = dayjs(item.lastContact);
+        if (!item.updateDate) return "";
+        const date = dayjs(item.updateDate);
         return date.isValid() ? date.format("MM/DD/YYYY") : "";
       },
     },
