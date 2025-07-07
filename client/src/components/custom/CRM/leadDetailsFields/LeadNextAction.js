@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import CustomInput from "../../../ui/CustomInput/CustomInput";
+import { useEffect } from "react";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -12,35 +12,43 @@ const LeadNextAction = ({
 }) => {
   const SETTINGS = settings.routes.leaseLead;
 
+  //  Action types available for future implementation
+  const actionTypesOpt = {
+    contact: "contact",
+    scheduleTour: "schedule Tour",
+    performTour: "perform Tour",
+    apply: "apply",
+  };
+
   const [nextActionDate, setNextActionDate] = useState(
     selectedLeadItem.nextAction
   );
-
-  // Action types available for future implementation
-  // const actionTypesValues = [
-  //   "contact",
-  //   "scheduleTour",
-  //   "performTour",
-  //   "apply",
-  //   "",
-  // ];
-  // const actionTypes = actionTypesValues.map((value) => ({
-  //   label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
-  //   value,
-  // }));
+  const [nextActionType, setNextActionType] = useState(actionTypesOpt.contact);
 
   useEffect(() => {
     if (updatedLeadStatus) {
+      const tomorrow = dayjs().add(1, "day").toDate();
       switch (updatedLeadStatus) {
+        case SETTINGS.statusOptions.new:
+          setNextActionType(actionTypesOpt.contact);
+          break;
         case SETTINGS.statusOptions.inProgress:
-        case SETTINGS.statusOptions.toured:
+          setNextActionType(actionTypesOpt.scheduleTour);
           // Set next action date to tomorrow when status becomes inProgress or toured
-          const tomorrow = dayjs().add(1, "day").toDate();
           setNextActionDate(tomorrow);
           break;
-
+        case SETTINGS.statusOptions.tourPending:
+          setNextActionType(actionTypesOpt.performTour);
+          break;
+        case SETTINGS.statusOptions.toured:
+          setNextActionType(actionTypesOpt.apply);
+          // Set next action date to tomorrow when status becomes inProgress or toured
+          setNextActionDate(tomorrow);
+          break;
         default:
+          // Default - current nextAction date and empty action type
           setNextActionDate(selectedLeadItem.nextAction);
+          setNextActionType("");
           break;
       }
     }
@@ -103,7 +111,7 @@ const LeadNextAction = ({
             inputId={"nextActionType"}
             label={"Next Action Type"}
             inputStyle={{ width: "20vw" }}
-            placeholder={capitalizeFirstLetter("contact")}
+            placeholder={capitalizeFirstLetter(nextActionType)}
             readonly={true}
           />
         </div>
