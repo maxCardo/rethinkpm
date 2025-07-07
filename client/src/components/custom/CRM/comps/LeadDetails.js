@@ -78,17 +78,12 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
 
   const handleLeadInfoChange = (leadInfoDataReceived) => {
     if (isEditMode) {
-      console.log("Lead info data received from child:", leadInfoDataReceived);
       setLeadInfoData(leadInfoDataReceived);
     }
   };
 
   const handleContactInfoChange = (contactInfoDataReceived) => {
     if (isEditMode) {
-      console.log(
-        "Contact info data received from child:",
-        contactInfoDataReceived
-      );
       setContactInfoData(contactInfoDataReceived);
     }
   };
