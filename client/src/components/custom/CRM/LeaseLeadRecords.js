@@ -54,16 +54,17 @@ const LeaseLeadRecords = ({
     {
       accessor: "fullName",
       label: "Name",
-      width: CELL_WIDTH_SIZES.Large,
+      width: CELL_WIDTH_SIZES.Medium,
     },
     {
       accessor: "listingAddress",
       label: "Address",
+      width: CELL_WIDTH_SIZES.Medium,
     },
     {
       accessor: "leadSource",
       label: "Lead Source",
-      width: CELL_WIDTH_SIZES.Small,
+      width: CELL_WIDTH_SIZES.Medium,
     },
     {
       reactComponent: true,
@@ -117,7 +118,7 @@ const LeaseLeadRecords = ({
     },
     {
       accessor: "updateDate",
-      label: "Update Date",
+      label: "Last Update",
       reactComponent: true,
       width: CELL_WIDTH_SIZES.Small,
       render: (item) => {
