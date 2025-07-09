@@ -32,8 +32,8 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
     // Validate emails (skip index 0)
     if (data.email && Array.isArray(data.email)) {
       data.email.forEach((emailObj, index) => {
-        if (index > 0 && emailObj.address && emailObj.address.trim()) {
-          if (!validateEmail(emailObj.address)) {
+        if (index > 0) {
+          if (!validateEmail(emailObj.address) || !emailObj.address.trim()) {
             errors[`email_${index}`] = "Please enter a valid email address";
           }
         }
@@ -43,8 +43,8 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
     // Validate phone numbers (skip index 0)
     if (data.phoneNumbers && Array.isArray(data.phoneNumbers)) {
       data.phoneNumbers.forEach((phoneObj, index) => {
-        if (index > 0 && phoneObj.number && phoneObj.number.trim()) {
-          if (!validatePhoneNum(phoneObj.number)) {
+        if (index > 0) {
+          if (!validatePhoneNum(phoneObj.number) || !phoneObj.number.trim()) {
             errors[`phone_${index}`] =
               "Please enter a valid phone number (10 digits)";
           }
