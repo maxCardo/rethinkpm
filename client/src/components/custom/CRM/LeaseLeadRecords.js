@@ -42,11 +42,19 @@ const LeaseLeadRecords = ({
     // { key: TAB_KEYS.Tour, title: "Tour Tracking" },
   ];
 
+  const CELL_WIDTH_SIZES = {
+    XSmall: "5%",
+    Small: "10%",
+    Medium: "15%",
+    Large: "20%",
+  };
+
   /* Headers */
   const TABLE_HEADERS = [
     {
       accessor: "fullName",
       label: "Name",
+      width: CELL_WIDTH_SIZES.Large,
     },
     {
       accessor: "listingAddress",
@@ -55,6 +63,7 @@ const LeaseLeadRecords = ({
     {
       accessor: "leadSource",
       label: "Lead Source",
+      width: CELL_WIDTH_SIZES.Small,
     },
     {
       reactComponent: true,
@@ -75,26 +84,31 @@ const LeaseLeadRecords = ({
     {
       accessor: "leadOwner",
       label: "Lead Owner",
+      width: CELL_WIDTH_SIZES.Small,
     },
     {
       reactComponent: true,
       accessor: "leadTemperature",
       label: "Temperature",
       render: (item) => (
-        <>
-          {item.leadTemperature && (
+        <div style={{ minHeight: 32, display: "flex", alignItems: "center" }}>
+          {item.leadTemperature ? (
             <Chip
               avatar={setLeadTempIcon(item.leadTemperature)}
               label={capitalizeFirstLetter(item.leadTemperature)}
             />
+          ) : (
+            // Empty Chip for consistent height/space
+            <div style={{ width: 80, height: 32 }} />
           )}
-        </>
+        </div>
       ),
     },
     {
       accessor: "nextAction",
       label: "Next Action",
       reactComponent: true,
+      width: CELL_WIDTH_SIZES.Small,
       render: (item) => {
         if (!item.nextAction) return "";
         const date = dayjs(item.nextAction);
@@ -105,6 +119,7 @@ const LeaseLeadRecords = ({
       accessor: "updateDate",
       label: "Update Date",
       reactComponent: true,
+      width: CELL_WIDTH_SIZES.Small,
       render: (item) => {
         if (!item.updateDate) return "";
         const date = dayjs(item.updateDate);

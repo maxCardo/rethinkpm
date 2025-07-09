@@ -51,6 +51,7 @@ const TableHeader = ({
             align={setHeaderAlign(rec)}
             padding={rec.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === rec.accessor ? order : false}
+            width={rec.width || "auto"}
           >
             <TableSortLabel
               active={orderBy === rec.accessor}
