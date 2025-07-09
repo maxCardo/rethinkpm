@@ -308,6 +308,7 @@ const LeaseLeadRecords = ({
                 _orderBy={"nextAction"}
                 _order={"desc"}
                 handleClickRow={handleWatchLeadDetails}
+                tableCellStyle={{ cursor: "pointer" }}
               />
             )}
             {/* Lead Details Modal */}

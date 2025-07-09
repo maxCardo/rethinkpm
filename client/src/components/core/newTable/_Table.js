@@ -29,6 +29,7 @@ const TableComp = ({
   withCheckboxSelection = true,
   tableWrapperStyle,
   focusedOnItem,
+  tableCellStyle,
 }) => {
   const [tableData, setTableData] = useState([]);
   const [order, setOrder] = useState(_order || "asc");
@@ -136,6 +137,7 @@ const TableComp = ({
                             align="left"
                             key={i}
                             onClick={() => handleClickRow(row)}
+                            style={tableCellStyle}
                           >
                             {getData(row, header)}
                           </TableCell>
