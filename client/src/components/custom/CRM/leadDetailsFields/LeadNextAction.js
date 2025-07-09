@@ -48,7 +48,7 @@ const LeadNextAction = ({
         default:
           // Default - current nextAction date and empty action type
           setNextActionDate(selectedLeadItem.nextAction);
-          setNextActionType("");
+          setNextActionType("N/A");
           break;
       }
     }

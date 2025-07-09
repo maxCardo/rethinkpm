@@ -113,10 +113,6 @@ const LeadInfo = ({
           <CustomReactSelect
             options={temperatureOpt}
             label={"Lead Temperature"}
-            value={getSelectedOption(
-              temperatureOpt,
-              leadInfoData.leadTemperature
-            )}
             placeholder={capitalizeFirstLetter(
               selectedLeadItem.leadTemperature
             )}

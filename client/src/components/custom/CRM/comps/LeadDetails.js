@@ -217,11 +217,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
             isEditMode={isEditMode}
             // If status has changed - send to child component
             updatedLeadStatus={
-              leadInfoData &&
-              leadInfoData.status &&
-              leadInfoData.status !== selectedLeadItem.status
-                ? leadInfoData.status
-                : ""
+              leadInfoData && leadInfoData.status ? leadInfoData.status : ""
             }
           />
         </div>
