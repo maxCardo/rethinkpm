@@ -37,10 +37,14 @@ const leaseLeadSchema = new mongoose.Schema({
   ],
   status: {
     type: String,
-    enum: ["new", "lost"],
+    enum: ["new", "inProgress", "tourPending", "toured", "applied", "lost"],
     default: "new",
   },
-  reasonForLoss: String,
+  reasonForLoss: {
+    type: String,
+    enum: ["noResponse", "notInterested", "rejected", ""],
+    default: "",
+  },
   leadOwner: {
     type: String,
     default: "System",
@@ -48,7 +52,7 @@ const leaseLeadSchema = new mongoose.Schema({
   leadSource: String,
   leadTemperature: {
     type: String,
-    enum: ["hot", "warm", "cold", ""],
+    enum: ["neutral", "hot", "cold", "warm", ""],
     default: "",
   },
   createDate: {
