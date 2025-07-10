@@ -32,8 +32,8 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
     // Validate emails (skip index 0)
     if (data.email && Array.isArray(data.email)) {
       data.email.forEach((emailObj, index) => {
-        if (index > 0) {
-          if (!validateEmail(emailObj.address) || !emailObj.address.trim()) {
+        if (index > 0 && emailObj.address && emailObj.address.trim()) {
+          if (!validateEmail(emailObj.address)) {
             errors[`email_${index}`] = "Please enter a valid email address";
           }
         }
@@ -43,8 +43,8 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
     // Validate phone numbers (skip index 0)
     if (data.phoneNumbers && Array.isArray(data.phoneNumbers)) {
       data.phoneNumbers.forEach((phoneObj, index) => {
-        if (index > 0) {
-          if (!validatePhoneNum(phoneObj.number) || !phoneObj.number.trim()) {
+        if (index > 0 && phoneObj.number && phoneObj.number.trim()) {
+          if (!validatePhoneNum(phoneObj.number)) {
             errors[`phone_${index}`] =
               "Please enter a valid phone number (10 digits)";
           }
@@ -156,6 +156,16 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
 
   const handleContactInfoChange = (contactInfoDataReceived) => {
     if (isEditMode) {
+      // Filter out empty email addresses and phone numbers before saving
+      let { email, phoneNumbers } = contactInfoDataReceived;
+      if (email?.length) {
+        email = email.filter((e) => e.address?.trim());
+      }
+
+      if (phoneNumbers?.length) {
+        phoneNumbers = phoneNumbers.filter((p) => p.number?.trim());
+      }
+
       setContactInfoData(contactInfoDataReceived);
     }
   };

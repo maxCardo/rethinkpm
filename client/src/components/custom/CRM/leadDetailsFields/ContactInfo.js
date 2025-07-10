@@ -202,11 +202,7 @@ const ContactInfo = ({
                       <FaPlus />
                     ) : null
                   }
-                  onAppendClick={
-                    idx === getDisplayEmails().length - 1
-                      ? handleAddEmail
-                      : null
-                  }
+                  onAppendClick={handleAddEmail}
                   hasError={
                     !!validationErrors[
                       `email_${originalIndex >= 0 ? originalIndex : idx}`
@@ -276,11 +272,7 @@ const ContactInfo = ({
                       <FaPlus />
                     ) : null
                   }
-                  onAppendClick={
-                    idx === getDisplayPhoneNumbers().length - 1
-                      ? handleAddPhone
-                      : null
-                  }
+                  onAppendClick={handleAddPhone}
                   hasError={
                     !!validationErrors[
                       `phone_${originalIndex >= 0 ? originalIndex : idx}`
