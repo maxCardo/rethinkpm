@@ -189,9 +189,12 @@ const LeaseLeadRecords = ({
         if (err.name === "AbortError") {
           console.log("Request was aborted");
           return;
+        } else if (err.name === "CanceledError") {
+          // console.error("Request was canceled:", err);
+        } else {
+          console.error("Failed to filter leads:", err);
         }
 
-        console.error("Failed to filter leads:", err);
         // Fallback to showing all leads if query fails
         setUpdatedLeadsList(initLeadsList);
       }
