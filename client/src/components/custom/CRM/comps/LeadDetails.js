@@ -69,12 +69,23 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
       setIsSaving(true);
 
       // Merge the updated data with the original lead item
-      const updatedLead = Object.assign(
+      let updatedLead = Object.assign(
         {},
         selectedLeadItem,
         Object.keys(leadInfoData).length > 0 ? leadInfoData : {},
         Object.keys(contactInfoData).length > 0 ? contactInfoData : {}
       );
+
+      // Filter out empty email addresses and phone numbers before saving
+      if (updatedLead.email?.length) {
+        updatedLead.email = updatedLead.email.filter((e) => e.address?.trim());
+      }
+
+      if (updatedLead.phoneNumbers?.length) {
+        updatedLead.phoneNumbers = updatedLead.phoneNumbers.filter((p) =>
+          p.number?.trim()
+        );
+      }
 
       // Validate contact data before saving
       const errors = validateContactData(updatedLead);
@@ -156,16 +167,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
 
   const handleContactInfoChange = (contactInfoDataReceived) => {
     if (isEditMode) {
-      // Filter out empty email addresses and phone numbers before saving
-      let { email, phoneNumbers } = contactInfoDataReceived;
-      if (email?.length) {
-        email = email.filter((e) => e.address?.trim());
-      }
-
-      if (phoneNumbers?.length) {
-        phoneNumbers = phoneNumbers.filter((p) => p.number?.trim());
-      }
-
+      // Just store the data as received, filtering will happen during save
       setContactInfoData(contactInfoDataReceived);
     }
   };

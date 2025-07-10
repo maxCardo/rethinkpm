@@ -107,36 +107,64 @@ const ContactInfo = ({
     }
   }, [contactInfoData, onContactInfoChange]);
 
-  // Filter out empty fields when not in edit mode, but always show at least one field
-  const getDisplayEmails = () => {
-    if (isEditMode) {
-      const emails = contactInfoData.email || [];
-      // Always show at least one email field in edit mode
-      return emails.length > 0 ? emails : [{ address: "", isPrimary: false }];
-    }
-    const filteredEmails = (contactInfoData.email || []).filter(
-      (em) => em.address && em.address.trim() !== ""
-    );
-    // Always show at least one email field
-    return filteredEmails.length > 0
-      ? filteredEmails
-      : [{ address: "", isPrimary: false }];
-  };
+  // Reset empty fields when save/cancel (when isEditMode becomes false)
+  useEffect(() => {
+    if (!isEditMode) {
+      // Filter out empty email addresses and phone numbers
+      const filteredEmails = (email || []).filter(
+        (em) => em.address && em.address.trim() !== ""
+      );
+      const filteredPhones = (phoneNumbers || []).filter(
+        (ph) => ph.number && ph.number.trim() !== ""
+      );
 
-  const getDisplayPhoneNumbers = () => {
-    if (isEditMode) {
-      const phones = contactInfoData.phoneNumbers || [];
-      // Always show at least one phone field in edit mode
-      return phones.length > 0 ? phones : [{ number: "", isPrimary: false }];
+      // Reset to original data with filtered empty fields
+      setContactInfoData({
+        firstName,
+        lastName,
+        fullName,
+        email:
+          filteredEmails.length > 0
+            ? filteredEmails
+            : [{ address: "", isPrimary: false }],
+        phoneNumbers:
+          filteredPhones.length > 0
+            ? filteredPhones
+            : [{ number: "", isPrimary: false }],
+      });
     }
-    const filteredPhones = (contactInfoData.phoneNumbers || []).filter(
-      (ph) => ph.number && ph.number.trim() !== ""
-    );
-    // Always show at least one phone field
-    return filteredPhones.length > 0
-      ? filteredPhones
-      : [{ number: "", isPrimary: false }];
-  };
+  }, [isEditMode, firstName, lastName, fullName, email, phoneNumbers]);
+
+  // Filter out empty fields when not in edit mode, but always show at least one field
+  // const getDisplayEmails = () => {
+  //   if (isEditMode) {
+  //     const emails = contactInfoData.email || [];
+  //     // Always show at least one email field in edit mode
+  //     return emails.length > 0 ? emails : [{ address: "", isPrimary: false }];
+  //   }
+  //   const filteredEmails = (contactInfoData.email || []).filter(
+  //     (em) => em.address && em.address.trim() !== ""
+  //   );
+  //   // Always show at least one email field
+  //   return filteredEmails.length > 0
+  //     ? filteredEmails
+  //     : [{ address: "", isPrimary: false }];
+  // };
+
+  // const getDisplayPhoneNumbers = () => {
+  //   if (isEditMode) {
+  //     const phones = contactInfoData.phoneNumbers || [];
+  //     // Always show at least one phone field in edit mode
+  //     return phones.length > 0 ? phones : [{ number: "", isPrimary: false }];
+  //   }
+  //   const filteredPhones = (contactInfoData.phoneNumbers || []).filter(
+  //     (ph) => ph.number && ph.number.trim() !== ""
+  //   );
+  //   // Always show at least one phone field
+  //   return filteredPhones.length > 0
+  //     ? filteredPhones
+  //     : [{ number: "", isPrimary: false }];
+  // };
 
   return (
     <div className="contact-info__wrapper">
@@ -165,7 +193,7 @@ const ContactInfo = ({
       </div>
       {/* Email */}
       <div className="flex flex-col w-full">
-        {getDisplayEmails().map((em, idx) => {
+        {contactInfoData.email.map((em, idx) => {
           // Get the original index for edit mode operations
           const originalIndex = isEditMode
             ? idx
@@ -181,7 +209,7 @@ const ContactInfo = ({
                 <CustomInput
                   inputId={`email-${originalIndex >= 0 ? originalIndex : idx}`}
                   label={`Email${
-                    getDisplayEmails().length > 1 ? ` #${idx + 1}` : ""
+                    contactInfoData.email.length > 1 ? ` #${idx + 1}` : ""
                   }`}
                   inputStyle={{ width: "100%" }}
                   value={em.address || ""}
@@ -198,7 +226,7 @@ const ContactInfo = ({
                     )
                   }
                   appendIcon={
-                    isEditMode && idx === getDisplayEmails().length - 1 ? (
+                    isEditMode && idx === contactInfoData.email.length - 1 ? (
                       <FaPlus />
                     ) : null
                   }
@@ -234,7 +262,7 @@ const ContactInfo = ({
       </div>
       {/* Phone Numbers */}
       <div className="flex flex-col w-full mb-2">
-        {getDisplayPhoneNumbers().map((ph, idx) => {
+        {contactInfoData.phoneNumbers.map((ph, idx) => {
           // Get the original index for edit mode operations
           const originalIndex = isEditMode
             ? idx
@@ -250,7 +278,9 @@ const ContactInfo = ({
                 <CustomInput
                   inputId={`phone-${originalIndex >= 0 ? originalIndex : idx}`}
                   label={`Phone${
-                    getDisplayPhoneNumbers().length > 1 ? ` #${idx + 1}` : ""
+                    contactInfoData.phoneNumbers.length > 1
+                      ? ` #${idx + 1}`
+                      : ""
                   }`}
                   inputStyle={{ width: "100%" }}
                   value={ph.number || ""}
@@ -268,7 +298,7 @@ const ContactInfo = ({
                   }
                   appendIcon={
                     isEditMode &&
-                    idx === getDisplayPhoneNumbers().length - 1 ? (
+                    idx === contactInfoData.phoneNumbers.length - 1 ? (
                       <FaPlus />
                     ) : null
                   }
