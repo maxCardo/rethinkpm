@@ -88,7 +88,7 @@ const LeadNotes = ({ selectedLeadItem }) => {
           leadNotesList.map((note, idx) => (
             <div
               key={note._id || idx}
-              className="p-3 bg-white rounded shadow border border-gray-200"
+              className="p-3 bg-white rounded shadow border border-gray-200 max-w-full overflow-hidden"
             >
               <div className="text-xs text-gray-500 mb-1 flex justify-between">
                 <span>
@@ -98,7 +98,15 @@ const LeadNotes = ({ selectedLeadItem }) => {
                   {note.date ? new Date(note.date).toLocaleString() : ""}
                 </span>
               </div>
-              <div className="text-gray-800 whitespace-pre-line">
+              <div 
+                className="text-gray-800 whitespace-pre-line break-all word-break-all overflow-hidden"
+                style={{ 
+                  wordBreak: 'break-all', 
+                  overflowWrap: 'anywhere', 
+                  hyphens: 'auto',
+                  maxWidth: '100%'
+                }}
+              >
                 {note.content}
               </div>
             </div>
