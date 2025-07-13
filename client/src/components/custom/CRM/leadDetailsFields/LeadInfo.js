@@ -4,6 +4,7 @@ import { Chip } from "@mui/material";
 import CustomInput from "../../../ui/CustomInput/CustomInput";
 import settings from "../../../../settings.json";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const LeadInfo = ({
   selectedLeadItem,
@@ -17,7 +18,10 @@ const LeadInfo = ({
     status: selectedLeadItem.status,
     leadTemperature: selectedLeadItem.leadTemperature,
     reasonForLoss: selectedLeadItem.reasonForLoss,
+    leadOwner: selectedLeadItem.leadOwner,
   });
+  const [users, setUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
 
   // Take status and temperature options from settings
   // Turn them to an strings array (from object)
@@ -39,6 +43,15 @@ const LeadInfo = ({
     label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
     value,
   }));
+
+  // Convert users to options format for CustomReactSelect
+  const userOptions = [
+    { label: "System", value: "System" },
+    ...users.map((user) => ({
+      label: user.name,
+      value: user.name,
+    })),
+  ];
   // End of option conversion
 
   // Helper function to find the selected option object
@@ -64,6 +77,32 @@ const LeadInfo = ({
       reasonForLoss: selected.value,
     }));
   };
+
+  const handleLeadOwnerChange = (selected) => {
+    setLeadInfoData((prevData) => ({
+      ...prevData,
+      leadOwner: selected.value,
+    }));
+  };
+
+  // Function to fetch all users
+  const fetchUsers = async () => {
+    try {
+      setLoadingUsers(true);
+      const response = await axios.get("/api/users/all");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+      setUsers([]);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
+  // Fetch users when component mounts
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const statusChangeEffect = (selectedStatusVal) => {
     switch (selectedStatusVal) {
@@ -166,13 +205,18 @@ const LeadInfo = ({
           readonly={true}
         />
         {/* Lead Owner */}
-        <CustomInput
-          inputId={"leadOwner"}
-          label={"Lead Owner"}
-          inputStyle={{ width: "20vw" }}
-          value={selectedLeadItem.leadOwner}
-          readonly={true}
-        />
+        <div style={{ width: "20vw" }}>
+          <CustomReactSelect
+            options={userOptions}
+            label={"Lead Owner"}
+            value={getSelectedOption(userOptions, leadInfoData.leadOwner)}
+            isDisabled={!isEditMode || loadingUsers}
+            onChange={handleLeadOwnerChange}
+            placeholder={
+              loadingUsers ? "Loading users..." : "Select Lead Owner"
+            }
+          />
+        </div>
         {/* Create Date */}
         <CustomInput
           inputId={"createDate"}
