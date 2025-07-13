@@ -77,7 +77,7 @@ const LeaseLeadRecords = ({
               item.status
             )} max-w-fit px-2 text-center`}
           >
-            {capitalizeFirstLetter(item.status)}
+            {capitalizeFirstLetter(item.status.replace(/([A-Z])/g, " $1"))}
           </div>
         </>
       ),
