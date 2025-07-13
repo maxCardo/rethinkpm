@@ -32,6 +32,19 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     }),
     [filters, debouncedSearchTerm]
   );
+  // lead status options
+  const statusValues = Object.values(settings.statusOptions);
+  const statusOpt = statusValues.map((value) => ({
+    label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
+    value,
+  }));
+
+  // lead temperature options
+  const tempValues = Object.values(settings.temperatureOptions);
+  const temperatureOpt = tempValues.map((value) => ({
+    label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
+    value,
+  }));
 
   const FIELDS = [
     {
@@ -41,34 +54,12 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     {
       label: "Status",
       value: settings.filterFields.status,
-      valOptions: [
-        {
-          label: capitalizeFirstLetter(settings.statusOptions.new),
-          value: settings.statusOptions.new,
-        },
-        {
-          label: capitalizeFirstLetter(settings.statusOptions.lost),
-          value: settings.statusOptions.lost,
-        },
-      ],
+      valOptions: statusOpt,
     },
     {
       label: "Temperatures",
       value: settings.filterFields.leadTemperature,
-      valOptions: [
-        {
-          label: capitalizeFirstLetter(settings.temperatureOptions.hot),
-          value: settings.temperatureOptions.hot,
-        },
-        {
-          label: capitalizeFirstLetter(settings.temperatureOptions.warm),
-          value: settings.temperatureOptions.warm,
-        },
-        {
-          label: capitalizeFirstLetter(settings.temperatureOptions.cold),
-          value: settings.temperatureOptions.cold,
-        },
-      ],
+      valOptions: temperatureOpt,
     },
     {
       label: "Owner",
@@ -187,7 +178,7 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
           />
         )}
         {selectedField.type === "date" && (
-          <div className="date-filter-container flex gap-2 items-center">
+          <div className="date-filter-container flex gap-2 items-center ml-2">
             <CustomInput
               inputId={"start"}
               type={selectedField.type}
