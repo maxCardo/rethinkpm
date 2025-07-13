@@ -16,6 +16,7 @@ const LeadInfo = ({
     // Deault values - from server
     status: selectedLeadItem.status,
     leadTemperature: selectedLeadItem.leadTemperature,
+    reasonForLoss: selectedLeadItem.reasonForLoss,
   });
 
   // Take status and temperature options from settings
@@ -29,6 +30,12 @@ const LeadInfo = ({
 
   const tempValues = Object.values(SETTINGS.temperatureOptions);
   const temperatureOpt = tempValues.map((value) => ({
+    label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
+    value,
+  }));
+
+  const reasonForLossValues = Object.values(SETTINGS.reasonForLossOptions);
+  const reasonForLossOpt = reasonForLossValues.map((value) => ({
     label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
     value,
   }));
@@ -51,6 +58,13 @@ const LeadInfo = ({
     }));
   };
 
+  const handleReasonForLossChange = (selected) => {
+    setLeadInfoData((prevData) => ({
+      ...prevData,
+      reasonForLoss: selected.value,
+    }));
+  };
+
   const statusChangeEffect = (selectedStatusVal) => {
     switch (selectedStatusVal) {
       case SETTINGS.statusOptions.tourPending:
@@ -61,6 +75,14 @@ const LeadInfo = ({
         // Default - current leadTemperature
         handleLeadTempChange(selectedLeadItem.leadTemperature);
         break;
+    }
+
+    // Clear reason for loss when status is not 'lost'
+    if (selectedStatusVal !== SETTINGS.statusOptions.lost) {
+      setLeadInfoData((prevData) => ({
+        ...prevData,
+        reasonForLoss: "",
+      }));
     }
   };
 
@@ -120,6 +142,21 @@ const LeadInfo = ({
             onChange={handleLeadTempChange}
           />
         </div>
+        {/* Reason for Loss - only show when status is 'lost' */}
+        {leadInfoData.status === SETTINGS.statusOptions.lost && (
+          <div style={{ width: "20vw" }}>
+            <CustomReactSelect
+              options={reasonForLossOpt}
+              label={"Reason for Loss"}
+              value={getSelectedOption(
+                reasonForLossOpt,
+                leadInfoData.reasonForLoss
+              )}
+              isDisabled={!isEditMode}
+              onChange={handleReasonForLossChange}
+            />
+          </div>
+        )}
         {/* Lead Source */}
         <CustomInput
           inputId={"leadSource"}

@@ -845,6 +845,11 @@
         "performTour": "performTour",
         "apply": "apply"
       },
+      "reasonForLossOptions": {
+        "noResponse": "noResponse",
+        "notInterested": "notInterested",
+        "rejected": "rejected"
+      },
       "filterFields": {
         "all": "all",
         "status": "status",
