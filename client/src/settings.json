@@ -839,6 +839,12 @@
         "warm": "warm",
         "cold": "cold"
       },
+      "nextActionTypeOptions": {
+        "contact": "contact",
+        "scheduleTour": "scheduleTour",
+        "performTour": "performTour",
+        "apply": "apply"
+      },
       "filterFields": {
         "all": "all",
         "status": "status",

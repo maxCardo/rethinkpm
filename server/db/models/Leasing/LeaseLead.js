@@ -73,6 +73,11 @@ const leaseLeadSchema = new mongoose.Schema({
   },
   lastContact: Date,
   nextActionDate: Date,
+  nextActionType: {
+    type: String,
+    enum: ["contact", "scheduleTour", "performTour", "apply", ""],
+    default: "contact",
+  },
   listingAddress: String,
   listing: [
     {

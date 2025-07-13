@@ -1,4 +1,5 @@
 import CustomInput from "../../../ui/CustomInput/CustomInput";
+import CustomReactSelect from "../../../ui/CustomReactSelect";
 import { useEffect } from "react";
 import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
 import { useState } from "react";
@@ -14,16 +15,22 @@ const LeadNextAction = ({
   const SETTINGS = settings.routes.leaseLead;
 
   //  Action types available for future implementation
-  const actionTypesOpt = {
-    contact: "contact",
-    scheduleTour: "schedule Tour",
-    performTour: "perform Tour",
-    apply: "apply",
+  const actionTypesOpt = SETTINGS.nextActionTypeOptions;
+
+  // Convert action types to options format for CustomReactSelect
+  const actionTypeOptions = Object.values(actionTypesOpt).map((value) => ({
+    label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
+    value,
+  }));
+
+  // Helper function to find the selected option object
+  const getSelectedOption = (options, value) => {
+    return options.find((option) => option.value === value) || null;
   };
 
   const [nextActionData, setNextActionData] = useState({
     nextActionDate: selectedLeadItem.nextActionDate,
-    nextActionType: actionTypesOpt.contact,
+    nextActionType: selectedLeadItem.nextActionType,
   });
 
   // Send nextActionData to parent when it changes
@@ -32,6 +39,13 @@ const LeadNextAction = ({
       onNextActionChange(nextActionData);
     }
   }, [nextActionData, onNextActionChange]);
+
+  const handleActionTypeChange = (selected) => {
+    setNextActionData((prevData) => ({
+      ...prevData,
+      nextActionType: selected.value,
+    }));
+  };
 
   useEffect(() => {
     if (updatedLeadStatus) {
@@ -59,7 +73,7 @@ const LeadNextAction = ({
         default:
           // Default - current nextActionDate date and empty action type
           newActionDate = selectedLeadItem.nextActionDate;
-          newActionType = "N/A";
+          newActionType = "";
           break;
       }
 
@@ -131,12 +145,16 @@ const LeadNextAction = ({
         />
         {/* Next Action Type */}
         <div style={{ width: "20vw" }}>
-          <CustomInput
-            inputId={"nextActionType"}
+          <CustomReactSelect
+            options={actionTypeOptions}
             label={"Next Action Type"}
-            inputStyle={{ width: "20vw" }}
-            placeholder={capitalizeFirstLetter(nextActionData.nextActionType)}
-            readonly={true}
+            value={getSelectedOption(
+              actionTypeOptions,
+              nextActionData.nextActionType
+            )}
+            isDisabled={!isEditMode}
+            onChange={handleActionTypeChange}
+            placeholder="Select Action Type"
           />
         </div>
         {/* Last Contact */}
