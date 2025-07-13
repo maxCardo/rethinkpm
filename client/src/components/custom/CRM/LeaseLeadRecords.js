@@ -147,7 +147,7 @@ const LeaseLeadRecords = ({
 
   const filterListByQuery = useCallback(
     async (filters) => {
-      const { search, field, value } = filters;
+      const { search, field, value, startDate, endDate } = filters;
 
       // Cancel previous request if it exists
       if (abortControllerRef.current) {
@@ -169,6 +169,21 @@ const LeaseLeadRecords = ({
         if (field && field !== settings.filterFields.all && value) {
           queryParams.append("field", field);
           queryParams.append("value", value);
+        }
+
+        // Add date range parameters for nextAction filtering
+        if (
+          field &&
+          field !== settings.filterFields.all &&
+          (startDate || endDate)
+        ) {
+          queryParams.append("field", field);
+          if (startDate) {
+            queryParams.append("startDate", startDate);
+          }
+          if (endDate) {
+            queryParams.append("endDate", endDate);
+          }
         }
 
         const queryString = queryParams.toString();

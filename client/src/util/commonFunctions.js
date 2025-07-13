@@ -151,3 +151,16 @@ export function capitalizeFirstLetter(str) {
   if (!str || typeof str !== "string") return str;
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function getFormattedDate(value) {
+  if (!value) return "";
+
+  const date = new Date(value);
+  const ISO = date.toISOString().split("T")[0]; // YYYY-MM-DD
+  const MDY = date.toLocaleDateString(); // MM/DD/YYYY
+
+  return {
+    ISO,
+    MDY,
+  };
+}

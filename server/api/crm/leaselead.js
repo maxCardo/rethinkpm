@@ -15,8 +15,35 @@ router.get("/", async (req, res) => {
     const sortBy = { nextAction: -1 }; // -1 = descending, 1 = ascending
 
     // Handle field-based filtering
-    if (req.query.field && req.query.value) {
+    if (
+      req.query.field &&
+      req.query.value &&
+      req.query.field !== "nextAction"
+    ) {
       filters[req.query.field] = req.query.value;
+    }
+
+    // Handle date range filtering for nextAction
+    if (
+      req.query.field === "nextAction" &&
+      (req.query.startDate || req.query.endDate)
+    ) {
+      const dateFilter = {};
+
+      if (req.query.startDate) {
+        dateFilter.$gte = new Date(req.query.startDate);
+      }
+
+      if (req.query.endDate) {
+        // Add 1 day to include the end date (make it inclusive)
+        const endDate = new Date(req.query.endDate);
+        endDate.setDate(endDate.getDate() + 1);
+        dateFilter.$lt = endDate;
+      }
+
+      if (Object.keys(dateFilter).length > 0) {
+        filters.nextAction = dateFilter;
+      }
     }
 
     // Handle search-based filtering

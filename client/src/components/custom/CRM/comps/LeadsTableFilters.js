@@ -1,13 +1,25 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import Select from "react-select";
-import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
+import {
+  capitalizeFirstLetter,
+  getFormattedDate,
+} from "../../../../util/commonFunctions";
 import { useDebounce } from "../../../../util/hooks";
+import CustomInput from "../../../ui/CustomInput/CustomInput";
 
 const LeadsTableFilters = ({ filterListByQuery, settings }) => {
+  const DEFAULT_DATE = new Date(); // today
+
   const [selectedField, setSelectedField] = useState({});
   const [selectedValue, setSelectedValue] = useState(null);
   const [fieldValOptions, setFieldValOptions] = useState({});
-  const [filters, setFilters] = useState({ search: "", field: "", value: "" });
+  const [filters, setFilters] = useState({
+    search: "",
+    field: "",
+    value: "",
+    startDate: getFormattedDate(DEFAULT_DATE).ISO, // Today
+    endDate: getFormattedDate(DEFAULT_DATE).ISO, // Today
+  });
 
   // Debounce the search input with 500ms delay
   const debouncedSearchTerm = useDebounce(filters.search, 500);
@@ -63,11 +75,13 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
       value: settings.filterFields.leadOwner,
       valOptions: [{ label: "System", value: "System" }],
     },
-    // {
-    //   label: "Next Action",
-    //   value: settings.filterFields.nextAction,
-    //   valOptions: [],
-    // },
+    {
+      label: "Next Action Date",
+      type: "date",
+      value: settings.filterFields.nextAction,
+      valOptions: [],
+    },
+    // TODO: tour date
     // {
     //   label: "Tour Date",
     //   value: settings.filterFields.tourDate,
@@ -100,6 +114,23 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     setFieldValOptions(selectedField.valOptions);
     // Reset selected value when field changes
     setSelectedValue(null);
+
+    // Reset date filters when field changes to non-date field
+    if (selectedField.type !== "date") {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        startDate: "",
+        endDate: "",
+      }));
+    } else {
+      // Reset value filter and restore default dates when switching to date field
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        value: "",
+        startDate: getFormattedDate(DEFAULT_DATE).ISO, // Yesterday
+        endDate: getFormattedDate(DEFAULT_DATE).ISO, // Today
+      }));
+    }
   }, [selectedField, handleFieldValChange, settings.filterFields.all]);
 
   useEffect(() => {
@@ -121,6 +152,15 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     }));
   };
 
+  const handleDateChange = (dateType, value) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [dateType]: value,
+      // When using date filters, set the field to nextAction
+      field: selectedField.value || settings.filterFields.nextAction,
+    }));
+  };
+
   return (
     <>
       <div className="leads-table-filters flex flex-row">
@@ -137,7 +177,7 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
           options={FIELDS}
           placeholder="Select Filter"
         />
-        {fieldValOptions?.length > 0 && (
+        {fieldValOptions?.length > 0 && selectedField.type !== "date" && (
           <Select
             className="marketplace__filter-select"
             onChange={handleFieldValChange}
@@ -145,6 +185,27 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
             options={fieldValOptions}
             placeholder="Select Filter Value"
           />
+        )}
+        {selectedField.type === "date" && (
+          <div className="date-filter-container flex gap-2 items-center">
+            <CustomInput
+              inputId={"start"}
+              type={selectedField.type}
+              value={filters.startDate}
+              onChange={(e) => handleDateChange("startDate", e.target.value)}
+              placeholder="Start Date"
+              style={{ minWidth: "150px" }}
+            />
+            <span className="text-gray-500">to</span>
+            <CustomInput
+              inputId={"end"}
+              type={selectedField.type}
+              value={filters.endDate}
+              onChange={(e) => handleDateChange("endDate", e.target.value)}
+              placeholder={getFormattedDate(new Date()).ISO}
+              style={{ minWidth: "150px" }}
+            />
+          </div>
         )}
       </div>
     </>
