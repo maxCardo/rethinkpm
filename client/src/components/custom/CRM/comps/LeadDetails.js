@@ -4,7 +4,7 @@ import LeadNotes from "../leadDetailsFields/LeadNotes";
 import LeadNextAction from "../leadDetailsFields/LeadNextAction";
 import LeadEditControls from "../leadDetailsFields/LeadEditControls";
 import UpdateAlert from "../../../core/Alert";
-import { Divider } from "@mui/material";
+import { Divider, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -25,6 +25,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
   const [nextActionData, setNextActionData] = useState({});
   const [isSaving, setIsSaving] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const [showUnsavedChangesDialog, setShowUnsavedChangesDialog] = useState(false)
 
   // Validation function
   const validateContactData = (data) => {
@@ -156,12 +157,41 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
     }
   };
 
-  const handleCancel = () => {
-    setIsEditMode(false);
-    // Clear any unsaved changes
-    setLeadInfoData({});
-    setContactInfoData({});
-    setNextActionData({});
+  const hasUnsavedChanges = () => {
+    if (!isEditMode) return false;
+    
+    const mergedChanges = { ...leadInfoData, ...contactInfoData, ...nextActionData };
+    
+    return Object.keys(mergedChanges).some(key => {
+      const newValue = mergedChanges[key];
+      const originalValue = selectedLeadItem[key];
+      console.log(`new: ${newValue}, prev: ${originalValue}`);
+      
+      return JSON.stringify(newValue) !== JSON.stringify(originalValue);
+    });
+  };
+
+  const handleCancel = (checkChanges = true) => {
+    if (checkChanges && hasUnsavedChanges()) {
+      setShowUnsavedChangesDialog(true);
+    } else {
+      setIsEditMode(false);
+      // Clear any unsaved changes
+      setLeadInfoData({});
+      setContactInfoData({});
+      setNextActionData({});
+    }
+  };
+
+  const handleCancelUnsavedChanges = () => {
+    // Close the dialog and continue editing (keep the changes)
+    setShowUnsavedChangesDialog(false);
+  };
+
+  const handleConfirmUnsavedChanges = () => {
+    // Close the dialog and discard changes
+    setShowUnsavedChangesDialog(false);
+    handleCancel(false);
   };
 
   const handleLeadInfoChange = (leadInfoDataReceived) => {
@@ -246,6 +276,29 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
           />
         </div>
       </div>
+
+      {/* Unsaved Changes Confirmation Dialog */}
+      <Dialog
+        open={showUnsavedChangesDialog}
+        onClose={handleCancelUnsavedChanges}
+        maxWidth="sm"
+        fullWidth
+        style={{zIndex: '999999'}}
+      >
+        <DialogTitle>Unsaved Changes</DialogTitle>
+        <DialogContent>
+          You have unsaved changes. Are you sure you want to discard them?
+        </DialogContent>
+        <DialogActions>
+           <Button onClick={handleConfirmUnsavedChanges}  >
+            Yes
+          </Button>
+          <Button onClick={handleCancelUnsavedChanges} color="primary" variant="contained">
+            No
+          </Button>
+         
+        </DialogActions>
+      </Dialog>
 
       {/* Alert System */}
       <UpdateAlert />
