@@ -22,6 +22,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [leadInfoData, setLeadInfoData] = useState({});
   const [contactInfoData, setContactInfoData] = useState({});
+  const [nextActionData, setNextActionData] = useState({});
   const [isSaving, setIsSaving] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -61,6 +62,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
       // Clear any existing data when entering edit mode
       setLeadInfoData({});
       setContactInfoData({});
+      setNextActionData({});
     }
   };
 
@@ -73,7 +75,8 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
         {},
         selectedLeadItem,
         Object.keys(leadInfoData).length > 0 ? leadInfoData : {},
-        Object.keys(contactInfoData).length > 0 ? contactInfoData : {}
+        Object.keys(contactInfoData).length > 0 ? contactInfoData : {},
+        Object.keys(nextActionData).length > 0 ? nextActionData : {}
       );
 
       // Filter out empty email addresses and phone numbers before saving
@@ -122,6 +125,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
         // Clear the temporary data
         setLeadInfoData({});
         setContactInfoData({});
+        setNextActionData({});
         // Refresh the data in the parent component
         if (onLeadUpdated) {
           await onLeadUpdated();
@@ -157,6 +161,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
     // Clear any unsaved changes
     setLeadInfoData({});
     setContactInfoData({});
+    setNextActionData({});
   };
 
   const handleLeadInfoChange = (leadInfoDataReceived) => {
@@ -169,6 +174,12 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
     if (isEditMode) {
       // Just store the data as received, filtering will happen during save
       setContactInfoData(contactInfoDataReceived);
+    }
+  };
+
+  const handleNextActionChange = (nextActionDataReceived) => {
+    if (isEditMode) {
+      setNextActionData(nextActionDataReceived);
     }
   };
 
@@ -227,6 +238,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
           <LeadNextAction
             selectedLeadItem={selectedLeadItem}
             isEditMode={isEditMode}
+            onNextActionChange={handleNextActionChange}
             // If status has changed - send to child component
             updatedLeadStatus={
               leadInfoData && leadInfoData.status ? leadInfoData.status : ""

@@ -69,7 +69,7 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     {
       label: "Next Action Date",
       type: "date",
-      value: settings.filterFields.nextAction,
+      value: settings.filterFields.nextActionDate,
       valOptions: [],
     },
     // TODO: tour date
@@ -147,8 +147,8 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [dateType]: value,
-      // When using date filters, set the field to nextAction
-      field: selectedField.value || settings.filterFields.nextAction,
+      // When using date filters, set the field to nextActionDate
+      field: selectedField.value || settings.filterFields.nextActionDate,
     }));
   };
 

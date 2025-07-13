@@ -844,7 +844,7 @@
         "status": "status",
         "leadTemperature": "leadTemperature",
         "leadOwner": "leadOwner",
-        "nextAction": "nextAction",
+        "nextActionDate": "nextActionDate",
         "tourDate": "tourDate"
       }
     }

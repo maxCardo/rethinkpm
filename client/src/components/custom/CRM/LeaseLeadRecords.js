@@ -106,13 +106,13 @@ const LeaseLeadRecords = ({
       ),
     },
     {
-      accessor: "nextAction",
+      accessor: "nextActionDate",
       label: "Next Action",
       reactComponent: true,
       width: CELL_WIDTH_SIZES.Small,
       render: (item) => {
-        if (!item.nextAction) return "";
-        const date = dayjs(item.nextAction);
+        if (!item.nextActionDate) return "";
+        const date = dayjs(item.nextActionDate);
         return date.isValid() ? date.format("MM/DD/YYYY") : "";
       },
     },
@@ -171,7 +171,7 @@ const LeaseLeadRecords = ({
           queryParams.append("value", value);
         }
 
-        // Add date range parameters for nextAction filtering
+        // Add date range parameters for nextActionDate filtering
         if (
           field &&
           field !== settings.filterFields.all &&
@@ -339,7 +339,7 @@ const LeaseLeadRecords = ({
                   height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
                   overflowY: "auto",
                 }}
-                _orderBy={"nextAction"}
+                _orderBy={"nextActionDate"}
                 _order={"desc"}
                 handleClickRow={handleWatchLeadDetails}
                 tableCellStyle={{ cursor: "pointer" }}

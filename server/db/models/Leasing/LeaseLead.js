@@ -72,7 +72,7 @@ const leaseLeadSchema = new mongoose.Schema({
     default: true,
   },
   lastContact: Date,
-  nextAction: Date,
+  nextActionDate: Date,
   listingAddress: String,
   listing: [
     {

@@ -9,6 +9,7 @@ const LeadNextAction = ({
   selectedLeadItem,
   isEditMode = false,
   updatedLeadStatus,
+  onNextActionChange,
 }) => {
   const SETTINGS = settings.routes.leaseLead;
 
@@ -20,37 +21,53 @@ const LeadNextAction = ({
     apply: "apply",
   };
 
-  const [nextActionDate, setNextActionDate] = useState(
-    selectedLeadItem.nextAction
-  );
-  const [nextActionType, setNextActionType] = useState(actionTypesOpt.contact);
+  const [nextActionData, setNextActionData] = useState({
+    nextActionDate: selectedLeadItem.nextActionDate,
+    nextActionType: actionTypesOpt.contact,
+  });
+
+  // Send nextActionData to parent when it changes
+  useEffect(() => {
+    if (onNextActionChange) {
+      onNextActionChange(nextActionData);
+    }
+  }, [nextActionData, onNextActionChange]);
 
   useEffect(() => {
     if (updatedLeadStatus) {
       const tomorrow = dayjs().add(1, "day").toDate();
+      let newActionType = actionTypesOpt.contact;
+      let newActionDate = selectedLeadItem.nextActionDate;
+
       switch (updatedLeadStatus) {
         case SETTINGS.statusOptions.new:
-          setNextActionType(actionTypesOpt.contact);
+          newActionType = actionTypesOpt.contact;
           break;
         case SETTINGS.statusOptions.inProgress:
-          setNextActionType(actionTypesOpt.scheduleTour);
+          newActionType = actionTypesOpt.scheduleTour;
           // Set next action date to tomorrow when status becomes inProgress or toured
-          setNextActionDate(tomorrow);
+          newActionDate = tomorrow;
           break;
         case SETTINGS.statusOptions.tourPending:
-          setNextActionType(actionTypesOpt.performTour);
+          newActionType = actionTypesOpt.performTour;
           break;
         case SETTINGS.statusOptions.toured:
-          setNextActionType(actionTypesOpt.apply);
+          newActionType = actionTypesOpt.apply;
           // Set next action date to tomorrow when status becomes inProgress or toured
-          setNextActionDate(tomorrow);
+          newActionDate = tomorrow;
           break;
         default:
-          // Default - current nextAction date and empty action type
-          setNextActionDate(selectedLeadItem.nextAction);
-          setNextActionType("N/A");
+          // Default - current nextActionDate date and empty action type
+          newActionDate = selectedLeadItem.nextActionDate;
+          newActionType = "N/A";
           break;
       }
+
+      // Update the nextActionData state
+      setNextActionData({
+        nextActionDate: newActionDate,
+        nextActionType: newActionType,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatedLeadStatus]);
@@ -58,15 +75,22 @@ const LeadNextAction = ({
   const handleActionDateChange = (event) => {
     const inputValue = event.target.value; // This will be in YYYY-MM-DD format from date input
 
+    let newDate;
     if (inputValue) {
       // Create a new Date object from the input value
       const dateObject = new Date(inputValue);
       // Save the date as a Date object (this will be converted to string when sent to server)
-      setNextActionDate(dateObject);
+      newDate = dateObject;
     } else {
       // Handle empty/cleared date
-      setNextActionDate(null);
+      newDate = null;
     }
+
+    // Update the nextActionData state
+    setNextActionData((prevData) => ({
+      ...prevData,
+      nextActionDate: newDate,
+    }));
   };
 
   // Helper function to format date for display
@@ -98,8 +122,8 @@ const LeadNextAction = ({
           inputStyle={{ width: "20vw" }}
           value={
             isEditMode
-              ? formatDateForInput(nextActionDate)
-              : formatDateForDisplay(nextActionDate)
+              ? formatDateForInput(nextActionData.nextActionDate)
+              : formatDateForDisplay(nextActionData.nextActionDate)
           }
           readonly={!isEditMode}
           type={isEditMode ? "date" : "text"}
@@ -111,7 +135,7 @@ const LeadNextAction = ({
             inputId={"nextActionType"}
             label={"Next Action Type"}
             inputStyle={{ width: "20vw" }}
-            placeholder={capitalizeFirstLetter(nextActionType)}
+            placeholder={capitalizeFirstLetter(nextActionData.nextActionType)}
             readonly={true}
           />
         </div>

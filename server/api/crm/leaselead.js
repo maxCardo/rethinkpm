@@ -12,20 +12,20 @@ router.get("/", async (req, res) => {
   console.log("calling leaselead with params:", req.query);
   try {
     const filters = { isEnabled: true };
-    const sortBy = { nextAction: -1 }; // -1 = descending, 1 = ascending
+    const sortBy = { nextActionDate: -1 }; // -1 = descending, 1 = ascending
 
     // Handle field-based filtering
     if (
       req.query.field &&
       req.query.value &&
-      req.query.field !== "nextAction"
+      req.query.field !== "nextActionDate"
     ) {
       filters[req.query.field] = req.query.value;
     }
 
-    // Handle date range filtering for nextAction
+    // Handle date range filtering for nextActionDate
     if (
-      req.query.field === "nextAction" &&
+      req.query.field === "nextActionDate" &&
       (req.query.startDate || req.query.endDate)
     ) {
       const dateFilter = {};
@@ -42,7 +42,7 @@ router.get("/", async (req, res) => {
       }
 
       if (Object.keys(dateFilter).length > 0) {
-        filters.nextAction = dateFilter;
+        filters.nextActionDate = dateFilter;
       }
     }
 
