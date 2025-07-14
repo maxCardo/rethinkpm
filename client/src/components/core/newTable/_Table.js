@@ -120,7 +120,7 @@ const TableComp = ({
                         tabIndex={-1}
                         key={row._id || row.symbol || index}
                         selected={
-                          isItemSelected || focusedOnItem._id === row._id
+                          isItemSelected || focusedOnItem?._id === row._id || false
                         }
                       >
                         {withCheckboxSelection && (
