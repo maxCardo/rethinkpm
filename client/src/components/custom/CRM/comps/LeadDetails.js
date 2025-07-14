@@ -5,7 +5,7 @@ import LeadNextAction from "../leadDetailsFields/LeadNextAction";
 import LeadEditControls from "../leadDetailsFields/LeadEditControls";
 import UpdateAlert from "../../../core/Alert";
 import { Divider, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   createSuccessAlert,
@@ -17,7 +17,7 @@ import {
 } from "../../../../util/commonFunctions";
 import axios from "axios";
 
-const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
+const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose, onCloseConfirm, onHandledBeforeClose }) => {
   const dispatch = useDispatch();
   const [isEditMode, setIsEditMode] = useState(false);
   const [leadInfoData, setLeadInfoData] = useState({});
@@ -192,6 +192,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
       setLeadInfoData({});
       setContactInfoData({});
       setNextActionData({});
+      onCloseConfirm()
     }
   };
 
@@ -232,6 +233,13 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
       return updated;
     });
   };
+
+  useEffect(() => {
+    if (isParentModalBeforeClose) {
+      handleCancel(true);
+      if (onHandledBeforeClose) onHandledBeforeClose();
+    }
+  }, [isParentModalBeforeClose])
 
   return (
     <div className="lead-details relative flex flex-col gap-5 px-2 h-auto">

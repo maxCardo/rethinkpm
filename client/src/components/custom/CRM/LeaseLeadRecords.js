@@ -30,6 +30,7 @@ const LeaseLeadRecords = ({
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isModalBeforeClose, setIsModalBeforeClose] = useState(false)
 
   // Ref to store the current request's abort controller
   const abortControllerRef = useRef(null);
@@ -264,9 +265,17 @@ const LeaseLeadRecords = ({
     setIsDetailsModalOpen(true);
   };
 
-  const handleCloseDetailsModal = () => {
-    setIsDetailsModalOpen(false);
-    setSelectedLeadItem({});
+  const handleCloseDetailsModal = (checkChanges = true) => {
+    if (checkChanges) {
+      setIsModalBeforeClose(true);
+    } else {
+      setIsDetailsModalOpen(false);
+      setSelectedLeadItem({});
+    }
+  };
+  // Callback to reset isModalBeforeClose after child handles it
+  const handleChildHandledBeforeClose = () => {
+    setIsModalBeforeClose(false);
   };
 
   const handleRefreshLeadData = async () => {
@@ -347,7 +356,7 @@ const LeaseLeadRecords = ({
             {/* Lead Details Modal */}
             <MaterialModal
               isOpen={isDetailsModalOpen}
-              onClose={handleCloseDetailsModal}
+              onClose={() => handleCloseDetailsModal(true)}
               title="Lead Details"
               width="90%"
               height="90%"
@@ -355,6 +364,9 @@ const LeaseLeadRecords = ({
               <LeadDetails
                 selectedLeadItem={selectedLeadItem}
                 onLeadUpdated={handleRefreshLeadData}
+                isParentModalBeforeClose={isModalBeforeClose}
+                onCloseConfirm={() => handleCloseDetailsModal(false)}
+                onHandledBeforeClose={handleChildHandledBeforeClose}
               />
             </MaterialModal>
           </>
