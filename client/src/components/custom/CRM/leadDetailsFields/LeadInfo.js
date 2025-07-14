@@ -127,11 +127,10 @@ const LeadInfo = ({
       {/* Title */}
       <div className="lead-info__title text-2xl mb-3">Lead Information</div>
       {/* Content */}
-      {/* flex-wrap gap-2 */}
-      <div className="lead-info__content flex justify-between flex-wrap gap-2">
-        {/* Lead Status */}
-        <div className="lead-info-status">
-          <div style={{ width: "20vw" }}>
+      <div className="lead-info__content">
+        {/* Lead Status & Temperature */}
+        <div className="row-1 flex flex-row w-full gap-2">
+          <div className="lead-info-status" style={{ flex: 1 }}>
             <CustomReactSelect
               options={statusOpt}
               label={"Status"}
@@ -139,97 +138,89 @@ const LeadInfo = ({
               isDisabled={!isEditMode}
               onChange={handleStatusChange}
             />
-          </div>
-          <div
-            className="lead-status-chip mt-2 flex flex-wrap gap-1"
-            style={{ width: "20vw" }}
-          >
-            {statusOpt.map((st, index) => {
-              return (
+            <div
+              className="lead-status-chip mt-2 flex flex-wrap gap-1"
+              style={{ width: "100%" }}
+            >
+              {statusOpt.map((st, index) => (
                 <Chip
                   key={index}
                   size="small"
-                  color={
-                    st.value === leadInfoData.status ? "primary" : "default"
-                  }
+                  color={st.value === leadInfoData.status ? "primary" : "default"}
                   label={st.label}
                 />
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-        {/* Lead Temperature */}
-        <div style={{ width: "20vw" }}>
-          <CustomReactSelect
-            options={temperatureOpt}
-            label={"Lead Temperature"}
-            placeholder={capitalizeFirstLetter(
-              selectedLeadItem.leadTemperature
-            )}
-            isDisabled={!isEditMode}
-            onChange={handleLeadTempChange}
-          />
+          <div style={{ flex: 1 }}>
+            <CustomReactSelect
+              options={temperatureOpt}
+              label={"Lead Temperature"}
+              placeholder={capitalizeFirstLetter(selectedLeadItem.leadTemperature)}
+              isDisabled={!isEditMode}
+              onChange={handleLeadTempChange}
+            />
+          </div>
         </div>
         {/* Reason for Loss - only show when status is 'lost' */}
         {leadInfoData.status === SETTINGS.statusOptions.lost && (
-          <div style={{ width: "20vw" }}>
+          <div style={{ width: "100%", marginTop: '12px' }}>
             <CustomReactSelect
               options={reasonForLossOpt}
               label={"Reason for Loss"}
-              value={getSelectedOption(
-                reasonForLossOpt,
-                leadInfoData.reasonForLoss
-              )}
+              value={getSelectedOption(reasonForLossOpt, leadInfoData.reasonForLoss)}
               isDisabled={!isEditMode}
               onChange={handleReasonForLossChange}
             />
           </div>
         )}
-        {/* Lead Source */}
-        <CustomInput
-          inputId={"leadSource"}
-          label={"Lead Source"}
-          inputStyle={{ width: "20vw" }}
-          value={selectedLeadItem.leadSource}
-          readonly={true}
-        />
-        {/* Lead Owner */}
-        <div style={{ width: "20vw" }}>
-          <CustomReactSelect
-            options={userOptions}
-            label={"Lead Owner"}
-            value={getSelectedOption(userOptions, leadInfoData.leadOwner)}
-            isDisabled={!isEditMode || loadingUsers}
-            onChange={handleLeadOwnerChange}
-            placeholder={
-              loadingUsers ? "Loading users..." : "Select Lead Owner"
+        {/* Lead Source & Lead Owner */}
+        <div className="flex flex-row w-full gap-2 mt-2">
+          <CustomInput
+            inputId={"leadSource"}
+            label={"Lead Source"}
+            inputStyle={{ width: "100%" }}
+            value={selectedLeadItem.leadSource}
+            readonly={true}
+          />
+          <div style={{ width: "100%" }}>
+            <CustomReactSelect
+              options={userOptions}
+              label={"Lead Owner"}
+              value={getSelectedOption(userOptions, leadInfoData.leadOwner)}
+              isDisabled={!isEditMode || loadingUsers}
+              onChange={handleLeadOwnerChange}
+              placeholder={
+                loadingUsers ? "Loading users..." : "Select Lead Owner"
+              }
+            />
+          </div>
+        </div>
+        {/* Create Date & Last Update */}
+        <div className="flex flex-row w-full gap-2 mt-2">
+          <CustomInput
+            inputId={"createDate"}
+            label={"Create Date"}
+            inputStyle={{ width: "100%" }}
+            value={
+              selectedLeadItem.createDate
+                ? new Date(selectedLeadItem.createDate).toLocaleString()
+                : ""
             }
+            readonly={true}
+          />
+          <CustomInput
+            inputId={"updateDate"}
+            label={"Last Update"}
+            inputStyle={{ width: "100%" }}
+            value={
+              selectedLeadItem.updateDate
+                ? new Date(selectedLeadItem.updateDate).toLocaleString()
+                : ""
+            }
+            readonly={true}
           />
         </div>
-        {/* Create Date */}
-        <CustomInput
-          inputId={"createDate"}
-          label={"Create Date"}
-          inputStyle={{ width: "20vw" }}
-          value={
-            selectedLeadItem.createDate
-              ? new Date(selectedLeadItem.createDate).toLocaleString()
-              : ""
-          }
-          readonly={true}
-        />
-        {/* Last Update */}
-        <CustomInput
-          inputId={"updateDate"}
-          label={"Last Update"}
-          inputStyle={{ width: "20vw" }}
-          value={
-            selectedLeadItem.updateDate
-              ? new Date(selectedLeadItem.updateDate).toLocaleString()
-              : ""
-          }
-          readonly={true}
-        />
       </div>
     </div>
   );

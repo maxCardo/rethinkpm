@@ -15,7 +15,7 @@ const CustomInput = ({
   errorMessage = "",
 }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <label htmlFor={inputId}>{label}</label>
       <div className="relative flex items-center">
         <input

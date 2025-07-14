@@ -128,43 +128,49 @@ const LeadNextAction = ({
       <div className="lead-next-action__title text-2xl mb-3">
         Lead Next Action
       </div>
-      <div className="lead-next-action__content flex flex-wrap gap-2">
-        {/* Next Action Date */}
-        <CustomInput
-          inputId={"nextActionDate"}
-          label={"Next Action Date"}
-          inputStyle={{ width: "20vw" }}
-          value={
-            isEditMode
-              ? formatDateForInput(nextActionData.nextActionDate)
-              : formatDateForDisplay(nextActionData.nextActionDate)
-          }
-          readonly={!isEditMode}
-          type={isEditMode ? "date" : "text"}
-          onChange={handleActionDateChange}
-        />
-        {/* Next Action Type */}
-        <div style={{ width: "20vw" }}>
-          <CustomReactSelect
-            options={actionTypeOptions}
-            label={"Next Action Type"}
-            value={getSelectedOption(
-              actionTypeOptions,
-              nextActionData.nextActionType
-            )}
-            isDisabled={!isEditMode}
-            onChange={handleActionTypeChange}
-            placeholder="Select Action Type"
+      <div className="lead-next-action__content">
+        <div className="flex flex-row w-full gap-2">
+          {/* Next Action Date */}
+          <CustomInput
+            inputId={"nextActionDate"}
+            label={"Next Action Date"}
+            inputStyle={{ width: "100%" }}
+            value={
+              isEditMode
+                ? formatDateForInput(nextActionData.nextActionDate)
+                : formatDateForDisplay(nextActionData.nextActionDate)
+            }
+            readonly={!isEditMode}
+            type={isEditMode ? "date" : "text"}
+            onChange={handleActionDateChange}
           />
+          {/* Next Action Type */}
+          <div style={{ width: "100%" }}>
+            <CustomReactSelect
+              options={actionTypeOptions}
+              label={"Next Action Type"}
+              value={getSelectedOption(
+                actionTypeOptions,
+                nextActionData.nextActionType
+              )}
+              isDisabled={!isEditMode}
+              onChange={handleActionTypeChange}
+              placeholder="Select Action Type"
+            />
+          </div>
         </div>
-        {/* Last Contact */}
-        <CustomInput
-          inputId={"lastContact"}
-          label={"Last Contact"}
-          inputStyle={{ width: "20vw" }}
-          value={new Date(selectedLeadItem.createDate).toLocaleString()}
-          readonly={true}
-        />
+        <div className="flex flex-row w-full gap-2 mt-2">
+          {/* Last Contact */}
+          <CustomInput
+            inputId={"lastContact"}
+            label={"Last Contact"}
+            inputStyle={{ width: "100%" }}
+            value={new Date(selectedLeadItem.createDate).toLocaleString()}
+            readonly={true}
+          />
+          {/* Placeholder for future field or leave empty for now */}
+          <div style={{ width: "100%" }} />
+        </div>
       </div>
     </div>
   );
