@@ -16,6 +16,7 @@ import {
   validatePhoneNum,
 } from "../../../../util/commonFunctions";
 import axios from "axios";
+import isEqual from 'lodash/isEqual';
 
 const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose, onCloseConfirm, onHandledBeforeClose }) => {
   const dispatch = useDispatch();
@@ -171,15 +172,13 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
 
   const hasUnsavedChanges = () => {
     if (!isEditMode) return false;
-    
+    // Merge all changes
     const mergedChanges = { ...leadInfoData, ...contactInfoData, ...nextActionData };
-    
+    // Check for any changed key, including nested objects/arrays
     return Object.keys(mergedChanges).some(key => {
       const newValue = mergedChanges[key];
       const originalValue = selectedLeadItem[key];
-      console.log(`new: ${newValue}, prev: ${originalValue}`);
-      
-      return JSON.stringify(newValue) !== JSON.stringify(originalValue);
+      return !isEqual(newValue, originalValue);
     });
   };
 
