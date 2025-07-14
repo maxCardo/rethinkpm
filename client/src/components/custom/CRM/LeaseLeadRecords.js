@@ -64,12 +64,13 @@ const LeaseLeadRecords = ({
     {
       accessor: "leadSource",
       label: "Lead Source",
-      width: CELL_WIDTH_SIZES.Medium,
+      width: CELL_WIDTH_SIZES.Small,
     },
     {
       reactComponent: true,
       accessor: "status",
       label: "Status",
+      width: CELL_WIDTH_SIZES.Small,
       render: (item) => (
         <>
           <div
@@ -91,6 +92,7 @@ const LeaseLeadRecords = ({
       reactComponent: true,
       accessor: "leadTemperature",
       label: "Temperature",
+      width: CELL_WIDTH_SIZES.Small,
       render: (item) => (
         <div style={{ minHeight: 32, display: "flex", alignItems: "center" }}>
           {item.leadTemperature ? (
