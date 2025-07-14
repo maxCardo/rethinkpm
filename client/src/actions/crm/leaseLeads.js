@@ -24,3 +24,14 @@ export const getLeaseLeadData = () => async (dispatch) => {
     console.error(err);
   }
 };
+
+// @desc: fetch all users for lead owner selection
+export const getAllUsers = () => async () => {
+  try {
+    const res = await axios.get("/api/users/all");
+    return res.data;
+  } catch (err) {
+    console.error("Failed to fetch users:", err);
+    return [];
+  }
+};

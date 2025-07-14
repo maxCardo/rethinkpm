@@ -6,6 +6,9 @@ import {
 } from "../../../../util/commonFunctions";
 import { useDebounce } from "../../../../util/hooks";
 import CustomInput from "../../../ui/CustomInput/CustomInput";
+import { getAllUsers } from "../../../../actions/crm/leaseLeads";
+
+
 
 const LeadsTableFilters = ({ filterListByQuery, settings }) => {
   const DEFAULT_DATE = new Date(); // today
@@ -13,6 +16,9 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
   const [selectedField, setSelectedField] = useState({});
   const [selectedValue, setSelectedValue] = useState(null);
   const [fieldValOptions, setFieldValOptions] = useState({});
+  const [users, setUsers] = useState([]);
+  const [ownerOptions, setOwnerOptions] = useState([{ label: "System", value: "System" }]);
+
   const [filters, setFilters] = useState({
     search: "",
     field: "",
@@ -46,6 +52,23 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     value,
   }));
 
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const users = await getAllUsers()();
+        if (Array.isArray(users)) {
+          setOwnerOptions([
+            { label: "System", value: "System" },
+            ...users.map((u) => ({ label: u.name, value: u.name }))
+          ]);
+        }
+      } catch (err) {
+        setOwnerOptions([{ label: "System", value: "System" }]);
+      }
+    }
+    fetchUsers();
+  }, []);
+
   const FIELDS = [
     {
       label: "All",
@@ -64,7 +87,7 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
     {
       label: "Owner",
       value: settings.filterFields.leadOwner,
-      valOptions: [{ label: "System", value: "System" }],
+      valOptions: ownerOptions,
     },
     {
       label: "Next Action Date",
