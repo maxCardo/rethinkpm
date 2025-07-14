@@ -5,8 +5,7 @@ import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
 import { Chip } from "@mui/material";
-import { FaFire, FaSnowflake, FaCloudSun } from "react-icons/fa";
-import { FcNeutralTrading } from "react-icons/fc";
+import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
 import axios from "axios";
 import MaterialModal from "../../ui/MaterialModal";
@@ -232,10 +231,10 @@ const LeaseLeadRecords = ({
         return "bg-darkBlue";
       case settings.statusOptions.inProgress:
         return "bg-yellow-500";
-      // case settings.statusOptions.tourPending:
-      //   return "amber-600";
-      // case settings.statusOptions.toured:
-      //   return "amber-600";
+      case settings.statusOptions.tourPending:
+        return "bg-amber-600";
+      case settings.statusOptions.toured:
+        return "bg-indigo-500";
       case settings.statusOptions.applied:
         return "bg-emerald-500";
       case settings.statusOptions.lost:
@@ -248,7 +247,7 @@ const LeaseLeadRecords = ({
   const setLeadTempIcon = (leadTemperature) => {
     switch (leadTemperature) {
       case settings.temperatureOptions.neutral:
-        return <FcNeutralTrading size={5} />;
+        return <FaRegCircle size={16} />;
       case settings.temperatureOptions.hot:
         return <FaFire size={5} />;
       case settings.temperatureOptions.warm:
