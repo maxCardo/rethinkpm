@@ -171,12 +171,12 @@ const ContactInfo = ({
       <div className="contact-info__title text-2xl mb-3">
         Contact Information
       </div>
-      <div className="contact-info__content flex flex-row w-full justify-between">
+      <div className="contact-info__content flex flex-row w-full gap-3">
         {/* First Name */}
         <CustomInput
           inputId={"firstName"}
           label={"First Name"}
-          inputStyle={{ width: "20vw" }}
+          inputStyle={{ width: "100%" }}
           value={contactInfoData.firstName}
           readonly={!isEditMode}
           onChange={(e) => handleInputChange("firstName", e.target.value)}
@@ -185,7 +185,7 @@ const ContactInfo = ({
         <CustomInput
           inputId={"lastName"}
           label={"Last Name"}
-          inputStyle={{ width: "20vw" }}
+          inputStyle={{ width: "100%" }}
           value={contactInfoData.lastName}
           readonly={!isEditMode}
           onChange={(e) => handleInputChange("lastName", e.target.value)}

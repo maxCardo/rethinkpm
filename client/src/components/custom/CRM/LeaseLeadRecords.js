@@ -358,8 +358,9 @@ const LeaseLeadRecords = ({
               isOpen={isDetailsModalOpen}
               onClose={() => handleCloseDetailsModal(true)}
               title="Lead Details"
-              width="90%"
-              height="90%"
+              width="100%"
+              height="100%"
+              
             >
               <LeadDetails
                 selectedLeadItem={selectedLeadItem}

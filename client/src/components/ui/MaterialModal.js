@@ -38,7 +38,7 @@ const MaterialModal = ({
   };
 
   return (
-    <Modal open={isOpen} style={modalStyle} onKeyDown={handleKeyDown}>
+    <Modal open={isOpen} style={modalStyle} onKeyDown={handleKeyDown} disableAutoFocus={true}>
       <Box sx={boxStyle}>
         {/* Title && Close Button */}
         {(title || showCloseButton) && (

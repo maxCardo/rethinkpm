@@ -116,7 +116,7 @@ const LeadNotes = ({ selectedLeadItem }) => {
         )}
         {/* Add Note Button */}
         <button
-          className="sticky bottom-0 left-130 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10"
+          className="sticky bottom-0 left-150 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10"
           style={{ borderRadius: "9999px" }}
           title="Add Note"
           onClick={handleAddNote}
