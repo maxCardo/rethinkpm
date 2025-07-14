@@ -105,6 +105,18 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated }) => {
         return;
       }
 
+      // Require reasonForLoss if status is 'lost'
+      if (updatedLead.status === 'lost' && !updatedLead.reasonForLoss) {
+        dispatch(
+          createErrorAlert(
+            "Reason for loss is required when status is 'lost'.",
+            "LeadDetails"
+          )
+        );
+        setIsSaving(false);
+        return;
+      }
+
       // Clear validation errors if validation passes
       setValidationErrors({});
 
