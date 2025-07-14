@@ -16,7 +16,6 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
   const [selectedField, setSelectedField] = useState({});
   const [selectedValue, setSelectedValue] = useState(null);
   const [fieldValOptions, setFieldValOptions] = useState({});
-  const [users, setUsers] = useState([]);
   const [ownerOptions, setOwnerOptions] = useState([{ label: "System", value: "System" }]);
 
   const [filters, setFilters] = useState({
@@ -43,6 +42,7 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
   const statusOpt = statusValues.map((value) => ({
     label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
     value,
+    isDisabled: value === settings.statusOptions.lost || value === settings.statusOptions.applied ? true : false
   }));
 
   // lead temperature options
@@ -198,6 +198,7 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
             value={selectedValue}
             options={fieldValOptions}
             placeholder="Select Filter Value"
+            isOptionDisabled={(option) => option.isDisabled}
           />
         )}
         {selectedField.type === "date" && (
