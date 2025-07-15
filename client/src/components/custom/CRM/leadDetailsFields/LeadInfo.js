@@ -97,11 +97,13 @@ const LeadInfo = ({
     switch (selectedStatusVal) {
       case SETTINGS.statusOptions.tourPending:
         // If tour is pendign - changed the leadTemperature to "hot" by default
-        handleLeadTempChange(SETTINGS.temperatureOptions.hot);
+        const hotTempObject = temperatureOpt.find(item => item.value === SETTINGS.temperatureOptions.hot);
+        handleLeadTempChange(hotTempObject);
         break;
       default:
         // Default - current leadTemperature
-        handleLeadTempChange(selectedLeadItem.leadTemperature);
+        const currentTempObject = temperatureOpt.find(item => item.value === selectedLeadItem.leadTemperature);
+        handleLeadTempChange(currentTempObject);
         break;
     }
 
@@ -115,8 +117,6 @@ const LeadInfo = ({
   };
 
   useEffect(() => {
-    console.log("ttt?", leadInfoData);
-    
     // Send leadInfoData to parent when it changes
     if (onLeadInfoChange) {
       onLeadInfoChange(leadInfoData);
