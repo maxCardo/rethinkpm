@@ -1,7 +1,7 @@
 import CustomInput from "../../../ui/CustomInput/CustomInput";
 import CustomReactSelect from "../../../ui/CustomReactSelect";
 import { useEffect } from "react";
-import { capitalizeFirstLetter } from "../../../../util/commonFunctions";
+import { capitalizeFirstLetter, getFormattedDate } from "../../../../util/commonFunctions";
 import { useState } from "react";
 import dayjs from "dayjs";
 import settings from "../../../../settings.json";
@@ -108,19 +108,12 @@ const LeadNextAction = ({
   };
 
   // Helper function to format date for display
-  const formatDateForDisplay = (date) => {
+  const formatDateForRead = (date) => {
     if (!date) return "";
     const dateObj = new Date(date);
     return dateObj.toLocaleString();
   };
 
-  // Helper function to format date for input (YYYY-MM-DD)
-  const formatDateForInput = (date) => {
-    if (!date) return "";
-    const dateObj = new Date(date);
-    if (isNaN(dateObj.getTime())) return "";
-    return dayjs(dateObj).format("YYYY-MM-DD");
-  };
 
   return (
     <div className="lead-next-action__wrapper">
@@ -137,8 +130,8 @@ const LeadNextAction = ({
             inputStyle={{ width: "100%" }}
             value={
               isEditMode
-                ? formatDateForInput(nextActionData.nextActionDate)
-                : formatDateForDisplay(nextActionData.nextActionDate)
+                ? getFormattedDate(nextActionData.nextActionDate).ISO
+                : formatDateForRead(nextActionData.nextActionDate)
             }
             readonly={!isEditMode}
             type={isEditMode ? "date" : "text"}
