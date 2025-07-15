@@ -64,10 +64,10 @@ const LeadInfo = ({
     setLeadInfoData((prevData) => ({ ...prevData, status: selected.value }));
   };
 
-  const handleLeadTempChange = (tempValue) => {
+  const handleLeadTempChange = (selected) => {
     setLeadInfoData((prevData) => ({
       ...prevData,
-      leadTemperature: tempValue,
+      leadTemperature: selected.value,
     }));
   };
 
@@ -115,6 +115,8 @@ const LeadInfo = ({
   };
 
   useEffect(() => {
+    console.log("ttt?", leadInfoData);
+    
     // Send leadInfoData to parent when it changes
     if (onLeadInfoChange) {
       onLeadInfoChange(leadInfoData);
@@ -193,6 +195,7 @@ const LeadInfo = ({
               placeholder={
                 loadingUsers ? "Loading users..." : "Select Lead Owner"
               }
+              menuPlacement="top"
             />
           </div>
         </div>
