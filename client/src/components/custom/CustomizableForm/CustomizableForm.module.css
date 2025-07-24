@@ -1,0 +1,100 @@
+.textArea__container {
+    position: relative;
+}
+
+.textArea__container label {
+    font-size: 18px;
+}
+
+.formWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.halfWidth {
+    width: calc(50% - 14px);
+}
+
+.errorHelperText {
+    color: red;
+}
+
+.checkboxWrapper {
+    display: flex; 
+    align-items: center;
+    gap: 6px;
+}
+
+.checkboxInput {
+    width: fit-content;
+}
+
+.radioLabel {
+    font-weight: 600;
+}
+
+.radioWrapper {
+    display: flex;
+    gap: 6px;
+}
+
+.buttonWrapper {
+    display: flex; 
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.buttonEnd {
+    margin-left: auto;
+}
+
+.loaderWrapper {
+    display: flex;
+    width: 100%;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #333;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.inputContainer input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 4px;
+    /* margin-bottom: 8px; */
+    background: #fff;
+    transition: border-color 0.2s;
+}
+.inputContainer input[type="text"]:focus {
+    border-color: #1976d2;
+    outline: none;
+}

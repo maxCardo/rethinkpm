@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { isEmpty } from "lodash";
 
 export const filterData = function (data, filterString, headers, level = 0) {
   const newData = data.filter((elem) => {
@@ -77,6 +78,9 @@ export const validateEmail = function(address) {
 
   return !!address.match(validEmail);
 }
+
+export const isDictEmpty = (val) => Object.values(val).every(isEmpty)
+
 
 export const checkBoxCheck = () => {
   return (
