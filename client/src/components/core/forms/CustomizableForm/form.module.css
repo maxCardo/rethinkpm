@@ -83,3 +83,18 @@
         transform: rotate(360deg);
     }
 }
+
+.inputContainer input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 4px;
+    /* margin-bottom: 8px; */
+    background: #fff;
+    transition: border-color 0.2s;
+}
+.inputContainer input[type="text"]:focus {
+    border-color: #1976d2;
+    outline: none;
+}

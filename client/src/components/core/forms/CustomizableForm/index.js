@@ -1,9 +1,16 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import styles from "./form.module.css";
 import Select from "react-select";
-import { isDictEmpty } from '../../utils/customFormValidators';
-import classNames from 'classnames'
-import RadioGroup from '../FormComponents/RadioGroup';
+import { isDictEmpty } from '../../../../util/commonFunctions';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+
+// Notice to changes: used MUI components for radio 
+
+function classNames(...args) {
+  return args.filter(Boolean).join(' ');
+}
 
 const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getFormErrs, isLoading }) => {
     const [currentStepErrs, setCurrentStepErrs] = useState({})
@@ -120,10 +127,20 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
                                 <label className={styles.radioLabel}>{field.label}</label>
                                 <RadioGroup
                                     name={field.name}
-                                    options={field.options}
-                                    selected={field.value}
+                                    value={field.value}
                                     onChange={(e) => field.handleChange(e)}
-                                />
+                                    row={field.row}
+                                >
+                                    {field.options.map((option) => (
+                                        <FormControlLabel
+                                            key={option.value}
+                                            value={option.value}
+                                            control={<Radio />}
+                                            label={option.label}
+                                            disabled={option.disabled}
+                                        />
+                                    ))}
+                                </RadioGroup>
                                 <span className={styles.errorHelperText}>{currentStepErrs[field.name]}</span>
                                 {field.endContent && (
                                     <p>{field.endContent}</p>
