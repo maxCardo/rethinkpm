@@ -31,6 +31,9 @@ import TestVerticalTable from "./components/custom/TestVerticalTable";
 import PropertyRecords from "./components/custom/PropertyRecords/PropertyRecords";
 import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
 import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
+import TestCustomizaableFormPage from "./components/core/forms/CustomizableForm/TestCustomizableFormPage";
+import TestFormNum2 from "./components/core/forms/CustomizableForm/TestFormNum2";
+import TestFormNum5 from "./components/core/forms/CustomizableForm/TestFormNum5";
 
 const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
@@ -72,7 +75,9 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
           <Route path="/serviceTicket" element={<ServiceTicket />} />
           <Route path="/playground" element={<Playground />} />
           <Route path="/vertical-table" element={<TestVerticalTable />} />
-
+          <Route path="/test-form" element={<TestCustomizaableFormPage />} />
+          <Route path="/test-form-2" element={<TestFormNum2 />} />
+          <Route path="/test-form-5" element={<TestFormNum5 />} />
           {/* Private Routes */}
           <Route
             path="/services"

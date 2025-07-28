@@ -32,6 +32,8 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
             return fields.map((field, index) => {
                 switch (field.type) {
                     case 'text':
+                    case 'date':
+                    case 'file':
                         return (
                             <div key={index} className={classNames(styles.inputContainer, field.halfWidth && styles.halfWidth)}>
                                 {field.startContent && (
@@ -39,14 +41,14 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
                                 )}
                                 <label>{field.label}</label>
                                 <input
-                                    type="text"
+                                    type={field.type}
                                     value={field.value || ''}
                                     name={field.name}
                                     onChange={(e) => field.handleChange(e)}
                                 />
                                 <span className={styles.errorHelperText}>{currentStepErrs[field.name]}</span>
                                 {field.endContent && (
-                                    <p>{field.endContent}</p>
+                                    <p className={styles.endContent}>{field.endContent}</p>
                                 )}
                             </div>
                         );
@@ -91,7 +93,7 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
                                 />
                                 <span className={styles.errorHelperText}>{currentStepErrs[field.name]}</span>
                                 {field.endContent && (
-                                    <p>{field.endContent}</p>
+                                    <p className={styles.endContent}>{field.endContent}</p>
                                 )}
                             </div>
                         );
@@ -113,7 +115,7 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
                                     <span className={styles.errorHelperText}>{currentStepErrs[field.name]}</span>
                                 </div>
                                 {field.endContent && (
-                                    <p>{field.endContent}</p>
+                                    <p className={styles.endContent}>{field.endContent}</p>
                                 )}
                             </div>
                         );
@@ -143,11 +145,10 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
                                 </RadioGroup>
                                 <span className={styles.errorHelperText}>{currentStepErrs[field.name]}</span>
                                 {field.endContent && (
-                                    <p>{field.endContent}</p>
+                                    <p className={styles.endContent}>{field.endContent}</p>
                                 )}
                             </div>
                         );
-        
                     default:
                         return null;
                 }
@@ -157,11 +158,10 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
     }
 
     return (
-        <div>
+        <div className={styles.formContainer}>
             {title && (
-                <h1>{title}</h1>
+                <h1 className={styles.formTitle}>{title}</h1>
             )}
-            {}
             {isLoading ? (
                 <div className={styles.loaderWrapper}>
                     <span className={styles.loader}></span>
@@ -169,10 +169,10 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
             ) : (
                 <>
                     {stepsMapping[currentStep].fields?.length && (
-                        <p>* All form fields are required</p>
+                        <p className={styles.formSubtitle}>* All form fields are required</p>
                     )}
                     {stepsMapping[currentStep]?.title && (
-                        <h5>{stepsMapping[currentStep]?.title}</h5>
+                        <h5 className={styles.formSubtitle}>{stepsMapping[currentStep]?.title}</h5>
                     )}
                     {stepsMapping[currentStep].children}
                     <div className={styles.formWrapper}>
@@ -180,13 +180,13 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
                     </div>
                     <div className={styles.buttonWrapper}>
                         {stepsMapping[currentStep].handleClickPrev && (
-                            <button onClick={() => stepsMapping[currentStep].handleClickPrev()} disabled={currentStep === 0}>
+                            <button className={styles.actionButton} onClick={() => stepsMapping[currentStep].handleClickPrev()} disabled={currentStep === 0}>
                                 Previous
                             </button>
                         )}
                         {stepsMapping[currentStep].handleClickNext && (
                             <button
-                                className={styles.buttonEnd}
+                                className={classNames(styles.actionButton, styles.buttonEnd)}
                                 onClick={() => {
                                     if (checkStepErrors()) {
                                         stepsMapping[currentStep].handleClickNext()
@@ -198,7 +198,7 @@ const CustomizableForm = ({ stepsMapping, currentStep, title, handleSubmit, getF
                         )}
                         {stepsMapping[currentStep].canSubmit && (
                             <button
-                                className={styles.buttonEnd}
+                                className={classNames(styles.actionButton, styles.buttonEnd)}
                                 onClick={() => checkStepErrors() && handleSubmit && handleSubmit()}
                             >
                                 Submit

@@ -32,7 +32,7 @@ const stepsMapping = [
   },
 ];
 
-export default function TestCustomizableFormPage() {
+export default function TestFormNum2() {
   const [formState, setFormState] = useState({
     email: '',
     rmIssueNumber: '',
