@@ -54,6 +54,23 @@
 
 .buttonEnd {
     margin-left: auto;
+  
+}
+
+.actionButton {
+    background-color: var(--darkBlue);
+    border: 1px solid var(--darkBlue);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.actionButton:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
 }
 
 .loaderWrapper {

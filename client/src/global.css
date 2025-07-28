@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --darkBlue: #061331;
 
 
 }
@@ -34,7 +35,7 @@ body {
 }
 
 @theme{
-  --color-darkBlue: #061331;
+  --color-darkBlue: var(--darkBlue);
   --color-turquoise:#87B8A1;
   --color-lightBlue:#0088FF;
 }
