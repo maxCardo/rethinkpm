@@ -24,6 +24,7 @@ const stepsMapping = [
       {
         type: 'text',
         label: '* Tech',
+        required: true,
         name: 'tech',
         value: '',
         handleChange: () => {},

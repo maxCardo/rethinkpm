@@ -60,9 +60,6 @@ export default function TestFormNum2() {
     if (!formState.rmIssueNumber && fieldsToValidate.includes('rmIssueNumber')) {
       errs.rmIssueNumber = 'RM Issue Number is required';
     }
-    if (!formState.tech && fieldsToValidate.includes('tech')) {
-      errs.tech = 'Tech is required';
-    }
     return errs;
   };
 
