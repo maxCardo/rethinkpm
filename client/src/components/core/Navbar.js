@@ -16,11 +16,16 @@ import {
   FaSignOutAlt,
   FaChevronDown,
   FaChevronUp,
+  FaClipboardList,
 } from "react-icons/fa";
 
 import gsap from "gsap";
 
-const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout, setIsNavbarShown }) => {
+const Navbar = ({
+  auth: { isAuthenticated, loginInProgress },
+  logout,
+  setIsNavbarShown,
+}) => {
   const [showNav, setShowNav] = useState(false);
   const navRef = useRef(null);
   const arrowRef = useRef(null);
@@ -32,7 +37,7 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout, setIsNavba
   useEffect(() => {
     // for UI purposes use in different components
     setIsNavbarShown(showNav);
-    
+
     if (!navRef.current || !arrowRef.current) return;
     if (showNav) {
       gsap.to(navRef.current, {
@@ -112,6 +117,12 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout, setIsNavba
         <Link to="/propertyRecords" className={linkStyle}>
           <FaBuilding className={iconStyle} />
           <span className="text-darkBlue">Properties</span>
+        </Link>
+      </li>
+      <li>
+        <Link to="/crm/leaselead" className={linkStyle}>
+          <FaClipboardList className={iconStyle} />
+          <span className="text-darkBlue">Lease Leads</span>
         </Link>
       </li>
       <li>

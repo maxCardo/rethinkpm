@@ -22,12 +22,17 @@ const TableComp = ({
   sticky = false,
   dense = false,
   _orderBy,
+  _order,
   _rowsPerPage = 10,
   selected = [],
   setSelected,
+  withCheckboxSelection = true,
+  tableWrapperStyle,
+  focusedOnItem,
+  tableCellStyle,
 }) => {
   const [tableData, setTableData] = useState([]);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState(_order || "asc");
   const [orderBy, setOrderBy] = useState(
     _orderBy || headers[0]?.accessor || ""
   );
@@ -81,64 +86,73 @@ const TableComp = ({
     <div className={tableClasses.root}>
       <Paper className={tableClasses.paper}>
         <TableContainer className={tableClasses.container}>
-          <Table
-            stickyHeader={sticky}
-            aria-label="sticky table"
-            className={tableClasses.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
-            <TableHeader
-              headers={headers}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={tableData.length}
-            />
-            <TableBody>
-              {stableSort(tableData, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row._id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+          {/* Wrap the table in a scrollable container */}
+          <div className="table-wrapper" style={tableWrapperStyle}>
+            <Table
+              stickyHeader={sticky}
+              aria-label="sticky table"
+              className={tableClasses.table}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+            >
+              <TableHeader
+                headers={headers}
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={tableData.length}
+                withCheckboxSelection={withCheckboxSelection}
+              />
+              <TableBody>
+                {stableSort(tableData, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const isItemSelected = isSelected(row._id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row._id || row.symbol || index}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                          onChange={(event) => handleClick(event, row)}
-                        />
-                      </TableCell>
-                      {headers.map((header, i) => (
-                        <TableCell
-                          align="left"
-                          key={i}
-                          onClick={() => handleClickRow(row)}
-                        >
-                          {getData(row, header)}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={headers.length + 1} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row._id || row.symbol || index}
+                        selected={
+                          isItemSelected || focusedOnItem?._id === row._id || false
+                        }
+                      >
+                        {withCheckboxSelection && (
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              inputProps={{ "aria-labelledby": labelId }}
+                              onChange={(event) => handleClick(event, row)}
+                            />
+                          </TableCell>
+                        )}
+                        {headers.map((header, i) => (
+                          <TableCell
+                            align="left"
+                            key={i}
+                            onClick={() => handleClickRow(row)}
+                            style={tableCellStyle}
+                          >
+                            {getData(row, header)}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                    <TableCell colSpan={headers.length + 1} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100]}

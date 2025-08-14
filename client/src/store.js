@@ -9,9 +9,10 @@ const middleWare = [thunk];
 
 const store = createStore(
     rootReducer,
-    initalState,
+    // initalState,
     composeWithDevTools(applyMiddleware(...middleWare))
 );
+console.log("SRORE ==? ", store.getState());
 
 export default store;
 

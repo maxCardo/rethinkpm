@@ -27,7 +27,7 @@ const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {li
       label: "Address",
       render: (item) => (
           <div>
-            <p>{item.deal_id.streetNumber} {item.deal_id.streetName}</p>
+            <p>{item.deal_id?.streetNumber} {item.deal_id?.streetName}</p>
           </div>
       ),
       className: "Marketplace__address"
