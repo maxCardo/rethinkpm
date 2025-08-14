@@ -38,6 +38,19 @@ router.get('/', auth, (req,res) => {
   }
 });
 
+// @route: GET /api/users/all;
+// @desc: get all users
+// @ access: Private
+router.get("/all", auth, async (req, res) => {
+  try {
+    const users = await User.find({}, { password: 0, tokens: 0 }); // Exclude sensitive fields
+    res.status(200).json(users);
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
+});
+
 //Todo: create get route for checking tokens that does not send error if no token exists or token is not valid;
 
 // @route: Post /api/users/login;

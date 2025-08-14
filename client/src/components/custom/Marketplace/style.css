@@ -7,7 +7,7 @@
   display: flex;
 }
 
-.marketplace__filter-icons button {
+.marketplace__filter-icons button  {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,6 +71,7 @@
 .marketplace__filter-select {
   width: 200px;
   margin: 10px;
+  z-index: 9999;
 }
 
 .marketplace__table-icon {
@@ -127,8 +128,9 @@
   justify-content: space-between;
 }
 
-.marketplace .searchContainer {
+.marketplace .searchContainer { 
   margin: 0;
+  justify-content: space-between !important
 }
 td.Marketplace__address {
   display: flex;
@@ -227,7 +229,7 @@ margin-left: 0;
   position: absolute;
 }
 
-.PropertyDetails__modal button.close {
+.PropertyDetails__modal .close {
   z-index: 5;
   position: relative;
   right: 6px;

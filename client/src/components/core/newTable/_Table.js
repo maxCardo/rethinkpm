@@ -1,68 +1,72 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux'
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
 
-import {useStyles} from './styles'
-import {stableSort, getComparator, getData} from './scripts'
-import {setSelected} from '../../../actions/filteredData'
-import TableHeader from './TableHeader';
+import { tableClasses } from "./styles";
+import { stableSort, getComparator, getData } from "./scripts";
+import { setSelected } from "../../../actions/filteredData";
+import TableHeader from "./TableHeader";
 
-const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _rowsPerPage = 10, selected, setSelected}) => {
-  
-  //state for table comp
-  const classes = useStyles();
-  const [tableData, setTableData] = useState([]) 
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState(_orderBy ? _orderBy : headers[0].accessor);
+const TableComp = ({
+  headers = [],
+  list = [],
+  handleClickRow = () => {},
+  sticky = false,
+  dense = false,
+  _orderBy,
+  _order,
+  _rowsPerPage = 10,
+  selected = [],
+  setSelected,
+  withCheckboxSelection = true,
+  tableWrapperStyle,
+  focusedOnItem,
+  tableCellStyle,
+}) => {
+  const [tableData, setTableData] = useState([]);
+  const [order, setOrder] = useState(_order || "asc");
+  const [orderBy, setOrderBy] = useState(
+    _orderBy || headers[0]?.accessor || ""
+  );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(_rowsPerPage);
 
-
   useEffect(() => {
-    setTableData(list)
-  },[list])
+    setTableData(list);
+  }, [list]);
 
-  //funcs for table comp 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = tableData.map((n) => n._id);
       setSelected(tableData);
-      return;
+    } else {
+      setSelected([]);
     }
-    setSelected([]);
   };
 
-  //@desc handle click for checkbox
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, row) => {
+    const selectedIndex = selected.findIndex((r) => r._id === row._id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
+      newSelected = [...selected, row];
+    } else {
+      newSelected = selected.filter((_, i) => i !== selectedIndex);
     }
+
     setSelected(newSelected);
   };
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -71,80 +75,84 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value));
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const isSelected = (name) => selected.map(x => x._id).indexOf(name) !== -1;
-
-//ToDo: work on dynamic function to determain amonnt of space needed: is this neccecery??
-  //const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
+  const isSelected = (id) => selected.some((r) => r._id === id);
   const emptyRows = 0;
 
-  //table props [pagination?, toolbar, denseity: small, medium, select   ]
-
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableContainer className={classes.container}>
-          <Table 
-            stickyHeader = {sticky}
-            // sticky header creating issues with dropdown 
-            aria-label="sticky table"
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-          >
-            <TableHeader
-              headers = {headers}
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={tableData.length}
-            />
-            <TableBody>
-              {stableSort(tableData, getComparator(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                  const isItemSelected = isSelected(row._id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+    <div className={tableClasses.root}>
+      <Paper className={tableClasses.paper}>
+        <TableContainer className={tableClasses.container}>
+          {/* Wrap the table in a scrollable container */}
+          <div className="table-wrapper" style={tableWrapperStyle}>
+            <Table
+              stickyHeader={sticky}
+              aria-label="sticky table"
+              className={tableClasses.table}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+            >
+              <TableHeader
+                headers={headers}
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={tableData.length}
+                withCheckboxSelection={withCheckboxSelection}
+              />
+              <TableBody>
+                {stableSort(tableData, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const isItemSelected = isSelected(row._id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.symbol}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                          onChange={(event) => handleClick(event, row)}
-                        />
-                      </TableCell>
-                      {
-                        headers.map((header, i ) => (
-                          <TableCell align="left" key={i} onClick={(event) => handleClickRow(row)}>
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row._id || row.symbol || index}
+                        selected={
+                          isItemSelected || focusedOnItem?._id === row._id || false
+                        }
+                      >
+                        {withCheckboxSelection && (
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              inputProps={{ "aria-labelledby": labelId }}
+                              onChange={(event) => handleClick(event, row)}
+                            />
+                          </TableCell>
+                        )}
+                        {headers.map((header, i) => (
+                          <TableCell
+                            align="left"
+                            key={i}
+                            onClick={() => handleClickRow(row)}
+                            style={tableCellStyle}
+                          >
                             {getData(row, header)}
-                          </TableCell>  
-                        ))
-                      }
-                    </TableRow>
-                  );
-              })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                    <TableCell colSpan={headers.length + 1} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100]}
@@ -158,10 +166,10 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
       </Paper>
     </div>
   );
-}
+};
 
-const mapStateToProps = state => ({
-  selected: state.filteredData.selectedData
-})
+const mapStateToProps = (state) => ({
+  selected: state.filteredData?.selectedData || [],
+});
 
-export default connect (mapStateToProps, {setSelected})(TableComp)
+export default connect(mapStateToProps, { setSelected })(TableComp);

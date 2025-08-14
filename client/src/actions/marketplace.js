@@ -4,13 +4,14 @@ import axios from "axios";
 
 const config = {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}};
 
-export const openStreetView = (street, number) => dispatch => {
+export const openStreetView = (street, number, zip) => dispatch => {
     try {
         dispatch({
             type: OPEN_STREET_VIEW,
             payload: {
                 street: street,
                 number: number,
+                zip: zip,
                 StreetViewModalOpen: true
             }
         });
