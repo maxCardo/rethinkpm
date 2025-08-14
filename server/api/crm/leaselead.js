@@ -11,7 +11,7 @@ router.use(auth);
 router.get("/", async (req, res) => {
   console.log("calling leaselead with params:", req.query);
   try {
-    const filters = { isEnabled: true };
+    const filters = { status: {$in: ["new", "inProgress", "tourPending", "toured"]} };
     const sortBy = { nextActionDate: -1 }; // -1 = descending, 1 = ascending
 
     // Handle field-based filtering
@@ -57,6 +57,8 @@ router.get("/", async (req, res) => {
         { listingAddress: { $regex: search, $options: "i" } },
       ];
     }
+
+    console.log('end of day these are active filters: ', filters)
 
     let data = await leaseLead.find(filters).sort(sortBy);
 

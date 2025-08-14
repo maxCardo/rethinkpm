@@ -118,16 +118,23 @@ const LeaseLeadRecords = ({
         return date.isValid() ? date.format("MM/DD/YYYY") : "";
       },
     },
+    // {
+    //   accessor: "updateDate",
+    //   label: "Last Update",
+    //   reactComponent: true,
+    //   width: CELL_WIDTH_SIZES.Small,
+    //   render: (item) => {
+    //     if (!item.updateDate) return "";
+    //     const date = dayjs(item.updateDate);
+    //     return date.isValid() ? date.format("MM/DD/YYYY") : "";
+    //   },
+    // },
     {
-      accessor: "updateDate",
-      label: "Last Update",
+      accessor: "createDate",
+      label: "Create Date",
       reactComponent: true,
       width: CELL_WIDTH_SIZES.Small,
-      render: (item) => {
-        if (!item.updateDate) return "";
-        const date = dayjs(item.updateDate);
-        return date.isValid() ? date.format("MM/DD/YYYY") : "";
-      },
+      render: item => dayjs(item.createDate).format('MM/DD/YYYY')
     },
   ];
 
