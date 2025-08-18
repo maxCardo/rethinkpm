@@ -11,7 +11,7 @@ import {
 } from "../../../../actions/alert";
 import axios from "axios";
 
-const LeadNotes = ({ selectedLeadItem, onNoteAdded }) => {
+const LeadNotes = ({ selectedLeadItem, isEditMode, onNoteAdded }) => {
   const dispatch = useDispatch();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
   const [leadNotesList, setLeadNotesList] = useState([]);
@@ -121,6 +121,7 @@ const LeadNotes = ({ selectedLeadItem, onNoteAdded }) => {
           <div className="text-gray-400 italic">No notes available.</div>
         )}
         {/* Add Note Button */}
+        {!isEditMode && (
         <button
           className="sticky bottom-0 left-150 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10"
           style={{ borderRadius: "9999px" }}
@@ -129,6 +130,7 @@ const LeadNotes = ({ selectedLeadItem, onNoteAdded }) => {
         >
           <AiOutlinePlus size={500} />
         </button>
+        )}
       </div>
 
       {/* Add Note Modal */}
