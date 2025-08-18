@@ -11,7 +11,7 @@ import {
 } from "../../../../actions/alert";
 import axios from "axios";
 
-const LeadNotes = ({ selectedLeadItem }) => {
+const LeadNotes = ({ selectedLeadItem, onNoteAdded }) => {
   const dispatch = useDispatch();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
   const [leadNotesList, setLeadNotesList] = useState([]);
@@ -39,11 +39,17 @@ const LeadNotes = ({ selectedLeadItem }) => {
 
       if (response.status === 200) {
         const updatedLead = response.data;
+
         console.log("Note added successfully:", updatedLead);
         setLeadNotesList(updatedLead.notes);
         setNewNote({ type: "note", content: "" });
         setIsAddNoteModalOpen(false);
         dispatch(createSuccessAlert("Note added successfully!", "LeadNotes"));
+        
+        // Notify parent component that a note was added
+        if (onNoteAdded) {
+          onNoteAdded();
+        }
 
         // Scroll to bottom of notes box
         setTimeout(() => {

@@ -225,6 +225,14 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
     }
   };
 
+  const handleNoteAdded = (updatedLead) => {
+    // Notify the parent component to refresh the data
+    // This will update both the main list and the selectedLeadItem
+    if (onLeadUpdated) {
+      onLeadUpdated();
+    }
+  };
+
   const clearValidationError = (errorKey) => {
     setValidationErrors((prev) => {
       const updated = { ...prev };
@@ -268,6 +276,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
           <LeadNotes
             selectedLeadItem={selectedLeadItem}
             isEditMode={isEditMode}
+            onNoteAdded={handleNoteAdded}
           />
         </div>
       </div>
