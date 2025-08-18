@@ -182,7 +182,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
     });
   };
 
-  const handleCancel = (checkChanges = true) => {
+  const handleCancel = (checkChanges = true, shouldCloseDialog = false) => {
     if (checkChanges && hasUnsavedChanges()) {
       setShowUnsavedChangesDialog(true);
     } else {
@@ -191,7 +191,11 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
       setLeadInfoData({});
       setContactInfoData({});
       setNextActionData({});
-      onCloseConfirm()
+      
+      // Only close the dialog if explicitly requested
+      if (shouldCloseDialog) {
+        onCloseConfirm();
+      }
     }
   };
 
@@ -203,7 +207,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
   const handleConfirmUnsavedChanges = () => {
     // Close the dialog and discard changes
     setShowUnsavedChangesDialog(false);
-    handleCancel(false);
+    handleCancel(false, true); // second argument: shouldCloseDialog = true
   };
 
   const handleLeadInfoChange = (leadInfoDataReceived) => {
@@ -243,7 +247,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
 
   useEffect(() => {
     if (isParentModalBeforeClose) {
-      handleCancel(true);
+      handleCancel(true, true); // second argument: shouldCloseDialog = true
       if (onHandledBeforeClose) onHandledBeforeClose();
     }
   }, [isParentModalBeforeClose])
@@ -256,7 +260,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
         isSaving={isSaving}
         onToggleEdit={handleToggleEdit}
         onSave={handleSave}
-        onCancel={handleCancel}
+        onCancel={() =>handleCancel(false, false)}
       />
 
       {/* Row 1 */}
