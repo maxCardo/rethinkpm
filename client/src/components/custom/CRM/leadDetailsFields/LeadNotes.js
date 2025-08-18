@@ -121,16 +121,17 @@ const LeadNotes = ({ selectedLeadItem, isEditMode, onNoteAdded }) => {
           <div className="text-gray-400 italic">No notes available.</div>
         )}
         {/* Add Note Button */}
-        {!isEditMode && (
+        {/* {!isEditMode && ( */}
         <button
-          className="sticky bottom-0 left-150 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10"
+          className="sticky bottom-0 left-150 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10 disabled:opacity-50 disabled:cursor-auto"
           style={{ borderRadius: "9999px" }}
           title="Add Note"
           onClick={handleAddNote}
+          disabled={isEditMode}
         >
           <AiOutlinePlus size={500} />
         </button>
-        )}
+        {/* )} */}
       </div>
 
       {/* Add Note Modal */}
