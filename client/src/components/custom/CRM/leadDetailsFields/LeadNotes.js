@@ -11,7 +11,7 @@ import {
 } from "../../../../actions/alert";
 import axios from "axios";
 
-const LeadNotes = ({ selectedLeadItem }) => {
+const LeadNotes = ({ selectedLeadItem, isEditMode, onNoteAdded }) => {
   const dispatch = useDispatch();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
   const [leadNotesList, setLeadNotesList] = useState([]);
@@ -39,11 +39,17 @@ const LeadNotes = ({ selectedLeadItem }) => {
 
       if (response.status === 200) {
         const updatedLead = response.data;
+
         console.log("Note added successfully:", updatedLead);
         setLeadNotesList(updatedLead.notes);
         setNewNote({ type: "note", content: "" });
         setIsAddNoteModalOpen(false);
         dispatch(createSuccessAlert("Note added successfully!", "LeadNotes"));
+        
+        // Notify parent component that a note was added
+        if (onNoteAdded) {
+          onNoteAdded();
+        }
 
         // Scroll to bottom of notes box
         setTimeout(() => {
@@ -115,14 +121,17 @@ const LeadNotes = ({ selectedLeadItem }) => {
           <div className="text-gray-400 italic">No notes available.</div>
         )}
         {/* Add Note Button */}
+        {/* {!isEditMode && ( */}
         <button
-          className="sticky bottom-0 left-150 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10"
+          className="sticky bottom-0 left-150 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10 disabled:opacity-50 disabled:cursor-auto"
           style={{ borderRadius: "9999px" }}
           title="Add Note"
           onClick={handleAddNote}
+          disabled={isEditMode}
         >
           <AiOutlinePlus size={500} />
         </button>
+        {/* )} */}
       </div>
 
       {/* Add Note Modal */}
