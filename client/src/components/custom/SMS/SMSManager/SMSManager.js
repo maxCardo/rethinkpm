@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ConversationView from "./ConversationView";
+import ConversationView from "../common/ConversationView";
 import ConversationList from "./ConversationList";
 
 const SMSManager = () => {
