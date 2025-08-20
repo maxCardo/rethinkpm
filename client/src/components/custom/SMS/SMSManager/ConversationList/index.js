@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react';
-import SearchMsgInput from './SearchMsgInput';
+import ConversationListHeader from './ConversationListHeader';
 import ConversationItem from './ConversationItem';
 import { conversations } from '../dummyData';
 
-const ConversationList = ({ onConversationSelect, selectedConversationId }) => {
+const ConversationList = ({ onConversationSelect, selectedConversationId, onNewConversation }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filter conversations based on search term
@@ -28,10 +28,16 @@ const ConversationList = ({ onConversationSelect, selectedConversationId }) => {
     }
   };
 
+  const handleNewConversation = () => {
+    if (onNewConversation) {
+      onNewConversation();
+    }
+  };
+
   return (
     <div className="flex flex-col h-full bg-white border-r border-gray-200">
-      {/* Search Input */}
-      <SearchMsgInput onSearch={handleSearch} />
+      {/* Search Input with New Conversation Button */}
+      <ConversationListHeader onSearch={handleSearch} onNewConversation={handleNewConversation} />
       
       {/* Conversations List */}
       <div className="flex-1 overflow-y-auto">
