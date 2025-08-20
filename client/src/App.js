@@ -32,6 +32,7 @@ import PropertyRecords from "./components/custom/PropertyRecords/PropertyRecords
 import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
 import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
 import LeaseLeadRecords from "./components/custom/CRM/LeaseLeadRecords";
+import { SMSManager } from "./components/custom/SMS";
 
 const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
@@ -200,6 +201,14 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
                   settings={routeSettings.leaseLead}
                   isNavbarShown={isNavbarShown}
                 />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/sms-manager"
+            element={
+              <PrivateRoute>
+                <SMSManager />
               </PrivateRoute>
             }
           />
