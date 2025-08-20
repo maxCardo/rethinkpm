@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import ChatBubble from "./ChatBubble";
+import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
 
@@ -95,7 +95,7 @@ const ConversationView = () => {
             <DateHeader date={new Date(dateKey)} />
             {messageGroups[dateKey].map((message) => (
               <div key={message.id} className="animate-fadeIn">
-                <ChatBubble 
+                <MessageBubble 
                   message={message.text}
                   isSent={message.isSent}
                   isReceived={message.isReceived}
