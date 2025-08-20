@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
-import { getMessagesForConversation } from '../../SMSManager/mockData';
+import { getMessagesForConversation } from '../../mockData';
 
 const ConversationView = ({ selectedConversation }) => {
   const messagesEndRef = useRef(null);

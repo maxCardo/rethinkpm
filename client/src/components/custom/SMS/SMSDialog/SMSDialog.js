@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import ConversationView from '../common/ConversationView';
-import { getConversationById } from '../SMSManager/mockData';
+import { getConversationById } from '../mockData';
 
 const SMSDialog = ({ isOpen, onClose, conversationId }) => {
   const [conversation, setConversation] = useState(null);

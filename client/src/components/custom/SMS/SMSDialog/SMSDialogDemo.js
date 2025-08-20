@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SMSDialog from './SMSDialog';
-import { conversations } from '../SMSManager/mockData';
+import { conversations } from '../mockData';
 
 const SMSDialogDemo = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
