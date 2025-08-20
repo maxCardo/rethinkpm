@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import ConversationListHeader from './ConversationListHeader';
 import ConversationItem from './ConversationItem';
-import { conversations } from '../dummyData';
+import { conversations, markConversationAsRead } from '../dummyData';
 
 const ConversationList = ({ onConversationSelect, selectedConversationId, onNewConversation }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,6 +23,9 @@ const ConversationList = ({ onConversationSelect, selectedConversationId, onNewC
   };
 
   const handleConversationClick = (conversation) => {
+    // Mark conversation as read when clicked
+    markConversationAsRead(conversation.id);
+    
     if (onConversationSelect) {
       onConversationSelect(conversation);
     }

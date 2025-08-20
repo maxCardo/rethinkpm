@@ -1,7 +1,7 @@
 // For testing purposes only! 
 // remove this file when real data is added
 
-export const conversations = [
+export let conversations = [
   {
     id: 1,
     name: "John Smith",
@@ -175,4 +175,16 @@ export const getMessagesForConversation = (conversationId) => {
 // Helper function to get a specific conversation
 export const getConversationById = (conversationId) => {
   return conversations.find(conv => conv.id === conversationId);
+};
+
+// Helper function to mark conversation as read (reset unread count)
+export const markConversationAsRead = (conversationId) => {
+  console.log("Read:", conversationId);
+  const conversation = conversations.find(conv => conv.id === conversationId);
+  if (conversation && conversation.unreadCount > 0) {
+    conversation.unreadCount = 0;
+    // Trigger a re-render by creating a new array reference
+    conversations = [...conversations];
+    console.log("Conversations after marking as read:", conversation);
+  }
 };
