@@ -2,40 +2,24 @@ import { useState, useEffect, useRef } from 'react';
 import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
+import { getMessagesForConversation } from '../dummyData';
 
 const ConversationView = ({ selectedConversation }) => {
   const messagesEndRef = useRef(null);
-  const placeholderMessages = [
-    { id: 1, text: "Hi, how are feeling today?", isSent: true, isDelivered: true, timestamp: new Date(Date.now() - 60000) },
-    { id: 2, text: "I'm feeling better, thank you!", isReceived: true, timestamp: new Date(Date.now() - 30000) },
-    
-    // Yesterday's messages
-    { id: 3, text: "Did you see the new project updates?", isSent: true, isDelivered: true, timestamp: new Date(Date.now() - 86400000 - 3600000) }, // Yesterday at 11 AM
-    { id: 4, text: "Yes, I reviewed them this morning", isReceived: true, timestamp: new Date(Date.now() - 86400000 - 1800000) }, // Yesterday at 11:30 AM
-    { id: 5, text: "Great! Let's discuss them tomorrow", isSent: true, isDelivered: true, timestamp: new Date(Date.now() - 86400000 - 900000) }, // Yesterday at 11:45 AM
-    
-    // Day before yesterday
-    { id: 6, text: "Happy New Year! 🎉", isReceived: true, timestamp: new Date(Date.now() - 172800000 - 7200000) }, // 2 days ago at 10 AM
-    { id: 7, text: "Happy New Year to you too! 🎊", isSent: true, isDelivered: true, timestamp: new Date(Date.now() - 172800000 - 3600000) }, // 2 days ago at 12 PM
-    { id: 8, text: "What are your plans for this year?", isReceived: true, timestamp: new Date(Date.now() - 172800000 - 1800000) }, // 2 days ago at 1 PM
-    
-    // Last week
-    { id: 9, text: "Don't forget about the team meeting", isSent: true, isDelivered: true, timestamp: new Date(Date.now() - 604800000 - 3600000) }, // 7 days ago at 2 PM
-    { id: 10, text: "Thanks for the reminder!", isReceived: true, timestamp: new Date(Date.now() - 604800000 - 1800000) }, // 7 days ago at 2:30 PM
-  ];
-  // TODO: Add messages from the database
-  const [messages, setMessages] = useState(placeholderMessages);
+  
+  // Get messages for the selected conversation
+  const [messages, setMessages] = useState(() => {
+    return selectedConversation?.id ? getMessagesForConversation(selectedConversation.id) : [];
+  });
 
+  // Update messages when conversation changes
   useEffect(() => {
-    console.log("selectedConversation in ConversationView useEffect:", selectedConversation);
-    if (selectedConversation) {
-      setMessages(selectedConversation.messages);
+    if (selectedConversation?.id) {
+      setMessages(getMessagesForConversation(selectedConversation.id));
     } else {
-      // TODO: Remove placeholder messages when real data is added
-      setMessages(placeholderMessages);
+      setMessages([]);
     }
   }, [selectedConversation]);
-  
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -71,9 +55,7 @@ const ConversationView = ({ selectedConversation }) => {
   // Group messages by date and sort everything
   const groupMessagesByDate = (messages) => {
     const groups = {};
-    if (!messages) {
-      return groups;
-    }
+    
     messages.forEach(message => {
       const date = new Date(message.timestamp);
       const dateKey = date.toDateString(); // e.g., "Mon Jan 15 2024"
@@ -98,6 +80,20 @@ const ConversationView = ({ selectedConversation }) => {
   const messageGroups = groupMessagesByDate(messages);
   // Get sorted date keys (oldest first) - date order
   const sortedDateKeys = Object.keys(messageGroups).sort((a, b) => new Date(a) - new Date(b));
+
+  // Show placeholder when no conversation is selected
+  if (!selectedConversation) {
+    return (
+      <div className="flex flex-col h-full bg-gray-50">
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center text-gray-500">
+            <h3 className="text-lg font-medium mb-2">Select a conversation</h3>
+            <p className="text-sm">Choose a conversation from the list to start messaging</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full">
