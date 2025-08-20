@@ -61,11 +61,11 @@ const ConversationItem = ({ conversation, isActive, onClick }) => {
       {/* Conversation Details */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
-          <h3 className={`text-sm font-medium truncate ${
+          <h5 className={`text-sm font-medium truncate ${
             conversation.unreadCount > 0 ? 'font-semibold' : ''
           }`}>
             {conversation.name}
-          </h3>
+          </h5>
           <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
             {formatTime(conversation.lastMessageTime)}
           </span>

@@ -3,10 +3,9 @@ import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
 
-const ConversationView = () => {
+const ConversationView = ({ selectedConversation }) => {
   const messagesEndRef = useRef(null);
-  // TODO: Add messages from the database
-  const [messages, setMessages] = useState([
+  const placeholderMessages = [
     { id: 1, text: "Hi, how are feeling today?", isSent: true, isDelivered: true, timestamp: new Date(Date.now() - 60000) },
     { id: 2, text: "I'm feeling better, thank you!", isReceived: true, timestamp: new Date(Date.now() - 30000) },
     
@@ -23,7 +22,19 @@ const ConversationView = () => {
     // Last week
     { id: 9, text: "Don't forget about the team meeting", isSent: true, isDelivered: true, timestamp: new Date(Date.now() - 604800000 - 3600000) }, // 7 days ago at 2 PM
     { id: 10, text: "Thanks for the reminder!", isReceived: true, timestamp: new Date(Date.now() - 604800000 - 1800000) }, // 7 days ago at 2:30 PM
-  ]);
+  ];
+  // TODO: Add messages from the database
+  const [messages, setMessages] = useState(placeholderMessages);
+
+  useEffect(() => {
+    console.log("selectedConversation in ConversationView useEffect:", selectedConversation);
+    if (selectedConversation) {
+      setMessages(selectedConversation.messages);
+    } else {
+      // TODO: Remove placeholder messages when real data is added
+      setMessages(placeholderMessages);
+    }
+  }, [selectedConversation]);
   
 
   const scrollToBottom = () => {
@@ -60,7 +71,9 @@ const ConversationView = () => {
   // Group messages by date and sort everything
   const groupMessagesByDate = (messages) => {
     const groups = {};
-    
+    if (!messages) {
+      return groups;
+    }
     messages.forEach(message => {
       const date = new Date(message.timestamp);
       const dateKey = date.toDateString(); // e.g., "Mon Jan 15 2024"

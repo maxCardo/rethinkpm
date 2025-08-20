@@ -2,8 +2,9 @@ import { useState, useMemo } from 'react';
 import SearchMsgInput from './SearchMsgInput';
 import ConversationItem from './ConversationItem';
 
-const ConversationList = ({ onConversationSelect, selectedConversationId }) => {
+const ConversationList = ({ onConversationSelect }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [localSelectedConversationId, setLocalSelectedConversationId] = useState(null);
 
   // Sample conversation data
   const conversations = [
@@ -14,7 +15,22 @@ const ConversationList = ({ onConversationSelect, selectedConversationId }) => {
       lastMessageTime: new Date(Date.now() - 300000), // 5 minutes ago
       unreadCount: 2,
       isDelivered: true,
-      avatar: null
+      avatar: null,
+      messages: [
+        {
+          id: 1,
+          text: "Hello, how are you?",
+          isSent: true,
+          isDelivered: true,
+          timestamp: new Date(Date.now() - 300000)
+        },
+        {
+          id: 2,
+          text: "I'm good, thank you!",
+          isReceived: true,
+          timestamp: new Date(Date.now() - 300000)
+        }
+      ]
     },
     {
       id: 2,
@@ -23,7 +39,30 @@ const ConversationList = ({ onConversationSelect, selectedConversationId }) => {
       lastMessageTime: new Date(Date.now() - 1800000), // 30 minutes ago
       unreadCount: 0,
       isDelivered: true,
-      avatar: null
+      avatar: null,
+      messages: [
+        {
+          id: 1,
+          text: "Remember to buy the groceries",
+          isSent: true,
+          isDelivered: true,
+          timestamp: new Date(Date.now() - 300000)
+        },
+        {
+          id: 2,
+          text: "I'll do it later",
+          isReceived: true,
+          isDelivered: true,
+          timestamp: new Date(Date.now() - 300000)
+        },
+        {
+          id: 3,
+          text: "add milk to the list!",
+          isSent: true,
+          isDelivered: true,
+          timestamp: new Date(Date.now() - 300000)
+        }
+      ]
     },
     {
       id: 3,
@@ -80,6 +119,7 @@ const ConversationList = ({ onConversationSelect, selectedConversationId }) => {
   };
 
   const handleConversationClick = (conversation) => {
+    setLocalSelectedConversationId(conversation.id);
     if (onConversationSelect) {
       onConversationSelect(conversation);
     }
@@ -97,7 +137,7 @@ const ConversationList = ({ onConversationSelect, selectedConversationId }) => {
             <ConversationItem
               key={conversation.id}
               conversation={conversation}
-              isActive={selectedConversationId === conversation.id}
+              isActive={localSelectedConversationId === conversation.id}
               onClick={handleConversationClick}
             />
           ))
