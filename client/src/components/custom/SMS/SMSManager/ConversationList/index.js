@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import ConversationListHeader from './ConversationListHeader';
 import ConversationItem from './ConversationItem';
-import { conversations, markConversationAsRead } from '../dummyData';
+import { conversations, markConversationAsRead } from '../mockData';
 
 const ConversationList = ({ onConversationSelect, selectedConversationId, onNewConversation }) => {
   const [searchTerm, setSearchTerm] = useState('');
