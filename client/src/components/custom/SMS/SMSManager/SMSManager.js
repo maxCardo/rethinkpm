@@ -1,12 +1,17 @@
 import ConversationView from "./ConversationView";
+import ConversationList from "./ConversationList";
 
 const SMSManager = () => {
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">SMS Manager</h1>
       <div className="h-screen">
-        <ConversationView />
-      </div>
+        <div className="grid grid-cols-12">
+          <div className="col-span-6">
+            <ConversationList />
+          </div>
+          <div className="col-span-6 h-screen">
+            <ConversationView />
+          </div>
+        </div>
     </div>
   );
 };
