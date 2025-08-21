@@ -95,9 +95,9 @@ const MessageInput = ({ onSendMessage }) => {
         {/* Attach Button */}
         <button
           onClick={handleAttachClick}
-          className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
+          className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-transparent hover:bg-gray-200 text-gray-600 transition-colors"
         >
-          <IoAttach className="w-5 h-5" />
+          <IoAttach className="w-6 h-6" />
         </button>
         
         {/* Text Input Area */}
@@ -129,13 +129,15 @@ const MessageInput = ({ onSendMessage }) => {
         <button
           onClick={handleSend}
           disabled={(!message.trim() && !selectedFile) || isOverLimit || isSending}
-          className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 transform ${
-            (message.trim() || selectedFile) && !isOverLimit && !isSending
-              ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg hover:scale-105 active:scale-95'
-              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-          } ${isSending ? 'animate-pulse bg-blue-500' : ''}`}
+          className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95"
         >
-          <IoSend className={`w-5 h-5 transition-transform duration-300 ${isSending ? 'animate-bounce' : ''}`} />
+          <IoSend className={`w-6 h-6 transition-all duration-300 ${
+            isSending 
+              ? 'text-blue-500 animate-bounce' 
+              : (message.trim() || selectedFile) && !isOverLimit
+                ? 'text-blue-600 hover:text-blue-700'
+                : 'text-gray-400'
+          }`} />
         </button>
       </div>
 

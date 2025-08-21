@@ -548,6 +548,7 @@ export const getConversationsForUI = () => {
       avatar: null,
       contactId: contact.id,
       conversationId: conversation.id,
+      createDate: contact.createDate,
     };
   }).filter(Boolean); // Remove null entries
 };

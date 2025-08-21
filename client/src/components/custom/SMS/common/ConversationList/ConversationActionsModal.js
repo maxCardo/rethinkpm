@@ -10,29 +10,48 @@ const ConversationActionsModal = ({
 }) => {
   if (!isOpen) return null;
 
-  const renderContactInfo = () => (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-        <p className="text-gray-900">{contact.name}</p>
+  const renderContactInfo = () => {
+    const formatDate = (dateString) => {
+      if (!dateString) return 'N/A';
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    };
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <p className="text-gray-900">{contact.name}</p>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+          <p className="text-gray-900">{contact.phone || 'N/A'}</p>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <p className="text-gray-900">{contact.email || 'N/A'}</p>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Created</label>
+          <p className="text-gray-900">{formatDate(contact.createDate)}</p>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+          <p className="text-gray-900">{contact.notes || 'No notes available'}</p>
+        </div>
       </div>
-      
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-        <p className="text-gray-900">{contact.phone || 'N/A'}</p>
-      </div>
-      
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <p className="text-gray-900">{contact.email || 'N/A'}</p>
-      </div>
-      
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-        <p className="text-gray-900">{contact.notes || 'No notes available'}</p>
-      </div>
-    </div>
-  );
+    );
+  };
 
   const renderDeleteConfirmation = () => (
     <div className="space-y-4">
