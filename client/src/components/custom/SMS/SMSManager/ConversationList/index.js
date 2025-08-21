@@ -5,6 +5,7 @@ import { getConversationsForUI, markConversationAsRead } from '../../mockData';
 
 const ConversationList = ({ onConversationSelect, selectedConversationId, onNewConversation }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Filter conversations based on search term
   const filteredConversations = useMemo(() => {
@@ -17,7 +18,7 @@ const ConversationList = ({ onConversationSelect, selectedConversationId, onNewC
       conversation.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       conversation.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [searchTerm]);
+  }, [searchTerm, refreshTrigger]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -26,6 +27,9 @@ const ConversationList = ({ onConversationSelect, selectedConversationId, onNewC
   const handleConversationClick = (conversation) => {
     // Mark conversation as read when clicked
     markConversationAsRead(conversation.id);
+    
+    // Trigger a re-render to update the unread count
+    setRefreshTrigger(prev => prev + 1);
     
     if (onConversationSelect) {
       onConversationSelect(conversation);

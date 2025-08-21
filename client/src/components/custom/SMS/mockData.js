@@ -17,10 +17,10 @@ export let contacts = [
       {
         id: "conv_1",
         userId: "user_1", // reference to user from users table
-        lastMessage: "Thanks for the update!",
-        lastMessageTime: new Date(Date.now() - 300000), // 5 minutes ago
-        lastMessageId: "msg_1_3", // reference to last message
-        unreadCount: 0, // will be computed
+        lastMessage: "Also, when is the next meeting scheduled?",
+        lastMessageTime: new Date(Date.now() - 30000), // 30 seconds ago
+        lastMessageId: "msg_1_5", // reference to last message
+        unreadCount: 2, // will be computed
         isActive: true,
         createDate: new Date(Date.now() - 86400000), // 1 day ago
         updateDate: new Date(Date.now() - 300000),
@@ -197,13 +197,14 @@ export let smsMessages = [
     mediaUrl: null,
     mediaType: null,
     direction: "inbound",
-    currentStatus: "delivered",
+    currentStatus: "read",
     statusHistory: [
-      { status: "delivered", at: new Date(Date.now() - 300000), reason: null }
+      { status: "delivered", at: new Date(Date.now() - 300000), reason: null },
+      { status: "read", at: new Date(Date.now() - 250000), reason: null }
     ],
     isActive: true,
     createDate: new Date(Date.now() - 300000),
-    updateDate: new Date(Date.now() - 300000),
+    updateDate: new Date(Date.now() - 250000),
   },
   {
     id: "msg_1_3",
@@ -223,6 +224,40 @@ export let smsMessages = [
     isActive: true,
     createDate: new Date(Date.now() - 300000),
     updateDate: new Date(Date.now() - 299000),
+  },
+  {
+    id: "msg_1_4",
+    conversationId: "conv_1",
+    senderType: "contact",
+    senderId: "contact_1",
+    body: "Can you send me the latest updates?",
+    mediaUrl: null,
+    mediaType: null,
+    direction: "inbound",
+    currentStatus: "delivered",
+    statusHistory: [
+      { status: "delivered", at: new Date(Date.now() - 60000), reason: null }
+    ],
+    isActive: true,
+    createDate: new Date(Date.now() - 60000),
+    updateDate: new Date(Date.now() - 60000),
+  },
+  {
+    id: "msg_1_5",
+    conversationId: "conv_1",
+    senderType: "contact",
+    senderId: "contact_1",
+    body: "Also, when is the next meeting scheduled?",
+    mediaUrl: null,
+    mediaType: null,
+    direction: "inbound",
+    currentStatus: "delivered",
+    statusHistory: [
+      { status: "delivered", at: new Date(Date.now() - 30000), reason: null }
+    ],
+    isActive: true,
+    createDate: new Date(Date.now() - 30000),
+    updateDate: new Date(Date.now() - 30000),
   },
 
   // Messages for conversation 2
@@ -254,13 +289,14 @@ export let smsMessages = [
     mediaUrl: null,
     mediaType: null,
     direction: "inbound",
-    currentStatus: "delivered",
+    currentStatus: "read",
     statusHistory: [
-      { status: "delivered", at: new Date(Date.now() - 1800000), reason: null }
+      { status: "delivered", at: new Date(Date.now() - 1800000), reason: null },
+      { status: "read", at: new Date(Date.now() - 1700000), reason: null }
     ],
     isActive: true,
     createDate: new Date(Date.now() - 1800000),
-    updateDate: new Date(Date.now() - 1800000),
+    updateDate: new Date(Date.now() - 1700000),
   },
   {
     id: "msg_2_3",
@@ -290,13 +326,14 @@ export let smsMessages = [
     mediaUrl: null,
     mediaType: null,
     direction: "inbound",
-    currentStatus: "delivered",
+    currentStatus: "read",
     statusHistory: [
-      { status: "delivered", at: new Date(Date.now() - 1800000), reason: null }
+      { status: "delivered", at: new Date(Date.now() - 1800000), reason: null },
+      { status: "read", at: new Date(Date.now() - 1700000), reason: null }
     ],
     isActive: true,
     createDate: new Date(Date.now() - 1800000),
-    updateDate: new Date(Date.now() - 1800000),
+    updateDate: new Date(Date.now() - 1700000),
   },
 
   // Messages for conversation 3 (more messages to show unread)
@@ -364,13 +401,14 @@ export let smsMessages = [
     mediaUrl: null,
     mediaType: null,
     direction: "inbound",
-    currentStatus: "delivered",
+    currentStatus: "read",
     statusHistory: [
-      { status: "delivered", at: new Date(Date.now() - 86400000), reason: null }
+      { status: "delivered", at: new Date(Date.now() - 86400000), reason: null },
+      { status: "read", at: new Date(Date.now() - 86000000), reason: null }
     ],
     isActive: true,
     createDate: new Date(Date.now() - 86400000),
-    updateDate: new Date(Date.now() - 86400000),
+    updateDate: new Date(Date.now() - 86000000),
   },
   {
     id: "msg_5_1",
@@ -381,13 +419,14 @@ export let smsMessages = [
     mediaUrl: null,
     mediaType: null,
     direction: "inbound",
-    currentStatus: "delivered",
+    currentStatus: "read",
     statusHistory: [
-      { status: "delivered", at: new Date(Date.now() - 172800000), reason: null }
+      { status: "delivered", at: new Date(Date.now() - 172800000), reason: null },
+      { status: "read", at: new Date(Date.now() - 172000000), reason: null }
     ],
     isActive: true,
     createDate: new Date(Date.now() - 172800000),
-    updateDate: new Date(Date.now() - 172800000),
+    updateDate: new Date(Date.now() - 172000000),
   },
   {
     id: "msg_6_1",
@@ -398,13 +437,14 @@ export let smsMessages = [
     mediaUrl: null,
     mediaType: null,
     direction: "inbound",
-    currentStatus: "delivered",
+    currentStatus: "read",
     statusHistory: [
-      { status: "delivered", at: new Date(Date.now() - 259200000), reason: null }
+      { status: "delivered", at: new Date(Date.now() - 259200000), reason: null },
+      { status: "read", at: new Date(Date.now() - 258000000), reason: null }
     ],
     isActive: true,
     createDate: new Date(Date.now() - 259200000),
-    updateDate: new Date(Date.now() - 259200000),
+    updateDate: new Date(Date.now() - 258000000),
   },
   
   // Sample media messages for testing
@@ -480,7 +520,7 @@ export const getConversationsForUI = () => {
     const unreadCount = conversationMessages.filter(msg => 
       msg.senderType === 'contact' && 
       msg.direction === 'inbound' &&
-      msg.currentStatus === 'delivered'
+      msg.currentStatus === 'delivered' // Only count delivered messages, not read ones
     ).length;
     
     // Update the conversation's unreadCount field
