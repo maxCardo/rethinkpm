@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
-import { getMessagesForConversation } from '../../mockData';
+import { getMessagesForConversation, addNewMessage, updateMessageDeliveryStatus } from '../../mockData';
 
 const ConversationView = ({ selectedConversation }) => {
   const messagesEndRef = useRef(null);
@@ -51,13 +51,9 @@ const ConversationView = ({ selectedConversation }) => {
     
     // Simulate delivery after 1 second
     setTimeout(() => {
-      setMessages(prev => 
-        prev.map(msg => 
-          msg.id === newMessage.id 
-            ? { ...msg, isDelivered: true }
-            : msg
-        )
-      );
+      addNewMessage(selectedConversation.id, newMessage);
+      updateMessageDeliveryStatus(selectedConversation.id, newMessage.id, true);
+      setMessages(getMessagesForConversation(selectedConversation.id));
     }, 1000);
   };
 

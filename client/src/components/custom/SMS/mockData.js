@@ -184,6 +184,8 @@ export let conversations = [
   }
 ];
 
+
+
 // Helper function to get messages for a specific conversation
 export const getMessagesForConversation = (conversationId) => {
   const conversation = conversations.find(conv => conv.id === conversationId);
@@ -228,3 +230,37 @@ export const addNewConversation = (conversationData) => {
   
   return newConversation;
 };
+
+// Helper function to add a new message to a conversation
+export const addNewMessage = (conversationId, messageData) => {
+  console.log("Adding new message:", messageData);
+  const conversation = conversations.find(conv => conv.id === conversationId);
+  if (conversation) {
+    conversation.messages.push(messageData);
+    // Trigger a re-render by creating a new array reference
+    conversations = [...conversations];
+  }
+};
+
+export const updateMessageDeliveryStatus = (conversationId, messageId, isDelivered) => {
+  const conversation = conversations.find(conv => conv.id === conversationId);
+  if (conversation) {
+    const message = conversation.messages.find(msg => msg.id === messageId);
+    if (message) {
+      message.isDelivered = isDelivered;
+      // Trigger a re-render by creating a new array reference
+      conversations = [...conversations];
+    }
+  }
+};
+
+export const updateConversation = (conversationId, conversationData) => {
+  const conversation = conversations.find(conv => conv.id === conversationId);
+  if (conversation) {
+    Object.assign(conversation, conversationData);
+    // Trigger a re-render by creating a new array reference
+    conversations = [...conversations];
+  }
+};
+
+
