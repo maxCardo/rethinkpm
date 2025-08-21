@@ -583,8 +583,6 @@ export const getConversationById = (conversationId) => {
 
 // Helper function to mark conversation as read (reset unread count)
 export const markConversationAsRead = (conversationId) => {
-  console.log("Marking conversation as read:", conversationId);
-  
   // Find all inbound messages for this conversation that are delivered but not read
   const messagesToMarkAsRead = smsMessages.filter(msg => 
     msg.conversationId === conversationId &&
@@ -650,8 +648,6 @@ export const addNewConversation = (conversationData) => {
 
 // Helper function to add a new message to a conversation
 export const addNewMessage = (conversationId, messageData) => {
-  console.log("Adding new message:", messageData);
-  
   const messageId = `msg_${Date.now()}`;
   const newMessage = {
     id: messageId,
@@ -727,8 +723,6 @@ export const updateConversation = (conversationId, conversationData) => {
 
 // Helper function to delete a conversation
 export const deleteConversation = (conversationId) => {
-  console.log("Deleting conversation:", conversationId);
-  
   // Find the contact that has this conversation
   const contact = contacts.find(c => c.conversations.some(conv => conv.id === conversationId));
   if (contact) {
