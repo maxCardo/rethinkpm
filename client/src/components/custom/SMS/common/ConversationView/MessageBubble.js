@@ -1,3 +1,6 @@
+import ImageWithLoader from './ImageWithLoader';
+import VideoWithLoader from './VideoWithLoader';
+
 const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, mediaUrl, mediaType }) => {
   const formatTime = (timestamp) => {
     if (!timestamp) return '';
@@ -19,7 +22,7 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
               {mediaUrl && mediaType && (
                 <div className="mb-2">
                   {mediaType === 'image' && (
-                    <img 
+                    <ImageWithLoader 
                       src={mediaUrl} 
                       alt="Message attachment" 
                       className="max-w-full h-auto rounded-lg"
@@ -27,9 +30,8 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
                     />
                   )}
                   {mediaType === 'video' && (
-                    <video 
+                    <VideoWithLoader 
                       src={mediaUrl} 
-                      controls 
                       className="max-w-full h-auto rounded-lg"
                       style={{ maxHeight: '200px' }}
                     />
@@ -89,7 +91,7 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
               {mediaUrl && mediaType && (
                 <div className="mb-2">
                   {mediaType === 'image' && (
-                    <img 
+                    <ImageWithLoader 
                       src={mediaUrl} 
                       alt="Message attachment" 
                       className="max-w-full h-auto rounded-lg"
@@ -97,9 +99,8 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
                     />
                   )}
                   {mediaType === 'video' && (
-                    <video 
+                    <VideoWithLoader 
                       src={mediaUrl} 
-                      controls 
                       className="max-w-full h-auto rounded-lg"
                       style={{ maxHeight: '200px' }}
                     />
