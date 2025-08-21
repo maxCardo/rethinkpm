@@ -9,6 +9,7 @@ const MessageInput = ({ onSendMessage }) => {
   const handleSend = async () => {
     if (message.trim() && !isSending) {
       setIsSending(true);
+      setIsTyping(false);
       
       // Simulate sending delay for animation
       await new Promise(resolve => setTimeout(resolve, 300));
@@ -49,7 +50,6 @@ const MessageInput = ({ onSendMessage }) => {
             value={message}
             onChange={handleTextareaChange}
             onKeyPress={handleKeyPress}
-            onBlur={() => setIsTyping(false)}
             placeholder="Type your message..."
             className={`w-full resize-none border border-gray-300 rounded-2xl px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
               isOverLimit ? 'border-red-300 focus:ring-red-500' : ''

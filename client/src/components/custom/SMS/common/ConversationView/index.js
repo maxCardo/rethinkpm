@@ -22,11 +22,20 @@ const ConversationView = ({ selectedConversation }) => {
   }, [selectedConversation]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // scroll to the bottom of the messages container if there are messages
+    if (messagesEndRef.current && messages.length > 0) {
+      const messagesContainer = messagesEndRef.current.parentElement;
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Only scroll to bottom if there are messages
+    if (messages.length > 0) {
+      scrollToBottom();
+    }
   }, [messages]);
 
   const handleSendMessage = (messageText) => {
