@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import ConversationView from "../common/ConversationView";
-import ConversationList from "./ConversationList";
-import NewConversationDialog from "./NewConversationDialog/NewConversationDialog";
-import ConversationActionsModal from "./ConversationList/ConversationActionsModal";
+import ConversationList from "../common/ConversationList";
+import NewConversationDialog from "../common/NewConversationDialog/NewConversationDialog";
+import ConversationActionsModal from "../common/ConversationList/ConversationActionsModal";
 import { addNewConversation, deleteConversation } from "../mockData";
 import { createSuccessAlert, createErrorAlert } from "../../../../actions/alert";
 
