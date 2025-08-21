@@ -146,7 +146,7 @@ const ConversationItem = ({ conversation, isActive, onClick, onContactInfo, onDe
                 {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
               </div>
             ) : (
-              conversation.isDelivered && (
+              conversation.isDelivered && conversation.isLastMessageFromUser && (
                 <IoCheckmarkDone className="w-4 h-4 text-blue-500" />
               )
             )}

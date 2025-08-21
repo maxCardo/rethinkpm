@@ -533,6 +533,12 @@ export const getConversationsForUI = () => {
     
     const isDelivered = lastOutboundMessage ? isMessageDelivered(lastOutboundMessage) : false;
     
+    // Check if the last message was sent by the user (outbound)
+    const lastMessage = conversationMessages
+      .sort((a, b) => new Date(b.createDate) - new Date(a.createDate))[0];
+    
+    const isLastMessageFromUser = lastMessage ? lastMessage.direction === 'outbound' : false;
+    
     return {
       id: conversation.id,
       name: contact.name,
@@ -545,6 +551,7 @@ export const getConversationsForUI = () => {
       lastMessageId: conversation.lastMessageId,
       unreadCount,
       isDelivered,
+      isLastMessageFromUser,
       avatar: null,
       contactId: contact.id,
       conversationId: conversation.id,
