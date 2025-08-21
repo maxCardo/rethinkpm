@@ -3,7 +3,14 @@ import ConversationListHeader from './ConversationListHeader';
 import ConversationItem from './ConversationItem';
 import { getConversationsForUI, markConversationAsRead } from '../../mockData';
 
-const ConversationList = ({ onConversationSelect, selectedConversationId, onNewConversation, refreshTrigger = 0 }) => {
+const ConversationList = ({ 
+  onConversationSelect, 
+  selectedConversationId, 
+  onNewConversation, 
+  refreshTrigger = 0,
+  onContactInfo,
+  onDeleteConversation
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [internalRefreshTrigger, setInternalRefreshTrigger] = useState(0);
 
@@ -44,6 +51,18 @@ const ConversationList = ({ onConversationSelect, selectedConversationId, onNewC
     }
   };
 
+  const handleContactInfo = (conversation) => {
+    if (onContactInfo) {
+      onContactInfo(conversation);
+    }
+  };
+
+  const handleDeleteConversation = (conversation) => {
+    if (onDeleteConversation) {
+      onDeleteConversation(conversation);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full bg-white border-r border-gray-200">
       {/* Search Input with New Conversation Button */}
@@ -65,6 +84,8 @@ const ConversationList = ({ onConversationSelect, selectedConversationId, onNewC
               conversation={conversation}
               isActive={selectedConversationId === conversation.id}
               onClick={handleConversationClick}
+              onContactInfo={handleContactInfo}
+              onDeleteConversation={handleDeleteConversation}
             />
           ))
         ) : (

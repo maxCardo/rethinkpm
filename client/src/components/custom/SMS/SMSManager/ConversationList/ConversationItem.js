@@ -1,6 +1,12 @@
 import { IoCheckmarkDone } from 'react-icons/io5';
+import { IoEllipsisVertical } from 'react-icons/io5';
+import { IoPerson, IoTrash } from 'react-icons/io5';
+import { useState, useEffect, useRef } from 'react';
 
-const ConversationItem = ({ conversation, isActive, onClick }) => {
+const ConversationItem = ({ conversation, isActive, onClick, onContactInfo, onDeleteConversation }) => {
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef(null);
+
   const formatTime = (timestamp) => {
     if (!timestamp) return '';
     const date = new Date(timestamp);
@@ -36,12 +42,58 @@ const ConversationItem = ({ conversation, isActive, onClick }) => {
       .slice(0, 2);
   };
 
+  // Handle clicking outside the menu to close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMenu]);
+
+  const handleMenuToggle = (e) => {
+    e.stopPropagation();
+    setShowMenu(!showMenu);
+  };
+
+  const handleContactInfo = (e) => {
+    e.stopPropagation();
+    setShowMenu(false);
+    if (onContactInfo) {
+      onContactInfo(conversation);
+    }
+  };
+
+  const handleDeleteConversation = (e) => {
+    e.stopPropagation();
+    setShowMenu(false);
+    if (onDeleteConversation) {
+      onDeleteConversation(conversation);
+    }
+  };
+
+  const handleItemClick = () => {
+    setShowMenu(false);
+    if (onClick) {
+      onClick(conversation);
+    }
+  };
+
   return (
     <div 
-      className={`flex items-center p-4 cursor-pointer transition-all duration-200 hover:bg-gray-50 ${
+      ref={menuRef}
+      className={`flex items-center p-4 cursor-pointer transition-all duration-200 hover:bg-gray-50 relative ${
         isActive ? 'bg-blue-50 border-r-2 border-blue-500' : ''
       }`}
-      onClick={() => onClick && onClick(conversation)}
+      onClick={handleItemClick}
     >
       {/* Avatar */}
       <div className="flex-shrink-0 mr-3">
@@ -66,9 +118,18 @@ const ConversationItem = ({ conversation, isActive, onClick }) => {
           }`}>
             {conversation.name}
           </h5>
-          <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
-            {formatTime(conversation.lastMessageTime)}
-          </span>
+          <div className="flex items-center">
+            <span className="text-xs text-gray-500 flex-shrink-0 mr-2">
+              {formatTime(conversation.lastMessageTime)}
+            </span>
+            {/* Menu Button */}
+            <button
+              onClick={handleMenuToggle}
+              className="p-1 rounded-full hover:bg-gray-200 transition-colors duration-200"
+            >
+              <IoEllipsisVertical className="w-4 h-4 text-gray-500" />
+            </button>
+          </div>
         </div>
         
         <div className="flex items-center justify-between">
@@ -92,6 +153,28 @@ const ConversationItem = ({ conversation, isActive, onClick }) => {
           </div>
         </div>
       </div>
+
+      {/* Menu Dropdown */}
+      {showMenu && (
+        <div className="absolute right-2 top-12 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-48">
+          <div className="py-1">
+            <button
+              onClick={handleContactInfo}
+              className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+            >
+              <IoPerson className="w-4 h-4 mr-3 text-gray-500" />
+              Contact Info
+            </button>
+            <button
+              onClick={handleDeleteConversation}
+              className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
+            >
+              <IoTrash className="w-4 h-4 mr-3 text-red-500" />
+              Delete Conversation
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -724,6 +724,38 @@ export const updateConversation = (conversationId, conversationData) => {
   }
 };
 
+// Helper function to delete a conversation
+export const deleteConversation = (conversationId) => {
+  console.log("Deleting conversation:", conversationId);
+  
+  // Find the contact that has this conversation
+  const contact = contacts.find(c => c.conversations.some(conv => conv.id === conversationId));
+  if (contact) {
+    // Mark the conversation as inactive
+    const conversation = contact.conversations.find(conv => conv.id === conversationId);
+    if (conversation) {
+      conversation.isActive = false;
+      conversation.updateDate = new Date();
+    }
+    
+    // Mark all messages in this conversation as inactive
+    smsMessages.forEach(msg => {
+      if (msg.conversationId === conversationId) {
+        msg.isActive = false;
+        msg.updateDate = new Date();
+      }
+    });
+    
+    // Trigger a re-render by creating new array references
+    contacts = [...contacts];
+    smsMessages = [...smsMessages];
+    
+    return true;
+  }
+  
+  return false;
+};
+
 // Export the conversations array for backward compatibility (using the new structure)
 export const conversations = getConversationsForUI();
 
