@@ -34,26 +34,21 @@ const NewConversationDialog = ({ isOpen, onClose, onCreateConversation }) => {
     setIsSubmitting(true);
     
     try {
-      // TODO: Add conversation to the database
-      const newConversation = {
-        id: Date.now(),
+      // Create conversation data in the new format
+      const conversationData = {
         name: formData.name.trim(),
         phone: formData.phone.trim(),
         email: formData.email.trim(),
         notes: formData.notes.trim(),
-        lastMessage: '',
-        lastMessageTime: new Date(),
-        unreadCount: 0,
-        isDelivered: false,
-        avatar: null,
-        messages: []
+        relatedEntityType: 'manual', // Default source for manually created conversations
+        relatedEntityId: null
       };
 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       if (onCreateConversation) {
-        onCreateConversation(newConversation);
+        onCreateConversation(conversationData);
       }
       
       handleClose();

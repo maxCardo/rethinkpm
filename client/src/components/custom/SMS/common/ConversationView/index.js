@@ -38,23 +38,35 @@ const ConversationView = ({ selectedConversation }) => {
     }
   }, [messages]);
 
-  const handleSendMessage = (messageText) => {
+  const handleSendMessage = (messageText, file = null) => {
     const newMessage = {
-      id: Date.now(),
       text: messageText,
-      isSent: true,
-      isDelivered: false,
-      timestamp: new Date()
+      senderType: 'user',
+      senderId: 'user_1',
+      direction: 'outbound',
+      initialStatus: 'queued',
+      mediaUrl: file ? URL.createObjectURL(file) : null,
+      mediaType: file ? getMediaType(file.type) : null
     };
-    // TODO: Add message to the database
-    setMessages(prev => [...prev, newMessage]);
+    
+    // Add message to the database and get the message ID
+    const messageId = addNewMessage(selectedConversation.id, newMessage);
+    
+    // Update local state
+    setMessages(getMessagesForConversation(selectedConversation.id));
     
     // Simulate delivery after 1 second
     setTimeout(() => {
-      addNewMessage(selectedConversation.id, newMessage);
-      updateMessageDeliveryStatus(selectedConversation.id, newMessage.id, true);
+      updateMessageDeliveryStatus(selectedConversation.id, messageId, 'delivered');
       setMessages(getMessagesForConversation(selectedConversation.id));
     }, 1000);
+  };
+
+  const getMediaType = (mimeType) => {
+    if (mimeType.startsWith('image/')) return 'image';
+    if (mimeType.startsWith('video/')) return 'video';
+    if (mimeType.startsWith('audio/')) return 'audio';
+    return 'document';
   };
 
   // Group messages by date and sort everything
@@ -115,6 +127,8 @@ const ConversationView = ({ selectedConversation }) => {
                   isReceived={message.isReceived}
                   isDelivered={message.isDelivered}
                   timestamp={message.timestamp}
+                  mediaUrl={message.mediaUrl}
+                  mediaType={message.mediaType}
                 />
               </div>
             ))}

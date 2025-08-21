@@ -1,13 +1,15 @@
-import { useState } from 'react';
-import { IoSend } from 'react-icons/io5';
+import { useState, useRef } from 'react';
+import { IoSend, IoAttach } from 'react-icons/io5';
 
 const MessageInput = ({ onSendMessage }) => {
   const [message, setMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleSend = async () => {
-    if (message.trim() && !isSending) {
+    if ((message.trim() || selectedFile) && !isSending) {
       setIsSending(true);
       setIsTyping(false);
       
@@ -16,10 +18,11 @@ const MessageInput = ({ onSendMessage }) => {
       
       // Call parent function to add message to conversation
       if (onSendMessage) {
-        onSendMessage(message.trim());
+        onSendMessage(message.trim(), selectedFile);
       }
       
       setMessage('');
+      setSelectedFile(null);
       setIsSending(false);
     }
   };
@@ -37,13 +40,66 @@ const MessageInput = ({ onSendMessage }) => {
     setIsTyping(e.target.value.length > 0);
   };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleAttachClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const removeSelectedFile = () => {
+    setSelectedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const maxLength = 160; // Standard SMS character limit
   const characterCount = message.length;
   const isOverLimit = characterCount > maxLength;
 
   return (
     <div className="border-t border-gray-200 bg-white p-4">
+      {/* File Input (hidden) */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileSelect}
+        accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt"
+        className="hidden"
+      />
+      
+      {/* Selected File Preview */}
+      {selectedFile && (
+        <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-600">📎 {selectedFile.name}</span>
+              <span className="text-xs text-gray-400">({(selectedFile.size / 1024).toFixed(1)} KB)</span>
+            </div>
+            <button
+              onClick={removeSelectedFile}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+      
       <div className="flex items-center gap-3">
+        {/* Attach Button */}
+        <button
+          onClick={handleAttachClick}
+          className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
+        >
+          <IoAttach className="w-5 h-5" />
+        </button>
+        
         {/* Text Input Area */}
         <div className="flex-1 relative">
           <textarea
@@ -72,9 +128,9 @@ const MessageInput = ({ onSendMessage }) => {
         {/* Send Button */}
         <button
           onClick={handleSend}
-          disabled={!message.trim() || isOverLimit || isSending}
+          disabled={(!message.trim() && !selectedFile) || isOverLimit || isSending}
           className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 transform ${
-            message.trim() && !isOverLimit && !isSending
+            (message.trim() || selectedFile) && !isOverLimit && !isSending
               ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg hover:scale-105 active:scale-95'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           } ${isSending ? 'animate-pulse bg-blue-500' : ''}`}

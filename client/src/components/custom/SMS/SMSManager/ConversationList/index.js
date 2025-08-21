@@ -1,13 +1,14 @@
 import { useState, useMemo } from 'react';
 import ConversationListHeader from './ConversationListHeader';
 import ConversationItem from './ConversationItem';
-import { conversations, markConversationAsRead } from '../../mockData';
+import { getConversationsForUI, markConversationAsRead } from '../../mockData';
 
 const ConversationList = ({ onConversationSelect, selectedConversationId, onNewConversation }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filter conversations based on search term
   const filteredConversations = useMemo(() => {
+    const conversations = getConversationsForUI();
     if (!searchTerm.trim()) {
       return conversations;
     }
@@ -16,7 +17,7 @@ const ConversationList = ({ onConversationSelect, selectedConversationId, onNewC
       conversation.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       conversation.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [conversations, searchTerm]);
+  }, [searchTerm]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
