@@ -75,7 +75,7 @@ const ConversationItem = ({ conversation, isActive, onClick }) => {
           <p className={`text-sm truncate ${
             conversation.unreadCount > 0 ? 'text-gray-900 font-medium' : 'text-gray-600'
           }`}>
-            {conversation.lastMessage}
+            {conversation.lastMessage || 'No messages yet'}
           </p>
           
           {/* Message Status */}

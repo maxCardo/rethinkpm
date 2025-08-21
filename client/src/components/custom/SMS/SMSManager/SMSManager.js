@@ -10,6 +10,7 @@ const SMSManager = () => {
   const dispatch = useDispatch();
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [isNewConversationDialogOpen, setIsNewConversationDialogOpen] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleNewConversation = () => {
     setIsNewConversationDialogOpen(true);
@@ -20,6 +21,8 @@ const SMSManager = () => {
       const newConversation = addNewConversation(conversationData);
       setSelectedConversation(newConversation);
       setIsNewConversationDialogOpen(false);
+      // Trigger a refresh of the conversation list
+      setRefreshTrigger(prev => prev + 1);
       dispatch(createSuccessAlert("Conversation created successfully!", "SMSManager"));
     } catch (error) {
       console.error("Error creating conversation:", error);
@@ -31,6 +34,11 @@ const SMSManager = () => {
     setIsNewConversationDialogOpen(false);
   };
 
+  const handleMessageSent = () => {
+    // Trigger a refresh of the conversation list when a message is sent
+    setRefreshTrigger(prev => prev + 1);
+  };
+
   return (
     <div className="h-screen">
       <div className="grid grid-cols-12">
@@ -39,10 +47,14 @@ const SMSManager = () => {
             onConversationSelect={setSelectedConversation} 
             selectedConversationId={selectedConversation?.id || null}
             onNewConversation={handleNewConversation}
+            refreshTrigger={refreshTrigger}
           />
         </div>
         <div className="col-span-8 h-screen">
-          <ConversationView selectedConversation={selectedConversation} />
+          <ConversationView 
+            selectedConversation={selectedConversation} 
+            onMessageSent={handleMessageSent}
+          />
         </div>
       </div>
 

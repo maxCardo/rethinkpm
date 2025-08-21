@@ -3,22 +3,24 @@ import ConversationListHeader from './ConversationListHeader';
 import ConversationItem from './ConversationItem';
 import { getConversationsForUI, markConversationAsRead } from '../../mockData';
 
-const ConversationList = ({ onConversationSelect, selectedConversationId, onNewConversation }) => {
+const ConversationList = ({ onConversationSelect, selectedConversationId, onNewConversation, refreshTrigger = 0 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [internalRefreshTrigger, setInternalRefreshTrigger] = useState(0);
 
   // Filter conversations based on search term
   const filteredConversations = useMemo(() => {
     const conversations = getConversationsForUI();
     if (!searchTerm.trim()) {
-      return conversations;
+      return conversations.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
     }
     
-    return conversations.filter(conversation =>
-      conversation.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      conversation.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [searchTerm, refreshTrigger]);
+    return conversations
+      .filter(conversation =>
+        conversation.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        conversation.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
+  }, [searchTerm, refreshTrigger, internalRefreshTrigger]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -29,7 +31,7 @@ const ConversationList = ({ onConversationSelect, selectedConversationId, onNewC
     markConversationAsRead(conversation.id);
     
     // Trigger a re-render to update the unread count
-    setRefreshTrigger(prev => prev + 1);
+    setInternalRefreshTrigger(prev => prev + 1);
     
     if (onConversationSelect) {
       onConversationSelect(conversation);

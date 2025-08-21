@@ -4,7 +4,7 @@ import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
 import { getMessagesForConversation, addNewMessage, updateMessageDeliveryStatus } from '../../mockData';
 
-const ConversationView = ({ selectedConversation }) => {
+const ConversationView = ({ selectedConversation, onMessageSent }) => {
   const messagesEndRef = useRef(null);
   
   // Get messages for the selected conversation
@@ -55,10 +55,20 @@ const ConversationView = ({ selectedConversation }) => {
     // Update local state
     setMessages(getMessagesForConversation(selectedConversation.id));
     
+    // Notify parent component to refresh conversation list
+    if (onMessageSent) {
+      onMessageSent();
+    }
+    
     // Simulate delivery after 1 second
     setTimeout(() => {
       updateMessageDeliveryStatus(selectedConversation.id, messageId, 'delivered');
       setMessages(getMessagesForConversation(selectedConversation.id));
+      
+      // Notify parent component again after delivery status update
+      if (onMessageSent) {
+        onMessageSent();
+      }
     }, 1000);
   };
 
