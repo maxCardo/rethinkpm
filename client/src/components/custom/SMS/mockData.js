@@ -5,6 +5,9 @@ export let conversations = [
   {
     id: 1,
     name: "John Smith",
+    phone: "1234567890",
+    email: "john.smith@example.com",
+    notes: "Notes about John Smith",
     lastMessage: "Thanks for the update!",
     lastMessageTime: new Date(Date.now() - 300000), // 5 minutes ago
     unreadCount: 2,
@@ -29,6 +32,9 @@ export let conversations = [
   {
     id: 2,
     name: "Sarah Johnson",
+    phone: "1234567890",
+    email: "sarah.johnson@example.com",
+    notes: "Notes about Sarah Johnson",
     lastMessage: "Can we schedule a meeting for tomorrow?",
     lastMessageTime: new Date(Date.now() - 1800000), // 30 minutes ago
     unreadCount: 0,
@@ -61,6 +67,9 @@ export let conversations = [
   {
     id: 3,
     name: "Mike Wilson",
+    phone: "1234567890",
+    email: "mike.wilson@example.com",
+    notes: "Notes about Mike Wilson",
     lastMessage: "The project is looking great so far!",
     lastMessageTime: new Date(Date.now() - 3600000), // 1 hour ago
     unreadCount: 1,
@@ -137,6 +146,9 @@ export let conversations = [
   {
     id: 4,
     name: "Emily Davis",
+    phone: "1234567890",
+    email: "emily.davis@example.com",
+    notes: "Notes about Emily Davis",
     lastMessage: "I'll send you the files by end of day",
     lastMessageTime: new Date(Date.now() - 86400000), // Yesterday
     unreadCount: 0,
@@ -147,6 +159,9 @@ export let conversations = [
   {
     id: 5,
     name: "David Brown",
+    phone: "1234567890",
+    email: "david.brown@example.com",
+    notes: "Notes about David Brown",
     lastMessage: "Let's catch up next week",
     lastMessageTime: new Date(Date.now() - 172800000), // 2 days ago
     unreadCount: 0,
@@ -157,6 +172,9 @@ export let conversations = [
   {
     id: 6,
     name: "Lisa Anderson",
+    phone: "1234567890",
+    email: "lisa.anderson@example.com",
+    notes: "Notes about Lisa Anderson",
     lastMessage: "The presentation went really well!",
     lastMessageTime: new Date(Date.now() - 259200000), // 3 days ago
     unreadCount: 0,
@@ -187,4 +205,26 @@ export const markConversationAsRead = (conversationId) => {
     conversations = [...conversations];
     console.log("Conversations after marking as read:", conversation);
   }
+};
+// Helper function to add a new conversation
+export const addNewConversation = (conversationData) => {
+  const newConversation = {
+    id: Date.now(),
+    name: conversationData.name,
+    phone: conversationData.phone || "",
+    email: conversationData.email || "",
+    notes: conversationData.notes || "",
+    lastMessage: "",
+    lastMessageTime: new Date(),
+    unreadCount: 0,
+    isDelivered: false,
+    avatar: null,
+    messages: []
+  };
+  
+  conversations.unshift(newConversation); // Add to beginning of array
+  // Trigger a re-render by creating a new array reference
+  conversations = [...conversations];
+  
+  return newConversation;
 };
