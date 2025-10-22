@@ -1,3 +1,7 @@
+//Depricated -- 10/22/25ap
+//refactor used functions into comms folder 
+
+
 const express = require('express');
 const multer = require('multer')
 const { sendEmail } = require('../3ps/email')

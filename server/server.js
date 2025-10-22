@@ -36,7 +36,7 @@ app.use('/api/3ps',(req,res,next) => {req.io = {io:io}, next()}, require('./api/
 app.use('/api/sales', require('./api/salesLeads'));
 //app.use('/api/agent_lead', require('./api/agentLead'));
 app.use('/api/rent_lead', require('./api/rentLead'));
-app.use('/api/comms', require('./api/comms'));
+app.use('/api/comms', require('./api/comms/comms'));
 app.use('/api/profile', require('./api/profile/profile'));
 app.use('/api/marketplace', require('./api/marketplace/_marketplace'));
 app.use('/api/filteredData', require('./api/filteredData/filteredData'))

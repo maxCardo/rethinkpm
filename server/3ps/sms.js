@@ -18,7 +18,6 @@ const testSMS = (to) => {
     //     .done(); 
 }
 
-
 const sendSMS = (to, body) => {
   if (process.env.NODE_ENV === 'production') {
     client.messages
@@ -53,10 +52,6 @@ const outgoingSMS = (from, to, body) => {
         console.log('sms body: ', body)
     }
 }
-
-
-
-
 
 const validateNum = async (phoneNumber) => {
     let phoneType = 'n/a'
