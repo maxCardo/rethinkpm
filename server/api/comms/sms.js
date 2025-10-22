@@ -1,7 +1,6 @@
 const express = require('express');
-const { postSlack } = require('../../services/slack')
-const {outgoingSMS} = require('../../services/sms')
-const {testNewLeadSMS, incLseSMS} = require('../../scripts/Comms/leaseComms')
+const {outgoingSMS} = require('../../3ps/sms')
+const {testNewLeadSMS, incLseSMS} = require('../../scripts/comms/leaseComms')
 
 const router = express.Router();
 
@@ -20,7 +19,7 @@ router.post('/leasing/parse_sms', (req, res) => {
   }
 })
 
-// @route: post /api/comms/sms/parse_sms;
+// @route: post /api/comms/sms/send_sms;
 // @desc: Send sms via twilop API. Use for Testing   
 // @ access: Public
 router.post('/send_sms', async (req, res) => {

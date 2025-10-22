@@ -37,16 +37,16 @@ const sendSMS = (to, body) => {
 }
 
 //new version of sendSMS
-const outgoingSMS = (from, to, body) => {
-    if (process.env.NODE_ENV === 'production') {
-    client.messages
+const outgoingSMS = async (from, to, body) => {
+    console.log(process.env.NODE_ENV)
+    if (process.env.NODE_ENV === 'dev') {
+    const message = client.messages
         .create({
             body: body,
             from: from,
             to: to
         })
-        .then(message => console.log(message.sid))
-        .done();
+        return message
     } else {
         console.log('sms sending function ran in dev. no sms sent')
         console.log('sms body: ', body)
