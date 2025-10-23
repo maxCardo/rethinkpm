@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Table from "../../core/newTable/_Table";
 import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
-import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
+import { getLeaseLeadData, getLeaseSMS } from "../../../actions/crm/leaseLeads";
 import { Chip } from "@mui/material";
 import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
@@ -13,12 +13,8 @@ import { capitalizeFirstLetter } from "../../../util/commonFunctions";
 import dayjs from "dayjs";
 import LeadDetails from "./comps/LeadDetails";
 
-const LeaseLeadRecords = ({
-  getLeaseLeadData,
-  leaseLeads: { list, loading },
-  settings,
-  isNavbarShown,
-}) => {
+const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, loading },settings,isNavbarShown,}) => {
+  
   const TAB_KEYS = {
     Table: "table",
     Details: "details",
@@ -139,7 +135,8 @@ const LeaseLeadRecords = ({
   ];
 
   useEffect(() => {
-    getLeaseLeadData();
+    getLeaseLeadData()
+    getLeaseSMS()
   }, []);
 
   useEffect(() => {
@@ -290,6 +287,7 @@ const LeaseLeadRecords = ({
   const handleRefreshLeadData = async () => {
     // Refresh the main list
     await getLeaseLeadData();
+    
 
     // If we have a selectedLeadItem, refresh it with the latest data (get a lead by id)
     if (selectedLeadItem && selectedLeadItem._id) {
@@ -390,4 +388,4 @@ const mapStateToProps = (state) => ({
   leaseLeads: state.leaseLeads,
 });
 
-export default connect(mapStateToProps, { getLeaseLeadData })(LeaseLeadRecords);
+export default connect(mapStateToProps, { getLeaseLeadData, getLeaseSMS })(LeaseLeadRecords);

@@ -7,25 +7,31 @@ const {postDiscord} = require('../../3ps/discord')
 
 const testNewLeadSMS = async () => {
 
-    const mainNum = "+14122147909"
+    console.log('here we go testing !!!')
 
-    const testLead = await LeaseLead.find({fullName: 'Adam Poznanski'})
-    console.log('this is our test lead: ', testLead)
+    // const mainNum = "+14122147909"
 
-    //get primary phone number
-    const primeNum = testLead[0].phoneNumbers.filter(num => num.isPrimary === true)[0].number
-    //create sms chanel with lead cross save records id's on both lead and smsChnl records
-    const smsCnl = new LeaseSMS({primeNum, leaseLead: testLead[0]._id})
-    console.log('sms channel: ', smsCnl)
-    //send message back and forth
-    const initalmsg = {
-        to: primeNum,
-        from: mainNum,
-        msg: 'Thanks for contacting us. One of our agents will be in touch soon'
-    }
-    const message = await outgoingSMS( initalmsg.from, initalmsg.to, initalmsg.msg)
-    console.log('message sent: ', message)
-    //start testing scnarios
+    // const testLead = await LeaseLead.find({fullName: 'Adam Poznanski'})
+    // console.log('this is our test lead: ', testLead)
+
+    // //get primary phone number
+    // const primeNum = testLead[0].phoneNumbers.filter(num => num.isPrimary === true)[0].number
+    // //create sms chanel with lead cross save records id's on both lead and smsChnl records
+    // const smsCnl = new LeaseSMS({primeNum, leaseLead: testLead[0]._id})
+    // console.log('sms channel: ', smsCnl)
+    // //send message back and forth
+    // const initalmsg = {
+    //     to: primeNum,
+    //     from: mainNum,
+    //     msg: 'Thanks for contacting us. One of our agents will be in touch soon'
+    // }
+    // const message = await outgoingSMS( initalmsg.from, initalmsg.to, initalmsg.msg)
+    // console.log('message sent: ', message)
+    // //start testing scnarios
+    const filters = { status: { $in: ["new", "inProgress", "tourPending", "toured"] } };
+    const data = await LeaseSMS.find().populate({path: 'leaseLead', match: filters}).sort({lastMsgDate: -1})
+
+    console.log('this is the data: ', data)
 }
 
 const incLseSMS = async ({From, To, Body}) => {
@@ -47,6 +53,8 @@ const incLseSMS = async ({From, To, Body}) => {
             smsChnl = new LeaseSMS({primeNum, leaseLead: lead._id})
         }
         smsChnl.msg.push({body:Body,to: To,from: From})
+        smsChnl.lastMsgDate = new Date()
+        smsChnl.unread = true
         console.log('LeaseSMS: ', smsChnl)
         smsChnl.save()
         //msg group that there is a new "unread" messages for prospect.

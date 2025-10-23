@@ -20,6 +20,10 @@ const leaseTextSchema = new mongoose.Schema({
         required: true,
         default: true
     },
+    lastMsgDate: { 
+        type: Date, 
+        default: Date.now 
+    },
     msg: [
         {
             date: {type: Date, default: Date.now()}, 
@@ -29,6 +33,7 @@ const leaseTextSchema = new mongoose.Schema({
             sentBy: String 
         }
     ]
+
 });
 
 module.exports = mongoose.model('LeaseSMS', leaseTextSchema);

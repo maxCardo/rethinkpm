@@ -1,5 +1,6 @@
 const express = require("express");
 const leaseLead = require("../../db/models/Leasing/LeaseLead");
+const LeaseSMS = require('../../db/models/comms/crm/LeaseSMS')
 const auth = require("../../middleware/auth");
 
 const router = express.Router();
@@ -201,6 +202,20 @@ router.patch("/:id/notes", auth, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to add note", error: err });
+  }
+});
+
+// @route: GET api/crm/leaselead/sms
+// @desc: get all active SMS chats
+// @access: private
+router.get("/comms/sms", auth, async (req, res) => {
+  try {
+    const filters = { status: { $in: ["new", "inProgress", "tourPending", "toured"] } };
+    const data = await LeaseSMS.find().populate({path: 'leaseLead', match: filters}).sort({lastMsgDate: -1})
+    res.status(200).send(data);  
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch sms data", error: err });
   }
 });
 

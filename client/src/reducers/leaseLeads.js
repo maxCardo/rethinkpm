@@ -1,8 +1,12 @@
-import {SET_LOADING, SET_LEASELEAD_LIST} from '../actions/type';
+import {SET_LOADING, SET_LEASELEAD_LIST, SET_LEASELEAD_SMS} from '../actions/type';
 
 const initialState = {
     loading: true,
     list: [],
+    sms: {
+        list: [],
+        loading: true 
+    },
 };
 
 export default function (state = initialState, action) {
@@ -18,6 +22,14 @@ export default function (state = initialState, action) {
                 ...state,
                 list: payload,
                 loading: false
+            }
+         case SET_LEASELEAD_SMS:
+            return {
+                ...state,
+                sms: {
+                    loading: false,
+                    list: payload
+                },
             }
 
         default:
