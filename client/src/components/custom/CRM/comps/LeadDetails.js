@@ -18,7 +18,7 @@ import {
 import axios from "axios";
 import isEqual from 'lodash/isEqual';
 
-const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose, onCloseConfirm, onHandledBeforeClose }) => {
+const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose, onCloseConfirm, onHandledBeforeClose, users = [] }) => {
   const dispatch = useDispatch();
   const [isEditMode, setIsEditMode] = useState(false);
   const [leadInfoData, setLeadInfoData] = useState({});
@@ -250,7 +250,8 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
       handleCancel(true, true); // second argument: shouldCloseDialog = true
       if (onHandledBeforeClose) onHandledBeforeClose();
     }
-  }, [isParentModalBeforeClose])
+  }, [isParentModalBeforeClose]);
+
 
   return (
     <div className="lead-details relative flex flex-col gap-5 px-2 h-auto">
@@ -281,6 +282,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
             selectedLeadItem={selectedLeadItem}
             isEditMode={isEditMode}
             onNoteAdded={handleNoteAdded}
+            users={users}
           />
         </div>
       </div>
@@ -293,6 +295,7 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
             selectedLeadItem={selectedLeadItem}
             isEditMode={isEditMode}
             onLeadInfoChange={handleLeadInfoChange}
+            users={users}
           />
         </div>
         {/* Next Action */}

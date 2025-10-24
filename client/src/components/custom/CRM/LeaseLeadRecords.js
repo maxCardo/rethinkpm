@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Table from "../../core/newTable/_Table";
 import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
-import { getLeaseLeadData } from "../../../actions/crm/leaseLeads";
+import { getLeaseLeadData, getAllUsers } from "../../../actions/crm/leaseLeads";
 import { Chip } from "@mui/material";
 import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
@@ -30,7 +30,8 @@ const LeaseLeadRecords = ({
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  const [isModalBeforeClose, setIsModalBeforeClose] = useState(false)
+  const [isModalBeforeClose, setIsModalBeforeClose] = useState(false);
+  const [users, setUsers] = useState([]);
 
   // Ref to store the current request's abort controller
   const abortControllerRef = useRef(null);
@@ -140,6 +141,15 @@ const LeaseLeadRecords = ({
 
   useEffect(() => {
     getLeaseLeadData();
+  }, []);
+
+  // Fetch users once when component mounts
+  useEffect(() => {
+    async function fetchUsers() {
+      const data = await getAllUsers()();
+      setUsers(data);
+    }
+    fetchUsers();
   }, []);
 
   useEffect(() => {
@@ -377,6 +387,7 @@ const LeaseLeadRecords = ({
                 isParentModalBeforeClose={isModalBeforeClose}
                 onCloseConfirm={() => handleCloseDetailsModal(false)}
                 onHandledBeforeClose={handleChildHandledBeforeClose}
+                users={users}
               />
             </MaterialModal>
           </>

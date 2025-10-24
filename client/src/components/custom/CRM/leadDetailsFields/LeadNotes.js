@@ -11,7 +11,7 @@ import {
 } from "../../../../actions/alert";
 import axios from "axios";
 
-const LeadNotes = ({ selectedLeadItem, isEditMode, onNoteAdded }) => {
+const LeadNotes = ({ selectedLeadItem, isEditMode, onNoteAdded, users = [] }) => {
   const dispatch = useDispatch();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
   const [leadNotesList, setLeadNotesList] = useState([]);
@@ -21,6 +21,12 @@ const LeadNotes = ({ selectedLeadItem, isEditMode, onNoteAdded }) => {
   useEffect(() => {
     setLeadNotesList(selectedLeadItem.notes || []);
   }, [selectedLeadItem.notes]);
+
+  // Helper function to get user name by ID
+  const getUserNameById = (userId) => {
+    const user = users.find(user => user._id === userId);
+    return user ? user.name : 'Unknown User';
+  };
 
   const handleAddNote = () => {
     setIsAddNoteModalOpen(true);
@@ -99,6 +105,7 @@ const LeadNotes = ({ selectedLeadItem, isEditMode, onNoteAdded }) => {
               <div className="text-xs text-gray-500 mb-1 flex justify-between">
                 <span>
                   {note.type ? capitalizeFirstLetter(note.type) : "Note"}
+                  {note.user && ` - ${getUserNameById(note.user)}`}
                 </span>
                 <span>
                   {note.date ? new Date(note.date).toLocaleString() : ""}
@@ -123,7 +130,7 @@ const LeadNotes = ({ selectedLeadItem, isEditMode, onNoteAdded }) => {
         {/* Add Note Button */}
         {/* {!isEditMode && ( */}
         <button
-          className="sticky bottom-0 left-150 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10 disabled:opacity-50 disabled:cursor-auto"
+          className="sticky bottom-0 left-500 bg-green-500 text-white rounded-full p-3 shadow flex items-center justify-center w-12 h-12 z-10 disabled:opacity-50 disabled:cursor-auto"
           style={{ borderRadius: "9999px" }}
           title="Add Note"
           onClick={handleAddNote}
