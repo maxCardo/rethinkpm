@@ -4,7 +4,7 @@ import Table from "../../core/newTable/_Table";
 import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData, getAllUsers } from "../../../actions/crm/leaseLeads";
-import { Chip, Button } from "@mui/material";
+import { Chip, Button, ToggleButton, ToggleButtonGroup, Box, CircularProgress } from "@mui/material";
 import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle, FaPlus } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
 import axios from "axios";
@@ -33,7 +33,9 @@ const LeaseLeadRecords = ({
   const [isModalBeforeClose, setIsModalBeforeClose] = useState(false);
   const [isAddLeadModalOpen, setIsAddLeadModalOpen] = useState(false);
   const [isAddModalBeforeClose, setIsAddModalBeforeClose] = useState(false);
+  const [isArchiveMode, setIsArchiveMode] = useState(false);
   const [users, setUsers] = useState([]);
+  const [isTableDataLoading, setIsTableDataLoading] = useState(true);
 
   // Ref to store the current request's abort controller
   const abortControllerRef = useRef(null);
@@ -142,7 +144,12 @@ const LeaseLeadRecords = ({
   ];
 
   useEffect(() => {
-    getLeaseLeadData();
+    const fetchInitialData = async () => {
+      setIsTableDataLoading(true);
+      await getLeaseLeadData();
+      setIsTableDataLoading(false);
+    };
+    fetchInitialData();
   }, []);
 
   // Fetch users once when component mounts
@@ -179,10 +186,13 @@ const LeaseLeadRecords = ({
       const abortController = new AbortController();
       abortControllerRef.current = abortController;
 
+      // Set loading state
+      setIsTableDataLoading(true);
+
       try {
         let queryParams = new URLSearchParams();
         // Add search parameter if provided
-        if (search && search.trim().length > 2) {
+        if (search && search.trim().length > 0) {
           queryParams.append("search", search.trim());
         }
 
@@ -208,13 +218,20 @@ const LeaseLeadRecords = ({
         }
 
         const queryString = queryParams.toString();
-        const url = `/api/crm/leaselead${queryString ? `?${queryString}` : ""}`;
+        const baseUrl = isArchiveMode ? "/api/crm/leaselead/archived" : "/api/crm/leaselead";
+        const url = `${baseUrl}${queryString ? `?${queryString}` : ""}`;
 
         console.log("Making filter request to:", url);
+        console.log("Search term:", search);
+        console.log("Field:", field);
+        console.log("Value:", value);
 
         const response = await axios.get(url, {
           signal: abortController.signal,
         });
+
+        console.log("Response data:", response.data);
+        console.log("Number of results:", response.data.length);
 
         // Only update state if the request wasn't aborted
         if (!abortController.signal.aborted) {
@@ -233,9 +250,12 @@ const LeaseLeadRecords = ({
 
         // Fallback to showing all leads if query fails
         setUpdatedLeadsList(initLeadsList);
+      } finally {
+        // Clear loading state
+        setIsTableDataLoading(false);
       }
     },
-    [initLeadsList, settings.filterFields.all]
+    [initLeadsList, settings.filterFields.all, isArchiveMode]
   );
 
   // Cleanup function to abort pending requests on unmount
@@ -353,6 +373,44 @@ const LeaseLeadRecords = ({
     setIsAddModalBeforeClose(false);
   };
 
+  const handleArchiveModeToggle = async (event, newMode) => {
+    // Prevent deselecting all buttons
+    if (newMode === null) return;
+    
+    const newArchiveMode = newMode === 'archive';
+    setIsArchiveMode(newArchiveMode);
+    
+    // Set loading state
+    setIsTableDataLoading(true);
+    
+    // Clear current data and fetch new data based on mode
+    setInitLeadsList([]);
+    setUpdatedLeadsList([]);
+    
+    // Fetch data based on the new mode
+    if (newArchiveMode) {
+      await fetchArchivedLeads();
+    } else {
+      await getLeaseLeadData();
+    }
+    
+    // Clear loading state
+    setIsTableDataLoading(false);
+  };
+
+  const fetchArchivedLeads = async () => {
+    try {
+      const res = await axios.get("/api/crm/leaselead/archived");
+      if (res?.data) {
+        console.log("Archived leads res: ", res);
+        setInitLeadsList(res.data);
+        setUpdatedLeadsList(res.data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch archived leads:", err);
+    }
+  };
+
   return loading ? (
     <Loading />
   ) : (
@@ -369,24 +427,58 @@ const LeaseLeadRecords = ({
         {tabKey === TAB_KEYS.Table && (
           <>
             <div className="table-top flex flex-row my-4 justify-between items-center">
-              <LeadsTableFilters
-                filterListByQuery={filterListByQuery}
-                settings={settings}
-              />
-              <div className="add-lead-btn px-2">
-                <Button
+              <div className="flex items-center gap-4">
+                <LeadsTableFilters
+                  filterListByQuery={filterListByQuery}
+                  settings={settings}
+                  isArchiveMode={isArchiveMode}
+                />
+                <Box className="flex items-center">
+                  <ToggleButtonGroup
                   color="primary"
-                  className="self-end"
-                  startIcon={<FaPlus size={"0.8rem"} />}
-                  style={{ textTransform: "none" }}
-                  onClick={handleAddLead}
-                  variant="contained"
-                >
-                  Add Lead
-                </Button>
+                    value={isArchiveMode ? 'archive' : 'active'}
+                    exclusive
+                    onChange={handleArchiveModeToggle}
+                    aria-label="lead view mode"
+                    size="small"
+                  >
+                    <ToggleButton value="active" aria-label="active mode">
+                      Active
+                    </ToggleButton>
+                    <ToggleButton value="archive" aria-label="archive mode">
+                      Archive
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
               </div>
+              {!isArchiveMode && (
+                <div className="add-lead-btn px-2">
+                  <Button
+                    color="primary"
+                    className="self-end"
+                    startIcon={<FaPlus size={"0.8rem"} />}
+                    style={{ textTransform: "none" }}
+                    onClick={handleAddLead}
+                    variant="contained"
+                  >
+                    Add Lead
+                  </Button>
+                </div>
+              )}
             </div>
-            {updatedLeadsList.length === 0 ? (
+            {isTableDataLoading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "4rem",
+                  height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
+                }}
+              >
+                <CircularProgress size={60} />
+              </div>
+            ) : updatedLeadsList.length === 0 ? (
               <div
                 style={{ textAlign: "center", padding: "2rem", color: "#888" }}
               >

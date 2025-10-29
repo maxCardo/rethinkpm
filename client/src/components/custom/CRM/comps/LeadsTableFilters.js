@@ -10,7 +10,7 @@ import { getAllUsers } from "../../../../actions/crm/leaseLeads";
 
 
 
-const LeadsTableFilters = ({ filterListByQuery, settings }) => {
+const LeadsTableFilters = ({ filterListByQuery, settings, isArchiveMode = false }) => {
   const DEFAULT_DATE = new Date(); // today
 
   const [selectedField, setSelectedField] = useState({});
@@ -39,11 +39,23 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
   );
   // lead status options
   const statusValues = Object.values(settings.statusOptions);
-  const statusOpt = statusValues.map((value) => ({
-    label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
-    value,
-    isDisabled: value === settings.statusOptions.lost || value === settings.statusOptions.applied ? true : false
-  }));
+  const statusOpt = statusValues.map((value) => {
+    if (isArchiveMode) {
+      // In archive mode, only show 'applied' and 'lost' options
+      return {
+        label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
+        value,
+        isDisabled: value !== settings.statusOptions.lost && value !== settings.statusOptions.applied
+      };
+    } else {
+      // In active mode, disable 'applied' and 'lost' options
+      return {
+        label: capitalizeFirstLetter(value.replace(/([A-Z])/g, " $1")),
+        value,
+        isDisabled: value === settings.statusOptions.lost || value === settings.statusOptions.applied
+      };
+    }
+  });
 
   // lead temperature options
   const tempValues = Object.values(settings.temperatureOptions);
@@ -90,9 +102,9 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
       valOptions: ownerOptions,
     },
     {
-      label: "Next Action Date",
+      label: isArchiveMode ? "Update Date" : "Next Action Date",
       type: "date",
-      value: settings.filterFields.nextActionDate,
+      value: isArchiveMode ? settings.filterFields.updateDate : settings.filterFields.nextActionDate,
       valOptions: [],
     },
     // TODO: tour date

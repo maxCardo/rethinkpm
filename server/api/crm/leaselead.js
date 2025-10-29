@@ -69,6 +69,73 @@ router.get("/", async (req, res) => {
   }
 });
 
+// @route: GET api/crm/leaselead/archived
+// @desc: get all leaseLead data with status 'applied' or 'lost'
+// @access: private
+router.get("/archived", async (req, res) => {
+  console.log("calling archived leaselead with params...");
+  try {
+    const filters = { 
+      status: { $in: ["applied", "lost"] },
+      isEnabled: false 
+    };
+    const sortBy = { updateDate: -1 }; // -1 = descending, 1 = ascending
+
+    // Handle field-based filtering
+    if (
+      req.query.field &&
+      req.query.value &&
+      req.query.field !== "updateDate"
+    ) {
+      filters[req.query.field] = req.query.value;
+    }
+
+    // Handle date range filtering for updateDate
+    if (
+      req.query.field === "updateDate" &&
+      (req.query.startDate || req.query.endDate)
+    ) {
+      const dateFilter = {};
+
+      if (req.query.startDate) {
+        dateFilter.$gte = new Date(req.query.startDate);
+      }
+
+      if (req.query.endDate) {
+        // Add 1 day to include the end date (make it inclusive)
+        const endDate = new Date(req.query.endDate);
+        endDate.setDate(endDate.getDate() + 1);
+        dateFilter.$lt = endDate;
+      }
+
+      if (Object.keys(dateFilter).length > 0) {
+        filters.updateDate = dateFilter;
+      }
+    }
+
+    // Handle search-based filtering
+    if (req.query.search) {
+      const { search } = req.query;
+      const orQuery = "$or";
+      filters[orQuery] = [
+        { fullName: { $regex: search, $options: "i" } },
+        { "email.address": { $regex: search, $options: "i" } },
+        { "phoneNumbers.number": { $regex: search, $options: "i" } },
+        { listingAddress: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    console.log('end of day these are active filters for archived leads: ', filters);
+
+    let data = await leaseLead.find(filters).sort(sortBy);
+
+    res.status(200).send(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+});
+
 // @route: GET api/crm/leaselead/:id
 // @desc: get a single leaseLead by id
 // @access: private
@@ -90,6 +157,8 @@ router.get("/:id", auth, async (req, res) => {
     res.status(500).json({ message: "Failed to fetch lease lead", error: err });
   }
 });
+
+
 
 // @route: POST api/crm/leaselead
 // @desc: create a new leaseLead
