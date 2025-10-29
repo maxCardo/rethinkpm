@@ -4,8 +4,8 @@ import Table from "../../core/newTable/_Table";
 import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData, getAllUsers } from "../../../actions/crm/leaseLeads";
-import { Chip } from "@mui/material";
-import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle } from "react-icons/fa";
+import { Chip, Button } from "@mui/material";
+import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle, FaPlus } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
 import axios from "axios";
 import MaterialModal from "../../ui/MaterialModal";
@@ -31,6 +31,8 @@ const LeaseLeadRecords = ({
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isModalBeforeClose, setIsModalBeforeClose] = useState(false);
+  const [isAddLeadModalOpen, setIsAddLeadModalOpen] = useState(false);
+  const [isAddModalBeforeClose, setIsAddModalBeforeClose] = useState(false);
   const [users, setUsers] = useState([]);
 
   // Ref to store the current request's abort controller
@@ -316,6 +318,41 @@ const LeaseLeadRecords = ({
     }
   };
 
+  const handleAddLead = () => {
+    // Create a new empty lead object for the form
+    const newLead = {
+      fullName: "",
+      listingAddress: "",
+      leadSource: "",
+      status: "new",
+      leadOwner: "",
+      leadTemperature: "",
+      nextActionDate: null,
+      email: [{ address: "", type: "primary" }],
+      phoneNumbers: [{ number: "", type: "primary" }],
+      notes: [],
+      createDate: new Date(),
+      updateDate: new Date(),
+      isEnabled: true
+    };
+    setSelectedLeadItem(newLead);
+    setIsAddLeadModalOpen(true);
+  };
+
+  const handleCloseAddLeadModal = (checkChanges = true) => {
+    if (checkChanges) {
+      setIsAddModalBeforeClose(true);
+    } else {
+      setIsAddLeadModalOpen(false);
+      setSelectedLeadItem({});
+    }
+  };
+
+  // Callback to reset isAddModalBeforeClose after child handles it
+  const handleChildHandledAddBeforeClose = () => {
+    setIsAddModalBeforeClose(false);
+  };
+
   return loading ? (
     <Loading />
   ) : (
@@ -336,18 +373,18 @@ const LeaseLeadRecords = ({
                 filterListByQuery={filterListByQuery}
                 settings={settings}
               />
-              {/* <div className="add-lead-btn px-2">
+              <div className="add-lead-btn px-2">
                 <Button
                   color="primary"
                   className="self-end"
                   startIcon={<FaPlus size={"0.8rem"} />}
                   style={{ textTransform: "none" }}
-                  onClick={() => setIsModalOpen(!isModalOpen)}
+                  onClick={handleAddLead}
                   variant="contained"
                 >
                   Add Lead
                 </Button>
-              </div> */}
+              </div>
             </div>
             {updatedLeadsList.length === 0 ? (
               <div
@@ -372,7 +409,7 @@ const LeaseLeadRecords = ({
                 tableCellStyle={{ cursor: "pointer" }}
               />
             )}
-            {/* Lead Details Modal */}
+            {/* Lead Details Modal For View/Edit Lead */}
             <MaterialModal
               isOpen={isDetailsModalOpen}
               onClose={() => handleCloseDetailsModal(true)}
@@ -388,6 +425,25 @@ const LeaseLeadRecords = ({
                 onCloseConfirm={() => handleCloseDetailsModal(false)}
                 onHandledBeforeClose={handleChildHandledBeforeClose}
                 users={users}
+              />
+            </MaterialModal>
+
+            {/* Add A New Lead Modal */}
+            <MaterialModal
+              isOpen={isAddLeadModalOpen}
+              onClose={() => handleCloseAddLeadModal(true)}
+              title="Add New Lead"
+              width="100%"
+              height="100%"
+            >
+              <LeadDetails
+                selectedLeadItem={selectedLeadItem}
+                onLeadUpdated={handleRefreshLeadData}
+                isParentModalBeforeClose={isAddModalBeforeClose}
+                onCloseConfirm={() => handleCloseAddLeadModal(false)}
+                onHandledBeforeClose={handleChildHandledAddBeforeClose}
+                users={users}
+                isCreateMode={true}
               />
             </MaterialModal>
           </>

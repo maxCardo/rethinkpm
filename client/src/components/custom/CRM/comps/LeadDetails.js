@@ -18,9 +18,9 @@ import {
 import axios from "axios";
 import isEqual from 'lodash/isEqual';
 
-const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose, onCloseConfirm, onHandledBeforeClose, users = [] }) => {
+const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose, onCloseConfirm, onHandledBeforeClose, users = [], isCreateMode = false }) => {
   const dispatch = useDispatch();
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(isCreateMode);
   const [leadInfoData, setLeadInfoData] = useState({});
   const [contactInfoData, setContactInfoData] = useState({});
   const [nextActionData, setNextActionData] = useState({});
@@ -121,17 +121,26 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
       // Clear validation errors if validation passes
       setValidationErrors({});
 
-      // Update lead
-      const response = await axios.put(
-        `/api/crm/leaselead/${selectedLeadItem._id}`,
-        updatedLead
-      );
+      let response;
+      if (isCreateMode) {
+        // Create new lead
+        response = await axios.post(
+          `/api/crm/leaselead`,
+          updatedLead
+        );
+      } else {
+        // Update existing lead
+        response = await axios.put(
+          `/api/crm/leaselead/${selectedLeadItem._id}`,
+          updatedLead
+        );
+      }
 
-      if (response.status === 200) {
-        console.log("Lead updated successfully:", response.data);
+      if (response.status === 200 || response.status === 201) {
+        console.log(isCreateMode ? "Lead created successfully:" : "Lead updated successfully:", response.data);
         dispatch(
           createSuccessAlert(
-            "Lead details updated successfully!",
+            isCreateMode ? "Lead created successfully!" : "Lead details updated successfully!",
             "LeadDetails"
           )
         );
@@ -144,24 +153,28 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
         if (onLeadUpdated) {
           await onLeadUpdated();
         }
+        // Close the modal after successful creation
+        if (isCreateMode && onCloseConfirm) {
+          onCloseConfirm();
+        }
       } else {
-        console.error("Failed to update lead:", response.statusText);
+        console.error(`Failed to ${isCreateMode ? 'create' : 'update'} lead:`, response.statusText);
         dispatch(
           createErrorAlert(
-            "Failed to update lead details. Please try again.",
+            `Failed to ${isCreateMode ? 'create' : 'update'} lead details. Please try again.`,
             "LeadDetails"
           )
         );
       }
     } catch (err) {
-      console.error("Error updating lead:", err);
+      console.error(`Error ${isCreateMode ? 'creating' : 'updating'} lead:`, err);
       if (err.response) {
         console.error("Error response data:", err.response.data);
         console.error("Error response status:", err.response.status);
       }
       dispatch(
         createErrorAlert(
-          "Failed to update lead details. Please try again.",
+          `Failed to ${isCreateMode ? 'create' : 'update'} lead details. Please try again.`,
           "LeadDetails"
         )
       );
@@ -174,12 +187,30 @@ const LeadDetails = ({ selectedLeadItem, onLeadUpdated, isParentModalBeforeClose
     if (!isEditMode) return false;
     // Merge all changes
     const mergedChanges = { ...leadInfoData, ...contactInfoData, ...nextActionData };
-    // Check for any changed key, including nested objects/arrays
-    return Object.keys(mergedChanges).some(key => {
-      const newValue = mergedChanges[key];
-      const originalValue = selectedLeadItem[key];
-      return !isEqual(newValue, originalValue);
-    });
+    
+    if (isCreateMode) {
+      // For create mode, check if any required fields have been filled
+      return Object.keys(mergedChanges).some(key => {
+        const newValue = mergedChanges[key];
+        // Check if the value is not empty (for strings, arrays, etc.)
+        if (typeof newValue === 'string') {
+          return newValue.trim() !== '';
+        }
+        if (Array.isArray(newValue)) {
+          return newValue.length > 0 && newValue.some(item => 
+            typeof item === 'object' ? Object.values(item).some(val => val && val.toString().trim() !== '') : item && item.toString().trim() !== ''
+          );
+        }
+        return newValue !== null && newValue !== undefined;
+      });
+    } else {
+      // For edit mode, check for any changed key, including nested objects/arrays
+      return Object.keys(mergedChanges).some(key => {
+        const newValue = mergedChanges[key];
+        const originalValue = selectedLeadItem[key];
+        return !isEqual(newValue, originalValue);
+      });
+    }
   };
 
   const handleCancel = (checkChanges = true, shouldCloseDialog = false) => {
