@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IoSearch, IoAdd } from 'react-icons/io5';
 
-const ConversationListHeader = ({ onSearch, onNewConversation }) => {
+const ConversationListHeader = ({ onSearch, onNewContact }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearchChange = (e) => {
@@ -12,9 +12,9 @@ const ConversationListHeader = ({ onSearch, onNewConversation }) => {
     }
   };
 
-  const handleNewConversation = () => {
-    if (onNewConversation) {
-      onNewConversation();
+  const handleNewContact = () => {
+    if (onNewContact) {
+      onNewContact();
     }
   };
 
@@ -30,17 +30,17 @@ const ConversationListHeader = ({ onSearch, onNewConversation }) => {
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Search conversations..."
+            placeholder="Search contacts..."
             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white"
           />
         </div>
 
-        {/* New Conversation Button */}
+        {/* New Contact Button */}
         <button
-          onClick={handleNewConversation}
+          onClick={handleNewContact}
           className="flex-shrink-0 w-8 h-8 bg-darkBlue hover:bg-gray-800 text-white rounded-lg flex items-center justify-center transition-all duration-200 hover:shadow-md active:scale-95"
           style={{ borderRadius: '8px' }}
-          title="New Conversation"
+          title="New Contact"
         >
           <IoAdd className="w-4 h-4" />
         </button>

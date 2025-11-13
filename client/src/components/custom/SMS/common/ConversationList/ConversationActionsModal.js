@@ -4,8 +4,7 @@ const ConversationActionsModal = ({
   isOpen, 
   onClose, 
   type, // 'contact' or 'delete'
-  contact, // contact data for contact info modal
-  conversation, // conversation data for delete confirmation
+  contact, // contact data for contact info modal & delete confirmation
   onConfirmDelete 
 }) => {
   if (!isOpen) return null;
@@ -57,7 +56,7 @@ const ConversationActionsModal = ({
     <div className="space-y-4">
       <div className="text-center">
         <p className="mt-1 text-sm text-gray-500">
-          Are you sure you want to delete the conversation with <span className="font-medium">{conversation.name}</span>? 
+          Are you sure you want to delete <span className="font-medium">{contact?.name}</span>? 
           This action cannot be undone.
         </p>
       </div>
@@ -95,7 +94,7 @@ const ConversationActionsModal = ({
               </button>
               <button
                 onClick={() => {
-                  onConfirmDelete(conversation);
+                  onConfirmDelete(contact);
                   onClose();
                 }}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200"

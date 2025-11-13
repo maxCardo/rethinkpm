@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IoClose, IoPerson, IoCall, IoMail } from 'react-icons/io5';
 
-const NewConversationDialog = ({ isOpen, onClose, onCreateConversation }) => {
+const NewConversationDialog = ({ isOpen, onClose, onCreateContact }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -34,27 +34,27 @@ const NewConversationDialog = ({ isOpen, onClose, onCreateConversation }) => {
     setIsSubmitting(true);
     
     try {
-      // Create conversation data in the new format
-      const conversationData = {
+      // Create contact data in the new format
+      const contactData = {
         name: formData.name.trim(),
         phone: formData.phone.trim(),
         email: formData.email.trim(),
         notes: formData.notes.trim(),
-        relatedEntityType: 'manual', // Default source for manually created conversations
+        relatedEntityType: 'manual', // Default source for manually created contacts
         relatedEntityId: null
       };
 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (onCreateConversation) {
-        onCreateConversation(conversationData);
+      if (onCreateContact) {
+        onCreateContact(contactData);
       }
       
       handleClose();
     } catch (error) {
-      console.error('Error creating conversation:', error);
-      alert('Failed to create conversation. Please try again.');
+      console.error('Error creating contact:', error);
+      alert('Failed to create contact. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -87,7 +87,7 @@ const NewConversationDialog = ({ isOpen, onClose, onCreateConversation }) => {
       <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">New Conversation</h2>
+          <h2 className="text-xl font-semibold text-gray-900">New Contact</h2>
           <button
             onClick={handleClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -203,7 +203,7 @@ const NewConversationDialog = ({ isOpen, onClose, onCreateConversation }) => {
                   <span>Creating...</span>
                 </>
               ) : (
-                <span>Create Conversation</span>
+                <span>Create Contact</span>
               )}
             </button>
           </div>

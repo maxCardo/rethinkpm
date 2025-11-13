@@ -33,6 +33,7 @@ import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
 import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
 import LeaseLeadRecords from "./components/custom/CRM/LeaseLeadRecords";
 import { SMSManager, SMSDialogDemo } from "./components/custom/SMS";
+import SMSChatDemo from "./components/custom/SMS/SMSChatDemo";
 
 const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
@@ -217,6 +218,14 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
             element={
               <PrivateRoute>
                 <SMSDialogDemo />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/sms-chat"
+            element={
+              <PrivateRoute>
+                <SMSChatDemo />
               </PrivateRoute>
             }
           />

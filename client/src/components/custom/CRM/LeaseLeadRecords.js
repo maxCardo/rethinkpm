@@ -1,19 +1,20 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { connect } from "react-redux";
 import Table from "../../core/newTable/_Table";
 import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData, getLeaseSMS } from "../../../actions/crm/leaseLeads";
-import { Chip } from "@mui/material";
-import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle } from "react-icons/fa";
+import { Chip, IconButton } from "@mui/material";
+import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle, FaEye, FaCommentDots } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
 import axios from "axios";
 import MaterialModal from "../../ui/MaterialModal";
 import { capitalizeFirstLetter } from "../../../util/commonFunctions";
 import dayjs from "dayjs";
 import LeadDetails from "./comps/LeadDetails";
+import SMSChat from "../SMS/SMSChat";
 
-const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, loading },settings,isNavbarShown,}) => {
+const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, loading, sms },settings,isNavbarShown,}) => {
   
   const TAB_KEYS = {
     Table: "table",
@@ -27,6 +28,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isModalBeforeClose, setIsModalBeforeClose] = useState(false)
+  const [isSmsModalOpen, setIsSmsModalOpen] = useState(false);
+  const [activeSmsLead, setActiveSmsLead] = useState(null);
 
   // Ref to store the current request's abort controller
   const abortControllerRef = useRef(null);
@@ -131,6 +134,30 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
       reactComponent: true,
       width: CELL_WIDTH_SIZES.Small,
       render: item => dayjs(item.createDate).format('MM/DD/YYYY')
+    },
+    {
+      accessor: "actions",
+      label: "Actions",
+      width: CELL_WIDTH_SIZES.XSmall,
+      reactComponent: true,
+      render: (item) => (
+        <div className="flex items-center gap-2">
+          <IconButton
+            size="small"
+            onClick={() => handleWatchLeadDetails(item)}
+            aria-label="View lead details"
+          >
+            <FaEye size={16} />
+          </IconButton>
+          <IconButton
+            size="small"
+            onClick={() => handleOpenSmsModal(item)}
+            aria-label="Open SMS conversation"
+          >
+            <FaCommentDots size={16} />
+          </IconButton>
+        </div>
+      ),
     },
   ];
 
@@ -284,6 +311,22 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
     setIsModalBeforeClose(false);
   };
 
+  const handleOpenSmsModal = (leadItem) => {
+    const selectedSmsLead = sms?.list?.find((item) => item.leaseLead._id === leadItem._id);
+    console.log("clicked on lead sms icon", selectedSmsLead);
+    setActiveSmsLead(selectedSmsLead);
+    if (sms?.loading) {
+      getLeaseSMS();
+    }
+    setIsSmsModalOpen(true);
+  };
+
+  const handleCloseSmsModal = () => {
+    setIsSmsModalOpen(false);
+    setActiveSmsLead(null);
+  };
+
+
   const handleRefreshLeadData = async () => {
     // Refresh the main list
     await getLeaseLeadData();
@@ -356,8 +399,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
                 }}
                 _orderBy={"nextActionDate"}
                 _order={"desc"}
-                handleClickRow={handleWatchLeadDetails}
-                tableCellStyle={{ cursor: "pointer" }}
+                // handleClickRow={handleWatchLeadDetails}
+                // tableCellStyle={{ cursor: "pointer" }}
               />
             )}
             {/* Lead Details Modal */}
@@ -380,6 +423,34 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
           </>
         )}
       </div>
+      <MaterialModal
+        isOpen={isSmsModalOpen}
+        onClose={handleCloseSmsModal}
+        title={`SMS Conversation${activeSmsLead?.leaseLead?.fullName ? ` • ${activeSmsLead.leaseLead.fullName}` : ""}`}
+        width="40rem"
+        height="70%"
+        showActions={false}
+      >
+        {sms?.loading ? (
+          <Loading />
+        ) : activeSmsLead ? (
+          <div className="h-full">
+            <SMSChat
+              contacts={[activeSmsLead]}
+              messages={[activeSmsLead.msg]}
+              selectedContact={activeSmsLead}
+              isMinimalView
+              onInit={() => {}}
+              onContactSelect={() => {}}
+              onMessageSent={() => {}}
+            />
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-500 text-sm">
+            No SMS history available for this lead yet.
+          </div>
+        )}
+      </MaterialModal>
     </>
   );
 };

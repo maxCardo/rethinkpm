@@ -3,7 +3,7 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { IoPerson, IoTrash } from 'react-icons/io5';
 import { useState, useEffect, useRef } from 'react';
 
-const ConversationItem = ({ conversation, isActive, onClick, onContactInfo, onDeleteConversation }) => {
+const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteContact }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -68,22 +68,22 @@ const ConversationItem = ({ conversation, isActive, onClick, onContactInfo, onDe
     e.stopPropagation();
     setShowMenu(false);
     if (onContactInfo) {
-      onContactInfo(conversation);
+      onContactInfo(contact);
     }
   };
 
-  const handleDeleteConversation = (e) => {
+  const handleDeleteContact = (e) => {
     e.stopPropagation();
     setShowMenu(false);
-    if (onDeleteConversation) {
-      onDeleteConversation(conversation);
+    if (onDeleteContact) {
+      onDeleteContact(contact);
     }
   };
 
   const handleItemClick = () => {
     setShowMenu(false);
     if (onClick) {
-      onClick(conversation);
+      onClick(contact);
     }
   };
 
@@ -98,29 +98,29 @@ const ConversationItem = ({ conversation, isActive, onClick, onContactInfo, onDe
       {/* Avatar */}
       <div className="flex-shrink-0 mr-3">
         <div className="w-12 h-12 rounded-full bg-darkBlue flex items-center justify-center text-white font-semibold text-sm">
-          {conversation.avatar ? (
+          {contact.avatar ? (
             <img 
-              src={conversation.avatar} 
-              alt={conversation.name}
+              src={contact.avatar} 
+              alt={contact.name}
               className="w-12 h-12 rounded-full object-cover"
             />
           ) : (
-            getInitials(conversation.name)
+            getInitials(contact.name)
           )}
         </div>
       </div>
 
-      {/* Conversation Details */}
+      {/* Contact Details */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
           <h5 className={`text-sm font-medium truncate ${
-            conversation.unreadCount > 0 ? 'font-semibold' : ''
+            contact.unreadCount > 0 ? 'font-semibold' : ''
           }`}>
-            {conversation.name}
+            {contact.name}
           </h5>
           <div className="flex items-center">
             <span className="text-xs text-gray-500 flex-shrink-0 mr-2">
-              {formatTime(conversation.lastMessageTime)}
+              {formatTime(contact.lastMessageTime)}
             </span>
             {/* Menu Button */}
             <button
@@ -134,19 +134,19 @@ const ConversationItem = ({ conversation, isActive, onClick, onContactInfo, onDe
         
         <div className="flex items-center justify-between">
           <p className={`text-sm truncate ${
-            conversation.unreadCount > 0 ? 'text-gray-900 font-medium' : 'text-gray-600'
+            contact.unreadCount > 0 ? 'text-gray-900 font-medium' : 'text-gray-600'
           }`}>
-            {conversation.lastMessage || 'No messages yet'}
+            {contact.lastMessage || 'No messages yet'}
           </p>
           
           {/* Message Status */}
           <div className="flex items-center ml-2">
-            {conversation.unreadCount > 0 ? (
+            {contact.unreadCount > 0 ? (
               <div className="bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
+                {contact.unreadCount > 99 ? '99+' : contact.unreadCount}
               </div>
             ) : (
-              conversation.isDelivered && conversation.isLastMessageFromUser && (
+              contact.isDelivered && contact.isLastMessageFromUser && (
                 <IoCheckmarkDone className="w-4 h-4 text-blue-500" />
               )
             )}
@@ -166,11 +166,11 @@ const ConversationItem = ({ conversation, isActive, onClick, onContactInfo, onDe
               Contact Info
             </button>
             <button
-              onClick={handleDeleteConversation}
+              onClick={handleDeleteContact}
               className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
             >
               <IoTrash className="w-4 h-4 mr-3 text-red-500" />
-              Delete Conversation
+              Delete Contact
             </button>
           </div>
         </div>

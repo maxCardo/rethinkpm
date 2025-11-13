@@ -1,74 +1,65 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
-import { getMessagesForConversation, addNewMessage, updateMessageDeliveryStatus } from '../../mockData';
+// TODO: SHOULD BE 'SYSTEM' ID
+const USER_ID = 'user_1';
 
-const ConversationView = ({ selectedConversation, onMessageSent }) => {
+const ConversationView = ({
+  selectedContact,
+  messages = [],
+  onSendMessage,
+  onUpdateMessageStatus,
+  onMessageSent,
+}) => {
   const messagesEndRef = useRef(null);
-  
-  // Get messages for the selected conversation
-  const [messages, setMessages] = useState(() => {
-    return selectedConversation?.id ? getMessagesForConversation(selectedConversation.id) : [];
-  });
 
-  // Update messages when conversation changes
   useEffect(() => {
-    if (selectedConversation?.id) {
-      setMessages(getMessagesForConversation(selectedConversation.id));
-    } else {
-      setMessages([]);
+    if (messagesEndRef.current && messages.length > 0) {
+      const container = messagesEndRef.current.parentElement;
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
     }
-  }, [selectedConversation]);
+  }, [messages]);
 
   const scrollToBottom = () => {
-    // scroll to the bottom of the messages container if there are messages
-    if (messagesEndRef.current && messages.length > 0) {
-      const messagesContainer = messagesEndRef.current.parentElement;
-      if (messagesContainer) {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    if (messagesEndRef.current) {
+      const container = messagesEndRef.current.parentElement;
+      if (container) {
+        container.scrollTop = container.scrollHeight;
       }
     }
   };
 
-  useEffect(() => {
-    // Only scroll to bottom if there are messages
-    if (messages.length > 0) {
-      scrollToBottom();
+  const handleSendMessage = async (messageText, file = null) => {
+    console.log('[handleSendMessage]: content + file', messageText, file);
+    if (!selectedContact?.id || !onSendMessage) {
+      return;
     }
-  }, [messages]);
 
-  const handleSendMessage = (messageText, file = null) => {
-    const newMessage = {
+    const messagePayload = {
       text: messageText,
-      senderType: 'user',
-      senderId: 'user_1',
-      direction: 'outbound',
+      senderId: USER_ID,
+      mediaUrl: file ? URL.createObjectURL(file) : "",
+      mediaType: file ? getMediaType(file.type) : "",
       initialStatus: 'queued',
-      mediaUrl: file ? URL.createObjectURL(file) : null,
-      mediaType: file ? getMediaType(file.type) : null
     };
-    
-    // Add message to the database and get the message ID
-    const messageId = addNewMessage(selectedConversation.id, newMessage);
-    
-    // Update local state
-    setMessages(getMessagesForConversation(selectedConversation.id));
-    
-    // Notify parent component to refresh conversation list
-    if (onMessageSent) {
-      onMessageSent();
+console.log('[handleSendMessage]: messagePayload', messagePayload);
+    // Await the async sender so we only continue once we have the real message ID (or failure).
+    const messageId = await onSendMessage(selectedContact.id, messagePayload);
+console.log('[handleSendMessage]: messageId', messageId);
+
+    if (!messageId) {
+      return;
     }
-    
-    // Simulate delivery after 1 second
+
+    onMessageSent?.(selectedContact);
+    scrollToBottom();
+
     setTimeout(() => {
-      updateMessageDeliveryStatus(selectedConversation.id, messageId, 'delivered');
-      setMessages(getMessagesForConversation(selectedConversation.id));
-      
-      // Notify parent component again after delivery status update
-      if (onMessageSent) {
-        onMessageSent();
-      }
+      onUpdateMessageStatus?.(selectedContact.id, messageId, 'delivered');
+      onMessageSent?.(selectedContact);
     }, 1000);
   };
 
@@ -104,18 +95,21 @@ const ConversationView = ({ selectedConversation, onMessageSent }) => {
     return groups;
   };
 
-  const messageGroups = groupMessagesByDate(messages);
+  const messageGroups = useMemo(() => groupMessagesByDate(messages), [messages]);
   // Get sorted date keys (oldest first) - date order
-  const sortedDateKeys = Object.keys(messageGroups).sort((a, b) => new Date(a) - new Date(b));
+  const sortedDateKeys = useMemo(
+    () => Object.keys(messageGroups).sort((a, b) => new Date(a) - new Date(b)),
+    [messageGroups]
+  );
 
-  // Show placeholder when no conversation is selected
-  if (!selectedConversation) {
+  // Show placeholder when no contact is selected
+  if (!selectedContact) {
     return (
       <div className="flex flex-col h-full bg-gray-50">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center text-gray-500">
-            <h3 className="text-lg font-medium mb-2">Select a conversation</h3>
-            <p className="text-sm">Choose a conversation from the list to start messaging</p>
+            <h3 className="text-lg font-medium mb-2">Select a contact</h3>
+            <p className="text-sm">Choose a contact from the list to start messaging</p>
           </div>
         </div>
       </div>

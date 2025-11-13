@@ -16,7 +16,7 @@ const MessageInput = ({ onSendMessage }) => {
       // Simulate sending delay for animation
       await new Promise(resolve => setTimeout(resolve, 300));
       
-      // Call parent function to add message to conversation
+      // Call parent function to add message to the contact thread
       if (onSendMessage) {
         onSendMessage(message.trim(), selectedFile);
       }

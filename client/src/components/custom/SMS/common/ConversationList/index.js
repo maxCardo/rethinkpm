@@ -1,99 +1,103 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import ConversationListHeader from './ConversationListHeader';
 import ConversationItem from './ConversationItem';
-import { getConversationsForUI, markConversationAsRead } from '../../mockData';
 
-const ConversationList = ({ 
-  onConversationSelect, 
-  selectedConversationId, 
-  onNewConversation, 
-  refreshTrigger = 0,
+const ConversationList = ({
+  contacts = [],
+  onContactSelect,
+  onContactOpen,
+  selectedContactId,
+  onNewContact,
   onContactInfo,
-  onDeleteConversation
+  onDeleteContact,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [internalRefreshTrigger, setInternalRefreshTrigger] = useState(0);
 
-  // Filter conversations based on search term
-  const filteredConversations = useMemo(() => {
-    const conversations = getConversationsForUI();
-    if (!searchTerm.trim()) {
-      return conversations.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
+  const filteredContacts = useMemo(() => {
+    const list = Array.isArray(contacts) ? contacts : [];
+    const normalizedTerm = searchTerm.trim().toLowerCase();
+
+    const sortByLastActivity = (a, b) => {
+      const aTime = a?.lastMessageTime || a?.lastMsgDate || 0;
+      const bTime = b?.lastMessageTime || b?.lastMsgDate || 0;
+      return new Date(bTime) - new Date(aTime);
+    };
+
+    if (!normalizedTerm) {
+      return [...list].sort(sortByLastActivity);
     }
-    
-    return conversations
-      .filter(conversation =>
-        conversation.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        conversation.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
-  }, [searchTerm, refreshTrigger, internalRefreshTrigger]);
+
+    return list
+      .filter((contact) => {
+        const name = (contact?.name || '').toLowerCase();
+        const lastMessage = (contact?.lastMessage || '').toLowerCase();
+        return name.includes(normalizedTerm) || lastMessage.includes(normalizedTerm);
+      })
+      .sort(sortByLastActivity);
+  }, [contacts, searchTerm]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
 
-  const handleConversationClick = (conversation) => {
-    // Mark conversation as read when clicked
-    markConversationAsRead(conversation.id);
-    
-    // Trigger a re-render to update the unread count
-    setInternalRefreshTrigger(prev => prev + 1);
-    
-    if (onConversationSelect) {
-      onConversationSelect(conversation);
+  const handleContactClick = (contact) => {
+    if (onContactOpen) {
+      onContactOpen(contact);
+    }
+    if (onContactSelect) {
+      onContactSelect(contact);
     }
   };
 
-  const handleNewConversation = () => {
-    if (onNewConversation) {
-      onNewConversation();
+  const handleNewContact = () => {
+    if (onNewContact) {
+      onNewContact();
     }
   };
 
-  const handleContactInfo = (conversation) => {
+  const handleContactInfo = (contact) => {
     if (onContactInfo) {
-      onContactInfo(conversation);
+      onContactInfo(contact);
     }
   };
 
-  const handleDeleteConversation = (conversation) => {
-    if (onDeleteConversation) {
-      onDeleteConversation(conversation);
+  const handleDeleteContact = (contact) => {
+    if (onDeleteContact) {
+      onDeleteContact(contact);
     }
   };
 
   return (
     <div className="flex flex-col h-full bg-white border-r border-gray-200">
-      {/* Search Input with New Conversation Button */}
-      <ConversationListHeader onSearch={handleSearch} onNewConversation={handleNewConversation} />
-      
-      {/* Conversations List */}
-      <div 
+      <ConversationListHeader onSearch={handleSearch} onNewContact={handleNewContact} />
+
+      <div
         className="flex-1 overflow-y-auto min-h-0"
         style={{
           scrollbarWidth: 'thin',
           scrollbarColor: '#d1d5db #f3f4f6',
-          maxHeight: 'calc(100vh - 80px)'
+          maxHeight: 'calc(100vh - 80px)',
         }}
       >
-        {filteredConversations.length > 0 ? (
-          filteredConversations.map((conversation) => (
+        {filteredContacts.length > 0 ? (
+          filteredContacts.map((contact) => (
             <ConversationItem
-              key={conversation.id}
-              conversation={conversation}
-              isActive={selectedConversationId === conversation.id}
-              onClick={handleConversationClick}
+              key={contact.id}
+              contact={contact}
+              isActive={selectedContactId === contact.id}
+              onClick={handleContactClick}
               onContactInfo={handleContactInfo}
-              onDeleteConversation={handleDeleteConversation}
+              onDeleteContact={handleDeleteContact}
             />
           ))
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-gray-500">
             <div className="text-center">
-              <p className="text-lg font-medium mb-2">No conversations found</p>
+              <p className="text-lg font-medium mb-2">No contacts found</p>
               <p className="text-sm">
-                {searchTerm ? `No results for "${searchTerm}"` : 'Start a new conversation'}
+                {searchTerm
+                  ? `No results for "${searchTerm}"`
+                  : 'Create a new contact to start messaging'}
               </p>
             </div>
           </div>
