@@ -1,7 +1,6 @@
 import axios from "axios";
-
-import { SET_LEASELEAD_LIST, SET_LOADING } from "../type";
-// import { createSuccessAlert, createErrorAlert } from "../alert";
+import { SET_LEASELEAD_LIST, SET_LEASELEAD_SMS} from "../type";
+import {createErrorAlert} from "../alert";
 
 // const config = {
 //   headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -24,6 +23,23 @@ export const getLeaseLeadData = () => async (dispatch) => {
     console.error(err);
   }
 };
+
+export const getLeaseSMS =  () => async (dispatch) => {
+  console.log('running get leases SMS from actions')
+    try {
+        const res = await axios.get(`/api/crm/leaselead/comms/sms`);
+        dispatch({
+            type: SET_LEASELEAD_SMS,
+            payload: res.data
+        })    
+    } catch (err) {
+      console.log('this is the error')
+      console.error(err);
+      dispatch(createErrorAlert('Error Loading Lease Lead SMS'))
+        
+        
+    }   
+}
 
 // @desc: fetch all users for lead owner selection
 export const getAllUsers = () => async () => {
