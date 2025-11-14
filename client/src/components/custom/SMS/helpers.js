@@ -162,35 +162,11 @@ export const getMessagesForContact = (contactId, messages = []) => {
     };
   });
 };
-// remove?
-export const buildNewContactObject = (contacts = [], contactData = {}) => {
-  const newContactId = contactData.id || `contact_${Date.now()}`;
-  const createdAt = contactData.createdAt ? toDate(contactData.createdAt) : new Date();
-  const rawName = (contactData.name || "").trim();
-  const nameParts = rawName.split(" ").filter(Boolean);
-  const firstName = contactData.firstName || nameParts.shift() || rawName || "New";
-  const lastName = contactData.lastName || nameParts.join(" ");
 
-  const newContact = {
-    id: newContactId,
-    firstName,
-    lastName,
-    primaryNumber: contactData.phone || contactData.primaryNumber || "",
-    unread: Boolean(contactData.unread),
-    lastMsgDate: contactData.lastMsgDate ? toDate(contactData.lastMsgDate) : null,
-    email: contactData.email || "",
-    avatarUrl: contactData.avatarUrl || "",
-    notes: contactData.notes || "",
-    isActive: contactData.isActive !== false,
-    createdAt,
-  };
 
-  return {
-    contacts: [newContact, ...(contacts || [])],
-    contact: newContact,
-  };
-};
+/* FOR DEMO OR NOT IN USE FOR NOW! */
 
+// FOR DEMO PURPOSES ONLY!
 export const addNewMessage = (
   contactId,
   messageData = {},
@@ -242,29 +218,57 @@ export const addNewMessage = (
   };
 };
 
-export const updateMessageDeliveryStatus = (
-  contactId,
-  messageId,
-  newStatus,
-  messages = [],
-  reason = null
-) => {
-  if (!contactId || !messageId || !newStatus) {
-    return { messages };
-  }
+// export const updateMessageDeliveryStatus = (
+//   contactId,
+//   messageId,
+//   newStatus,
+//   messages = [],
+//   reason = null
+// ) => {
+//   if (!contactId || !messageId || !newStatus) {
+//     return { messages };
+//   }
 
-  let changed = false;
+//   let changed = false;
 
-  const updatedMessages = (messages || []).map((message) => {
-    if (message.contactId === contactId && message.id === messageId && isActive(message)) {
-      changed = true;
-      return { ...message, status: newStatus };
-    }
-    return message;
-  });
+//   const updatedMessages = (messages || []).map((message) => {
+//     if (message.contactId === contactId && message.id === messageId && isActive(message)) {
+//       changed = true;
+//       return { ...message, status: newStatus };
+//     }
+//     return message;
+//   });
 
-  return {
-    messages: changed ? updatedMessages : messages,
-  };
-};
+//   return {
+//     messages: changed ? updatedMessages : messages,
+//   };
+// };
 
+// remove?
+// export const buildNewContactObject = (contacts = [], contactData = {}) => {
+//   const newContactId = contactData.id || `contact_${Date.now()}`;
+//   const createdAt = contactData.createdAt ? toDate(contactData.createdAt) : new Date();
+//   const rawName = (contactData.name || "").trim();
+//   const nameParts = rawName.split(" ").filter(Boolean);
+//   const firstName = contactData.firstName || nameParts.shift() || rawName || "New";
+//   const lastName = contactData.lastName || nameParts.join(" ");
+
+//   const newContact = {
+//     id: newContactId,
+//     firstName,
+//     lastName,
+//     primaryNumber: contactData.phone || contactData.primaryNumber || "",
+//     unread: Boolean(contactData.unread),
+//     lastMsgDate: contactData.lastMsgDate ? toDate(contactData.lastMsgDate) : null,
+//     email: contactData.email || "",
+//     avatarUrl: contactData.avatarUrl || "",
+//     notes: contactData.notes || "",
+//     isActive: contactData.isActive !== false,
+//     createdAt,
+//   };
+
+//   return {
+//     contacts: [newContact, ...(contacts || [])],
+//     contact: newContact,
+//   };
+// };
