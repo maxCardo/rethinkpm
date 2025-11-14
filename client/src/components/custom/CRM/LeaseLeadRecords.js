@@ -53,13 +53,25 @@ const normalizeDate = (value) => {
   return value instanceof Date ? value : new Date(value);
 };
 
-const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, loading, sms },settings,isNavbarShown,}) => {
-  
-  const TAB_KEYS = {
-    Table: "table",
-    SmsChat: "smsChat",
-  };
+const TAB_KEYS = {
+  Table: "table",
+  SmsChat: "smsChat",
+};
 
+ /* Tabs option */
+ const DYNAMIC_TABS = [
+  { key: TAB_KEYS.Table, title: "Table View" },
+  { key: TAB_KEYS.SmsChat, title: "SMS Chat" },
+];
+
+const CELL_WIDTH_SIZES = {
+  XSmall: "5%",
+  Small: "10%",
+  Medium: "15%",
+  Large: "20%",
+};
+
+const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, loading, sms },settings,isNavbarShown,}) => {
   const [tabKey, setTabKey] = useState(TAB_KEYS.Table);
   const [initLeadsList, setInitLeadsList] = useState([]);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
@@ -86,18 +98,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   const smsData = smsState || sms || { list: [], loading: false };
   const smsLoading = sms?.loading ?? smsData.loading ?? false;
 
-  /* Tabs option */
-  const DYNAMIC_TABS = [
-    { key: TAB_KEYS.Table, title: "Table View" },
-    { key: TAB_KEYS.SmsChat, title: "SMS Chat" },
-  ];
-
-  const CELL_WIDTH_SIZES = {
-    XSmall: "5%",
-    Small: "10%",
-    Medium: "15%",
-    Large: "20%",
-  };
+ 
 
   /* Headers */
   const TABLE_HEADERS = [
@@ -300,7 +301,6 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
           signal: abortController.signal,
         });
 
-        console.log("Response data:", response.data);
         console.log("Number of results:", response.data.length);
 
         // Only update state if the request wasn't aborted
@@ -780,8 +780,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
                 }}
                 _orderBy={"nextActionDate"}
                 _order={"desc"}
-                handleClickRow={handleWatchLeadDetails}
-                tableCellStyle={{ cursor: "pointer" }}
+                // handleClickRow={handleWatchLeadDetails}
+                // tableCellStyle={{ cursor: "pointer" }}
               />
             )}
             {/* Lead Details Modal For View/Edit Lead */}
