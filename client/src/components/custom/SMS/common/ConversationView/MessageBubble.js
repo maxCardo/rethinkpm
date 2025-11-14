@@ -1,11 +1,16 @@
 import { IoCheckmark, IoCheckmarkDone } from 'react-icons/io5';
 import ImageWithLoader from './ImageWithLoader';
 import VideoWithLoader from './VideoWithLoader';
+import { MESSAGE_DIRECTION, MESSAGE_STATUS } from '../../helpers';
 
-const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, mediaUrl, mediaType }) => {
-  const formatTime = (timestamp) => {
-    if (!timestamp) return '';
-    const date = new Date(timestamp);
+const MessageBubble = ({ message, createdAt, mediaUrl, mediaType }) => {
+  const isOutbound = message.direction === MESSAGE_DIRECTION.OUTBOUND;
+  const isInbound = message.direction === MESSAGE_DIRECTION.INBOUND;
+  const isDelivered = message.status === MESSAGE_STATUS.DELIVERED;
+
+  const formatTime = (value) => {
+    if (!value) return '';
+    const date = new Date(value);
     return date.toLocaleTimeString('en-US', { 
       hour: 'numeric', 
       minute: '2-digit',
@@ -14,7 +19,7 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
   };
 
   const getStatusIcon = () => {
-    if (!isSent) return null;
+    if (!isOutbound) return null;
     
     if (isDelivered) {
       return <IoCheckmarkDone className="w-3 h-3 text-blue-400" />;
@@ -25,7 +30,7 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
 
   return (
     <div className="flex flex-col gap-3 px-4 py-2">
-      {isSent && (
+      {isOutbound && (
         <div className="flex justify-end mb-2">
           <div className="relative flex-shrink-0" style={{ maxWidth: '75%' }}>
             <div className="bg-blue-600 text-white px-4 py-3 rounded-2xl rounded-br-md shadow-md">
@@ -69,8 +74,8 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
                 </div>
               )}
               {/* Text content */}
-              {message && (
-                <p className="text-sm leading-relaxed break-words mb-0">{message}</p>
+              {message.text && (
+                <p className="text-sm leading-relaxed break-words mb-0">{message.text}</p>
               )}
             </div>
             <div className="flex justify-end mt-1 mr-1">
@@ -81,14 +86,14 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
                     {isDelivered ? 'Delivered' : 'Sent'}
                   </span>
                 </div>
-                <span className="text-xs text-gray-400">{formatTime(timestamp)}</span>
+                <span className="text-xs text-gray-400">{formatTime(createdAt)}</span>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {isReceived && (
+      {isInbound && (
         <div className="flex justify-start mb-2">
           <div className="relative flex-shrink-0" style={{ maxWidth: '75%' }}>
             <div className="bg-gray-100 text-gray-800 px-4 py-3 rounded-2xl rounded-bl-md shadow-sm border border-gray-200">
@@ -132,14 +137,14 @@ const MessageBubble = ({ message, isSent, isReceived, isDelivered, timestamp, me
                 </div>
               )}
               {/* Text content */}
-              {message && (
-                <p className="text-sm leading-relaxed break-words mb-0">{message}</p>
+              {message.text && (
+                <p className="text-sm leading-relaxed break-words mb-0">{message.text}</p>
               )}
             </div>
             <div className="flex justify-start mt-1 ml-1">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-400">Received</span>
-                <span className="text-xs text-gray-400">{formatTime(timestamp)}</span>
+                <span className="text-xs text-gray-400">{formatTime(createdAt)}</span>
               </div>
             </div>
           </div>

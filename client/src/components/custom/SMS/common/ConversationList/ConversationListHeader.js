@@ -11,7 +11,8 @@ const ConversationListHeader = ({ onSearch, onNewContact }) => {
       onSearch(value);
     }
   };
-
+  
+// Pass to parent component to handle the new contact action
   const handleNewContact = () => {
     if (onNewContact) {
       onNewContact();

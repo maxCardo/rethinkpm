@@ -1,11 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import SMSDialog from './SMSDialog';
 import { contacts as mockContacts, smsMessages as mockMessages } from '../mockData';
-import { getContactsForUI, getMessagesForContact } from '../helpers';
+import { addNewMessage, getContactsForUI, getMessagesForContact } from '../helpers';
 
 const SMSDialogDemo = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedContactId, setSelectedContactId] = useState(null);
+  const [contactEntities, setContactEntities] = useState(mockContacts);
+  const [messageEntities, setMessageEntities] = useState(mockMessages);
 
   const handleOpenDialog = (contactId) => {
     setSelectedContactId(contactId);
@@ -17,12 +19,44 @@ const SMSDialogDemo = () => {
     setSelectedContactId(null);
   };
 
-  const contacts = useMemo(() => getContactsForUI(mockContacts, mockMessages), []);
-  const messages = selectedContactId ? getMessagesForContact(selectedContactId, mockMessages) : [];
+  const contactsForUI = useMemo(
+    () => getContactsForUI(contactEntities, messageEntities),
+    [contactEntities, messageEntities]
+  );
 
-  const handleMessageSent = (contact) => {
-    console.log('[handleMessageSent in SMSDialogDemo]: contact', contact);
-  };
+  const selectedContact = useMemo(
+    () => contactsForUI.find((contact) => contact.id === selectedContactId) || null,
+    [contactsForUI, selectedContactId]
+  );
+
+  const conversationMessages = useMemo(
+    () =>
+      selectedContactId
+        ? getMessagesForContact(selectedContactId, messageEntities)
+        : [],
+    [selectedContactId, messageEntities]
+  );
+
+  const handleSendMessage = useCallback(
+    async (contactId, messagePayload) => {
+      if (!contactId) {
+        return null;
+      }
+
+      const {
+        contacts: updatedContacts,
+        messages: updatedMessages,
+        messageId,
+      } = addNewMessage(contactId, messagePayload, contactEntities, messageEntities);
+
+      setContactEntities(updatedContacts);
+      setMessageEntities(updatedMessages);
+
+      return messageId;
+    },
+    [contactEntities, messageEntities]
+  );
+
 
   return (
     <div className="p-6">
@@ -30,7 +64,7 @@ const SMSDialogDemo = () => {
       
       {/* Contact Buttons */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        {contacts.map((contact) => (
+        {contactsForUI.map((contact) => (
           <button
             key={contact.id}
             onClick={() => handleOpenDialog(contact.id)}
@@ -69,10 +103,9 @@ const SMSDialogDemo = () => {
       <SMSDialog
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
-        contactId={selectedContactId}
-        contacts={mockContacts}
-        messages={mockMessages}
-        onMessageSent={handleMessageSent}
+        contact={selectedContact}
+        messages={conversationMessages}
+        onSendMessage={handleSendMessage}
       />
     </div>
   );

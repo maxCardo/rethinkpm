@@ -1,4 +1,17 @@
 const DEFAULT_USER_ID = "user_1";
+export const MESSAGE_STATUS = {
+  READ: "read", // Message has been read by the user (inbound message)
+  DELIVERED: "delivered", // Message has been delivered to the recipient (outbound message)
+  SENT: "sent", // Message has been sent to the recipient (outbound message)
+  FAILED: "failed", // Message has failed to be sent (outbound message)
+  QUEUED: "queued", // Message is waiting in the queue to be sent (outbound message)
+  // SENDING: "sending",
+}
+
+export const MESSAGE_DIRECTION = {
+  INBOUND: "inbound",
+  OUTBOUND: "outbound",
+}
 
 const toDate = (value) => {
   if (!value) return null;
@@ -8,81 +21,96 @@ const toDate = (value) => {
 const isActive = (entity) => entity?.isActive !== false;
 
 const normalizeMessage = (message = {}) => {
-  const { statusHistory, currentStatus, status = null, ...rest } = message || {};
+  const { status = null, ...rest } = message || {};
   return {
     ...rest,
     status,
   };
 };
 
+// Get the messages for the contact
 const getContactMessages = (contactId, messages = []) =>
   (messages || []).filter(
-    (message) => message?.contactId === contactId && isActive(message)
+    (message) => message?.contactId === contactId 
   ).map((message) => normalizeMessage(message));
 
+  // Check if the message has been delivered to the recipient or read by the user
 export const isMessageDelivered = (message = {}) => {
   const normalized = normalizeMessage(message);
   const status = normalized?.status ?? null;
-  return ["delivered", "read"].includes(status);
+  return [MESSAGE_STATUS.DELIVERED, MESSAGE_STATUS.READ].includes(status);
 };
 
+// Build a contact record for the SMS component UI
 const buildContactRecord = (contact, messages = []) => {
+  // 1. Define the full name of the contact
   const fullName = [contact.firstName, contact.lastName].filter(Boolean).join(" ").trim();
   const name = fullName || contact.firstName || contact.lastName || "Unknown Contact";
 
+  // 2. Get the messages for the contact
   const contactMessages = getContactMessages(contact.id, messages);
+  // 3. Sort the messages by createdAt (most recent first)
   const sortedMessages = [...contactMessages].sort(
     (a, b) => toDate(b.createdAt) - toDate(a.createdAt)
   );
+  
+  // 4. Get the last message
   const lastMessage = sortedMessages[0] || null;
+
+  // 5. Get the last outbound message
   const lastOutboundMessage = sortedMessages.find(
-    (message) => message.senderId === DEFAULT_USER_ID
+    (message) => message.direction === MESSAGE_DIRECTION.OUTBOUND
   );
 
+// 6. Get the unread messages
   const unreadMessages = sortedMessages.filter(
     (message) =>
-      message.senderId !== DEFAULT_USER_ID &&
-      ["delivered", "queued", "sent"].includes(message.status)
+      message.direction === MESSAGE_DIRECTION.INBOUND && message.status !== MESSAGE_STATUS.READ 
   );
 
+  // 7. Get the last message time
   const lastMessageTime = lastMessage
     ? toDate(lastMessage.createdAt)
-    : toDate(contact.lastMsgDate);
+    : null;
 
+  // 8. Get the last message text
+  const lastMessageText =
+    lastMessage?.body || lastMessage?.text || contact.lastMessage || "";
+
+  // 9. Get the avatar
+  const avatar = contact.avatar ?? contact.avatarUrl ?? null;
+
+// 10. Return the contact record
   return {
     id: contact.id,
-    firstName: contact.firstName,
-    lastName: contact.lastName,
+    firstName: contact.firstName ?? "",
+    lastName: contact.lastName ?? "",
     name,
-    phone: contact.primaryNumber,
-    primaryNumber: contact.primaryNumber,
-    email: contact.email,
-    notes: contact.notes,
-    avatar: contact.avatarUrl || null,
-    lastMessage: lastMessage?.body || "",
-    lastMessageTime,
-    unread: unreadMessages.length > 0 || !!contact.unread,
+    avatar,
+    lastMessage: lastMessageText,
+    lastMessageTime: lastMessageTime ?? toDate(contact.lastMsgDate),
     unreadCount: unreadMessages.length,
     isDelivered: lastOutboundMessage ? isMessageDelivered(lastOutboundMessage) : false,
-    isLastMessageFromUser: lastMessage ? lastMessage.senderId === DEFAULT_USER_ID : false,
-    contactId: contact.id,
-    createDate: toDate(contact.createdAt),
+    isLastMessageFromUser: lastMessage ? lastMessage.direction === MESSAGE_DIRECTION.OUTBOUND : false,
+    phone: contact.primaryNumber ?? contact.phone ?? "",
+    email: contact.email ?? "",
+    notes: contact.notes ?? "",
     createdAt: toDate(contact.createdAt),
-    lastMsgDate: toDate(contact.lastMsgDate),
-    isActive: isActive(contact),
   };
 };
 
+// Build the contacts for the UI
 export const getContactsForUI = (contacts = [], messages = []) =>
   (contacts || [])
-    .filter((contact) => isActive(contact))
-    .map((contact) => buildContactRecord(contact, messages))
-    .sort((a, b) => {
-      const aTime = a.lastMessageTime || a.lastMsgDate || 0;
-      const bTime = b.lastMessageTime || b.lastMsgDate || 0;
+    .filter((contact) => isActive(contact)) // Filter out inactive contacts
+    .map((contact) => buildContactRecord(contact, messages)) // Build the contact record for the UI
+    .sort((a, b) => { // Sort the contacts by last message time (most recent first)
+      const aTime = a.lastMessageTime || 0;
+      const bTime = b.lastMessageTime || 0;
       return new Date(bTime) - new Date(aTime);
     });
 
+  // Get the contact by ID
 export const getContactById = (contactId, contacts = [], messages = []) => {
   if (!contactId) return null;
   return (
@@ -90,23 +118,24 @@ export const getContactById = (contactId, contacts = [], messages = []) => {
   );
 };
 
+// Get the messages for the contact
 export const getMessagesForContact = (contactId, messages = []) => {
   if (!contactId) return [];
 
+  // 1. Get the messages for the contact
   const orderedMessages = getContactMessages(contactId, messages).sort(
     (a, b) => toDate(a.createdAt) - toDate(b.createdAt)
   );
 
   return orderedMessages.map((message) => {
-    const isSentByUser = message.senderId === DEFAULT_USER_ID;
+    const isSentByUser = message.direction === MESSAGE_DIRECTION.OUTBOUND;
 
+    const messageCreatedAt = toDate(message.createdAt);
+  // 2. Return the message record for the UI
     return {
       id: message.id,
       text: message.body,
-      isSent: isSentByUser,
-      isReceived: !isSentByUser,
-      isDelivered: isMessageDelivered(message),
-      timestamp: toDate(message.createdAt),
+      createdAt: messageCreatedAt,
       senderId: message.senderId,
       mediaUrl: message.mediaUrl,
       mediaType: message.mediaType,
@@ -115,37 +144,7 @@ export const getMessagesForContact = (contactId, messages = []) => {
     };
   });
 };
-
-export const markContactMessagesAsRead = (contactId, contacts = [], messages = []) => {
-  let messagesChanged = false;
-  const updatedMessages = (messages || []).map((message) => {
-    if (
-      message.contactId === contactId &&
-      isActive(message) &&
-      message.senderId !== DEFAULT_USER_ID &&
-      message.status === "delivered"
-    ) {
-      messagesChanged = true;
-      return { ...message, status: "read" };
-    }
-    return message;
-  });
-
-  let contactsChanged = false;
-  const updatedContacts = (contacts || []).map((contact) => {
-    if (contact.id === contactId && contact.unread) {
-      contactsChanged = true;
-      return { ...contact, unread: false };
-    }
-    return contact;
-  });
-
-  return {
-    contacts: contactsChanged ? updatedContacts : contacts,
-    messages: messagesChanged ? updatedMessages : messages,
-  };
-};
-
+// remove?
 export const buildNewContactObject = (contacts = [], contactData = {}) => {
   const newContactId = contactData.id || `contact_${Date.now()}`;
   const createdAt = contactData.createdAt ? toDate(contactData.createdAt) : new Date();
@@ -248,56 +247,6 @@ export const updateMessageDeliveryStatus = (
 
   return {
     messages: changed ? updatedMessages : messages,
-  };
-};
-
-export const updateContactConversation = (contactId, updates = {}, contacts = []) => {
-  if (!contactId || !updates) {
-    return { contacts };
-  }
-
-  let changed = false;
-  const updatedContacts = (contacts || []).map((contact) => {
-    if (contact.id === contactId) {
-      changed = true;
-      return { ...contact, ...updates };
-    }
-    return contact;
-  });
-
-  return {
-    contacts: changed ? updatedContacts : contacts,
-  };
-};
-
-export const deleteContactConversation = (contactId, contacts = [], messages = []) => {
-  if (!contactId) {
-    return { contacts, messages, removed: false };
-  }
-
-  let contactChanged = false;
-  const updatedContacts = (contacts || []).map((contact) => {
-    if (contact.id === contactId && contact.isActive !== false) {
-      contactChanged = true;
-      return { ...contact, isActive: false, unread: false };
-    }
-    return contact;
-  });
-
-  let messagesChanged = false;
-  const deletedAt = new Date();
-  const updatedMessages = (messages || []).map((message) => {
-    if (message.contactId === contactId && message.isActive !== false) {
-      messagesChanged = true;
-      return { ...message, isActive: false, deletedAt };
-    }
-    return message;
-  });
-
-  return {
-    contacts: contactChanged ? updatedContacts : contacts,
-    messages: messagesChanged ? updatedMessages : messages,
-    removed: contactChanged,
   };
 };
 

@@ -41,7 +41,7 @@ const ConversationActionsModal = ({
         
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Created</label>
-          <p className="text-gray-900">{formatDate(contact.createDate)}</p>
+          <p className="text-gray-900">{formatDate(contact.createdAt)}</p>
         </div>
         
         <div>

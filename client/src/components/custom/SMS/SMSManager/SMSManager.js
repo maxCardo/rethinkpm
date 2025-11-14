@@ -4,36 +4,30 @@ import ConversationView from "../common/ConversationView";
 import ConversationList from "../common/ConversationList";
 import NewConversationDialog from "../common/NewConversationDialog/NewConversationDialog";
 import ConversationActionsModal from "../common/ConversationList/ConversationActionsModal";
-import {
-  buildNewContactObject,
-  addNewMessage,
-  deleteContactConversation,
-  getContactsForUI,
-  getContactById,
-  getMessagesForContact,
-  markContactMessagesAsRead,
-  updateMessageDeliveryStatus,
-} from "../helpers";
+import { getContactsForUI, getContactById, getMessagesForContact } from "../helpers";
 import { createSuccessAlert, createErrorAlert } from "../../../../actions/alert";
-
-const cloneContacts = (items = []) =>
-  items.map((item) => ({ ...item }));
-
-const cloneMessages = (items = []) =>
-  items.map(({ statusHistory, currentStatus, ...item }) => ({ ...item }));
 
 const SMSManager = ({
   contacts: contactsProp = [],
   messages: messagesProp = [],
   onCreateContact,
   onContactSelect,
+  onContactOpen,
   onContactInfo,
   onDeleteContact,
+  onSendMessage,
   onMessageSent,
 }) => {
   const dispatch = useDispatch();
-  const [contactsData, setContactsData] = useState(() => cloneContacts(contactsProp));
-  const [messagesData, setMessagesData] = useState(() => cloneMessages(messagesProp));
+  const contacts = useMemo(
+    () => (Array.isArray(contactsProp) ? contactsProp : []),
+    [contactsProp]
+  );
+  const messages = useMemo(
+    () => (Array.isArray(messagesProp) ? messagesProp : []),
+    [messagesProp]
+  );
+
   const [selectedContactId, setSelectedContactId] = useState(null);
   const [isNewContactDialogOpen, setIsNewContactDialogOpen] = useState(false);
   const [modalState, setModalState] = useState({
@@ -42,21 +36,20 @@ const SMSManager = ({
     contact: null,
   });
 
-  useEffect(() => {
-    if (Array.isArray(contactsProp) && contactsProp.length) {
-      setContactsData(cloneContacts(contactsProp));
-    }
-  }, [contactsProp]);
-
-  useEffect(() => {
-    if (Array.isArray(messagesProp) && messagesProp.length) {
-      setMessagesData(cloneMessages(messagesProp));
-    }
-  }, [messagesProp]);
-
   const contactsUI = useMemo(
-    () => getContactsForUI(contactsData, messagesData),
-    [contactsData, messagesData]
+    () => getContactsForUI(contacts, messages),
+    [contacts, messages]
+  );
+
+  const selectContactById = useCallback(
+    (contactId) => {
+      setSelectedContactId(contactId || null);
+      if (onContactSelect) {
+        const contactUI = contactId ? getContactById(contactId, contacts, messages) : null;
+        onContactSelect(contactUI || null);
+      }
+    },
+    [contacts, messages, onContactSelect]
   );
 
   const selectedContact = useMemo(
@@ -65,44 +58,43 @@ const SMSManager = ({
   );
 
   const selectedMessages = useMemo(
-    () => (selectedContactId ? getMessagesForContact(selectedContactId, messagesData) : []),
-    [selectedContactId, messagesData]
+    () => (selectedContactId ? getMessagesForContact(selectedContactId, messages) : []),
+    [selectedContactId, messages]
   );
 
   useEffect(() => {
-    if (!selectedContactId && contactsUI.length) {
-      setSelectedContactId(contactsUI[0].id);
-    }
-  }, [contactsUI, selectedContactId]);
-
-  const selectContactById = useCallback(
-    (contactId, updatedContacts = contactsData, updatedMessages = messagesData) => {
-      setSelectedContactId(contactId || null);
-      if (onContactSelect) {
-        const contactUI = contactId
-          ? getContactById(contactId, updatedContacts, updatedMessages)
-          : null;
-        onContactSelect(contactUI || null);
+    if (contactsUI.length === 0) {
+      if (selectedContactId !== null) {
+        selectContactById(null);
       }
-    },
-    [contactsData, messagesData, onContactSelect]
-  );
+      return;
+    }
+
+    const exists = contactsUI.some((contact) => contact.id === selectedContactId);
+    if (!exists) {
+      selectContactById(contactsUI[0].id);
+    }
+  }, [contactsUI, selectedContactId, selectContactById]);
 
   const handleNewContact = () => {
     setIsNewContactDialogOpen(true);
   };
 
-  const handleCreateContact = (contactData) => {
+  const handleCreateContact = async (contactData) => {
+    if (!onCreateContact) {
+      setIsNewContactDialogOpen(false);
+      return;
+    }
+
     try {
-      const { contacts: updatedContacts, contact: newContact } = buildNewContactObject(
-        contactsData,
-        contactData
-      );
-      setContactsData(updatedContacts);
-      selectContactById(newContact.id, updatedContacts, messagesData);
+      const result = await onCreateContact(contactData);
       setIsNewContactDialogOpen(false);
       dispatch(createSuccessAlert("Contact created successfully!", "SMSManager"));
-      onCreateContact?.(getContactById(newContact.id, updatedContacts, messagesData));
+
+      const newContactId = result?.id ?? result?.contactId ?? result?.contact?.id ?? null;
+      if (newContactId) {
+        selectContactById(newContactId);
+      }
     } catch (error) {
       console.error("Error creating contact:", error);
       dispatch(createErrorAlert("Failed to create contact. Please try again.", "SMSManager"));
@@ -114,49 +106,32 @@ const SMSManager = ({
   };
 
   const handleSendMessage = useCallback(
-    (contactId, messagePayload) => {
-      const { contacts: updatedContacts, messages: updatedMessages, messageId } = addNewMessage(
-        contactId,
-        messagePayload,
-        contactsData,
-        messagesData
-      );
-
-      if (!messageId) {
+    async (contactId, messagePayload) => {
+      if (!contactId || !onSendMessage) {
         return null;
       }
 
-      setContactsData(updatedContacts);
-      setMessagesData(updatedMessages);
+      try {
+        const result = await onSendMessage(contactId, messagePayload);
+        const messageId = result?.messageId ?? result ?? null;
 
-      const updatedContactUI = getContactById(contactId, updatedContacts, updatedMessages);
-      onMessageSent?.(updatedContactUI || null);
-      selectContactById(contactId, updatedContacts, updatedMessages);
+        if (messageId && onMessageSent) {
+          onMessageSent(messageId, contactId, result);
+        }
 
-      return messageId;
+        return messageId;
+      } catch (error) {
+        console.error("Error sending message:", error);
+        dispatch(createErrorAlert("Failed to send message. Please try again.", "SMSManager"));
+        return null;
+      }
     },
-    [contactsData, messagesData, onMessageSent, selectContactById]
-  );
-
-  const handleUpdateMessageStatus = useCallback(
-    (contactId, messageId, newStatus, reason = null) => {
-      const { messages: updatedMessages } = updateMessageDeliveryStatus(
-        contactId,
-        messageId,
-        newStatus,
-        messagesData,
-        reason
-      );
-      setMessagesData(updatedMessages);
-      const updatedContactUI = getContactById(contactId, contactsData, updatedMessages);
-      onMessageSent?.(updatedContactUI || null);
-    },
-    [contactsData, messagesData, onMessageSent]
+    [dispatch, onMessageSent, onSendMessage]
   );
 
   const handleContactInfo = (contact) => {
     const detailedContact =
-      (contact?.id && getContactById(contact.id, contactsData, messagesData)) || contact;
+      (contact?.id && getContactById(contact.id, contacts, messages)) || contact;
     onContactInfo?.(detailedContact);
     setModalState({ isOpen: true, type: "contact", contact: detailedContact });
   };
@@ -169,92 +144,56 @@ const SMSManager = ({
     setModalState({ isOpen: true, type: "delete", contact });
   };
 
-  const handleConfirmDelete = (contact) => {
+  const handleConfirmDelete = async (contact) => {
     try {
-      const { contacts: updatedContacts, messages: updatedMessages, removed } =
-        deleteContactConversation(contact.id, contactsData, messagesData);
-
-      if (!removed) {
-        dispatch(createErrorAlert("Failed to delete contact. Please try again.", "SMSManager"));
-        return;
-      }
-
-      setContactsData(updatedContacts);
-      setMessagesData(updatedMessages);
-
-      if (selectedContactId === contact.id) {
-        selectContactById(null, updatedContacts, updatedMessages);
-      } else {
-        selectContactById(selectedContactId, updatedContacts, updatedMessages);
-      }
-
+      await onDeleteContact?.(contact);
       dispatch(createSuccessAlert("Contact deleted successfully!", "SMSManager"));
-      onDeleteContact?.(contact);
     } catch (error) {
       console.error("Error deleting contact:", error);
       dispatch(createErrorAlert("Failed to delete contact. Please try again.", "SMSManager"));
     }
+    setModalState({ isOpen: false, type: null, contact: null });
   };
 
   const handleContactOpen = useCallback(
-    (contact) => {
+    async (contact) => {
       if (!contact?.id) {
         selectContactById(null);
         return;
       }
 
-      const { contacts: updatedContacts, messages: updatedMessages } = markContactMessagesAsRead(
-        contact.id,
-        contactsData,
-        messagesData
-      );
-
-      setContactsData(updatedContacts);
-      setMessagesData(updatedMessages);
-      selectContactById(contact.id, updatedContacts, updatedMessages);
+      await onContactOpen?.(contact);
+      selectContactById(contact.id);
     },
-    [contactsData, messagesData, selectContactById]
+    [onContactOpen, selectContactById]
   );
 
   const handleSelectContact = useCallback(
     (contact) => {
-      if (!contact?.id) {
-        selectContactById(null);
-        return;
-      }
-      selectContactById(contact.id);
+      selectContactById(contact?.id ?? null);
     },
     [selectContactById]
   );
 
-  const handleMessageSent = useCallback(() => {
-    if (selectedContactId) {
-      const contactUI = getContactById(selectedContactId, contactsData, messagesData);
-      onMessageSent?.(contactUI || null);
-    }
-  }, [contactsData, messagesData, onMessageSent, selectedContactId]);
-
   return (
-    <div className="h-screen">
-      <div className="grid grid-cols-12">
-        <div className="col-span-4">
+    <div className="flex flex-col h-full max-h-full">
+      <div className="grid grid-cols-12 flex-1 overflow-hidden">
+        <div className="col-span-4 h-full overflow-hidden">
           <ConversationList 
             contacts={contactsUI}
             onContactSelect={handleSelectContact}
             onContactOpen={handleContactOpen}
-            selectedContactId={selectedContactId}
+            selectedContact={selectedContact}
             onNewContact={handleNewContact}
             onContactInfo={handleContactInfo}
             onDeleteContact={handleDeleteContact}
           />
         </div>
-        <div className="col-span-8 h-screen">
+        <div className="col-span-8 h-full overflow-hidden">
           <ConversationView 
             selectedContact={selectedContact} 
             messages={selectedMessages}
             onSendMessage={handleSendMessage}
-            onUpdateMessageStatus={handleUpdateMessageStatus}
-            onMessageSent={handleMessageSent}
           />
         </div>
       </div>

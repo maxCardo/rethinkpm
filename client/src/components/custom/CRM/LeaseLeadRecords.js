@@ -12,14 +12,52 @@ import MaterialModal from "../../ui/MaterialModal";
 import { capitalizeFirstLetter } from "../../../util/commonFunctions";
 import dayjs from "dayjs";
 import LeadDetails from "./comps/LeadDetails";
-import SMSChat from "../SMS/SMSChat";
+import SMSDialog from "../SMS/SMSDialog/SMSDialog";
+import SMSManager from "../SMS/SMSManager/SMSManager";
+
+const getLeaseLeadIdFromRecord = (record) => {
+  if (!record) {
+    return null;
+  }
+
+  const leaseLead = record.leaseLead ?? record;
+
+  if (typeof leaseLead === "string") {
+    return leaseLead;
+  }
+
+  if (typeof leaseLead === "object" && leaseLead !== null) {
+    return leaseLead._id || leaseLead.id || leaseLead.leaseLeadId || null;
+  }
+
+  return null;
+};
+
+const inferMessageDirection = (message = {}) => {
+  if (message.direction) {
+    return message.direction;
+  }
+
+  const sentBy = (message.sentBy || "").toLowerCase();
+  if (sentBy.includes("lead") || sentBy.includes("tenant")) {
+    return "inbound";
+  }
+
+  return "outbound";
+};
+
+const normalizeDate = (value) => {
+  if (!value) {
+    return new Date();
+  }
+  return value instanceof Date ? value : new Date(value);
+};
 
 const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, loading, sms },settings,isNavbarShown,}) => {
   
   const TAB_KEYS = {
     Table: "table",
-    Details: "details",
-    Tour: "tour",
+    SmsChat: "smsChat",
   };
 
   const [tabKey, setTabKey] = useState(TAB_KEYS.Table);
@@ -30,15 +68,23 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   const [isModalBeforeClose, setIsModalBeforeClose] = useState(false)
   const [isSmsModalOpen, setIsSmsModalOpen] = useState(false);
   const [activeSmsLead, setActiveSmsLead] = useState(null);
+  const [smsState, setSmsState] = useState(sms);
 
   // Ref to store the current request's abort controller
   const abortControllerRef = useRef(null);
   const NAVBAR_HEIGHT = 80;
 
+  useEffect(() => {
+    setSmsState(sms);
+  }, [sms]);
+
+  const smsData = smsState || sms || { list: [], loading: false };
+  const smsLoading = sms?.loading ?? smsData.loading ?? false;
+
   /* Tabs option */
   const DYNAMIC_TABS = [
     { key: TAB_KEYS.Table, title: "Table View" },
-    // { key: TAB_KEYS.Tour, title: "Tour Tracking" },
+    { key: TAB_KEYS.SmsChat, title: "SMS Chat" },
   ];
 
   const CELL_WIDTH_SIZES = {
@@ -312,8 +358,21 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   };
 
   const handleOpenSmsModal = (leadItem) => {
-    const selectedSmsLead = sms?.list?.find((item) => item.leaseLead._id === leadItem._id);
-    console.log("clicked on lead sms icon", selectedSmsLead);
+    let leadWithoutSms;
+    let selectedSmsLead = smsData?.list?.find((item) => item.leaseLead._id === leadItem._id);
+
+    if (!selectedSmsLead) {
+      leadWithoutSms = {
+        _id: leadItem._id,
+        lastMsgDate: new Date().toISOString(),
+        leaseLead: leadItem,
+        msg: [],
+        openDate: new Date().toISOString(),
+        primeNum: leadItem.phoneNumbers[0]?.number || "",
+        unread: true,
+      }
+      selectedSmsLead = leadWithoutSms;
+    }
     setActiveSmsLead(selectedSmsLead);
     if (sms?.loading) {
       getLeaseSMS();
@@ -347,6 +406,187 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
     }
   };
 
+  const smsContactsForChat = useMemo(() => {
+    return (smsData?.list || []).map((item) => {
+      const contactId = getLeaseLeadIdFromRecord(item);
+      const leaseLead = item?.leaseLead || {};
+
+      const firstName = leaseLead?.firstName || "";
+      const lastName = leaseLead?.lastName || "";
+      const name = leaseLead?.fullName || `${firstName} ${lastName}`.trim();
+
+      const phone = leaseLead.phoneNumbers[0]?.number || "";
+
+      const email =
+        leaseLead.email[0]?.address || "";
+
+      return {
+        id: contactId,
+        firstName,
+        lastName,
+        name,
+        phone,
+        email,
+        avatar: "",
+        isActive: true,
+        createdAt: normalizeDate(item?.openDate),
+      };
+    });
+  }, [smsData]);
+
+  const smsMessagesForChat = useMemo(() => {
+    return (smsData?.list || []).flatMap((thread) => {
+      const contactId = getLeaseLeadIdFromRecord(thread);
+      if (!contactId) {
+        return [];
+      }
+
+      return (thread?.msg || []).map((message) => {
+        const messageTimestamp = normalizeDate(
+          message?.date || message?.createdAt
+        );
+        const body = message?.body || message?.text || "";
+        return {
+          id:
+            message?._id ||
+            message?.id ||
+            `${contactId}_${messageTimestamp.getTime()}`,
+          contactId,
+          body,
+          text: body,
+          createdAt: messageTimestamp,
+          senderId: message?.sentBy || message?.from || message?.senderId || "",
+          mediaUrl: message?.mediaUrl || "",
+          mediaType: message?.mediaType || "",
+          status: message?.status || "sent", // TODO: add status to sms model in the server - IS REQUIRED!
+          direction: inferMessageDirection(message), // TODO: add direction to sms model in the server - IS REQUIRED!
+        };
+      });
+    });
+  }, [smsData]);
+
+  const activeSmsContact = useMemo(() => {
+    const contactId = getLeaseLeadIdFromRecord(activeSmsLead);
+    if (!contactId) {
+      return null;
+    }
+//check if the contact is in the smsContactsForChat array
+    const existingContact =
+      smsContactsForChat.find((contact) => contact.id === contactId) || null;
+    if (existingContact) {
+      return existingContact;
+    }
+//if the contact is not in the smsContactsForChat array, use the activeSmsLead to create a new contact
+    const fallbackLead = activeSmsLead?.leaseLead || activeSmsLead;
+    if (!fallbackLead) {
+      return null;
+    }
+
+    const firstName = fallbackLead?.firstName || "";
+    const lastName = fallbackLead?.lastName || "";
+    const nameFromLead = fallbackLead?.fullName || `${firstName} ${lastName}`.trim();
+    const fallbackName = nameFromLead || fallbackLead?.companyName || "Unknown Lead";
+    const phone =
+      fallbackLead?.phoneNumbers?.[0]?.number ||
+      "";
+
+    const rawEmail = fallbackLead?.email;
+    const email =
+      (Array.isArray(rawEmail) ? rawEmail[0]?.address : rawEmail) || "";
+
+    return {
+      id: contactId,
+      firstName,
+      lastName,
+      name: fallbackName,
+      phone,
+      email,
+      avatar: "",
+      isActive: true,
+      createdAt: normalizeDate(activeSmsLead?.openDate || new Date()),
+    };
+  }, [activeSmsLead, smsContactsForChat]);
+
+  const activeSmsMessages = useMemo(() => {
+    const contactId = getLeaseLeadIdFromRecord(activeSmsLead);
+    if (!contactId) {
+      return [];
+    }
+
+    return smsMessagesForChat
+      .filter((message) => message.contactId === contactId)
+      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  }, [activeSmsLead, smsMessagesForChat]);
+
+  const handleSendSmsMessage = useCallback(
+    async (contactId, messagePayload) => {
+      console.log("sending sms message", contactId, messagePayload);
+      if (!contactId) {
+        return null;
+      }
+// create a new message - DEMO ONLY!
+// use server for real messages
+      const now = new Date();
+      const isoNow = now.toISOString();
+      const tempMessageId = `temp_${Date.now()}`;
+      const tempMessage = {
+        id: tempMessageId,
+        contactId,
+        body: messagePayload?.text || messagePayload?.body || "",
+        text: messagePayload?.text || messagePayload?.body || "",
+        createdAt: now,
+        date: isoNow,
+        senderId: "currentUser",
+        direction: "outbound",
+        status: "queued",
+      };
+
+      setSmsState((prevSms = {}) => {
+        const prevList = Array.isArray(prevSms.list) ? prevSms.list : [];
+        const existingThreadIndex = prevList.findIndex(
+          (thread) => getLeaseLeadIdFromRecord(thread) === contactId
+        );
+
+        let updatedList;
+        if (existingThreadIndex >= 0) {
+          const existingThread = prevList[existingThreadIndex];
+          const updatedThread = {
+            ...existingThread,
+            msg: [...(existingThread.msg || []), tempMessage],
+          };
+          updatedList = [
+            ...prevList.slice(0, existingThreadIndex),
+            updatedThread,
+            ...prevList.slice(existingThreadIndex + 1),
+          ];
+        } else {
+          const fallbackLead = activeSmsLead?.leaseLead || activeSmsLead || {};
+          const newThread = {
+            _id: contactId,
+            leaseLead: {
+              ...fallbackLead,
+              _id: contactId,
+            },
+            msg: [tempMessage],
+            primeNum: fallbackLead?.phoneNumbers?.[0]?.number || "",
+            openDate: new Date().toISOString(),
+            unread: false,
+          };
+
+          updatedList = [...prevList, newThread];
+        }
+
+        return {
+          ...prevSms,
+          list: updatedList,
+        };
+      });
+
+      return tempMessageId;
+    },
+    [activeSmsLead]
+  );
+
   return loading ? (
     <Loading />
   ) : (
@@ -360,97 +600,94 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
 
       <div className="table-view">
         {/* Lease Leads List (table) */}
-        {tabKey === TAB_KEYS.Table && (
-          <>
-            <div className="table-top flex flex-row my-4 justify-between items-center">
-              <LeadsTableFilters
-                filterListByQuery={filterListByQuery}
-                settings={settings}
-              />
-              {/* <div className="add-lead-btn px-2">
-                <Button
-                  color="primary"
-                  className="self-end"
-                  startIcon={<FaPlus size={"0.8rem"} />}
-                  style={{ textTransform: "none" }}
-                  onClick={() => setIsModalOpen(!isModalOpen)}
-                  variant="contained"
-                >
-                  Add Lead
-                </Button>
-              </div> */}
-            </div>
-            {updatedLeadsList.length === 0 ? (
-              <div
-                style={{ textAlign: "center", padding: "2rem", color: "#888" }}
-              >
-                No data available.
+          {tabKey === TAB_KEYS.Table && (
+            <>
+              <div className="table-top flex flex-row my-4 justify-between items-center">
+                <LeadsTableFilters
+                  filterListByQuery={filterListByQuery}
+                  settings={settings}
+                />
+                {/* <div className="add-lead-btn px-2">
+                  <Button
+                    color="primary"
+                    className="self-end"
+                    startIcon={<FaPlus size={"0.8rem"} />}
+                    style={{ textTransform: "none" }}
+                    onClick={() => setIsModalOpen(!isModalOpen)}
+                    variant="contained"
+                  >
+                    Add Lead
+                  </Button>
+                </div> */}
               </div>
-            ) : (
-              <Table
-                headers={TABLE_HEADERS}
-                list={updatedLeadsList}
-                withCheckboxSelection={false}
-                sticky={true}
-                focusedOnItem={selectedLeadItem}
-                tableWrapperStyle={{
-                  height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
-                  overflowY: "auto",
-                }}
-                _orderBy={"nextActionDate"}
-                _order={"desc"}
-                // handleClickRow={handleWatchLeadDetails}
-                // tableCellStyle={{ cursor: "pointer" }}
-              />
-            )}
-            {/* Lead Details Modal */}
-            <MaterialModal
-              isOpen={isDetailsModalOpen}
-              onClose={() => handleCloseDetailsModal(true)}
-              title="Lead Details"
-              width="100%"
-              height="100%"
-              
+              {updatedLeadsList.length === 0 ? (
+                <div
+                  style={{ textAlign: "center", padding: "2rem", color: "#888" }}
+                >
+                  No data available.
+                </div>
+              ) : (
+                <Table
+                  headers={TABLE_HEADERS}
+                  list={updatedLeadsList}
+                  withCheckboxSelection={false}
+                  sticky={true}
+                  focusedOnItem={selectedLeadItem}
+                  tableWrapperStyle={{
+                    height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
+                    overflowY: "auto",
+                  }}
+                  _orderBy={"nextActionDate"}
+                  _order={"desc"}
+                  // handleClickRow={handleWatchLeadDetails}
+                  // tableCellStyle={{ cursor: "pointer" }}
+                />
+              )}
+              {/* Lead Details Modal */}
+              <MaterialModal
+                isOpen={isDetailsModalOpen}
+                onClose={() => handleCloseDetailsModal(true)}
+                title="Lead Details"
+                width="100%"
+                height="100%"
+                
+              >
+                <LeadDetails
+                  selectedLeadItem={selectedLeadItem}
+                  onLeadUpdated={handleRefreshLeadData}
+                  isParentModalBeforeClose={isModalBeforeClose}
+                  onCloseConfirm={() => handleCloseDetailsModal(false)}
+                  onHandledBeforeClose={handleChildHandledBeforeClose}
+                />
+              </MaterialModal>
+            </>
+          )}
+          {tabKey === TAB_KEYS.SmsChat && (
+            <div
+              className="flex min-h-[600px]"
+              style={{
+                height: `calc(100vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px - 40px)`,
+              }}
             >
-              <LeadDetails
-                selectedLeadItem={selectedLeadItem}
-                onLeadUpdated={handleRefreshLeadData}
-                isParentModalBeforeClose={isModalBeforeClose}
-                onCloseConfirm={() => handleCloseDetailsModal(false)}
-                onHandledBeforeClose={handleChildHandledBeforeClose}
+              <SMSManager
+                contacts={smsContactsForChat}
+                messages={smsMessagesForChat}
+                selectedContact={activeSmsContact}
+                onSendMessage={handleSendSmsMessage}
               />
-            </MaterialModal>
-          </>
-        )}
+            </div>
+          )}
       </div>
-      <MaterialModal
-        isOpen={isSmsModalOpen}
-        onClose={handleCloseSmsModal}
-        title={`SMS Conversation${activeSmsLead?.leaseLead?.fullName ? ` • ${activeSmsLead.leaseLead.fullName}` : ""}`}
-        width="40rem"
-        height="70%"
-        showActions={false}
-      >
-        {sms?.loading ? (
-          <Loading />
-        ) : activeSmsLead ? (
-          <div className="h-full">
-            <SMSChat
-              contacts={[activeSmsLead]}
-              messages={[activeSmsLead.msg]}
-              selectedContact={activeSmsLead}
-              isMinimalView
-              onInit={() => {}}
-              onContactSelect={() => {}}
-              onMessageSent={() => {}}
-            />
-          </div>
-        ) : (
-          <div className="flex items-center justify-center h-full text-gray-500 text-sm">
-            No SMS history available for this lead yet.
-          </div>
-        )}
-      </MaterialModal>
+      {isSmsModalOpen && !smsLoading && (
+        <SMSDialog
+          isOpen={isSmsModalOpen}
+          onClose={handleCloseSmsModal}
+          contact={activeSmsContact}
+          messages={activeSmsMessages}
+          onSendMessage={handleSendSmsMessage}
+        />
+      )}
+      {isSmsModalOpen && smsLoading && <Loading />}
     </>
   );
 };

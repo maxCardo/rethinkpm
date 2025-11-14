@@ -185,7 +185,7 @@ const LeadsTableFilters = ({ filterListByQuery, settings }) => {
           placeholder="Search"
         />
         <Select
-          className="marketplace__filter-select"
+          className="marketplace__filter-select !z-50"
           onChange={handleFieldChange}
           defaultValue="All"
           options={FIELDS}

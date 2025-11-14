@@ -1,102 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { IoClose } from 'react-icons/io5';
 import ConversationView from '../common/ConversationView';
-import {
-  addNewMessage,
-  getContactById,
-  getContactsForUI,
-  getMessagesForContact,
-  updateMessageDeliveryStatus,
-} from '../helpers';
-
-const cloneContacts = (items = []) => items.map((item) => ({ ...item }));
-
-const cloneMessages = (items = []) =>
-  items.map(({ statusHistory, currentStatus, ...item }) => ({ ...item }));
 
 const SMSDialog = ({
   isOpen,
   onClose,
-  contactId,
-  contacts = [],
+  onSendMessage,
+  contact = null,
   messages = [],
-  onMessageSent,
 }) => {
-  const [contactsData, setContactsData] = useState(() => cloneContacts(contacts));
-  const [messagesData, setMessagesData] = useState(() => cloneMessages(messages));
-
-  useEffect(() => {
-    if (Array.isArray(contacts) && contacts.length) {
-      setContactsData(cloneContacts(contacts));
-    }
-  }, [contacts]);
-
-  useEffect(() => {
-    if (Array.isArray(messages) && messages.length) {
-      setMessagesData(cloneMessages(messages));
-    }
-  }, [messages]);
-
-  const contact = useMemo(
-    () => (contactId ? getContactById(contactId, contactsData, messagesData) : null),
-    [contactId, contactsData, messagesData]
+  const resolvedMessages = useMemo(
+    () => (Array.isArray(messages) ? messages : []),
+    [messages]
   );
-
-  const conversationMessages = useMemo(
-    () => (contactId ? getMessagesForContact(contactId, messagesData) : []),
-    [contactId, messagesData]
-  );
-
-  const handleSendMessage = useCallback(
-    (contactIdParam, messagePayload) => {
-      const { contacts: updatedContacts, messages: updatedMessages, messageId } = addNewMessage(
-        contactIdParam,
-        messagePayload,
-        contactsData,
-        messagesData
-      );
-
-      if (!messageId) {
-        return null;
-      }
-
-      setContactsData(updatedContacts);
-      setMessagesData(updatedMessages);
-
-      const updatedContactUI = getContactById(contactIdParam, updatedContacts, updatedMessages);
-      onMessageSent?.(updatedContactUI || null);
-
-      return messageId;
-    },
-    [contactsData, messagesData, onMessageSent]
-  );
-
-  const handleUpdateMessageStatus = useCallback(
-    (contactIdParam, messageId, newStatus) => {
-      const { messages: updatedMessages } = updateMessageDeliveryStatus(
-        contactIdParam,
-        messageId,
-        newStatus,
-        messagesData
-      );
-      setMessagesData(updatedMessages);
-
-      const updatedContactUI = getContactById(contactIdParam, contactsData, updatedMessages);
-      onMessageSent?.(updatedContactUI || null);
-    },
-    [contactsData, messagesData, onMessageSent]
-  );
-
-  const resolvedMessages = useMemo(() => conversationMessages, [conversationMessages]);
-  const resolvedContact = useMemo(() => {
-    if (contact) {
-      return contact;
-    }
-    if (!contactId) {
-      return null;
-    }
-    return getContactsForUI(contactsData, messagesData).find((c) => c.id === contactId) || null;
-  }, [contact, contactId, contactsData, messagesData]);
+  const resolvedContact = contact || null;
 
   const messageCount = resolvedMessages.length;
 
@@ -146,9 +63,7 @@ const SMSDialog = ({
           <ConversationView
             selectedContact={resolvedContact}
             messages={resolvedMessages}
-            onSendMessage={handleSendMessage}
-            onUpdateMessageStatus={handleUpdateMessageStatus}
-            onMessageSent={onMessageSent}
+            onSendMessage={onSendMessage}
           />
         </div>
       </div>

@@ -2,15 +2,11 @@ import { useEffect, useMemo, useRef } from 'react';
 import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
-// TODO: SHOULD BE 'SYSTEM' ID
-const USER_ID = 'user_1';
 
 const ConversationView = ({
   selectedContact,
   messages = [],
   onSendMessage,
-  onUpdateMessageStatus,
-  onMessageSent,
 }) => {
   const messagesEndRef = useRef(null);
 
@@ -34,33 +30,22 @@ const ConversationView = ({
 
   const handleSendMessage = async (messageText, file = null) => {
     console.log('[handleSendMessage]: content + file', messageText, file);
-    if (!selectedContact?.id || !onSendMessage) {
+    const contactId = selectedContact?.id ?? null;
+    if (!contactId || !onSendMessage) {
       return;
     }
-
+  // This payload is sent to the parent component - parent component will send it to the server (after adjusint the data for the server)
     const messagePayload = {
       text: messageText,
-      senderId: USER_ID,
+      senderId: "",
       mediaUrl: file ? URL.createObjectURL(file) : "",
       mediaType: file ? getMediaType(file.type) : "",
       initialStatus: 'queued',
     };
 console.log('[handleSendMessage]: messagePayload', messagePayload);
     // Await the async sender so we only continue once we have the real message ID (or failure).
-    const messageId = await onSendMessage(selectedContact.id, messagePayload);
-console.log('[handleSendMessage]: messageId', messageId);
-
-    if (!messageId) {
-      return;
-    }
-
-    onMessageSent?.(selectedContact);
+    await onSendMessage(contactId, messagePayload);
     scrollToBottom();
-
-    setTimeout(() => {
-      onUpdateMessageStatus?.(selectedContact.id, messageId, 'delivered');
-      onMessageSent?.(selectedContact);
-    }, 1000);
   };
 
   const getMediaType = (mimeType) => {
@@ -75,7 +60,7 @@ console.log('[handleSendMessage]: messageId', messageId);
     const groups = {};
     
     messages.forEach(message => {
-      const date = new Date(message.timestamp);
+      const date = new Date(message.createdAt);
       const dateKey = date.toDateString(); // e.g., "Mon Jan 15 2024"
 
       // Create a new group if it doesn't exist
@@ -89,7 +74,7 @@ console.log('[handleSendMessage]: messageId', messageId);
     
     // Sort messages within each group by timestamp (oldest first) - time order
     Object.keys(groups).forEach(dateKey => {
-      groups[dateKey].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+      groups[dateKey].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
     });
     
     return groups;
@@ -120,24 +105,27 @@ console.log('[handleSendMessage]: messageId', messageId);
     <div className="flex flex-col h-full">
       {/* Messages Area - Scrollable */}
       <div className="flex-1 overflow-y-auto pb-4">
-        {sortedDateKeys.map((dateKey) => (
-          <div key={dateKey}>
-            <DateHeader date={new Date(dateKey)} />
-            {messageGroups[dateKey].map((message) => (
-              <div key={message.id} className="animate-fadeIn">
-                <MessageBubble 
-                  message={message.text}
-                  isSent={message.isSent}
-                  isReceived={message.isReceived}
-                  isDelivered={message.isDelivered}
-                  timestamp={message.timestamp}
-                  mediaUrl={message.mediaUrl}
-                  mediaType={message.mediaType}
-                />
-              </div>
-            ))}
+        {sortedDateKeys.length === 0 ? (
+          <div className="flex h-full items-center justify-center text-sm text-gray-500">
+            No messages yet. Start the conversation below.
           </div>
-        ))}
+        ) : (
+          sortedDateKeys.map((dateKey) => (
+            <div key={dateKey}>
+              <DateHeader date={new Date(dateKey)} />
+              {messageGroups[dateKey].map((message) => (
+                <div key={message.id} className="animate-fadeIn">
+                  <MessageBubble 
+                    message={message}
+                    createdAt={message.createdAt}
+                    mediaUrl={message.mediaUrl}
+                    mediaType={message.mediaType}
+                  />
+                </div>
+              ))}
+            </div>
+          ))
+        )}
         {/* Invisible element to scroll to */}
         <div ref={messagesEndRef} />
       </div>

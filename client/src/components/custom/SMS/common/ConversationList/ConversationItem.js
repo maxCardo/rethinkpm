@@ -3,9 +3,35 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { IoPerson, IoTrash } from 'react-icons/io5';
 import { useState, useEffect, useRef } from 'react';
 
+const getContactDisplayName = (contact) => {
+  if (!contact) {
+    return '';
+  }
+  if (contact.name?.trim()) {
+    return contact.name.trim();
+  }
+  const nameFromParts = [contact.firstName, contact.lastName]
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+  return nameFromParts || '';
+};
+
+const getInitials = (contact) => {
+  const baseName = getContactDisplayName(contact);
+  return baseName
+    .split(' ')
+    .filter(Boolean)
+    .map((word) => word.charAt(0))
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+};
+
 const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteContact }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
+  const displayName = getContactDisplayName(contact);
 
   const formatTime = (timestamp) => {
     if (!timestamp) return '';
@@ -33,15 +59,6 @@ const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteC
     }
   };
 
-  const getInitials = (name) => {
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
   // Handle clicking outside the menu to close it
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -67,6 +84,7 @@ const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteC
   const handleContactInfo = (e) => {
     e.stopPropagation();
     setShowMenu(false);
+    // Pass to parent component to handle the contact info action
     if (onContactInfo) {
       onContactInfo(contact);
     }
@@ -75,6 +93,7 @@ const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteC
   const handleDeleteContact = (e) => {
     e.stopPropagation();
     setShowMenu(false);
+    // Pass to parent component to handle the delete contact action
     if (onDeleteContact) {
       onDeleteContact(contact);
     }
@@ -82,6 +101,7 @@ const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteC
 
   const handleItemClick = () => {
     setShowMenu(false);
+    // Pass to parent component to handle the item click action
     if (onClick) {
       onClick(contact);
     }
@@ -99,13 +119,13 @@ const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteC
       <div className="flex-shrink-0 mr-3">
         <div className="w-12 h-12 rounded-full bg-darkBlue flex items-center justify-center text-white font-semibold text-sm">
           {contact.avatar ? (
-            <img 
-              src={contact.avatar} 
-              alt={contact.name}
+            <img
+              src={contact.avatar}
+              alt={displayName || 'Contact avatar'}
               className="w-12 h-12 rounded-full object-cover"
             />
           ) : (
-            getInitials(contact.name)
+            getInitials(contact)
           )}
         </div>
       </div>
@@ -116,7 +136,7 @@ const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteC
           <h5 className={`text-sm font-medium truncate ${
             contact.unreadCount > 0 ? 'font-semibold' : ''
           }`}>
-            {contact.name}
+            {displayName || 'Unknown Contact'}
           </h5>
           <div className="flex items-center">
             <span className="text-xs text-gray-500 flex-shrink-0 mr-2">

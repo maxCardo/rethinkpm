@@ -2,24 +2,47 @@ import { useMemo, useState } from 'react';
 import ConversationListHeader from './ConversationListHeader';
 import ConversationItem from './ConversationItem';
 
+const resolveContactId = (contact) => contact?.id ?? null;
+
+const resolveContactName = (contact) => {
+  if (!contact) {
+    return "";
+  }
+  if (contact.name?.trim()) {
+    return contact.name.trim();
+  }
+  const nameFromParts = [contact.firstName, contact.lastName]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+  return nameFromParts || "";
+};
+
 const ConversationList = ({
   contacts = [],
   onContactSelect,
   onContactOpen,
-  selectedContactId,
+  selectedContact,
   onNewContact,
   onContactInfo,
   onDeleteContact,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const activeContactId = useMemo(
+    () => resolveContactId(selectedContact),
+    [selectedContact]
+  );
 
+// Filter the contacts based on the search term
+// Sort the contacts by last message time
+// Return the filtered and sorted contacts
   const filteredContacts = useMemo(() => {
     const list = Array.isArray(contacts) ? contacts : [];
     const normalizedTerm = searchTerm.trim().toLowerCase();
 
     const sortByLastActivity = (a, b) => {
-      const aTime = a?.lastMessageTime || a?.lastMsgDate || 0;
-      const bTime = b?.lastMessageTime || b?.lastMsgDate || 0;
+      const aTime = a?.lastMessageTime || 0;
+      const bTime = b?.lastMessageTime  || 0;
       return new Date(bTime) - new Date(aTime);
     };
 
@@ -29,7 +52,7 @@ const ConversationList = ({
 
     return list
       .filter((contact) => {
-        const name = (contact?.name || '').toLowerCase();
+        const name = resolveContactName(contact).toLowerCase();
         const lastMessage = (contact?.lastMessage || '').toLowerCase();
         return name.includes(normalizedTerm) || lastMessage.includes(normalizedTerm);
       })
@@ -41,26 +64,31 @@ const ConversationList = ({
   };
 
   const handleContactClick = (contact) => {
+    // Pass to parent component to handle the contact open action
     if (onContactOpen) {
       onContactOpen(contact);
     }
+    // Pass to parent component to handle the selected contact click action
     if (onContactSelect) {
       onContactSelect(contact);
     }
   };
 
+  // Pass to parent component to handle the new contact action
   const handleNewContact = () => {
     if (onNewContact) {
       onNewContact();
     }
   };
 
+// Pass to parent component to handle the contact info action
   const handleContactInfo = (contact) => {
     if (onContactInfo) {
       onContactInfo(contact);
     }
   };
 
+  // Pass to parent component to handle the delete contact action
   const handleDeleteContact = (contact) => {
     if (onDeleteContact) {
       onDeleteContact(contact);
@@ -82,9 +110,9 @@ const ConversationList = ({
         {filteredContacts.length > 0 ? (
           filteredContacts.map((contact) => (
             <ConversationItem
-              key={contact.id}
+              key={resolveContactId(contact) || resolveContactName(contact)}
               contact={contact}
-              isActive={selectedContactId === contact.id}
+              isActive={resolveContactId(contact) === activeContactId}
               onClick={handleContactClick}
               onContactInfo={handleContactInfo}
               onDeleteContact={handleDeleteContact}
