@@ -539,6 +539,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
         senderId: "currentUser",
         direction: "outbound",
         status: "queued",
+        mediaUrl: messagePayload?.mediaUrl || "",
+        mediaType: messagePayload?.mediaType || "",
       };
 
       setSmsState((prevSms = {}) => {
@@ -664,9 +666,10 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
           )}
           {tabKey === TAB_KEYS.SmsChat && (
             <div
-              className="flex min-h-[600px]"
+              className="flex min-h-[600px] w-full flex-1"
               style={{
                 height: `calc(100vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px - 40px)`,
+                width: "100%",
               }}
             >
               <SMSManager

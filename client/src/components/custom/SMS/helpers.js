@@ -73,14 +73,31 @@ const buildContactRecord = (contact, messages = []) => {
     ? toDate(lastMessage.createdAt)
     : null;
 
-  // 8. Get the last message text
-  const lastMessageText =
+  // 8. Get the last message media type
+  const lastMediaType =
+    lastMessage?.mediaType ||
+    lastMessage?.media_type ||
+    contact.lastMediaType ||
+    null;
+
+  // 9. Get the last message text (with media fallback)
+  let lastMessageText =
     lastMessage?.body || lastMessage?.text || contact.lastMessage || "";
 
-  // 9. Get the avatar
+  if (!lastMessageText && lastMediaType) {
+    const mediaLabelMap = {
+      image: "Image",
+      video: "Video",
+      audio: "Audio",
+      document: "Document",
+    };
+    lastMessageText = mediaLabelMap[lastMediaType] || "Media";
+  }
+
+  // 10. Get the avatar
   const avatar = contact.avatar ?? contact.avatarUrl ?? null;
 
-// 10. Return the contact record
+// 11. Return the contact record
   return {
     id: contact.id,
     firstName: contact.firstName ?? "",
@@ -88,6 +105,7 @@ const buildContactRecord = (contact, messages = []) => {
     name,
     avatar,
     lastMessage: lastMessageText,
+    lastMediaType,
     lastMessageTime: lastMessageTime ?? toDate(contact.lastMsgDate),
     unreadCount: unreadMessages.length,
     isDelivered: lastOutboundMessage ? isMessageDelivered(lastOutboundMessage) : false,

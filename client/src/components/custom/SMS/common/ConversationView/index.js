@@ -29,7 +29,6 @@ const ConversationView = ({
   };
 
   const handleSendMessage = async (messageText, file = null) => {
-    console.log('[handleSendMessage]: content + file', messageText, file);
     const contactId = selectedContact?.id ?? null;
     if (!contactId || !onSendMessage) {
       return;
@@ -42,7 +41,6 @@ const ConversationView = ({
       mediaType: file ? getMediaType(file.type) : "",
       initialStatus: 'queued',
     };
-console.log('[handleSendMessage]: messagePayload', messagePayload);
     // Await the async sender so we only continue once we have the real message ID (or failure).
     await onSendMessage(contactId, messagePayload);
     scrollToBottom();

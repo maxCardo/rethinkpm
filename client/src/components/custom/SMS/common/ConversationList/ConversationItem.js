@@ -153,10 +153,22 @@ const ConversationItem = ({ contact, isActive, onClick, onContactInfo, onDeleteC
         </div>
         
         <div className="flex items-center justify-between">
-          <p className={`text-sm truncate ${
-            contact.unreadCount > 0 ? 'text-gray-900 font-medium' : 'text-gray-600'
-          }`}>
-            {contact.lastMessage || 'No messages yet'}
+          <p
+            className={`text-sm truncate ${
+              contact.unreadCount > 0 ? 'text-gray-900 font-medium' : 'text-gray-600'
+            }`}
+          >
+            {contact.lastMessage && contact.lastMessage.trim()
+              ? contact.lastMessage
+              : contact.lastMediaType === 'image'
+              ? '📷 Image'
+              : contact.lastMediaType === 'video'
+              ? '🎬 Video'
+              : contact.lastMediaType === 'audio'
+              ? '🎧 Audio'
+              : contact.lastMediaType === 'document'
+              ? '📄 Document'
+              : 'No messages yet'}
           </p>
           
           {/* Message Status */}

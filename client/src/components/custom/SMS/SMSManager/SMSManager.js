@@ -176,8 +176,8 @@ const SMSManager = ({
   );
 
   return (
-    <div className="flex flex-col h-full max-h-full">
-      <div className="grid grid-cols-12 flex-1 overflow-hidden">
+    <div className="flex flex-col h-full max-h-full w-full">
+      <div className="grid grid-cols-12 flex-1 overflow-hidden w-full">
         <div className="col-span-4 h-full overflow-hidden">
           <ConversationList 
             contacts={contactsUI}
