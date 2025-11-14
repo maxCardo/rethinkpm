@@ -416,7 +416,36 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
     setIsSmsModalOpen(false);
     setActiveSmsLead(null);
   };
+// Delete Contact from SMS Chat - DEMO ONLY!
+  const handleDeleteContact = useCallback(
+    async (contact) => {
+      if (!contact?.id) {
+        console.warn("Cannot delete contact: no contact ID provided");
+        return;
+      }
 
+      // Update SMS state to remove the deleted contact
+      setSmsState((prevSms = {}) => {
+        const prevList = Array.isArray(prevSms.list) ? prevSms.list : [];
+        const updatedList = prevList.filter(
+          (thread) => getLeaseLeadIdFromRecord(thread) !== contact.id
+        );
+
+        // If the deleted contact was the active one, clear it
+        if (activeSmsLead && getLeaseLeadIdFromRecord(activeSmsLead) === contact.id) {
+          setActiveSmsLead(null);
+        }
+
+        return {
+          ...prevSms,
+          list: updatedList,
+        };
+      });
+
+      console.log("Contact deleted (demo):", contact.id);
+    },
+    [activeSmsLead]
+  );
 
   const handleRefreshLeadData = async () => {
     // Refresh the main list
@@ -836,6 +865,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
               messages={smsMessagesForChat}
               selectedContact={activeSmsContact}
               onSendMessage={handleSendSmsMessage}
+              onDeleteContact={handleDeleteContact}
             />
           </div>
         )}
