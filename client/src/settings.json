@@ -856,6 +856,7 @@
         "leadTemperature": "leadTemperature",
         "leadOwner": "leadOwner",
         "nextActionDate": "nextActionDate",
+        "updateDate": "updateDate",
         "tourDate": "tourDate"
       }
     }
