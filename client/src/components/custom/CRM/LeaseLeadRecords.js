@@ -5,7 +5,7 @@ import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData, getAllUsers, getLeaseSMS } from "../../../actions/crm/leaseLeads";
 import { Chip, Button, ToggleButton, ToggleButtonGroup, Box, CircularProgress, IconButton } from "@mui/material";
-import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle, FaPlus, FaEye, FaCommentDots } from "react-icons/fa";
+import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle, FaPlus, FaEye, FaCommentDots, FaTrashAlt } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
 import axios from "axios";
 import MaterialModal from "../../ui/MaterialModal";
@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import LeadDetails from "./comps/LeadDetails";
 import SMSDialog from "../SMS/SMSDialog/SMSDialog";
 import SMSManager from "../SMS/SMSManager/SMSManager";
+import DeleteLeadDialog from "./comps/DeleteLeadDialog";
 
 const getLeaseLeadIdFromRecord = (record) => {
   if (!record) {
@@ -86,6 +87,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   const [isSmsModalOpen, setIsSmsModalOpen] = useState(false);
   const [activeSmsLead, setActiveSmsLead] = useState(null);
   const [smsState, setSmsState] = useState(sms);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [leadToDelete, setLeadToDelete] = useState(null);
 
   // Ref to store the current request's abort controller
   const abortControllerRef = useRef(null);
@@ -208,6 +211,15 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
           >
             <FaCommentDots size={16} />
           </IconButton>
+          {!isArchiveMode && (
+            <IconButton
+              size="small"
+              onClick={() => handleDeleteLead(item)}
+              aria-label="Delete lead"
+            >
+              <FaTrashAlt size={16} />
+            </IconButton>
+          )}
         </div>
       ),
     },
@@ -387,6 +399,21 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   // Callback to reset isModalBeforeClose after child handles it
   const handleChildHandledBeforeClose = () => {
     setIsModalBeforeClose(false);
+  };
+
+  const handleDeleteLead = async (leadItem) => {
+    if (!leadItem?._id) {
+      console.warn("Cannot delete lead: no lead ID provided");
+      return;
+    }
+
+    setLeadToDelete(leadItem);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setIsDeleteDialogOpen(false);
+    setLeadToDelete(null);
   };
 
   const handleOpenSmsModal = (leadItem) => {
@@ -809,8 +836,6 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
                 }}
                 _orderBy={"nextActionDate"}
                 _order={"desc"}
-                // handleClickRow={handleWatchLeadDetails}
-                // tableCellStyle={{ cursor: "pointer" }}
               />
             )}
             {/* Lead Details Modal For View/Edit Lead */}
@@ -880,6 +905,14 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
         />
       )}
       {isSmsModalOpen && smsLoading && <Loading />}
+      
+      {/* Delete Lead Dialog */}
+      <DeleteLeadDialog
+        open={isDeleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        leadItem={leadToDelete}
+        onDeleteSuccess={getLeaseLeadData}
+      />
     </>
   );
 };

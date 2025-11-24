@@ -186,11 +186,11 @@ router.post("/", auth, async (req, res) => {
 // @route: PATCH api/crm/leaselead/:id
 // @desc: soft delete a leaseLead by id (set isEnabled to false)
 // @access: private
-router.patch("/:id", auth, async (req, res) => {
+router.patch("/delete/:id", auth, async (req, res) => {
   try {
     const updated = await leaseLead.findByIdAndUpdate(
       req.params.id,
-      { isEnabled: false, updateDate: new Date() },
+      { isEnabled: false, status: "lost", reasonForLoss: req.body.reasonForLoss, updateDate: new Date() },
       { new: true }
     );
 
