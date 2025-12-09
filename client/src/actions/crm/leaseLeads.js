@@ -51,3 +51,10 @@ export const getAllUsers = () => async () => {
     return [];
   }
 };
+
+export const sendLseSMS = (id , msg) => async () => {
+    console.log('running send lse sms!! ... this is the data')
+    console.log(id)
+    console.log(msg)
+}
+

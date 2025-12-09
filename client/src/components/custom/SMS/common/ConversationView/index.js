@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
+import { clearPhoneFormatting } from '../../../../../util/commonFunctions';
 
 const ConversationView = ({
   selectedContact,
@@ -78,12 +79,16 @@ const ConversationView = ({
     return groups;
   };
 
-  const messageGroups = useMemo(() => groupMessagesByDate(messages), [messages]);
-  // Get sorted date keys (oldest first) - date order
-  const sortedDateKeys = useMemo(
-    () => Object.keys(messageGroups).sort((a, b) => new Date(a) - new Date(b)),
-    [messageGroups]
-  );
+  //Note: Draft Functionality to group messages by days sent as is common with messaging platform. 
+    // I edited out (unintntionaly) in my refactor but would like to bring back in future roll outs 
+  // const messageGroups = useMemo(() => groupMessagesByDate(messages), [messages]);
+  // // Get sorted date keys (oldest first) - date order
+  
+  
+  // const sortedDateKeys = useMemo(
+  //   () => Object.keys(messageGroups).sort((a, b) => new Date(a) - new Date(b)),
+  //   [messageGroups]
+  // );
 
   // Show placeholder when no contact is selected
   if (!selectedContact) {
@@ -103,26 +108,24 @@ const ConversationView = ({
     <div className="flex flex-col h-full">
       {/* Messages Area - Scrollable */}
       <div className="flex-1 overflow-y-auto pb-4">
-        {sortedDateKeys.length === 0 ? (
+        {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center text-sm text-gray-500">
             No messages yet. Start the conversation below.
           </div>
         ) : (
-          sortedDateKeys.map((dateKey) => (
-            <div key={dateKey}>
-              <DateHeader date={new Date(dateKey)} />
-              {messageGroups[dateKey].map((message) => (
-                <div key={message.id} className="animate-fadeIn">
-                  <MessageBubble 
+            <div>
+              {/* related to note above concerning date grouping above line 82 */}
+              {/* <DateHeader date={new Date()} /> */}
+              {messages.map((message, index) => (
+                <div key={index} className="animate-fadeIn">
+                  {console.log('this is the message from convo index: ' , message)}
+                  <MessageBubble
+                    msgType = 'text' 
                     message={message}
-                    createdAt={message.createdAt}
-                    mediaUrl={message.mediaUrl}
-                    mediaType={message.mediaType}
                   />
                 </div>
               ))}
             </div>
-          ))
         )}
         {/* Invisible element to scroll to */}
         <div ref={messagesEndRef} />

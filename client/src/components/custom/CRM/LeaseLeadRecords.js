@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Table from "../../core/newTable/_Table";
 import Loading from "../../core/LoadingScreen/Loading";
 import TailwindTabs from "../Tabs/TailwindTabs";
-import { getLeaseLeadData, getAllUsers, getLeaseSMS } from "../../../actions/crm/leaseLeads";
+import { getLeaseLeadData, getAllUsers, getLeaseSMS, sendLseSMS } from "../../../actions/crm/leaseLeads";
 import { Chip, Button, ToggleButton, ToggleButtonGroup, Box, CircularProgress, IconButton } from "@mui/material";
 import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle, FaPlus, FaEye, FaCommentDots } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
@@ -15,6 +15,7 @@ import LeadDetails from "./comps/LeadDetails";
 import SMSDialog from "../SMS/SMSDialog/SMSDialog";
 import SMSManager from "../SMS/SMSManager/SMSManager";
 
+//related to activeSMSContact func below. I dont see a utility yet for active sms contact and this function seems to be obscuring a bug as the out put is a simple leadLease it?? (12/3/25ap)
 const getLeaseLeadIdFromRecord = (record) => {
   if (!record) {
     return null;
@@ -71,7 +72,7 @@ const CELL_WIDTH_SIZES = {
   Large: "20%",
 };
 
-const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, loading, sms },settings,isNavbarShown,}) => {
+const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads: { list, loading, sms },settings,isNavbarShown,}) => {
   const [tabKey, setTabKey] = useState(TAB_KEYS.Table);
   const [initLeadsList, setInitLeadsList] = useState([]);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
@@ -94,6 +95,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   useEffect(() => {
     setSmsState(sms);
   }, [sms]);
+
 
   const smsData = smsState || sms || { list: [], loading: false };
   const smsLoading = sms?.loading ?? smsData.loading ?? false;
@@ -392,8 +394,10 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   const handleOpenSmsModal = (leadItem) => {
     let leadWithoutSms;
     let selectedSmsLead = smsData?.list?.find((item) => item.leaseLead._id === leadItem._id);
-
+     console.log('on open sms. This is the selected lead: ', selectedSmsLead)
     if (!selectedSmsLead) {
+      console.log('no selected lead')
+      //below we are setting the id as the leaselead _id. Not sure utilitiy or if this will cause issues down the road (12/3/25ap)
       leadWithoutSms = {
         _id: leadItem._id,
         lastMsgDate: new Date().toISOString(),
@@ -404,11 +408,14 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
         unread: true,
       }
       selectedSmsLead = leadWithoutSms;
+      console.log('so we created on: ', selectedSmsLead)
     }
+   
     setActiveSmsLead(selectedSmsLead);
-    if (sms?.loading) {
-      getLeaseSMS();
-    }
+    //not needed call should already be maid. best this is a bandaid on previous fail????
+    // if (sms?.loading) {
+    //   getLeaseSMS();
+    // }
     setIsSmsModalOpen(true);
   };
 
@@ -416,7 +423,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
     setIsSmsModalOpen(false);
     setActiveSmsLead(null);
   };
-// Delete Contact from SMS Chat - DEMO ONLY!
+// Delete Contact from SMS Chat - DEMO ONLY!  Needed?
   const handleDeleteContact = useCallback(
     async (contact) => {
       if (!contact?.id) {
@@ -446,7 +453,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
     },
     [activeSmsLead]
   );
-
+  //todo: refactor to work with redux 
   const handleRefreshLeadData = async () => {
     // Refresh the main list
     await getLeaseLeadData();
@@ -600,7 +607,10 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
   }, [smsData]);
 
   const activeSmsContact = useMemo(() => {
+    console.log('running activeSMSContact')
+    console.log('this is the activeSMSLead: ', activeSmsLead)
     const contactId = getLeaseLeadIdFromRecord(activeSmsLead);
+    console.log('this is the contactID: ', contactId)
     if (!contactId) {
       return null;
     }
@@ -652,6 +662,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
       .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   }, [activeSmsLead, smsMessagesForChat]);
 
+  
+  //12-3 refactor, run through redux
   const handleSendSmsMessage = useCallback(
     async (contactId, messagePayload) => {
       console.log("sending sms message", contactId, messagePayload);
@@ -874,9 +886,9 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS,leaseLeads: { list, load
         <SMSDialog
           isOpen={isSmsModalOpen}
           onClose={handleCloseSmsModal}
-          contact={activeSmsContact}
-          messages={activeSmsMessages}
-          onSendMessage={handleSendSmsMessage}
+          contact={activeSmsLead.leaseLead}
+          messages={activeSmsLead.msg}
+          onSendMessage={sendLseSMS}
         />
       )}
       {isSmsModalOpen && smsLoading && <Loading />}
@@ -888,4 +900,4 @@ const mapStateToProps = (state) => ({
   leaseLeads: state.leaseLeads,
 });
 
-export default connect(mapStateToProps, { getLeaseLeadData, getLeaseSMS })(LeaseLeadRecords);
+export default connect(mapStateToProps, { getLeaseLeadData, getLeaseSMS,sendLseSMS})(LeaseLeadRecords);

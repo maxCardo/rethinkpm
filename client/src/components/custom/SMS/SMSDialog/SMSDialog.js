@@ -2,17 +2,17 @@ import React, { useMemo } from 'react';
 import { IoClose } from 'react-icons/io5';
 import ConversationView from '../common/ConversationView';
 
-const SMSDialog = ({
-  isOpen,
-  onClose,
-  onSendMessage,
-  contact = null,
-  messages = [],
-}) => {
+const SMSDialog = ({isOpen, onClose, onSendMessage, contact = null, messages = [],}) => {
+
+  console.log('smsD params: ', {isOpen, onClose, onSendMessage, contact, messages})
+
+  //seems to be funciton that would obscure a bug (12/3/25ap)
   const resolvedMessages = useMemo(
     () => (Array.isArray(messages) ? messages : []),
     [messages]
   );
+
+  //redundent with default value in props in additon also seems like a funciton that would obscure bug (12/3/25ap)
   const resolvedContact = contact || null;
 
   const messageCount = resolvedMessages.length;
@@ -35,13 +35,13 @@ const SMSDialog = ({
           <div className="flex items-center space-x-3">
             {/* Avatar */}
             <div className="w-10 h-10 bg-darkBlue rounded-full flex items-center justify-center text-white font-medium">
-              {contact ? contact.name.charAt(0).toUpperCase() : '?'}
+              {contact ? contact.fullName.charAt(0).toUpperCase() : '?'}
             </div>
             
             {/* Contact Info */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
-                {contact ? contact.name : 'Contact'}
+                {contact ? contact.fullName : 'Contact'}
               </h3>
               <p className="text-sm text-gray-500">
                 {contact ? `${messageCount} message${messageCount === 1 ? '' : 's'}` : 'No messages'}
@@ -61,8 +61,8 @@ const SMSDialog = ({
         {/* Conversation View */}
         <div className="flex-1 overflow-hidden">
           <ConversationView
-            selectedContact={resolvedContact}
-            messages={resolvedMessages}
+            selectedContact={contact}
+            messages={messages}
             onSendMessage={onSendMessage}
           />
         </div>
