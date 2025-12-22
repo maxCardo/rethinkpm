@@ -3,6 +3,7 @@ import MessageBubble from "./MessageBubble";
 import DateHeader from "./DateHeader";
 import MessageInput from "./MessageInput";
 import { clearPhoneFormatting } from '../../../../../util/commonFunctions';
+import { isMessageDelivered } from '../../helpers';
 
 const ConversationView = ({
   selectedContact,
@@ -30,18 +31,24 @@ const ConversationView = ({
   };
 
   const handleSendMessage = async (messageText, file = null) => {
-    const contactId = selectedContact?.id ?? null;
+    const contactId = selectedContact?._id ?? null;
     if (!contactId || !onSendMessage) {
+      console.log('there is no contactID so I am killing this func')
       return;
     }
   // This payload is sent to the parent component - parent component will send it to the server (after adjusint the data for the server)
     const messagePayload = {
-      text: messageText,
-      senderId: "",
-      mediaUrl: file ? URL.createObjectURL(file) : "",
-      mediaType: file ? getMediaType(file.type) : "",
-      initialStatus: 'queued',
+      body: messageText,
+      date: new Date(),
+      from: '+14122147909',
+      isDelivered: false,
+      to: selectedContact.phoneNumbers.find(num => num.isPrimary).number,
+      //senderId: "",
+      //mediaUrl: file ? URL.createObjectURL(file) : "",
+      //mediaType: file ? getMediaType(file.type) : "",
+      //initialStatus: 'queued',
     };
+    console.log('this is the paload: ', messagePayload)
     // Await the async sender so we only continue once we have the real message ID (or failure).
     await onSendMessage(contactId, messagePayload);
     scrollToBottom();

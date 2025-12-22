@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SET_LEASELEAD_LIST, SET_LEASELEAD_SMS} from "../type";
+import { SET_LEASELEAD_LIST, SET_LEASELEAD_SMS, SEND_SMS} from "../type";
 import {createErrorAlert} from "../alert";
 
 // const config = {
@@ -52,9 +52,19 @@ export const getAllUsers = () => async () => {
   }
 };
 
-export const sendLseSMS = (id , msg) => async () => {
+export const sendLseSMS = (id , msg) => async (dispatch) => {
     console.log('running send lse sms!! ... this is the data')
     console.log(id)
     console.log(msg)
+    //update state with message with processing
+    dispatch({
+      type: SEND_SMS,
+      payload: {id, msg}
+    })    
+    
+    //send to server to update DB
+    //update state recived
+    //error handeling
+
 }
 

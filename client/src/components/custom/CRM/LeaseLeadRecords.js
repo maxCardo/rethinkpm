@@ -662,6 +662,14 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
       .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   }, [activeSmsLead, smsMessagesForChat]);
 
+ const onSendMessageTest = (params) => {
+  
+    console.log('this is on send message test')
+    console.log('these are the pararms: ',)
+    
+ }
+ 
+ 
   
   //12-3 refactor, run through redux
   const handleSendSmsMessage = useCallback(
