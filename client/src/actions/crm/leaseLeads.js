@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SET_LEASELEAD_LIST, SET_LEASELEAD_SMS, SEND_SMS} from "../type";
+import { SET_LEASELEAD_LIST, SET_LEASELEAD_SMS, SEND_SMS, CONFIRM_SEND_SMS} from "../type";
 import {createErrorAlert} from "../alert";
 
 // const config = {

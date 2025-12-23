@@ -1,4 +1,4 @@
-import {SET_LOADING, SET_LEASELEAD_LIST, SET_LEASELEAD_SMS,SEND_SMS} from '../actions/type';
+import {SET_LOADING, SET_LEASELEAD_LIST, SET_LEASELEAD_SMS,SEND_SMS, CONFIRM_SEND_SMS} from '../actions/type';
 
 const initialState = {
     loading: true,
@@ -35,19 +35,30 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 sms: {
-                    list: state.list.map(item => {
-                        console.log('this is the item: ', item)
+                    list: state.sms.list.map(item => {
                         if(item.leaseLead._id === payload.id) {
-                            item.message.push({
-                                body: payload.text.text,
-                                to: payload.text.to, 
-                                from: payload.text.from,
+                            item.msg.push({
+                                body: payload.msg.body,
+                                to: payload.msg.to, 
+                                from: payload.msg.from,
                             })
+                            return item
                         }
+                        return item
                     })
                 },
             }
-
+        case CONFIRM_SEND_SMS:
+            return {
+                ...state,
+                sms: {
+                    ...state.sms,
+                    list: state.sms.list.map(item => item._id === payload._id 
+                        ? {...item } //insert update in object 
+                        : item 
+                    )
+                }
+            }
         default:
             return state;
     }
