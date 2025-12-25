@@ -607,10 +607,10 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
   }, [smsData]);
 
   const activeSmsContact = useMemo(() => {
-    console.log('running activeSMSContact')
-    console.log('this is the activeSMSLead: ', activeSmsLead)
+    //console.log('running activeSMSContact')
+    //console.log('this is the activeSMSLead: ', activeSmsLead)
     const contactId = getLeaseLeadIdFromRecord(activeSmsLead);
-    console.log('this is the contactID: ', contactId)
+    //console.log('this is the contactID: ', contactId)
     if (!contactId) {
       return null;
     }

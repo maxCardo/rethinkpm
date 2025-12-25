@@ -41,6 +41,8 @@ const ConversationView = ({
       body: messageText,
       date: new Date(),
       from: '+14122147909',
+      status: 'pending',
+      //note: isDiliverd is depricated. replacing with status
       isDelivered: false,
       to: selectedContact.phoneNumbers.find(num => num.isPrimary).number,
       //senderId: "",
@@ -48,7 +50,7 @@ const ConversationView = ({
       //mediaType: file ? getMediaType(file.type) : "",
       //initialStatus: 'queued',
     };
-    console.log('this is the paload: ', messagePayload)
+    // console.log('this is the paload: ', messagePayload)
     // Await the async sender so we only continue once we have the real message ID (or failure).
     await onSendMessage(contactId, messagePayload);
     scrollToBottom();
@@ -125,7 +127,7 @@ const ConversationView = ({
               {/* <DateHeader date={new Date()} /> */}
               {messages.map((message, index) => (
                 <div key={index} className="animate-fadeIn">
-                  {console.log('this is the message from convo index: ' , message)}
+                  {/* {console.log('this is the message from convo index: ' , message)} */}
                   <MessageBubble
                     msgType = 'text' 
                     message={message}

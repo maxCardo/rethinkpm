@@ -95,7 +95,7 @@ const MessageBubble = ({message, msgType}) => {
                 </div>
               )}
               {/* Text content */}
-              {console.log('this is the msgType: ', msgType)}
+              {/* {console.log('this is the msgType: ', msgType)} */}
               {msgType === 'text' && (
                 <p className="text-sm leading-relaxed break-words mb-0">{message.body}</p>
               )}

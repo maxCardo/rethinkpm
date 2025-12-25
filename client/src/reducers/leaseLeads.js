@@ -1,4 +1,4 @@
-import {SET_LOADING, SET_LEASELEAD_LIST, SET_LEASELEAD_SMS,SEND_SMS, CONFIRM_SEND_SMS} from '../actions/type';
+import {SET_LOADING, SET_LEASELEAD_LIST, SET_LEASELEAD_SMS,SEND_SMS, UPDATE_SMS} from '../actions/type';
 
 const initialState = {
     loading: true,
@@ -35,27 +35,30 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 sms: {
-                    list: state.sms.list.map(item => {
-                        if(item.leaseLead._id === payload.id) {
-                            item.msg.push({
-                                body: payload.msg.body,
-                                to: payload.msg.to, 
-                                from: payload.msg.from,
-                            })
-                            return item
-                        }
-                        return item
-                    })
+                    ...state.sms,
+                    list: state.sms.list.map(item => 
+                        item.leaseLead._id !== payload.id 
+                        ? item
+                        :{...item,msg: [...item.msg,{...payload.msg, client_id : payload.client_id}]}
+                    )
                 },
             }
-        case CONFIRM_SEND_SMS:
+        case UPDATE_SMS:
             return {
                 ...state,
                 sms: {
                     ...state.sms,
-                    list: state.sms.list.map(item => item._id === payload._id 
-                        ? {...item } //insert update in object 
-                        : item 
+                    list: state.sms.list.map(chat => chat.leaseLead._id !== payload.id 
+                        ? chat 
+                        : {
+                            ...chat,
+                            msg: chat.msg.map(m => 
+                                m[payload.data.idType] !== payload.data.id
+                                ? m
+                                : {...m, ...payload.data.updateObj, client_id: undefined}
+
+                            )
+                        }
                     )
                 }
             }

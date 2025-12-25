@@ -4,7 +4,7 @@ import ConversationView from '../common/ConversationView';
 
 const SMSDialog = ({isOpen, onClose, onSendMessage, contact = null, messages = [],}) => {
 
-  console.log('smsD params: ', {isOpen, onClose, onSendMessage, contact, messages})
+  //console.log('smsD params: ', {isOpen, onClose, onSendMessage, contact, messages})
 
   //seems to be funciton that would obscure a bug (12/3/25ap)
   const resolvedMessages = useMemo(

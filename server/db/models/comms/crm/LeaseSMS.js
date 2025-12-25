@@ -30,7 +30,21 @@ const leaseTextSchema = new mongoose.Schema({
             body: String,
             to: String, 
             from: String,
-            sentBy: String 
+            sentBy: String,
+            staus: {
+                type: String, 
+                default: 'pending'
+                //Statusus: pending, failed, queued, other twilio status
+            },
+            //depricated and replaced with status
+            isDelivered: {
+                type: Boolean,
+                default: false 
+            },
+            providerSid: {
+                type: String, 
+                index: true
+            }
         }
     ]
 
