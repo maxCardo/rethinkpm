@@ -46,19 +46,31 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
     loadUser();
   }, [loadUser]);
 
-  const socket = io.connect(
-    process.env.REACT_APP_SOCKET_BACKEND
-      ? process.env.REACT_APP_SOCKET_BACKEND
-      : ""
-  );
-  socket.on("sms", (chat) => {
-    if (chat._id === activeChat.chat._id) {
-      receiveSMS(chat);
-    }
+  const socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND: "");
+  useEffect(() => {
+    const handleSMS = (chat) => {
+      console.log("sms socket open:", chat);
+    };
 
-    //receiveMessage({chat_id, message, uuid})
-    //showNotification(`New message from ${chat_id}`, message)
-  });
+    socket.on("sms", handleSMS);
+
+    return () => {
+      socket.off("sms", handleSMS);
+    };
+  }, []);
+
+  
+
+  // socket.on("sms", (chat) => {
+  //   console.log("Listeners:", socket.listeners("sms").length);
+  //   console.log('sms socket open: ', chat) 
+  //   // if (chat._id === activeChat.chat._id) {
+  //   //   receiveSMS(chat);
+  //   // }
+
+  //   //receiveMessage({chat_id, message, uuid})
+  //   //showNotification(`New message from ${chat_id}`, message)
+  // });
 
   const routeSettings = settings.routes;
   return (
