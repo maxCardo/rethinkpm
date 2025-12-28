@@ -22,8 +22,7 @@ import Marketplace from "./components/custom/Marketplace/Marketplace";
 import OffMarketList from "./components/custom/OffMarket/List";
 import { loadUser } from "./actions/auth";
 import { receiveSMS } from "./actions/profile";
-import { connect } from "react-redux";
-import io from "socket.io-client";
+import { connect, useDispatch } from "react-redux";
 import settings from "./settings.json";
 import Alert from "./components/core/Alert";
 import Dash from "./components/custom/Dash";
@@ -33,8 +32,10 @@ import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
 import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
 import LeaseLeadRecords from "./components/custom/CRM/LeaseLeadRecords";
 import { SMSManager, SMSDialogDemo } from "./components/custom/SMS";
+//New SMS Listner in actions/sms
+import { registerSMSListeners } from './actions/sms';
 
-const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
+const App = ({ loadUser, receiveMessage, receiveSMS, activeChat}) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
 
   if (Notification.permission === "default") {
@@ -46,31 +47,12 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
     loadUser();
   }, [loadUser]);
 
-  const socket = io.connect(process.env.REACT_APP_SOCKET_BACKEND ? process.env.REACT_APP_SOCKET_BACKEND: "");
-  useEffect(() => {
-    const handleSMS = (chat) => {
-      console.log("sms socket open:", chat);
-    };
-
-    socket.on("sms", handleSMS);
-
-    return () => {
-      socket.off("sms", handleSMS);
-    };
-  }, []);
-
-  
-
-  // socket.on("sms", (chat) => {
-  //   console.log("Listeners:", socket.listeners("sms").length);
-  //   console.log('sms socket open: ', chat) 
-  //   // if (chat._id === activeChat.chat._id) {
-  //   //   receiveSMS(chat);
-  //   // }
-
-  //   //receiveMessage({chat_id, message, uuid})
-  //   //showNotification(`New message from ${chat_id}`, message)
-  // });
+  //call socket listner in actions/sms
+  const dispatch = useDispatch()
+   useEffect(() => {
+    console.log('running regester SMS Listner')
+    dispatch(registerSMSListeners());
+  }, [dispatch]);
 
   const routeSettings = settings.routes;
   return (
@@ -260,4 +242,4 @@ const mapStateToProps = (state) => ({
 //   }
 // }
 
-export default connect(mapStateToProps, { loadUser, receiveSMS })(App);
+export default connect(mapStateToProps, { loadUser, receiveSMS})(App);

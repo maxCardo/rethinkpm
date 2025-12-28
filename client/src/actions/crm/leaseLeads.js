@@ -4,9 +4,8 @@ import {createErrorAlert} from "../alert";
 
 const config = { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } };
 
-// const config = {
-//   headers: { "Content-Type": "application/json", Accept: "application/json" },
-// };
+//****** See ./sms for incoiming sms calls via web socket *******//
+
 
 //@desc: get all flaged props deal for showcase comp
 export const getLeaseLeadData = () => async (dispatch) => {

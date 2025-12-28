@@ -1,4 +1,4 @@
-import {SET_LOADING, SET_LEASELEAD_LIST, SET_LEASELEAD_SMS,SEND_SMS, UPDATE_SMS} from '../actions/type';
+import {SET_LOADING, SET_LEASELEAD_LIST, SET_LEASELEAD_SMS,SEND_SMS, UPDATE_SMS, REC_LSE_SMS} from '../actions/type';
 
 const initialState = {
     loading: true,
@@ -59,6 +59,17 @@ export default function (state = initialState, action) {
 
                             )
                         }
+                    )
+                }
+            }
+        case REC_LSE_SMS:
+            return {
+                ...state,
+                sms: {
+                    ...state.sms,
+                    list: state.sms.list.map(chat => chat._id !== payload.id 
+                    ? chat 
+                    : {...chat, msg: [...chat.msg, payload.msg]}  
                     )
                 }
             }

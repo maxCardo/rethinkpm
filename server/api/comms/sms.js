@@ -1,4 +1,5 @@
 const express = require('express');
+const socket = require('../../socket')
 const {outgoingSMS} = require('../../3ps/sms')
 const {testNewLeadSMS, incLseSMS} = require('../../scripts/comms/leaseComms')
 const mongoose = require('mongoose');
@@ -8,7 +9,7 @@ const LeaseSMS = require('../../db/models/comms/crm/LeaseSMS')
 const router = express.Router();
 
 
-// @route: post /api/comms/sms/parse_sms;
+// @route: post /api/comms/sms/leasing/parse_sms;
 // @desc: parse sms sent via twilio API   
 // @ access: Public
 router.post('/leasing/parse_sms', (req, res) => {
@@ -75,21 +76,35 @@ router.post('/leaselead/send_sms', async (req, res) => {
 
 //----------------- testsing in dev calls -------------------------------------------//
 
-// @route: get /api/comms/sms/test1_sms;
+// @route: get /api/comms/sms/leasing/rec_sms;
 // @desc: call to trigger new lead and send SMS   
 // @ access: Public
-router.get('/test1_sms', async (req, res) => {
+router.post('/leasing/rec_sms', async (req, res) => {
   try {
-    console.log('hitting test sms api')
-    testNewLeadSMS()
-    res.status(200).send('sucess');
+    console.log('hitting test leasing sms api')
+    console.log(req.body)
+    const {To:to, From:from,Body:body, MessageSid:providerSid, SmsStatus:status} = req.body
+    //ToDO: Fix DB record to always save +1 format and create function to staderize all numbers incoming and calling the same. 
+    const fromFmt = from.replace(/\D/, '').slice(-10)
+    const convo = await LeaseSMS.findOne({primeNum: fromFmt})
+    if (!convo) {
+      console.log('need to build out functionality to handle messages from unkown numbers')
+      //is it connected to a leaseLead?
+      //if not response as maybe spam. 
+      res.status(200).send('sucess');
+    }else {
+      console.log('this is the convo: ', convo)
+      const msg  = {to, from, body, status, providerSid}
+      convo.msg.push(msg)
+      console.log(convo.msg)
+      //await convo.save()
+      socket.getIO().emit('leaseSMS:received', {id: convo._id, msg});
+      res.status(200).send('sucess');
+    }
   } catch (err) {
     res.status(400).send(err);
     console.error(err);
   }
 })
-
-
-
 
 module.exports = router;

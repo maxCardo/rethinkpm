@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http')
-const socketIO = require('socket.io')
 //const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
@@ -16,17 +15,10 @@ const { propertyNum } = require('./3ps/calandly');
 
 const app = express();
 const server = http.createServer(app);
-//const io = require('socket.io').listen(server);
 const cors = require('cors');
 const { error } = require('console');
-
-const io = socketIO(server, {
-  cors: {
-    origin: '*', 
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-})
+const socket = require('./socket')
+const io = socket.init(server)
 
 //app.use(bodyParser.json({limit: '1mb'}));
 //app.use(bodyParser.urlencoded({ extended: false }));
@@ -58,7 +50,9 @@ app.use('/api/filteredData', require('./api/filteredData/filteredData'))
 app.use('/api/crm', require('./api/crm/_crm'))
 
 //Socket.io socket and API calls
-//require('./socket/chat')(io);
+require('./socket/chat')(io);
+
+
 
 //store on DB in future may need to create type object for model names id sored as String in DB
 const activeNumber = [
