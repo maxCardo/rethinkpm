@@ -18,23 +18,23 @@ import SMSManager from "../SMS/SMSManager/SMSManager";
 import leaseLeads from "../../../reducers/leaseLeads";
 
 //related to activeSMSContact func below. I dont see a utility yet for active sms contact and this function seems to be obscuring a bug as the out put is a simple leadLease it?? (12/3/25ap)
-const getLeaseLeadIdFromRecord = (record) => {
-  if (!record) {
-    return null;
-  }
+// const getLeaseLeadIdFromRecord = (record) => {
+//   if (!record) {
+//     return null;
+//   }
 
-  const leaseLead = record.leaseLead ?? record;
+//   const leaseLead = record.leaseLead ?? record;
 
-  if (typeof leaseLead === "string") {
-    return leaseLead;
-  }
+//   if (typeof leaseLead === "string") {
+//     return leaseLead;
+//   }
 
-  if (typeof leaseLead === "object" && leaseLead !== null) {
-    return leaseLead._id || leaseLead.id || leaseLead.leaseLeadId || null;
-  }
+//   if (typeof leaseLead === "object" && leaseLead !== null) {
+//     return leaseLead._id || leaseLead.id || leaseLead.leaseLeadId || null;
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 const inferMessageDirection = (message = {}) => {
   if (message.direction) {
@@ -64,7 +64,7 @@ const TAB_KEYS = {
  /* Tabs option */
  const DYNAMIC_TABS = [
   { key: TAB_KEYS.Table, title: "Table View" },
-  { key: TAB_KEYS.SmsChat, title: "SMS Chat" },
+  // { key: TAB_KEYS.SmsChat, title: "SMS Chat" },
 ];
 
 const CELL_WIDTH_SIZES = {
@@ -76,8 +76,8 @@ const CELL_WIDTH_SIZES = {
 
 const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads: { list, loading, sms }, settings, isNavbarShown,}) => {
   const [tabKey, setTabKey] = useState(TAB_KEYS.Table);
-  const [initLeadsList, setInitLeadsList] = useState([]);
-  const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
+  // const [initLeadsList, setInitLeadsList] = useState([]);
+  const [updatedLeadsList, setUpdatedLeadsList] = useState(list);
   const [selectedLeadItem, setSelectedLeadItem] = useState({});
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isModalBeforeClose, setIsModalBeforeClose] = useState(false);
@@ -219,15 +219,14 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      setIsTableDataLoading(true);
       await getLeaseLeadData();
       await getLeaseSMS();
-      setIsTableDataLoading(false);
     };
     fetchInitialData();
   }, []);
 
   // Fetch users once when component mounts
+  //ToDo: Fetching users should be moved to a global call so other components can access to RM users. This can be part of a general user refactor of the application in the future. 
   useEffect(() => {
     async function fetchUsers() {
       const data = await getAllUsers()();
@@ -236,17 +235,17 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    // set the default/init list before any filters
-    if (list.length > 0) {
-      setInitLeadsList(list);
-    }
-  }, [list]);
+  // useEffect(() => {
+  //   // set the default/init list before any filters
+  //   if (list.length > 0) {
+  //     setInitLeadsList(list);
+  //   }
+  // }, [list]);
 
-  useEffect(() => {
-    // start with the init list
-    setUpdatedLeadsList(initLeadsList);
-  }, [initLeadsList]);
+  // useEffect(() => {
+  //   // start with the init list
+  //   setUpdatedLeadsList(initLeadsList);
+  // }, [initLeadsList]);
 
   const filterListByQuery = useCallback(
     async (filters) => {
@@ -323,13 +322,14 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
         }
 
         // Fallback to showing all leads if query fails
-        setUpdatedLeadsList(initLeadsList);
+        setUpdatedLeadsList(list);
       } finally {
         // Clear loading state
         setIsTableDataLoading(false);
       }
     },
-    [initLeadsList, settings.filterFields.all, isArchiveMode]
+    //[initLeadsList, settings.filterFields.all, isArchiveMode]
+    [list, settings.filterFields.all, isArchiveMode]
   );
 
   // Cleanup function to abort pending requests on unmount
@@ -402,37 +402,40 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
     setIsSmsModalOpen(false);
     setActiveSmsLead(null);
   };
-// Delete Contact from SMS Chat - DEMO ONLY!  Needed?
-  const handleDeleteContact = useCallback(
-    async (contact) => {
-      if (!contact?.id) {
-        console.warn("Cannot delete contact: no contact ID provided");
-        return;
-      }
 
-      // Update SMS state to remove the deleted contact
-      setSmsState((prevSms = {}) => {
-        const prevList = Array.isArray(prevSms.list) ? prevSms.list : [];
-        const updatedList = prevList.filter(
-          (thread) => getLeaseLeadIdFromRecord(thread) !== contact.id
-        );
+ //Commmented out below pending refactor or SMS Mgr component 
+  // Deleted Contact from SMS Chat - DEMO ONLY!  Needed?
+  // const handleDeleteContact = useCallback(
+  //   async (contact) => {
+  //     if (!contact?.id) {
+  //       console.warn("Cannot delete contact: no contact ID provided");
+  //       return;
+  //     }
 
-        // If the deleted contact was the active one, clear it
-        if (activeSmsLead && getLeaseLeadIdFromRecord(activeSmsLead) === contact.id) {
-          setActiveSmsLead(null);
-        }
+  //     // Update SMS state to remove the deleted contact
+  //     setSmsState((prevSms = {}) => {
+  //       const prevList = Array.isArray(prevSms.list) ? prevSms.list : [];
+  //       const updatedList = prevList.filter(
+  //         (thread) => getLeaseLeadIdFromRecord(thread) !== contact.id
+  //       );
 
-        return {
-          ...prevSms,
-          list: updatedList,
-        };
-      });
+  //       // If the deleted contact was the active one, clear it
+  //       if (activeSmsLead && getLeaseLeadIdFromRecord(activeSmsLead) === contact.id) {
+  //         setActiveSmsLead(null);
+  //       }
 
-      console.log("Contact deleted (demo):", contact.id);
-    },
-    [activeSmsLead]
-  );
+  //       return {
+  //         ...prevSms,
+  //         list: updatedList,
+  //       };
+  //     });
+
+  //     console.log("Contact deleted (demo):", contact.id);
+  //   },
+  //   [activeSmsLead]
+  // );
   //todo: refactor to work with redux 
+  
   const handleRefreshLeadData = async () => {
     // Refresh the main list
     await getLeaseLeadData();
@@ -488,239 +491,245 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
     setIsAddModalBeforeClose(false);
   };
 
-  const handleArchiveModeToggle = async (event, newMode) => {
-    // Prevent deselecting all buttons
-    if (newMode === null) return;
+// //1-1-26 2 below func related to archive tab that will be refactored into seperate component 
+  // const handleArchiveModeToggle = async (event, newMode) => {
+  //   // Prevent deselecting all buttons
+  //   if (newMode === null) return;
     
-    const newArchiveMode = newMode === 'archive';
-    setIsArchiveMode(newArchiveMode);
+  //   const newArchiveMode = newMode === 'archive';
+  //   setIsArchiveMode(newArchiveMode);
     
-    // Set loading state
-    setIsTableDataLoading(true);
+  //   // Set loading state
+  //   setIsTableDataLoading(true);
     
-    // Clear current data and fetch new data based on mode
-    setInitLeadsList([]);
-    setUpdatedLeadsList([]);
+  //   // Clear current data and fetch new data based on mode
+  //   setInitLeadsList([]);
+  //   setUpdatedLeadsList([]);
     
-    // Fetch data based on the new mode
-    if (newArchiveMode) {
-      await fetchArchivedLeads();
-    } else {
-      await getLeaseLeadData();
-    }
+  //   // Fetch data based on the new mode
+  //   if (newArchiveMode) {
+  //     await fetchArchivedLeads();
+  //   } else {
+  //     await getLeaseLeadData();
+  //   }
     
-    // Clear loading state
-    setIsTableDataLoading(false);
-  };
+  //   // Clear loading state
+  //   setIsTableDataLoading(false);
+  // };
 
-  const fetchArchivedLeads = async () => {
-    try {
-      const res = await axios.get("/api/crm/leaselead/archived");
-      if (res?.data) {
-        console.log("Archived leads res: ", res);
-        setInitLeadsList(res.data);
-        setUpdatedLeadsList(res.data);
-      }
-    } catch (err) {
-      console.error("Failed to fetch archived leads:", err);
-    }
-  };
+  // const fetchArchivedLeads = async () => {
+  //   try {
+  //     const res = await axios.get("/api/crm/leaselead/archived");
+  //     if (res?.data) {
+  //       console.log("Archived leads res: ", res);
+  //       setInitLeadsList(res.data);
+  //       setUpdatedLeadsList(res.data);
+  //     }
+  //   } catch (err) {
+  //     console.error("Failed to fetch archived leads:", err);
+  //   }
+  // };
+//
 
-  const smsContactsForChat = useMemo(() => {
-    return (smsData?.list || []).map((item) => {
-      const contactId = getLeaseLeadIdFromRecord(item);
-      const leaseLead = item?.leaseLead || {};
+//
+//---- Related to SMS Manger pending refactor----//
+//   const smsContactsForChat = useMemo(() => {
+//     return (smsData?.list || []).map((item) => {
+//       const contactId = getLeaseLeadIdFromRecord(item);
+//       const leaseLead = item?.leaseLead || {};
 
-      const firstName = leaseLead?.firstName || "";
-      const lastName = leaseLead?.lastName || "";
-      const name = leaseLead?.fullName || `${firstName} ${lastName}`.trim();
+//       const firstName = leaseLead?.firstName || "";
+//       const lastName = leaseLead?.lastName || "";
+//       const name = leaseLead?.fullName || `${firstName} ${lastName}`.trim();
 
-      const phone = leaseLead.phoneNumbers[0]?.number || "";
+//       const phone = leaseLead.phoneNumbers[0]?.number || "";
 
-      const email =
-        leaseLead.email[0]?.address || "";
+//       const email =
+//         leaseLead.email[0]?.address || "";
 
-      return {
-        id: contactId,
-        firstName,
-        lastName,
-        name,
-        phone,
-        email,
-        avatar: "",
-        isActive: true,
-        createdAt: normalizeDate(item?.openDate),
-      };
-    });
-  }, [smsData]);
+//       return {
+//         id: contactId,
+//         firstName,
+//         lastName,
+//         name,
+//         phone,
+//         email,
+//         avatar: "",
+//         isActive: true,
+//         createdAt: normalizeDate(item?.openDate),
+//       };
+//     });
+//   }, [smsData]);
 
-  const smsMessagesForChat = useMemo(() => {
-    return (smsData?.list || []).flatMap((thread) => {
-      const contactId = getLeaseLeadIdFromRecord(thread);
-      if (!contactId) {
-        return [];
-      }
+//   const smsMessagesForChat = useMemo(() => {
+//     return (smsData?.list || []).flatMap((thread) => {
+//       const contactId = getLeaseLeadIdFromRecord(thread);
+//       if (!contactId) {
+//         return [];
+//       }
 
-      return (thread?.msg || []).map((message) => {
-        const messageTimestamp = normalizeDate(
-          message?.date || message?.createdAt
-        );
-        const body = message?.body || message?.text || "";
-        return {
-          id:
-            message?._id ||
-            message?.id ||
-            `${contactId}_${messageTimestamp.getTime()}`,
-          contactId,
-          body,
-          text: body,
-          createdAt: messageTimestamp,
-          senderId: message?.sentBy || message?.from || message?.senderId || "",
-          mediaUrl: message?.mediaUrl || "",
-          mediaType: message?.mediaType || "",
-          status: message?.status || "sent", // TODO: add status to sms model in the server - IS REQUIRED!
-          direction: inferMessageDirection(message), // TODO: add direction to sms model in the server - IS REQUIRED!
-        };
-      });
-    });
-  }, [smsData]);
+//       return (thread?.msg || []).map((message) => {
+//         const messageTimestamp = normalizeDate(
+//           message?.date || message?.createdAt
+//         );
+//         const body = message?.body || message?.text || "";
+//         return {
+//           id:
+//             message?._id ||
+//             message?.id ||
+//             `${contactId}_${messageTimestamp.getTime()}`,
+//           contactId,
+//           body,
+//           text: body,
+//           createdAt: messageTimestamp,
+//           senderId: message?.sentBy || message?.from || message?.senderId || "",
+//           mediaUrl: message?.mediaUrl || "",
+//           mediaType: message?.mediaType || "",
+//           status: message?.status || "sent", // TODO: add status to sms model in the server - IS REQUIRED!
+//           direction: inferMessageDirection(message), // TODO: add direction to sms model in the server - IS REQUIRED!
+//         };
+//       });
+//     });
+//   }, [smsData]);
 
-  const activeSmsContact = useMemo(() => {
-    //console.log('running activeSMSContact')
-    //console.log('this is the activeSMSLead: ', activeSmsLead)
-    const contactId = getLeaseLeadIdFromRecord(activeSmsLead);
-    //console.log('this is the contactID: ', contactId)
-    if (!contactId) {
-      return null;
-    }
-//check if the contact is in the smsContactsForChat array
-    const existingContact =
-      smsContactsForChat.find((contact) => contact.id === contactId) || null;
-    if (existingContact) {
-      return existingContact;
-    }
-//if the contact is not in the smsContactsForChat array, use the activeSmsLead to create a new contact
-    const fallbackLead = activeSmsLead?.leaseLead || activeSmsLead;
-    if (!fallbackLead) {
-      return null;
-    }
+//   const activeSmsContact = useMemo(() => {
+//     //console.log('running activeSMSContact')
+//     //console.log('this is the activeSMSLead: ', activeSmsLead)
+//     const contactId = getLeaseLeadIdFromRecord(activeSmsLead);
+//     //console.log('this is the contactID: ', contactId)
+//     if (!contactId) {
+//       return null;
+//     }
+// //check if the contact is in the smsContactsForChat array
+//     const existingContact =
+//       smsContactsForChat.find((contact) => contact.id === contactId) || null;
+//     if (existingContact) {
+//       return existingContact;
+//     }
+// //if the contact is not in the smsContactsForChat array, use the activeSmsLead to create a new contact
+//     const fallbackLead = activeSmsLead?.leaseLead || activeSmsLead;
+//     if (!fallbackLead) {
+//       return null;
+//     }
 
-    const firstName = fallbackLead?.firstName || "";
-    const lastName = fallbackLead?.lastName || "";
-    const nameFromLead = fallbackLead?.fullName || `${firstName} ${lastName}`.trim();
-    const fallbackName = nameFromLead || fallbackLead?.companyName || "Unknown Lead";
-    const phone =
-      fallbackLead?.phoneNumbers?.[0]?.number ||
-      "";
+//     const firstName = fallbackLead?.firstName || "";
+//     const lastName = fallbackLead?.lastName || "";
+//     const nameFromLead = fallbackLead?.fullName || `${firstName} ${lastName}`.trim();
+//     const fallbackName = nameFromLead || fallbackLead?.companyName || "Unknown Lead";
+//     const phone =
+//       fallbackLead?.phoneNumbers?.[0]?.number ||
+//       "";
 
-    const rawEmail = fallbackLead?.email;
-    const email =
-      (Array.isArray(rawEmail) ? rawEmail[0]?.address : rawEmail) || "";
+//     const rawEmail = fallbackLead?.email;
+//     const email =
+//       (Array.isArray(rawEmail) ? rawEmail[0]?.address : rawEmail) || "";
 
-    return {
-      id: contactId,
-      firstName,
-      lastName,
-      name: fallbackName,
-      phone,
-      email,
-      avatar: "",
-      isActive: true,
-      createdAt: normalizeDate(activeSmsLead?.openDate || new Date()),
-    };
-  }, [activeSmsLead, smsContactsForChat]);
+//     return {
+//       id: contactId,
+//       firstName,
+//       lastName,
+//       name: fallbackName,
+//       phone,
+//       email,
+//       avatar: "",
+//       isActive: true,
+//       createdAt: normalizeDate(activeSmsLead?.openDate || new Date()),
+//     };
+//   }, [activeSmsLead, smsContactsForChat]);
 
-  const activeSmsMessages = useMemo(() => {
-    const contactId = getLeaseLeadIdFromRecord(activeSmsLead);
-    if (!contactId) {
-      return [];
-    }
+//   const activeSmsMessages = useMemo(() => {
+//     const contactId = getLeaseLeadIdFromRecord(activeSmsLead);
+//     if (!contactId) {
+//       return [];
+//     }
 
-    return smsMessagesForChat
-      .filter((message) => message.contactId === contactId)
-      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  }, [activeSmsLead, smsMessagesForChat]);
+//     return smsMessagesForChat
+//       .filter((message) => message.contactId === contactId)
+//       .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+//   }, [activeSmsLead, smsMessagesForChat]);
 
- const onSendMessageTest = (params) => {
+//--- End Related to SMS Manger pending refactor ---//
+
+//  const onSendMessageTest = (params) => {
   
-    console.log('this is on send message test')
-    console.log('these are the pararms: ',)
+//     console.log('this is on send message test')
+//     console.log('these are the pararms: ',)
     
- }
+//  }
  
  
   
-  //12-3 refactor, run through redux
-  const handleSendSmsMessage = useCallback(
-    async (contactId, messagePayload) => {
-      console.log("sending sms message", contactId, messagePayload);
-      if (!contactId) {
-        return null;
-      }
-// create a new message - DEMO ONLY!
-// use server for real messages
-      const now = new Date();
-      const isoNow = now.toISOString();
-      const tempMessageId = `temp_${Date.now()}`;
-      const tempMessage = {
-        id: tempMessageId,
-        contactId,
-        body: messagePayload?.text || messagePayload?.body || "",
-        text: messagePayload?.text || messagePayload?.body || "",
-        createdAt: now,
-        date: isoNow,
-        senderId: "currentUser",
-        direction: "outbound",
-        status: "queued",
-        mediaUrl: messagePayload?.mediaUrl || "",
-        mediaType: messagePayload?.mediaType || "",
-      };
+//   //12-3 refactor, run through redux
+//   const handleSendSmsMessage = useCallback(
+//     async (contactId, messagePayload) => {
+//       console.log("sending sms message", contactId, messagePayload);
+//       if (!contactId) {
+//         return null;
+//       }
+// // create a new message - DEMO ONLY!
+// // use server for real messages
+//       const now = new Date();
+//       const isoNow = now.toISOString();
+//       const tempMessageId = `temp_${Date.now()}`;
+//       const tempMessage = {
+//         id: tempMessageId,
+//         contactId,
+//         body: messagePayload?.text || messagePayload?.body || "",
+//         text: messagePayload?.text || messagePayload?.body || "",
+//         createdAt: now,
+//         date: isoNow,
+//         senderId: "currentUser",
+//         direction: "outbound",
+//         status: "queued",
+//         mediaUrl: messagePayload?.mediaUrl || "",
+//         mediaType: messagePayload?.mediaType || "",
+//       };
 
-      setSmsState((prevSms = {}) => {
-        const prevList = Array.isArray(prevSms.list) ? prevSms.list : [];
-        const existingThreadIndex = prevList.findIndex(
-          (thread) => getLeaseLeadIdFromRecord(thread) === contactId
-        );
+//       setSmsState((prevSms = {}) => {
+//         const prevList = Array.isArray(prevSms.list) ? prevSms.list : [];
+//         const existingThreadIndex = prevList.findIndex(
+//           (thread) => getLeaseLeadIdFromRecord(thread) === contactId
+//         );
 
-        let updatedList;
-        if (existingThreadIndex >= 0) {
-          const existingThread = prevList[existingThreadIndex];
-          const updatedThread = {
-            ...existingThread,
-            msg: [...(existingThread.msg || []), tempMessage],
-          };
-          updatedList = [
-            ...prevList.slice(0, existingThreadIndex),
-            updatedThread,
-            ...prevList.slice(existingThreadIndex + 1),
-          ];
-        } else {
-          const fallbackLead = activeSmsLead?.leaseLead || activeSmsLead || {};
-          const newThread = {
-            _id: contactId,
-            leaseLead: {
-              ...fallbackLead,
-              _id: contactId,
-            },
-            msg: [tempMessage],
-            primeNum: fallbackLead?.phoneNumbers?.[0]?.number || "",
-            openDate: new Date().toISOString(),
-            unread: false,
-          };
+//         let updatedList;
+//         if (existingThreadIndex >= 0) {
+//           const existingThread = prevList[existingThreadIndex];
+//           const updatedThread = {
+//             ...existingThread,
+//             msg: [...(existingThread.msg || []), tempMessage],
+//           };
+//           updatedList = [
+//             ...prevList.slice(0, existingThreadIndex),
+//             updatedThread,
+//             ...prevList.slice(existingThreadIndex + 1),
+//           ];
+//         } else {
+//           const fallbackLead = activeSmsLead?.leaseLead || activeSmsLead || {};
+//           const newThread = {
+//             _id: contactId,
+//             leaseLead: {
+//               ...fallbackLead,
+//               _id: contactId,
+//             },
+//             msg: [tempMessage],
+//             primeNum: fallbackLead?.phoneNumbers?.[0]?.number || "",
+//             openDate: new Date().toISOString(),
+//             unread: false,
+//           };
 
-          updatedList = [...prevList, newThread];
-        }
+//           updatedList = [...prevList, newThread];
+//         }
 
-        return {
-          ...prevSms,
-          list: updatedList,
-        };
-      });
+//         return {
+//           ...prevSms,
+//           list: updatedList,
+//         };
+//       });
 
-      return tempMessageId;
-    },
-    [activeSmsLead]
-  );
+//       return tempMessageId;
+//     },
+//     [activeSmsLead]
+//   );
 
   return loading ? (
     <Loading/>
@@ -744,7 +753,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
                   settings={settings}
                   isArchiveMode={isArchiveMode}
                 />
-                <Box className="flex items-center">
+                {/* 1-1-26: Refactor Achvice search into a seach component */}
+                {/* <Box className="flex items-center">
                   <ToggleButtonGroup
                   color="primary"
                     value={isArchiveMode ? 'archive' : 'active'}
@@ -760,7 +770,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
                       Archive
                     </ToggleButton>
                   </ToggleButtonGroup>
-                </Box>
+                </Box> */}
               </div>
               {!isArchiveMode && (
                 <div className="add-lead-btn px-2">
@@ -830,7 +840,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
             </MaterialModal>
           </>
         )}
-        {tabKey === TAB_KEYS.SmsChat && (
+        {/* 1-1-26 - Refactor with data structure similar to sms dialog for future roll out*/}
+        {/* {tabKey === TAB_KEYS.SmsChat && (
           <div
             className="flex min-h-[600px] w-full flex-1"
             style={{
@@ -846,7 +857,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
               onDeleteContact={handleDeleteContact}
             />
           </div>
-        )}
+        )} */}
       </div>
       {isSmsModalOpen && !smsLoading && (
         <SMSDialog
