@@ -44,6 +44,7 @@ const ConversationView = ({
       status: 'pending',
       //note: isDiliverd is depricated. replacing with status
       isDelivered: false,
+      //ToDO:! ----Urgent---- potential bug here, sending to LeaseLead prime number should be chat (sms) primeNum
       to: selectedContact.phoneNumbers.find(num => num.isPrimary).number,
       //senderId: "",
       //mediaUrl: file ? URL.createObjectURL(file) : "",

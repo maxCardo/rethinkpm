@@ -2,9 +2,10 @@ import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { connect } from "react-redux";
 import Table from "../../core/newTable/_Table";
 import Loading from "../../core/LoadingScreen/Loading";
+import CircularProgress from "../../core/LoadingScreen/circularProgress"
 import TailwindTabs from "../Tabs/TailwindTabs";
 import { getLeaseLeadData, getAllUsers, getLeaseSMS, sendLseSMS } from "../../../actions/crm/leaseLeads";
-import { Chip, Button, ToggleButton, ToggleButtonGroup, Box, CircularProgress, IconButton } from "@mui/material";
+import { Chip, Button, ToggleButton, ToggleButtonGroup, Box, IconButton } from "@mui/material";
 import { FaFire, FaSnowflake, FaCloudSun, FaRegCircle, FaPlus, FaEye, FaCommentDots } from "react-icons/fa";
 import LeadsTableFilters from "./comps/LeadsTableFilters";
 import axios from "axios";
@@ -14,6 +15,7 @@ import dayjs from "dayjs";
 import LeadDetails from "./comps/LeadDetails";
 import SMSDialog from "../SMS/SMSDialog/SMSDialog";
 import SMSManager from "../SMS/SMSManager/SMSManager";
+import leaseLeads from "../../../reducers/leaseLeads";
 
 //related to activeSMSContact func below. I dont see a utility yet for active sms contact and this function seems to be obscuring a bug as the out put is a simple leadLease it?? (12/3/25ap)
 const getLeaseLeadIdFromRecord = (record) => {
@@ -72,7 +74,7 @@ const CELL_WIDTH_SIZES = {
   Large: "20%",
 };
 
-const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads: { list, loading, sms },settings,isNavbarShown,}) => {
+const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads: { list, loading, sms }, settings, isNavbarShown,}) => {
   const [tabKey, setTabKey] = useState(TAB_KEYS.Table);
   const [initLeadsList, setInitLeadsList] = useState([]);
   const [updatedLeadsList, setUpdatedLeadsList] = useState(initLeadsList);
@@ -391,31 +393,8 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
     setIsModalBeforeClose(false);
   };
 
-  const handleOpenSmsModal = (leadItem) => {
-    let leadWithoutSms;
-    let selectedSmsLead = smsData?.list?.find((item) => item.leaseLead._id === leadItem._id);
-     console.log('on open sms. This is the selected lead: ', selectedSmsLead)
-    if (!selectedSmsLead) {
-      console.log('no selected lead')
-      //below we are setting the id as the leaselead _id. Not sure utilitiy or if this will cause issues down the road (12/3/25ap)
-      leadWithoutSms = {
-        _id: leadItem._id,
-        lastMsgDate: new Date().toISOString(),
-        leaseLead: leadItem,
-        msg: [],
-        openDate: new Date().toISOString(),
-        primeNum: leadItem.phoneNumbers[0]?.number || "",
-        unread: true,
-      }
-      selectedSmsLead = leadWithoutSms;
-      console.log('so we created on: ', selectedSmsLead)
-    }
-   
-    setActiveSmsLead(selectedSmsLead);
-    //not needed call should already be maid. best this is a bandaid on previous fail????
-    // if (sms?.loading) {
-    //   getLeaseSMS();
-    // }
+  const handleOpenSmsModal = (leaseLead) => {
+    setActiveSmsLead(leaseLead);
     setIsSmsModalOpen(true);
   };
 
@@ -744,7 +723,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
   );
 
   return loading ? (
-    <Loading />
+    <Loading/>
   ) : (
     <>
       <TailwindTabs
@@ -798,41 +777,21 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
                 </div>
               )}
             </div>
-            {isTableDataLoading ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "4rem",
-                  height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
-                }}
-              >
-                <CircularProgress size={60} />
-              </div>
-            ) : updatedLeadsList.length === 0 ? (
-              <div
-                style={{ textAlign: "center", padding: "2rem", color: "#888" }}
-              >
-                No data available.
-              </div>
-            ) : (
-              <Table
-                headers={TABLE_HEADERS}
-                list={updatedLeadsList}
-                withCheckboxSelection={false}
-                sticky={true}
-                focusedOnItem={selectedLeadItem}
-                tableWrapperStyle={{
-                  height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
-                  overflowY: "auto",
-                }}
-                _orderBy={"nextActionDate"}
-                _order={"desc"}
-                // handleClickRow={handleWatchLeadDetails}
-                // tableCellStyle={{ cursor: "pointer" }}
-              />
-            )}
+            <Table
+              headers={TABLE_HEADERS}
+              list={updatedLeadsList}
+              withCheckboxSelection={false}
+              sticky={true}
+              focusedOnItem={selectedLeadItem}
+              tableWrapperStyle={{
+                height: `calc(75vh - ${isNavbarShown ? NAVBAR_HEIGHT : 0}px)`,
+                overflowY: "auto",
+              }}
+              _orderBy={"nextActionDate"}
+              _order={"desc"}
+              // handleClickRow={handleWatchLeadDetails}
+              // tableCellStyle={{ cursor: "pointer" }}
+            />
             {/* Lead Details Modal For View/Edit Lead */}
             <MaterialModal
               isOpen={isDetailsModalOpen}
@@ -851,7 +810,6 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
                 users={users}
               />
             </MaterialModal>
-
             {/* Add A New Lead Modal */}
             <MaterialModal
               isOpen={isAddLeadModalOpen}
@@ -894,8 +852,7 @@ const LeaseLeadRecords = ({getLeaseLeadData,getLeaseSMS, sendLseSMS, leaseLeads:
         <SMSDialog
           isOpen={isSmsModalOpen}
           onClose={handleCloseSmsModal}
-          contact={activeSmsLead.leaseLead}
-          messages={activeSmsLead.msg}
+          contact={activeSmsLead}
           onSendMessage={sendLseSMS}
         />
       )}

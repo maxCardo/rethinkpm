@@ -70,89 +70,16 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat}) => {
           <Route path="/vertical-table" element={<TestVerticalTable />} />
 
           {/* Private Routes */}
-          <Route
-            path="/services"
-            element={
-              <PrivateRoute>
-                <ServiceList />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/services/:id"
-            element={
-              <PrivateRoute>
-                <ServiceDetail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/services/:id/:screen"
-            element={
-              <PrivateRoute>
-                <ServiceDetail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/chat"
-            element={
-              <PrivateRoute>
-                <ChatScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/dash"
-            element={
-              <PrivateRoute>
-                <Dash />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/rentPros"
-            element={
-              <PrivateRoute>
-                <Profile settings={routeSettings.profile.rentPros} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/agentPros"
-            element={
-              <PrivateRoute>
-                <Profile settings={routeSettings.profile.agentPros} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/buyerPros"
-            element={
-              <PrivateRoute>
-                <Profile settings={routeSettings.profile.buyerPros} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/sellerPros"
-            element={
-              <PrivateRoute>
-                <Profile settings={routeSettings.profile.sellerPros} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/marketplace"
-            element={
-              <PrivateRoute>
-                <Marketplace
-                  apiKey={routeSettings.marketplace.streetViewApiKey}
-                  isNavbarShown={isNavbarShown}
-                />
-              </PrivateRoute>
-            }
-          />
+          <Route path="/services" element={<PrivateRoute><ServiceList /></PrivateRoute>}/>
+          <Route path="/services/:id" element={<PrivateRoute><ServiceDetail /></PrivateRoute>}/>
+          <Route path="/services/:id/:screen" element={<PrivateRoute><ServiceDetail /></PrivateRoute>}/>
+          <Route path="/chat" element={<PrivateRoute><ChatScreen /></PrivateRoute>}/>
+          <Route path="/dash" element={<PrivateRoute><Dash /></PrivateRoute>}/>
+          <Route path="/profile/rentPros" element={<PrivateRoute><Profile settings={routeSettings.profile.rentPros} /></PrivateRoute>}/>
+          <Route path="/profile/agentPros" element={<PrivateRoute><Profile settings={routeSettings.profile.agentPros} /></PrivateRoute>}/>
+          <Route path="/profile/buyerPros" element={<PrivateRoute><Profile settings={routeSettings.profile.buyerPros} /></PrivateRoute>}/>
+          <Route path="/profile/sellerPros" element={<PrivateRoute><Profile settings={routeSettings.profile.sellerPros} /></PrivateRoute>}/>
+          <Route path="/marketplace" element={<PrivateRoute><Marketplace apiKey={routeSettings.marketplace.streetViewApiKey} isNavbarShown={isNavbarShown}/></PrivateRoute>}/>
           <Route
             path="/offmarket"
             element={

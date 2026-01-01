@@ -1,8 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
+import { connect } from "react-redux";
 import { IoClose } from 'react-icons/io5';
 import ConversationView from '../common/ConversationView';
+import Loading from '../../../core/LoadingScreen/circularProgress'
 
-const SMSDialog = ({isOpen, onClose, onSendMessage, contact = null, messages = [],}) => {
+const SMSDialog = ({isOpen, onClose, onSendMessage, contact, sms,}) => {
+
+  const [messages, setMessages] = useState([])
+
+
+  useEffect(() => {
+    const chat = sms.list.find(x => x.leaseLead._id === contact._id) 
+    setMessages(chat?.msg ? chat.msg : [])
+  },[sms])
+
+  //ToDO: Add action function to mark chat as read
 
   //console.log('smsD params: ', {isOpen, onClose, onSendMessage, contact, messages})
 
@@ -20,7 +32,9 @@ const SMSDialog = ({isOpen, onClose, onSendMessage, contact = null, messages = [
   // Don't render if not open
   if (!isOpen) return null;
 
-  return (
+  return sms.loading ? (
+    <Loading/>
+  ) : (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div 
@@ -71,4 +85,8 @@ const SMSDialog = ({isOpen, onClose, onSendMessage, contact = null, messages = [
   );
 };
 
-export default SMSDialog;
+const mapStateToProps = (state) => ({
+  sms: state.leaseLeads.sms,
+});
+
+export default connect(mapStateToProps)(SMSDialog)

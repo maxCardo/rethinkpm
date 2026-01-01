@@ -27,8 +27,8 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 sms: {
-                    loading: false,
-                    list: payload
+                    list: payload,
+                    loading: false
                 },
             }
         case SEND_SMS:
