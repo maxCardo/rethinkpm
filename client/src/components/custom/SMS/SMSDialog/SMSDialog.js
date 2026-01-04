@@ -7,17 +7,26 @@ import Loading from '../../../core/LoadingScreen/circularProgress'
 const SMSDialog = ({isOpen, onClose, onSendMessage, contact, sms,}) => {
 
   const [messages, setMessages] = useState([])
+  const [chat , setChat] = useState([])
 
 
   useEffect(() => {
-    const chat = sms.list.find(x => x.leaseLead._id === contact._id) 
+    const recPrimeNum = contact.phoneNumbers.find(num => num.isPrimary === true).number
+    console.log('rec prime num: ', recPrimeNum)
+    console.log('this is the smsList: ', sms.list)
+    sms.list.forEach(chat => {
+      console.log('parsing all chat ')
+      console.log(chat.primeNum, recPrimeNum)
+      //console.log(chat.primeNum === recPrimeNum)
+    });
+    const chat = sms.list.find(x => x.primeNum === recPrimeNum)
+    console.log('this is the chat: ', chat) 
     setMessages(chat?.msg ? chat.msg : [])
+    setChat(chat)
   },[sms])
 
   //ToDO: Add action function to mark chat as read
-
   //console.log('smsD params: ', {isOpen, onClose, onSendMessage, contact, messages})
-
   //seems to be funciton that would obscure a bug (12/3/25ap)
   const resolvedMessages = useMemo(
     () => (Array.isArray(messages) ? messages : []),
@@ -37,6 +46,7 @@ const SMSDialog = ({isOpen, onClose, onSendMessage, contact, sms,}) => {
   ) : (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
+      {console.log('data: ', messages, chat)}
       <div 
         className="absolute inset-0 bg-black bg-opacity-50"
         onClick={onClose}
@@ -75,6 +85,7 @@ const SMSDialog = ({isOpen, onClose, onSendMessage, contact, sms,}) => {
         {/* Conversation View */}
         <div className="flex-1 overflow-hidden">
           <ConversationView
+            chat = {chat}
             selectedContact={contact}
             messages={messages}
             onSendMessage={onSendMessage}

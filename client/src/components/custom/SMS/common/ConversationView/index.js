@@ -6,6 +6,7 @@ import { clearPhoneFormatting } from '../../../../../util/commonFunctions';
 import { isMessageDelivered } from '../../helpers';
 
 const ConversationView = ({
+  chat,
   selectedContact,
   messages = [],
   onSendMessage,
@@ -31,7 +32,8 @@ const ConversationView = ({
   };
 
   const handleSendMessage = async (messageText, file = null) => {
-    const contactId = selectedContact?._id ?? null;
+    const isChat = chat ? true : false 
+    const contactId = chat?._id ?? selectedContact._id;
     if (!contactId || !onSendMessage) {
       console.log('there is no contactID so I am killing this func')
       return;
@@ -45,7 +47,7 @@ const ConversationView = ({
       //note: isDiliverd is depricated. replacing with status
       isDelivered: false,
       //ToDO:! ----Urgent---- potential bug here, sending to LeaseLead prime number should be chat (sms) primeNum
-      to: selectedContact.phoneNumbers.find(num => num.isPrimary).number,
+      to: isChat ? chat.primeNum : selectedContact.phoneNumbers.find(num => num.isPrimary === true).number,
       //senderId: "",
       //mediaUrl: file ? URL.createObjectURL(file) : "",
       //mediaType: file ? getMediaType(file.type) : "",
@@ -53,7 +55,7 @@ const ConversationView = ({
     };
     // console.log('this is the paload: ', messagePayload)
     // Await the async sender so we only continue once we have the real message ID (or failure).
-    await onSendMessage(contactId, messagePayload);
+    await onSendMessage(isChat, contactId, messagePayload, isChat ? null :  selectedContact);
     scrollToBottom();
   };
 
@@ -99,21 +101,6 @@ const ConversationView = ({
   //   () => Object.keys(messageGroups).sort((a, b) => new Date(a) - new Date(b)),
   //   [messageGroups]
   // );
-
-  // Show placeholder when no contact is selected
-  if (!selectedContact) {
-    return (
-      <div className="flex flex-col h-full bg-gray-50">
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center text-gray-500">
-            <h3 className="text-lg font-medium mb-2">Select a contact</h3>
-            <p className="text-sm">Choose a contact from the list to start messaging</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col h-full">
       {/* Messages Area - Scrollable */}

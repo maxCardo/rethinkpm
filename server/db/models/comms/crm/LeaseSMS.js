@@ -9,12 +9,23 @@ const leaseTextSchema = new mongoose.Schema({
     },
     primeNum: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
+    //Note: depricating leaseLead field to allow for array when muliple leads are associated with a single number (1/2/26ap)
     leaseLead:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'LeaseLead'
     },
+    leaseLeadArr:[
+        {
+            leaseLead: {
+            
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'LeaseLead'
+            }    
+        }
+    ],
     unread: {
         type: Boolean,
         required: true,
@@ -22,7 +33,7 @@ const leaseTextSchema = new mongoose.Schema({
     },
     lastMsgDate: { 
         type: Date, 
-        default: Date.now 
+        default: Date.now() 
     },
     msg: [
         {

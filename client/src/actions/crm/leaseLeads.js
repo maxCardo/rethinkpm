@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SET_LEASELEAD_LIST, SET_LEASELEAD_SMS, SEND_SMS, UPDATE_SMS} from "../type";
+import { SET_LEASELEAD_LIST, SET_LEASELEAD_SMS, SEND_SMS, UPDATE_SMS, SEND_NEW_LSE_SMS, UPDATE_NEW_LSE_CHAT} from "../type";
 import {createErrorAlert} from "../alert";
 
 const config = { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } };
@@ -53,21 +53,52 @@ export const getAllUsers = () => async () => {
   }
 };
 
-export const sendLseSMS = (id , msg) => async (dispatch) => {
-  //note: We relay on the leaselead id here as the primary index item to bring up a chat. this becomes a dependence down range into state, server and back to state. 
-  //      Would it be more reliable to pass the chat ID from the front end in the future. It would require refactor of server and state calls if we decide to do so. 
+export const sendLseSMS = (isChat ,id , msg, lead) => async (dispatch) => {
+ 
   const client_id = crypto.randomUUID()
-  console.log('cltID: ', client_id)
+  //is this an existing chat?
+  if (isChat) {
+    dispatch({
+      type: SEND_SMS,
+      payload: {id, msg, client_id}
+    })
+    const res = await axios.post(`/api/comms/sms/leaselead/send_sms`, {id, msg, client_id}, config)
+    console.log('res: ', res)    
+    //update state with message with processing
+    dispatch({
+      type: UPDATE_SMS,
+      payload: {id, data: res.data}
+    })
+    return  
+  }
+  msg.client_id = client_id 
+  const chatObj ={
+    openDate:Date.now(),
+    primeNum: lead.phoneNumbers.find(num => num.isPrimary === true).number,
+    leaseLeadArr:[lead._id],
+    unread: false,
+    lastMsgDate: Date.now(),
+    msg: [msg],
+    client_id
+  }
   dispatch({
-    type: SEND_SMS,
-    payload: {id, msg, client_id}
+    type: SEND_NEW_LSE_SMS,
+    payload: {data: chatObj}
   })
-  const res = await axios.post(`/api/comms/sms/leaselead/send_sms`, {leaseLead_id: id, msg, client_id}, config)
-  console.log('res: ', res)    
-  //update state with message with processing
-  dispatch({
-    type: UPDATE_SMS,
-    payload: {id, data: res.data}
-  })
+  //ToDo: Edge case, if the user send a second message right away before the server has returned confirmaiton that leadSMS has been created will that error?
+  //send call to api to create new lead
+  try {
+    const res = await axios.post(`/api/comms/sms/leaselead/send_new_sms`, {data: chatObj, client_id}, config)
+    //dispatch update with return
+    console.log('this is what the return is sending on a new lead sms call. ', res)
+    dispatch({
+      type: UPDATE_NEW_LSE_CHAT,
+      payload: {id: client_id, data: res.data}
+    })  
+  } catch (err) {
+    console.log('getting and error on this function and I dont know why. ')
+    console.error(err);
+    dispatch(createErrorAlert('Error Sending New SMS'))
+  }  
 }
 
