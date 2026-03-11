@@ -60,13 +60,13 @@ const ShowcaseRecords = ({getShowcaseData, unflag, createSchAppt,  showcase: {li
                           setShowPropertyDetailsModal(true);
                         }}
             />
-            {/* <IconButton placement='bottom'
+            <IconButton placement='bottom'
                         tooltipContent='View On Site'
                         id='link-tooltip'
                         iconClass='fas fa-link'
                         variant='link'
-                        href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.listNumber}`}
-            /> */}
+                        href={`https://fifthgrant.idxbroker.com/idx/details/listing/d504/${item.deal_id.listNumber}`}
+            />
             
             <IconButton placement='bottom'
                         tooltipContent='Input Appointment'
