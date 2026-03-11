@@ -22,8 +22,7 @@ import Marketplace from "./components/custom/Marketplace/Marketplace";
 import OffMarketList from "./components/custom/OffMarket/List";
 import { loadUser } from "./actions/auth";
 import { receiveSMS } from "./actions/profile";
-import { connect } from "react-redux";
-import io from "socket.io-client";
+import { connect, useDispatch } from "react-redux";
 import settings from "./settings.json";
 import Alert from "./components/core/Alert";
 import Dash from "./components/custom/Dash";
@@ -32,8 +31,11 @@ import PropertyRecords from "./components/custom/PropertyRecords/PropertyRecords
 import OwnerRecords from "./components/custom/PropertyRecords/OwnerRecords";
 import ShowcaseRecords from "./components/custom/Marketplace/showcase/showcase";
 import LeaseLeadRecords from "./components/custom/CRM/LeaseLeadRecords";
+import { SMSManager, SMSDialogDemo } from "./components/custom/SMS";
+//New SMS Listner in actions/sms
+import { registerSMSListeners } from './actions/sms';
 
-const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
+const App = ({ loadUser, receiveMessage, receiveSMS, activeChat}) => {
   const [isNavbarShown, setIsNavbarShown] = useState(false);
 
   if (Notification.permission === "default") {
@@ -45,19 +47,12 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
     loadUser();
   }, [loadUser]);
 
-  const socket = io.connect(
-    process.env.REACT_APP_SOCKET_BACKEND
-      ? process.env.REACT_APP_SOCKET_BACKEND
-      : ""
-  );
-  socket.on("sms", (chat) => {
-    if (chat._id === activeChat.chat._id) {
-      receiveSMS(chat);
-    }
-
-    //receiveMessage({chat_id, message, uuid})
-    //showNotification(`New message from ${chat_id}`, message)
-  });
+  //call socket listner in actions/sms
+  const dispatch = useDispatch()
+   useEffect(() => {
+    console.log('running regester SMS Listner')
+    dispatch(registerSMSListeners());
+  }, [dispatch]);
 
   const routeSettings = settings.routes;
   return (
@@ -75,89 +70,16 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
           <Route path="/vertical-table" element={<TestVerticalTable />} />
 
           {/* Private Routes */}
-          <Route
-            path="/services"
-            element={
-              <PrivateRoute>
-                <ServiceList />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/services/:id"
-            element={
-              <PrivateRoute>
-                <ServiceDetail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/services/:id/:screen"
-            element={
-              <PrivateRoute>
-                <ServiceDetail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/chat"
-            element={
-              <PrivateRoute>
-                <ChatScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/dash"
-            element={
-              <PrivateRoute>
-                <Dash />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/rentPros"
-            element={
-              <PrivateRoute>
-                <Profile settings={routeSettings.profile.rentPros} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/agentPros"
-            element={
-              <PrivateRoute>
-                <Profile settings={routeSettings.profile.agentPros} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/buyerPros"
-            element={
-              <PrivateRoute>
-                <Profile settings={routeSettings.profile.buyerPros} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/sellerPros"
-            element={
-              <PrivateRoute>
-                <Profile settings={routeSettings.profile.sellerPros} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/marketplace"
-            element={
-              <PrivateRoute>
-                <Marketplace
-                  apiKey={routeSettings.marketplace.streetViewApiKey}
-                  isNavbarShown={isNavbarShown}
-                />
-              </PrivateRoute>
-            }
-          />
+          <Route path="/services" element={<PrivateRoute><ServiceList /></PrivateRoute>}/>
+          <Route path="/services/:id" element={<PrivateRoute><ServiceDetail /></PrivateRoute>}/>
+          <Route path="/services/:id/:screen" element={<PrivateRoute><ServiceDetail /></PrivateRoute>}/>
+          <Route path="/chat" element={<PrivateRoute><ChatScreen /></PrivateRoute>}/>
+          <Route path="/dash" element={<PrivateRoute><Dash /></PrivateRoute>}/>
+          <Route path="/profile/rentPros" element={<PrivateRoute><Profile settings={routeSettings.profile.rentPros} /></PrivateRoute>}/>
+          <Route path="/profile/agentPros" element={<PrivateRoute><Profile settings={routeSettings.profile.agentPros} /></PrivateRoute>}/>
+          <Route path="/profile/buyerPros" element={<PrivateRoute><Profile settings={routeSettings.profile.buyerPros} /></PrivateRoute>}/>
+          <Route path="/profile/sellerPros" element={<PrivateRoute><Profile settings={routeSettings.profile.sellerPros} /></PrivateRoute>}/>
+          <Route path="/marketplace" element={<PrivateRoute><Marketplace apiKey={routeSettings.marketplace.streetViewApiKey} isNavbarShown={isNavbarShown}/></PrivateRoute>}/>
           <Route
             path="/offmarket"
             element={
@@ -203,6 +125,22 @@ const App = ({ loadUser, receiveMessage, receiveSMS, activeChat }) => {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/sms-manager"
+            element={
+              <PrivateRoute>
+                <SMSManager />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/sms-dialog"
+            element={
+              <PrivateRoute>
+                <SMSDialogDemo />
+              </PrivateRoute>
+            }
+          />
         </Routes>
 
         <Alert />
@@ -231,4 +169,4 @@ const mapStateToProps = (state) => ({
 //   }
 // }
 
-export default connect(mapStateToProps, { loadUser, receiveSMS })(App);
+export default connect(mapStateToProps, { loadUser, receiveSMS})(App);

@@ -1,8 +1,8 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const http = require('http')
+//const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-
 const trigger = require('./triggers/rentLead');
 const dbConnect = require('./db/db');
 //DB Models
@@ -14,29 +14,36 @@ const { postSlack } = require('./3ps/slack');
 const { propertyNum } = require('./3ps/calandly');
 
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+const server = http.createServer(app);
 const cors = require('cors');
-const uuid = require('uuid/v1');
+const { error } = require('console');
+const socket = require('./socket')
+const io = socket.init(server)
 
-app.use(bodyParser.json({limit: '1mb'}));
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.json({limit: '1mb'}));
+//app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: false }));
+
+
 app.use(cors())
 app.use(cookieParser());
 
 dbConnect();
 
 //Init middle ware. replaces bodyParser
-app.use(express.json({extended:false}));
+//app.use(express.json({extended:false}));
 
 //api routes
 app.use('/api/users', require('./api/users'));
 app.use('/api/tasks', require('./api/tasks'));
-app.use('/api/3ps',(req,res,next) => {req.io = {io:io}, next()}, require('./api/3ps'));
+app.use('/api/3ps',(req,res,next) => {req.io = {io}, next()}, require('./api/3ps'));
+//ToDO: req.io = {io} to req.io = io then in routes use req.io.emit(....)
 app.use('/api/sales', require('./api/salesLeads'));
 //app.use('/api/agent_lead', require('./api/agentLead'));
 app.use('/api/rent_lead', require('./api/rentLead'));
-app.use('/api/comms', require('./api/comms'));
+app.use('/api/comms', require('./api/comms/comms'));
 app.use('/api/profile', require('./api/profile/profile'));
 app.use('/api/marketplace', require('./api/marketplace/_marketplace'));
 app.use('/api/filteredData', require('./api/filteredData/filteredData'))
@@ -44,6 +51,8 @@ app.use('/api/crm', require('./api/crm/_crm'))
 
 //Socket.io socket and API calls
 require('./socket/chat')(io);
+
+
 
 //store on DB in future may need to create type object for model names id sored as String in DB
 const activeNumber = [
@@ -66,6 +75,7 @@ const activeNumber = [
 // @desc: recive sms from twilio send to client via websocket
 // @ access: Public
 app.post('/sms',async (req,res) => {
+  console.log('hitting sms post call')
   if (Object.keys(req.body).length === 0 ) {
     return res.status(400).send()
   }
@@ -73,6 +83,7 @@ app.post('/sms',async (req,res) => {
     receiveSMS(req.body)
     res.status(200).send()
   } catch (e) {
+    console.error(e);
     //postSlack({ text: 'this is a test' });
     res.status(400).json({ errors: [{ msg: e }] });
   }
@@ -116,38 +127,39 @@ const receiveSMS = async (data) => {
   // await chat.save();
 
   //new call
-  let { To, From, Body } = data;
+  // let { To, From, Body } = data;
 
-  //get the chat
-  let chat = await Chat.findOne({from:From, to:To})
-  //if no active chat see if there is an active contact for that number and start a chat
-  if (!chat) { 
-      const activeNum = activeNumber.find((number) => number.number === To)
-      const model = activeNum.model
-      //if no record save a record.... in future trigger bot to gather more info or save as unknown contact
-      const fromNumber = From.slice(2)
-      //not saving record (record saving line commented out below). will save chat without any owner
-      //const record = await model.findOne({'phoneNumbers.number': fromNumber })
-        chat = await new Chat({
-          owner: record ? record._id: null,
-          ownerType:activeNum.profile,
-          title: record? record.fullName: null,
-          subTitle: activeNum.campaign,
-          unread: true,
-          clientNum: From,
-          routingNum: To,
-          messages:[],
-      })
-  }
-  chat.messages.push({
-      sender: 'user',
-      content: Body,
-      userMessage: false
-  })
-  await chat.save()   
-  //do we need to add uuid to chat?
-  //const messageUuid = uuid()
-  io.emit('sms', chat);  
+  // //get the chat
+  // let chat = await Chat.findOne({from:From, to:To})
+  // //if no active chat see if there is an active contact for that number and start a chat
+  // if (!chat) { 
+  //     const activeNum = activeNumber.find((number) => number.number === To)
+  //     const model = activeNum.model
+  //     //if no record save a record.... in future trigger bot to gather more info or save as unknown contact
+  //     const fromNumber = From.slice(2)
+  //     //not saving record (record saving line commented out below). will save chat without any owner
+  //     //const record = await model.findOne({'phoneNumbers.number': fromNumber })
+  //       chat = await new Chat({
+  //         owner: record ? record._id: null,
+  //         ownerType:activeNum.profile,
+  //         title: record? record.fullName: null,
+  //         subTitle: activeNum.campaign,
+  //         unread: true,
+  //         clientNum: From,
+  //         routingNum: To,
+  //         messages:[],
+  //     })
+  // }
+  // chat.messages.push({
+  //     sender: 'user',
+  //     content: Body,
+  //     userMessage: false
+  // })
+  // await chat.save()   
+  // //do we need to add uuid to chat?
+  // //const messageUuid = uuid()
+  //io.emit('sms', chat);
+  io.emit('sms', data);
 }
 
 //serve static assets in production

@@ -17,5 +17,8 @@ module.exports = {
   idxPartnerID: process.env.IDX_PARTNER_ID,
   idxClientID: process.env.IDX_CLIENT_ID,
   idxSearchID: process.env.IDX_SEARCH_ID,
-  sendGridKey: process.env.SENDGRID_API_KEY
+  sendGridKey: process.env.SENDGRID_API_KEY,
+  dcordMaintHook: process.env.DISCORD_MAINTENANCE_HOOK,
+  dcordWeBuyHook: process.env.DISCORD_WEBUY_HOOK,
+  dcordLseHook: process.env.DISCORD_LEASE_HOOK
 }

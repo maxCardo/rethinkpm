@@ -4,12 +4,12 @@ import { Chip } from "@mui/material";
 import CustomInput from "../../../ui/CustomInput/CustomInput";
 import settings from "../../../../settings.json";
 import { useEffect, useState } from "react";
-import { getAllUsers } from "../../../../actions/crm/leaseLeads";
 
 const LeadInfo = ({
   selectedLeadItem,
   isEditMode = false,
   onLeadInfoChange,
+  users = [],
 }) => {
   const SETTINGS = settings.routes.leaseLead;
 
@@ -19,9 +19,8 @@ const LeadInfo = ({
     leadTemperature: selectedLeadItem.leadTemperature,
     reasonForLoss: selectedLeadItem.reasonForLoss,
     leadOwner: selectedLeadItem.leadOwner,
+    listingAddress: selectedLeadItem.listingAddress,
   });
-  const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(false);
 
   // Take status and temperature options from settings
   // Turn them to an strings array (from object)
@@ -85,13 +84,13 @@ const LeadInfo = ({
     }));
   };
 
-  useEffect(() => {
-    async function fetchUsers() {
-      const data = await getAllUsers()();
-      setUsers(data);
-    }
-    fetchUsers();
-  }, []);
+  const handleListingAddressChange = (event) => {
+    setLeadInfoData((prevData) => ({
+      ...prevData,
+      listingAddress: event.target.value,
+    }));
+  };
+
 
   const statusChangeEffect = (selectedStatusVal) => {
     switch (selectedStatusVal) {
@@ -190,14 +189,23 @@ const LeadInfo = ({
               options={userOptions}
               label={"Lead Owner"}
               value={getSelectedOption(userOptions, leadInfoData.leadOwner)}
-              isDisabled={!isEditMode || loadingUsers}
+              isDisabled={!isEditMode}
               onChange={handleLeadOwnerChange}
-              placeholder={
-                loadingUsers ? "Loading users..." : "Select Lead Owner"
-              }
+              placeholder="Select Lead Owner"
               menuPlacement="top"
             />
           </div>
+        </div>
+        {/* Listing Address */}
+        <div className="flex flex-row w-full gap-2 mt-2">
+          <CustomInput
+            inputId={"listingAddress"}
+            label={"Listing Address"}
+            inputStyle={{ width: "100%" }}
+            value={leadInfoData.listingAddress || ""}
+            readonly={!isEditMode}
+            onChange={handleListingAddressChange}
+          />
         </div>
         {/* Create Date & Last Update */}
         <div className="flex flex-row w-full gap-2 mt-2">

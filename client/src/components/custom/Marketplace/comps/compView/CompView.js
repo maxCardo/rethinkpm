@@ -128,90 +128,92 @@ const CompView = ({focusedProp, type}) => {
         zoom: 11
     };
 
-    return (
-        <div className="container-fluid flex-row">
-            <div className="OwnedProperty">
-                <div className="op__preparedBy">
-                    <p>Prepared by:</p>
-                    <div className="op__userBox">
-                        <div className="op__userAvatar">
-                            <ProfileIcon name={'John Smith'} size={35}/>
+    return (!activePropertyReport ? null : (
+            <div className="container-fluid flex-row">
+                <div className="OwnedProperty">
+                    <div className="op__preparedBy">
+                        <p>Prepared by:</p>
+                        <div className="op__userBox">
+                            <div className="op__userAvatar">
+                                <ProfileIcon name={'John Smith'} size={35}/>
+                            </div>
+                            <div className="op__userData">
+                                <p>Adam Poznanski</p>
+                                <p className="sub">Broker</p>
+                            </div>
+                            <IconButton placement='bottom'
+                                        tooltipContent={'Edit Comp Report (Agent Only)'}
+                                        iconClass='fas fa-edit'
+                                        variant='action-button'
+                                        btnClass='singleFieldEdit CardList__infoBtn'
+                                        onClickFunc={ () => {
+                                            setShowModal(true)
+                                        } } />
                         </div>
-                        <div className="op__userData">
-                            <p>Adam Poznanski</p>
-                            <p className="sub">Broker</p>
+                    </div>
+                    <div className="op__details">
+                        <div className="op__box">
+                            <h4>Comp Approach</h4>
+                            <p className="op__bigMoney">{ formatMoney(activePropertyReport.oov) }</p>
+                            <p className="op__resultValue">Target Range:</p>
+                            <p className="op__smCentered">{formatRange(activePropertyReport._25_75)}</p>
                         </div>
-                        <IconButton placement='bottom'
-                                    tooltipContent={'Edit Comp Report (Agent Only)'}
-                                    iconClass='fas fa-edit'
-                                    variant='action-button'
-                                    btnClass='singleFieldEdit CardList__infoBtn'
-                                    onClickFunc={ () => {
-                                        setShowModal(true)
-                                    } } />
+                        <div className="op__box">
+                            <h4>Income Approach</h4>
+                            <p className="op__bigMoney">{ formatMoney(incVal) }</p>
+                            <p className="op__resultValue">Market Rent:</p>
+                            <p className="op__smCentered">{ formatMoney(mktRent) }</p>
+                        </div>
+                        <div className="op__box opBox__double">
+                            <h4>Search</h4>
+                            <div>
+                                <div className="opBox__half">
+                                    <p className="op__resultValue">Standard Deviation: </p>
+                                    <p>{formatMoney(activePropertyReport.stdDev)}</p>
+                                    <p>Sample Size: { activePropertyReport.sampleSize }</p>
+                                    <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
+                                </div>
+                                <div className="opBox__half">
+                                    <p className="op__resultValue">Price Range: </p>
+                                    <p>{ formatRange(activePropertyReport.priceRange) }</p>
+                                    <p className="op__resultValue">Bedrooms: { property.bedrooms }</p>
+                                </div>
+                                <div className="opBox__half">
+                                    <p className="op__resultValue">10-90 Price Range: </p>
+                                    <p>{ formatRange(activePropertyReport._10_90) }</p>
+                                    <p className="op__resultValue">School District: { property.schoolDistrict }</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="op__details">
-                    <div className="op__box">
-                        <h4>Comp Approach</h4>
-                        <p className="op__bigMoney">{ formatMoney(activePropertyReport.oov) }</p>
-                        <p className="op__resultValue">Target Range:</p>
-                        <p className="op__smCentered">{formatRange(activePropertyReport._25_75)}</p>
-                    </div>
-                    <div className="op__box">
-                        <h4>Income Approach</h4>
-                        <p className="op__bigMoney">{ formatMoney(incVal) }</p>
-                        <p className="op__resultValue">Market Rent:</p>
-                        <p className="op__smCentered">{ formatMoney(mktRent) }</p>
-                    </div>
-                    <div className="op__box opBox__double">
-                        <h4>Search</h4>
-                        <div>
-                            <div className="opBox__half">
-                                <p className="op__resultValue">Standard Deviation: </p>
-                                <p>{formatMoney(activePropertyReport.stdDev)}</p>
-                                <p>Sample Size: { activePropertyReport.sampleSize }</p>
-                                <p className="op__resultValue">Search Radius: { activePropertyReport.searchRad }</p>
-                            </div>
-                            <div className="opBox__half">
-                                <p className="op__resultValue">Price Range: </p>
-                                <p>{ formatRange(activePropertyReport.priceRange) }</p>
-                                <p className="op__resultValue">Bedrooms: { property.bedrooms }</p>
-                            </div>
-                            <div className="opBox__half">
-                                <p className="op__resultValue">10-90 Price Range: </p>
-                                <p>{ formatRange(activePropertyReport._10_90) }</p>
-                                <p className="op__resultValue">School District: { property.schoolDistrict }</p>
-                            </div>
-                        </div>
+                <div className="Map">
+                    <div className="googleMapContainer" style={{height: '52vh', width: 'auto'}}>
+                        <GoogleMapReact bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY}}
+                                        defaultCenter={defaultMapProps.center}
+                                        defaultZoom={defaultMapProps.zoom} >
+                            {mapMarkerList}
+                        </GoogleMapReact>
                     </div>
                 </div>
+                <CardList list={comps} />
+                <Modal size='xl' className="Marketplace__DetailModal Marketplace__compReport-edit" show={showModal} onHide={hideModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit Comp Report (Agent Only)</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/*Card list of comps with queue and 5 active.*/}
+                        {/*Each needs to activate Select/Remove, mapview, streetview, gallery, edit modal on different element clicks.*/}
+                        {/*Sticky calculator sidebar with save, cancel and home card*/}
+                        <CompWorkup type={type}/>                
+                    </Modal.Body>
+                </Modal>
+                {/*Modal thing*/}
+                
             </div>
-            <div className="Map">
-                <div className="googleMapContainer" style={{height: '52vh', width: 'auto'}}>
-                    <GoogleMapReact bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY}}
-                                    defaultCenter={defaultMapProps.center}
-                                    defaultZoom={defaultMapProps.zoom} >
-                        {mapMarkerList}
-                    </GoogleMapReact>
-                </div>
-            </div>
-            <CardList list={comps} />
-            <Modal size='xl' className="Marketplace__DetailModal Marketplace__compReport-edit" show={showModal} onHide={hideModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit Comp Report (Agent Only)</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {/*Card list of comps with queue and 5 active.*/}
-                    {/*Each needs to activate Select/Remove, mapview, streetview, gallery, edit modal on different element clicks.*/}
-                    {/*Sticky calculator sidebar with save, cancel and home card*/}
-                    <CompWorkup type={type}/>                
-                </Modal.Body>
-            </Modal>
-            {/*Modal thing*/}
-            
-        </div>
-    )
+        )
+    ) 
+        
 }
 
 const mapStateToProps = state => ({
